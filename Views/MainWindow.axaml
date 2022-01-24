@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RAPTOR_Avalonia_MVVM.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="RAPTOR">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Header="_New   Ctrl+N" Command="{Binding OnNewCommand}" HotKey="Ctrl+N"/>
+        <MenuItem Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}" HotKey="Ctrl+O"/>
+        <Separator/>
+        <MenuItem Header="_Exit"/>
+      </MenuItem>
+      <MenuItem Header="_Edit">
+        <MenuItem Header="Copy"/>
+        <MenuItem Header="Paste"/>
+      </MenuItem>
+    </Menu>
+    <DockPanel Width="129" DockPanel.Dock="Left">
+      <Rectangle Fill="Red" Height="239" DockPanel.Dock="Top"/>
+      <Rectangle Fill="Blue" DockPanel.Dock="Bottom"/>
+    </DockPanel>
+    <TabControl DockPanel.Dock="Right">
+      <TabItem Header="Main">
+        <Rectangle Fill="Blue"></Rectangle>
+      </TabItem>
+      <TabItem Header="Proc1">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+          <Rectangle Height="1400" Fill="Green"></Rectangle>
+        </ScrollViewer>
+
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>
