@@ -12,7 +12,7 @@ namespace RAPTOR_Avalonia_MVVM
         // yet and stuff might break.
         [STAThread]
         public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+            .StartWithClassicDesktopLifetime(args,Avalonia.Controls.ShutdownMode.OnMainWindowClose);
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()

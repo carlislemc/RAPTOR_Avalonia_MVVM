@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="300" Height="300"
+        x:Class="RAPTOR_Avalonia_MVVM.MasterConsole"
+        Title="RAPTOR MasterConsole">
+  <DockPanel VerticalAlignment="Top" Height="300">
+    <Button DockPanel.Dock="Bottom" Command="{Binding OnClearPush}">Clear</Button>
+    <ScrollViewer DockPanel.Dock="Top" x:Name="Scroll1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <TextBlock Text="{Binding Text}"></TextBlock>
+ 
+    </ScrollViewer> 
+  </DockPanel>
+</Window>
