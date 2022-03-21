@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -17,7 +18,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
     class FlowchartControl : Control
     {
-        double mouse_x, mouse_y;
         static FlowchartControl()
         {
             AffectsRender<FlowchartControl>(AngleProperty);
@@ -25,10 +25,50 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private Subchart sc;
 
         // This code seems to only run when the mouse is over the flowchart itself
-        private void onclick(object? sender, PointerEventArgs e)
+        private void onMouseMove(object? sender, PointerEventArgs e)
         {
-            this.mouse_x = e.GetPosition(this).X; 
-            this.mouse_y = e.GetPosition(this).Y;
+            this.sc.positionX = (int) e.GetPosition(this).X;
+            this.sc.positionY = (int) e.GetPosition(this).Y;
+        }
+
+        private void onClick(object? sender, RoutedEventArgs e)
+        {
+            TappedEventArgs f = (TappedEventArgs)e;
+            this.sc.positionX = (int)f.GetPosition(this).X;
+            this.sc.positionY = (int)f.GetPosition(this).Y;
+            this.sc.Start.select(this.sc.positionX,this.sc.positionY);
+            if (SymbolsControl.control_figure_selected==SymbolsControl.assignment_fig)
+            {
+                this.sc.OnInsertAssignmentCommand();
+            }
+            else if (SymbolsControl.control_figure_selected == SymbolsControl.call_fig)
+            {
+                this.sc.OnInsertCallCommand();
+            }
+            else if (SymbolsControl.control_figure_selected == SymbolsControl.input_fig)
+            {
+                this.sc.OnInsertInputCommand();
+            }
+            else if (SymbolsControl.control_figure_selected == SymbolsControl.output_fig)
+            {
+                this.sc.OnInsertOutputCommand();
+            }
+            else if (SymbolsControl.control_figure_selected == SymbolsControl.if_control_fig)
+            {
+                this.sc.OnInsertSelectionCommand();
+            }
+            else if (SymbolsControl.control_figure_selected == SymbolsControl.loop_fig)
+            {
+                this.sc.OnInsertLoopCommand();
+            }
+
+        }
+        private void doubleClick(object? sender, RoutedEventArgs e)
+        {
+            TappedEventArgs f = (TappedEventArgs)e;
+            this.sc.positionX = (int)f.GetPosition(this).X;
+            this.sc.positionY = (int)f.GetPosition(this).Y;
+            _ = this.sc.Start.setText(this.sc.positionX, this.sc.positionY);
         }
         public FlowchartControl()
         {
@@ -37,7 +77,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             timer.Interval = TimeSpan.FromSeconds(1 / 60.0);
             timer.Tick += (sender, e) => Angle += Math.PI / 360;
             timer.Start();
-            this.PointerMoved += this.onclick;
+            this.PointerMoved += this.onMouseMove;
+            this.Tapped += this.onClick;
+            this.DoubleTapped += this.doubleClick;
         }
 
         public static readonly StyledProperty<double> AngleProperty =
@@ -48,10 +90,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             get => GetValue(AngleProperty);
             set => SetValue(AngleProperty, value);
         }
-        public ObservableCollection<MenuItem> ContextMenuItemsFunction()
-        {
-            return new ObservableCollection<MenuItem> { new MenuItem() { Header = "Hello" }, new MenuItem() { Header = "World" } };
-        }
+
         public override void Render(DrawingContext drawingContext)
         {
             int x1, y1;

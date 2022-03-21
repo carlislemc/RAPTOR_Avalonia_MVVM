@@ -171,7 +171,7 @@ namespace raptor
         {
             base.draw(gr, x, y);
         }
-        public override bool setText(int x, int y, Visual_Flow_Form form)
+        public override bool setText(int x, int y)
         {
             bool textset = false;
             if (contains(x, y))
@@ -179,14 +179,14 @@ namespace raptor
                 textset = true;
                 if (Component.Current_Mode != Mode.Expert)
                 {
-                    form.menuRenameSubchart_Click(null, null);
+                    //form.menuRenameSubchart_Click(null, null);
                 }
                 return textset;
             }
 
             if (this.Successor != null)
             {
-                return (this.Successor.setText(x, y, form));
+                return (this.Successor.setText(x, y));
             }
 
             return textset;

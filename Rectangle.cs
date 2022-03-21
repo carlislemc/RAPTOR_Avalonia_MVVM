@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace raptor
 {
@@ -195,21 +196,21 @@ namespace raptor
 		}
 
 		// Get the text from a pop-up dialog and then set it?
-		public override bool setText(int x, int y, Visual_Flow_Form form)
+		public override bool setText(int x, int y)
 		{
-			/*
+			
 			bool textset = false;
 			if (contains(x,y))
 			{
 				if (this.kind==Kind_Of.Assignment)
 				{
-					Assignment_Dlg AD = new Assignment_Dlg(this,form);
-					AD.ShowDialog();
+					AssignmentDialog AD = new AssignmentDialog();
+					AD.ShowDialog(MainWindow.topWindow);
 				}
 				else
 				{
-					Call_Dialog CD = new Call_Dialog(this,form);
-					CD.ShowDialog();
+					/*Call_Dialog CD = new Call_Dialog(this,form);
+					CD.ShowDialog();*/
 				}
 				
 				
@@ -219,11 +220,10 @@ namespace raptor
 	
 			if (this.Successor != null)
 			{
-				return(this.Successor.setText(x,y,form));
+				return(this.Successor.setText(x,y));
 			}
 			
-			return textset;*/
-			return true;
+			return textset;
 		}
 
 

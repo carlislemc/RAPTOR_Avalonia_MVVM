@@ -996,7 +996,7 @@ namespace raptor
 		
 		
 		// Get the text from a pop-up dialog and then set it?
-		public override bool setText(int x, int y, Visual_Flow_Form form)
+		public override bool setText(int x, int y)
 		{
 			bool successor_settext = false;
 			bool before_settext = false;
@@ -1014,16 +1014,16 @@ namespace raptor
 	
 			if (this.Successor != null)
 			{
-				successor_settext = this.Successor.setText(x,y,form);
+				successor_settext = this.Successor.setText(x,y);
 			}
 
 			if (this.before_Child != null && !this.is_compressed)
 			{
-				before_settext = this.before_Child.setText(x,y,form);
+				before_settext = this.before_Child.setText(x,y);
 			}
 			if (this.after_Child != null && !this.is_compressed)
 			{
-				after_settext = this.after_Child.setText(x,y,form);
+				after_settext = this.after_Child.setText(x,y);
 			}
 			
 			return (successor_settext || before_settext || after_settext);
@@ -1047,11 +1047,11 @@ namespace raptor
 			return Result;
 		}
 
-		public override bool cut(Visual_Flow_Form VF)
+		public override Component cut()
 		{
-			bool cut_before = false;
-			bool cut_after = false;
-			bool cut_successor = false;
+			Component cut_before = null;
+			Component cut_after = null;
+			Component cut_successor = null;
 			Component start_selection, end_selection;
 			if (this.Successor != null)
 			{
@@ -1070,13 +1070,16 @@ namespace raptor
 					{
 						this.Successor = null;
 					}
-					VF.clipboard = start_selection;
-					VF.clipboard.reset();
-					return true;
+					start_selection.reset();
+					return start_selection;
 				}
 				else
 				{
-					cut_successor = this.Successor.cut(VF);
+					cut_successor = this.Successor.cut();
+					if (cut_successor!=null)
+                    {
+						return cut_successor;
+                    }
 				}
 			}
 			if (this.before_Child != null)
@@ -1095,13 +1098,16 @@ namespace raptor
 					{
 						this.before_Child = null;
 					}
-					VF.clipboard = start_selection;
-					VF.clipboard.reset();
-					return true;
+					start_selection.reset();
+					return start_selection;
 				}
 				else
 				{
-					cut_before = this.before_Child.cut(VF);
+					cut_before = this.before_Child.cut();
+					if (cut_before != null)
+					{
+						return cut_before;
+					}
 				}
 			}
 			
@@ -1121,49 +1127,54 @@ namespace raptor
 					{
 						this.after_Child = null;
 					}
-					VF.clipboard = start_selection;
-					VF.clipboard.reset();
-					return true;
+					start_selection.reset();
+					return start_selection;
 				}
 				else
 				{
-					cut_after = this.after_Child.cut(VF);
+					cut_after = this.after_Child.cut();
+					if (cut_after != null)
+					{
+						return cut_successor;
+					}
 				}
 			}
 			
-			return (cut_before || cut_after || cut_successor);
+			return null;
 		}
 
 		// copy selected objects
-		public override bool copy(Visual_Flow_Form VF)
+		public override Component copy()
 		{
 			if (this.selected)
 			{
-				return base.copy(VF);
+				return base.copy();
 			}
 			else
 			{
 				if (this.before_Child != null)
 				{
-					if (this.before_Child.copy(VF)) 
+					Component result = this.before_Child.copy();
+					if (result !=null) 
 					{
-						return true;
+						return result;
 					}
 				}
 				if (this.after_Child != null)
 				{
-					if (this.after_Child.copy(VF)) 
+					Component result = this.after_Child.copy();
+					if (result!=null) 
 					{
-						return true;
+						return result;
 					}
 				}
 				if (this.Successor !=null)
 				{
-					return this.Successor.copy(VF);
+					return this.Successor.copy();
 				}
 				else
 				{
-					return false;
+					return null;
 				}
 			}
 		}

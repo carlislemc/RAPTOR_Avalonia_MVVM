@@ -24,7 +24,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public const int if_control_fig = 4;
         public const int loop_fig = 5;
         public const int return_fig = 6;
-        public int control_figure_selected = -1;
+        public static int control_figure_selected = -1;
         private Rectangle ASGN, CALL;
         private Parallelogram INPUT, OUTPUT;
         private Oval_Return RETURN;

@@ -547,12 +547,12 @@ namespace raptor
 		}
 
 		// cut selected objects
-		public virtual bool cut(Visual_Flow_Form VF)
+		public virtual Component cut()
 		{
 			// can't cut if compiled
 			if (Component.compiled_flowchart)
 			{
-				return false;
+				return null;
 			}
 			Component start_selection, end_selection;
 			if (this.Successor != null)
@@ -571,28 +571,27 @@ namespace raptor
 					{
 						this.Successor = null;
 					}
-					VF.clipboard = start_selection;
-					VF.clipboard.reset();
-					return true;
+					start_selection.reset();
+					return start_selection;
 				}
 				else
 				{
-					return this.Successor.cut(VF);
+					return this.Successor.cut();
 				}
 			}
 			else
 			{
-				return false;
+				return null;
 			}
 		}
 
 		// copy selected objects
-		public virtual bool copy(Visual_Flow_Form VF)
+		public virtual Component copy()
 		{
 			// can't copy if compiled
 			if (Component.compiled_flowchart)
 			{
-				return false;
+				return null;
 			}
 			Component end_selection;
 			if (this.selected)
@@ -606,28 +605,26 @@ namespace raptor
 					Component tempobj = this.Clone();
 					tempobj.reset();
 					
-					VF.clipboard = tempobj;
 					end_selection.Successor = temp;
-					return true;
+					return tempobj;
 				}
 				else
 				{
 					Component tempobj = this.Clone();
 					tempobj.reset();
 					
-					VF.clipboard = tempobj;
-					return true;
+					return tempobj;
 				}
 			}
 			else
 			{
 				if (this.Successor !=null)
 				{
-					return this.Successor.copy(VF);
+					return this.Successor.copy();
 				}
 				else
 				{
-					return false;
+					return null;
 				}
 			}
 		}
@@ -951,7 +948,7 @@ namespace raptor
 		}
 	
 		// Get the text from a pop-up dialog and then set it?
-		public abstract bool setText(int x, int y, Visual_Flow_Form form);
+		public abstract bool setText(int x, int y);
 
 		// Get the text from a component?
 		public abstract string getText(int x, int y);

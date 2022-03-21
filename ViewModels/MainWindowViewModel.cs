@@ -42,6 +42,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
         public float scale = 1.0f;
+        public Component clipboard;
         public logging_info log = new logging_info();
         public bool modified = false;
         public bool runningState = false;
@@ -123,15 +124,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return false;
             }
         }
-
+        private static MainWindowViewModel theMainWindowViewModel;
+        public static MainWindowViewModel GetMainWindowViewModel()
+        {
+            return theMainWindowViewModel;
+        }
         public MainWindowViewModel()
         {
+            theMainWindowViewModel = this;
             theVariables = new ObservableCollection<Variables>(FillWatch());
+            Subchart main_subchart = new Subchart("main");
             theTabs = new ObservableCollection<Subchart>(new List<Subchart>()
             {
-                new Subchart("main")
+                main_subchart
             });
-
 
             /*
             GetWindow().Closing += (s, e) =>
@@ -514,9 +520,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
 
         }
+        public void OnEditCommand()
+        {
+            this.mainSubchart().Start.setText(this.mainSubchart().positionX,this.mainSubchart().positionY);
+        }
         public void OnCutCommand()
         {
-            privateTheVariables.Add(new Variables { name = "cut", value = "2" });
+            Component cutReturn = this.mainSubchart().Start.cut();
+            if (cutReturn!=null)
+            {
+                Clipboard_Data cd = new Clipboard_Data(
+                cutReturn,
+                this.file_guid, this.log.Clone());
+                ClipboardMultiplatform.SetDataObject(cd, true);
+            }
         }
         public void OnExitCommand()
         {
@@ -551,8 +568,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnStepCommand() { }
 
         public void OnResetCommand() { }
-        public void OnUndoCommand() { }
-        public void OnRedoCommand() { }
+        public void OnUndoCommand() {
+            Undo_Stack.Undo_Action(this.mainSubchart());
+        }
+        public void OnRedoCommand() {
+            Undo_Stack.Redo_Action(this.mainSubchart());
+        }
         public void OnClearBreakpointsCommand()
         {
 

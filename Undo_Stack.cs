@@ -124,7 +124,7 @@ namespace raptor
 			Clear_Redo(/*form*/);
 		}
 
-		public static void Make_Rename_Tab_Undoable(Visual_Flow_Form form, Subchart chart, 
+		public static void Make_Rename_Tab_Undoable(/*Visual_Flow_Form form,*/ Subchart chart, 
 			string old_name, string new_name)
 		{
 			Action new_action;
@@ -138,10 +138,10 @@ namespace raptor
 			Clear_Redo(/*form*/);
 		}
 
-		public static void Make_Undoable(/*Visual_Flow_Form form*/)
+		public static void Make_Undoable(Subchart current/*Visual_Flow_Form form*/)
 		{
 			//Subchart current = form.selectedTabMaybeNull();
-			Subchart current = null;
+			//Subchart current = null;
 			if (current==null)
             {
                 return;
@@ -163,10 +163,10 @@ namespace raptor
 			Clear_Redo(/*form*/);
 		}
 
-		public static void Undo_Action(Visual_Flow_Form form)
+		public static void Undo_Action(Subchart current /*Visual_Flow_Form form*/)
 		{
 			//Subchart current = form.selectedTabMaybeNull();
-			Subchart current = null;
+			//Subchart current = null;
 			if (num_undo > 0 && current!=null)
 			{
 				Action this_action = ((Action) Undo_array[num_undo-1]);
@@ -214,8 +214,8 @@ namespace raptor
                             this_action.chart.tab_overlay.Ink = this_action.ink.Clone();
                             this_action.chart.tab_overlay.Enabled = was_enabled;
                         }*/
-                        this_action.chart.Start.scale = form.scale;
-						this_action.chart.Start.Scale(form.scale);
+                        //this_action.chart.Start.scale = form.scale;
+						//this_action.chart.Start.Scale(form.scale);
 						//form.my_layout();
 						//form.Current_Selection = current.Start.select(-1000,-1000);
 						//this_action.chart.flow_panel.Invalidate();
@@ -232,10 +232,10 @@ namespace raptor
 			}
 		}
 
-		public static void Redo_Action(/*Visual_Flow_Form form*/)
+		public static void Redo_Action(Subchart current/*Visual_Flow_Form form*/)
 		{
 			//Subchart current = form.selectedTabMaybeNull();
-			Subchart current = null;
+			//Subchart current = null;
 			if (num_redo > 0 && current!=null)
 			{
 				Action this_action = ((Action) Redo_array[num_redo-1]);

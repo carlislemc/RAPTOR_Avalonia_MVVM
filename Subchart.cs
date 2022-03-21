@@ -2,6 +2,7 @@
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using ReactiveUI;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive;
 
 namespace raptor
@@ -11,8 +12,52 @@ namespace raptor
     public class Subchart
     {
         public Oval Start, End;
-        public string Text="Main";
+        public string Text = "Main";
         protected Subchart_Kinds kind = Subchart_Kinds.Subchart;
+        public int positionX {
+            get; set; 
+        }
+
+        private int privatePositionY;
+        // This will be 0 at an insertable point and 1 otherwise
+        // to trigger the appropriate context menu
+        // set when the mouse moves
+        private int contextMenuType = -1;
+        public int positionY
+        {
+            get {
+                return this.privatePositionY;
+            } 
+            set
+            {
+                this.privatePositionY = value;
+                // if I can insert a symbol here, use the appropriate context menu
+                if (this.Start.insert(null, this.positionX, this.positionY, 0))
+                {
+                    if (this.contextMenuType != 0)
+                    {
+                        this.ObservableMenuItems.Clear();
+                        foreach (MenuItemViewModel j in this.OverArrowMenuItemsFunction)
+                        {
+                            this.ObservableMenuItems.Add(j);
+                        }
+                        this.contextMenuType = 0;
+                    }
+                }
+                else
+                {
+                    if (this.contextMenuType != 1)
+                    {
+                        this.ObservableMenuItems.Clear();
+                        foreach (MenuItemViewModel j in this.OverSymbolMenuItemsFunction)
+                        {
+                            this.ObservableMenuItems.Add(j);
+                        }
+                        this.contextMenuType = 1;
+                    }
+                }
+            }
+        }
 
         // This has to be a property because it has a binding to the XAML 
         // (because reasons)
@@ -25,20 +70,54 @@ namespace raptor
         {
             return this;
         }
-        public ReactiveCommand<Unit, Unit> OpenCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> SaveCommand { get; set;  }
+        public ReactiveCommand<Unit, Unit> PasteCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertAssignmentCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertCallCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertInputCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertOutputCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertSelectionCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> InsertLoopCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> EditCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> ToggleBreakpointCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> CutCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> CopyCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> DeleteCommand { get; set; }
         private void initContextMenu()
         {
-            OpenCommand = ReactiveCommand.Create(OnOpenCommand);
-            SaveCommand = ReactiveCommand.Create(OnSaveCommand);
-            //OpenRecentCommand = ReactiveCommand.Create<string>(OpenRecent);
+            PasteCommand = ReactiveCommand.Create(OnPasteCommand);
+            InsertAssignmentCommand = ReactiveCommand.Create(OnInsertAssignmentCommand);
+            InsertCallCommand = ReactiveCommand.Create(OnInsertCallCommand);
+            InsertInputCommand = ReactiveCommand.Create(OnInsertInputCommand);
+            InsertOutputCommand = ReactiveCommand.Create(OnInsertOutputCommand);
+            InsertSelectionCommand = ReactiveCommand.Create(OnInsertSelectionCommand);
+            InsertLoopCommand = ReactiveCommand.Create(OnInsertLoopCommand);
+            EditCommand = ReactiveCommand.Create(OnEditCommand);
+            ToggleBreakpointCommand = ReactiveCommand.Create(OnToggleBreakpointCommand);
+            CutCommand = ReactiveCommand.Create(OnCutCommand);
+            CopyCommand = ReactiveCommand.Create(OnCopyCommand);
+            DeleteCommand = ReactiveCommand.Create(OnDeleteCommand);
 
-            ContextMenuItemsFunction = new[]
+            OverArrowMenuItemsFunction = new[]
             {
-                new MenuItemViewModel { Header = "_Open...", Command = OpenCommand },
-                new MenuItemViewModel { Header = "_Save", Command = SaveCommand },
-                new MenuItemViewModel { Header = "-" }
+                new MenuItemViewModel { Header = "_Paste", Command = PasteCommand },
+                new MenuItemViewModel { Header = "Insert Assignment", Command = InsertAssignmentCommand },
+                new MenuItemViewModel { Header = "Insert Call", Command = InsertCallCommand },
+                new MenuItemViewModel { Header = "Insert Input", Command = InsertInputCommand },
+                new MenuItemViewModel { Header = "Insert Output", Command = InsertOutputCommand },
+                new MenuItemViewModel { Header = "Insert Selection", Command = InsertSelectionCommand },
+                new MenuItemViewModel { Header = "Insert Loop", Command = InsertLoopCommand }
             };
+
+            OverSymbolMenuItemsFunction = new[]
+{
+                new MenuItemViewModel { Header = "_Edit", Command = EditCommand },
+                new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand },
+                new MenuItemViewModel { Header = "C_ut", Command = CutCommand },
+                new MenuItemViewModel { Header = "C_opy", Command = CopyCommand },
+                new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand }
+            };
+            this.ObservableMenuItems = new ObservableCollection<MenuItemViewModel>();
+
         }
         public Subchart()
         {
@@ -50,8 +129,90 @@ namespace raptor
             Start.Text = "start";
         }
 
-        public void OnSaveCommand() { }
-        public void OnOpenCommand() { }
+        public void OnPasteCommand() { }
+        public void OnInsertAssignmentCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new Rectangle(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
+                "Rectangle",
+                Rectangle.Kind_Of.Assignment), this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnInsertCallCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new Rectangle(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
+                "Rectangle",
+                Rectangle.Kind_Of.Call), this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnInsertInputCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new Parallelogram(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
+                "Parallelogram",
+                true), this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnInsertOutputCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new Parallelogram(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
+                "Parallelogram",
+                false), this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnInsertSelectionCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new IF_Control(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "IF_Control"),
+                this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnInsertLoopCommand() {
+            Undo_Stack.Make_Undoable(this);
+            if (Start.insert(new Loop(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
+                "Loop"), this.positionX, this.positionY, 0))
+            {
+            }
+            else
+            {
+                Undo_Stack.Decrement_Undoable();
+            }
+        }
+        public void OnEditCommand() {
+            MainWindowViewModel.GetMainWindowViewModel().OnEditCommand();
+        }
+        public void OnToggleBreakpointCommand() { }
+        public void OnCutCommand() {
+            MainWindowViewModel.GetMainWindowViewModel().OnCutCommand();
+        }
+        public void OnCopyCommand() {
+            MainWindowViewModel.GetMainWindowViewModel().OnCopyCommand();
+        }
+        public void OnDeleteCommand() {
+            MainWindowViewModel.GetMainWindowViewModel().OnDeleteCommand();
+        }
 
         public Subchart(string name)
         {
@@ -63,25 +224,21 @@ namespace raptor
             Start = new Oval(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
             Start.Text = "start";
         }
-        public void OnTapped(object sender, PointerEventArgs e)
-        {
-            this.Start.Text = "tapped";
-        }
 
-        private IReadOnlyList<MenuItemViewModel> menuItemListPrivate;
-        public IReadOnlyList<MenuItemViewModel> ContextMenuItemsFunction
+
+        private IList<MenuItemViewModel> OverArrowMenuItemsFunction;
+        private IList<MenuItemViewModel> OverSymbolMenuItemsFunction;
+        private ObservableCollection<MenuItemViewModel> ObservableMenuItems;
+        public ObservableCollection<MenuItemViewModel> ContextMenuItemsFunction
         {
             get
             {
-                return menuItemListPrivate;
-            }
-            set
-            {
-                menuItemListPrivate = value;
+
+                    return ObservableMenuItems;
+
             }
         }
-        public void OnPasteCommand() { }
-        public void OnCopyCommand() { }
+
         public virtual int num_params
         {
             get

@@ -91,7 +91,7 @@ namespace raptor
                 this.Successor.selectAll();
             }
         }
-        public override bool setText(int x, int y, Visual_Flow_Form form)
+        public override bool setText(int x, int y)
         {
             if (contains(x, y))
             {
@@ -102,7 +102,7 @@ namespace raptor
 
             if (this.Successor != null)
             {
-                return (this.Successor.setText(x, y, form));
+                return (this.Successor.setText(x, y));
             }
 
             return false;

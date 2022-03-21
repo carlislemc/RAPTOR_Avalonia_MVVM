@@ -8,12 +8,15 @@ namespace RAPTOR_Avalonia_MVVM.Views
     {
         private int x = 0;
         private MasterConsole masterConsole;
+        public static MainWindow topWindow;
+
         public MainWindow()
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
+            topWindow = this;
             this.Closing += (s, e) =>
             {
                 e.Cancel = (this.DataContext as RAPTOR_Avalonia_MVVM.ViewModels.MainWindowViewModel).OnClosingCommand();

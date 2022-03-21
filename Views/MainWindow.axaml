@@ -198,19 +198,7 @@
         </TreeView.DataTemplates>
       </TreeView>
     </DockPanel>
-    <!--<TabControl DockPanel.Dock="Right">
-      <TabItem Header="Main">
-        <Rectangle Fill="Blue"></Rectangle>
-      </TabItem>
-      <TabItem Header="Proc1">
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-          <UserControl Width="200" Height="250">
-            <controls:FlowchartControl />
-          </UserControl>
-        </ScrollViewer>
 
-      </TabItem>
-    </TabControl>-->
     <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}">
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
@@ -236,20 +224,12 @@
                         <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
                       </Style>
                     </ContextMenu.Styles>
-                    <!-- These bindings go to the Subchart class >
-                    <MenuItem Header="Can" Command="{Binding OnCopyCommand}"/>
-                    <MenuItem Header="I" Command="{Binding OnBogoCommand}"/>
-                    <MenuItem Header="Win" /-->
               </ContextMenu>
                 </controls:FlowchartControl.ContextMenu>
               </controls:FlowchartControl>
             </UserControl>
           </ScrollViewer>
-          <!--
-          <DockPanel LastChildFill="True">
-            <TextBlock Text="This is content of selected tab" DockPanel.Dock="Top" FontWeight="Bold" />
-            <TextBlock Text="{Binding Content}" />
-          </DockPanel>-->
+
         </DataTemplate>
       </TabControl.ContentTemplate>
     </TabControl>
