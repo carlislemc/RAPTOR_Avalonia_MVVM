@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RAPTOR_Avalonia_MVVM;
 
 namespace raptor
 {
@@ -48,7 +49,20 @@ namespace raptor
 
         internal static syntax_result call_syntax(string text, Rectangle rectangle)
         {
-            return new syntax_result();
+            Lexer lexer = new Lexer(text);
+            syntax_result result = new syntax_result();
+            try
+            {
+                result.tree = parse_call_statement();
+                result.valid = true;
+            }
+            catch (Bad_Token e)
+            {
+                result.valid = false;
+                result.location = 1;
+                result.message = e.Message;
+            }
+            return result;
             //throw new NotImplementedException();
         }
 
