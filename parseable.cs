@@ -33,7 +33,7 @@ namespace parse_tree
                     ((Binary_Expression)e).right = new Expression(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }
@@ -281,7 +281,7 @@ namespace parse_tree
                     ((Expon_Mult)e).right = new Mult(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }
@@ -312,7 +312,7 @@ namespace parse_tree
                     ((Binary_Add)e).right = new Add(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }

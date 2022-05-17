@@ -215,7 +215,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 Token ident = t;
                 t = lexer.Get_Token();
-                string func_name = lexer.Get_Text(ident.start, ident.finish));
+                string func_name = lexer.Get_Text(ident.start, ident.finish);
                 if (t.kind==Token_Type.Left_Paren)
                 {
                     if (Plugins.Is_Function(func_name))
