@@ -46,7 +46,32 @@ namespace raptor
             return text;
             //throw new NotImplementedException();
         }
-
+        public static Syntax_Result assignment_syntax(string text, 
+            string text2, Rectangle rectangle)
+        { 
+            Lexer lexer = new Lexer(text+":="+text2);
+            Parser parser = new Parser(lexer);
+            Syntax_Result result = new Syntax_Result();
+            try
+            {
+                result.tree = parser.Parse_Assignment_Statement();
+                result.valid = true;
+            }
+            catch (Syntax_Error e)
+            {
+                result.valid = false;
+                result.location = parser.Get_Current_Token().start;
+                result.message = e.Message;
+            }
+            catch (Bad_Token e)
+            {
+                result.valid = false;
+                result.location = lexer.Get_Current_Location();
+                result.message = e.Message;
+            }
+            return result;
+            //throw new NotImplementedException();
+        }
         public static Syntax_Result call_syntax(string text, Rectangle rectangle)
         {
             Lexer lexer = new Lexer(text);

@@ -917,6 +917,53 @@ namespace RAPTOR_Avalonia_MVVM
                Lexer.Get_Text(T.Start..T.Finish) &
                " is not a valid procedure name");
         end if; */
+        // -- Assignment_Statement => Assignment [;] End_Input
+        public Statement Parse_Assignment_Statement()
+        {
+            Statement? result = null;
+            Token t = lexer.Get_Token();
+            lexer.Unget_Token(t);
+            if (Lexer.isProc_Token_Type(t.kind))
+            {
+                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                    " can not be used as a variable name");
+            }
+            else if (Lexer.isFunc_Token_Type(t.kind))
+            {
+                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                    " can only appear on right side of assignment");
+            }
+            else if (t.kind==Token_Type.Id)
+            {
+                if (Plugins.Is_Procedure(lexer.Get_Text(t.start, t.finish))) 
+                {
+                    Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                        " can not be used as a variable name");
+                }
+                else
+                {
+                    result = Parse_Assignment();
+                }
+            }
+            else if (t.kind==Token_Type.Colon_Equal)
+            {
+                Raise_Exception(t, "Put a variable in the Set box");
+            }
+            else
+            {
+                Raise_Exception(t, " can not begin an assignment");
+            }
+            t = lexer.Get_Token();
+            if (t.kind==Token_Type.Semicolon)
+            {
+                t = lexer.Get_Token();
+            }
+            if (t.kind!=Token_Type.End_Input)
+            {
+                Raise_Exception(t, t.kind.ToString() + " is unexpected");
+            }
+            return result;
+        }
     }
 
 }

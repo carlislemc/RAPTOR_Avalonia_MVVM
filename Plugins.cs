@@ -12,6 +12,11 @@ namespace RAPTOR_Avalonia_MVVM
         {
             return false;
         }
+
+        public static bool Is_Procedure(string s)
+        {
+            return false;
+        }
         public static bool Is_Boolean_Function(string s)
         {
             return false;
