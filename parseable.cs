@@ -56,22 +56,22 @@ namespace parse_tree
 
     // Procedure_Call => proc_id(Parameter_List) | plugin_id(Parameter_List) | tab_id(Parameter_List) |
     // lhs msuffix
-    public abstract class procedure_call : Parseable
+    public abstract class Procedure_Call : Statement
     {
-        Token? id;
-        Parameter_List? param_list;
+        public Token? id;
+        public Parameter_List? param_list;
         public bool is_tab_call() { return false; }
     }
 
-    public class Proc_Call : procedure_call
+    public class Proc_Call : Procedure_Call
     {
 
     }
-    public class Plugin_Proc_Call : procedure_call { }
+    public class Plugin_Proc_Call : Procedure_Call { }
 
-    public class Tabid_Proc_Call : procedure_call { }
+    public class Tabid_Proc_Call : Procedure_Call { }
 
-    public class Method_Proc_Call : procedure_call
+    public class Method_Proc_Call : Procedure_Call
     {
         Lhs? lhs;
         Msuffix? msuffix;

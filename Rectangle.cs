@@ -268,9 +268,9 @@ namespace raptor
 		{
 			try 
 			{
-				if (this.parse_tree is parse_tree.procedure_call &&
-                    ((parse_tree.procedure_call) this.parse_tree).is_tab_call() &&
-                    s.ToLower() == interpreter_pkg.get_name_call(this.parse_tree as parse_tree.procedure_call,
+				if (this.parse_tree is parse_tree.Procedure_Call &&
+                    ((parse_tree.Procedure_Call) this.parse_tree).is_tab_call() &&
+                    s.ToLower() == interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
                         this.Text).ToLower())
 				{
 					return true;
@@ -289,11 +289,11 @@ namespace raptor
 		{
             try
             {
-                if (this.parse_tree is parse_tree.procedure_call)
+                if (this.parse_tree is parse_tree.Procedure_Call)
                 {
-                    string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.procedure_call,
+                    string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
                         this.Text);
-                    if (((parse_tree.procedure_call)this.parse_tree).is_tab_call() &&
+                    if (((parse_tree.Procedure_Call)this.parse_tree).is_tab_call() &&
                         from.ToLower() == call_name.ToLower())
                     {
                         this.Text = this.Text.Replace(call_name, to);

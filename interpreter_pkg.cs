@@ -41,13 +41,13 @@ namespace raptor
             //throw new NotImplementedException();
         }
 
-        internal static string get_name_call(procedure_call? procedure_call, string text)
+        internal static string get_name_call(Procedure_Call? procedure_call, string text)
         {
             return text;
             //throw new NotImplementedException();
         }
 
-        internal static Syntax_Result call_syntax(string text, Rectangle rectangle)
+        public static Syntax_Result call_syntax(string text, Rectangle rectangle)
         {
             Lexer lexer = new Lexer(text);
             Parser parser = new Parser(lexer);
@@ -57,10 +57,16 @@ namespace raptor
                 result.tree = parser.Parse_Call_Statement();
                 result.valid = true;
             }
+            catch (Syntax_Error e)
+            {
+                result.valid = false;
+                result.location = parser.Get_Current_Token().start;
+                result.message = e.Message;
+            }
             catch (Bad_Token e)
             {
                 result.valid = false;
-                result.location = 1;
+                result.location = lexer.Get_Current_Location();
                 result.message = e.Message;
             }
             return result;

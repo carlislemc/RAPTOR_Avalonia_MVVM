@@ -18,12 +18,12 @@ namespace RAPTOR_Avalonia_MVVM
         {
             this.lexer = l;
         }
-        public static Token Current_Token;
-        public static Token Get_Current_Token()
+        public Token Current_Token;
+        public Token Get_Current_Token()
         {
             return Current_Token;
         }
-        public static void Raise_Exception(Token t, string message)
+        public void Raise_Exception(Token t, string message)
         {
             Current_Token = t;
             throw new Syntax_Error(message);
@@ -110,7 +110,7 @@ namespace RAPTOR_Avalonia_MVVM
             return result;
         }
 
-        int Count_Parameters(Parameter_List l)
+        int Count_Parameters(Parameter_List? l)
         {
             if (l == null)
             {
@@ -806,10 +806,68 @@ namespace RAPTOR_Avalonia_MVVM
                 return new Parameter_List(result, null);
             }
         }
-        public Statement? Parse_Proc_Call()
+        // Input_Statement => Input End_Input
+        public Input Parse_Input_Statement()
         {
-            return null;
+            Input result = Parse_Input();
+            Token t = lexer.Get_Token();
+            if (t.kind!=Token_Type.End_Input)
+            {
+                Raise_Exception(t, t.kind.ToString() + " is unexpected");
+            }
+            return result;
         }
+
+        // Output_Statement => Output End_Input
+        public Output Parse_Output_Statement(bool new_line)
+        {
+            Output result = Parse_Output(new_line);
+            Token t = lexer.Get_Token();
+            if (t.kind != Token_Type.End_Input)
+            {
+                Raise_Exception(t, t.kind.ToString() + " is unexpected");
+            }
+            return result;
+        }
+        // Proc_Call => proc_id(Parameter_List)
+        public Proc_Call Parse_Proc_Call()
+        {
+            Proc_Call result = new Proc_Call();
+            Token t = lexer.Get_Token();
+            if (!Lexer.isProc_Token_Type(t.kind))
+            {
+                Raise_Exception(t, t.kind.ToString() +
+                    " is unexpected in procedure call");
+            }
+            result.id = t;
+            t = lexer.Get_Token();
+            if (t.kind==Token_Type.Left_Paren)
+            {
+                result.param_list = Parse_Parameter_List("", true);
+                t = lexer.Get_Token();
+                if (t.kind!=Token_Type.Right_Paren)
+                {
+                    Raise_Exception(t, "missing )");
+                }
+            }
+            else
+            {
+                result.param_list = null;
+                lexer.Unget_Token(t);
+            }
+            try
+            {
+                lexer.Verify_Parameter_Count(
+                   lexer.Get_Text(result.id.start, result.id.finish),
+                   Count_Parameters(result.param_list));
+            } catch (Exception e)
+            {
+                Raise_Exception(t, e.Message);
+            }
+            return result;
+        }
+
+
         // Call_Statement => Proc_Call[;] End_Input
         public Statement Parse_Call_Statement() {
             Statement result = null;
