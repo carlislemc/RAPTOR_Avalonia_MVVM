@@ -27,12 +27,12 @@
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBlock>Set</TextBlock>
-      <TextBox Width="200" Watermark="variable" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Watermark="variable" Text="{Binding setValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBlock>to</TextBlock>
       <ScrollViewer>
-      <TextBox Width="200" Watermark="value" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Watermark="value" Text="{Binding toValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
       </ScrollViewer>
     </StackPanel>
     <TextBlock Width="200" Height="200">
