@@ -10,8 +10,8 @@ namespace raptor
 	{
 		public enum kinds { symbols, comment };
 		public kinds kind;
-		public Component symbols;
-		public CommentBox cb;
+		public Component? symbols;
+		public CommentBox? cb;
 		public System.Guid guid;
 		public logging_info log;
 

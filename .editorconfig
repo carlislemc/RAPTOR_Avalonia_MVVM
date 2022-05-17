@@ -2,3 +2,6 @@
 
 # SYSLIB0011: Type or member is obsolete
 dotnet_diagnostic.SYSLIB0011.severity = silent
+
+# CS8605: Unboxing a possibly null value.
+dotnet_diagnostic.CS8605.severity = suggestion

@@ -61,7 +61,7 @@ namespace raptor
         public static bool isObjectOriented() {
             return Component.Current_Mode == Mode.Expert;
         }
-        public static numbers.value method_return_value = null;
+        public static numbers.value? method_return_value = null;
 
 		private static void Clear_Updated_Delegate()
 		{

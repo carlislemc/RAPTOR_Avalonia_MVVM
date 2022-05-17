@@ -183,7 +183,7 @@ namespace RAPTOR_Avalonia_MVVM
         }
         private string Current_String;
         private int Current_Location;
-        private Token Ungotten_Token;
+        private Token? Ungotten_Token;
 
         public Lexer(string s)
         {
