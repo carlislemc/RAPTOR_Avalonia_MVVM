@@ -34,10 +34,25 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
         }
 
+        public string variableName = "";
+        public string setValue { 
+            get { return variableName; } 
+            set { this.RaiseAndSetIfChanged(ref variableName, value); } 
+        }
+
+        public string variableValue = "";
+        public string toValue {
+            get { return variableValue; }
+            set { this.RaiseAndSetIfChanged(ref variableValue, value); }
+        }
 
         public void OnDoneCommand(){
-            Text += "Done Assignment\n";
-            //Console.WriteLine("hi there dude");
+            if(setValue == "" || toValue == ""){
+                Text += "Error!\n";
+            } else {
+                Text += setValue + "<--" + toValue + "\n";
+            }
+            
         }
 
     }
