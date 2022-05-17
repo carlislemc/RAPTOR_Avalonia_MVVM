@@ -209,8 +209,8 @@ namespace raptor
 				}
 				else
 				{
-					/*Call_Dialog CD = new Call_Dialog(this,form);
-					CD.ShowDialog();*/
+					CallDialog CD = new CallDialog();
+					CD.ShowDialog(MainWindow.topWindow);
 				}
 				
 				
