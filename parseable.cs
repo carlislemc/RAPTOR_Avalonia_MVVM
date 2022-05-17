@@ -8,10 +8,10 @@ using RAPTOR_Avalonia_MVVM;
 
 namespace parse_tree
 {
-    public abstract class Parseable
+    public abstract class parseable
     {
     }
-    public abstract class Value_Parseable : Parseable
+    public abstract class Value_Parseable : parseable
     {
 
     }
@@ -33,7 +33,7 @@ namespace parse_tree
                     ((Binary_Expression)e).right = new Expression(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }
@@ -56,38 +56,38 @@ namespace parse_tree
 
     // Procedure_Call => proc_id(Parameter_List) | plugin_id(Parameter_List) | tab_id(Parameter_List) |
     // lhs msuffix
-    public abstract class Procedure_Call : Parseable
+    public abstract class procedure_call : parseable
     {
         Token id;
         Parameter_List param_list;
         public bool is_tab_call() { return false; }
     }
 
-    public class Proc_Call : Procedure_Call
+    public class Proc_Call : procedure_call
     {
 
     }
-    public class Plugin_Proc_Call : Procedure_Call { }
+    public class Plugin_Proc_Call : procedure_call { }
 
-    public class Tabid_Proc_Call : Procedure_Call { }
+    public class Tabid_Proc_Call : procedure_call { }
 
-    public class Method_Proc_Call : Procedure_Call
+    public class Method_Proc_Call : procedure_call
     {
         Lhs lhs;
         Msuffix msuffix;
     }
 
-    public abstract class Assignment : Statement {
+    public abstract class assignment : Statement {
         public Lhs lhs;
         public Lsuffix lsuffix;
     }
-    public class Expr_Assignment : Assignment
+    public class expr_assignment : assignment
     {
         public Expression expr_part;
     }
 
     // Statement => (Procedure_Call | Assignment) [;] End_Input
-    public abstract class Statement : Parseable { }
+    public abstract class Statement : parseable { }
 
     // Lhs => id[\[Expression[, Expression]\]]
     public class Lhs { }
@@ -281,7 +281,7 @@ namespace parse_tree
                     ((Expon_Mult)e).right = new Mult(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }
@@ -312,7 +312,7 @@ namespace parse_tree
                     ((Binary_Add)e).right = new Add(temp.left);
                     temp.left = e;
                     e = temp;
-                    Fix_Associativity(e);
+                    Fix_Associativity(ref e);
                 }
 
             }
@@ -350,7 +350,7 @@ namespace parse_tree
         {
         }
     }
-    public abstract class Boolean_Parseable : Parseable
+    public abstract class Boolean_Parseable : parseable
     {
 
     }
@@ -443,13 +443,13 @@ namespace parse_tree
             this.right = r;
         }
     }
-    public class Input : Parseable
+    public class input : parseable
     {
         public Lhs lhs;
         public Lsuffix lsuffix;
     }
 
-    public class Output : Parseable
+    public class Output : parseable
     {
         public bool new_line;
     }
