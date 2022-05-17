@@ -79,7 +79,7 @@ namespace RAPTOR_Avalonia_MVVM
                 {
                     Raise_Exception(t, "expected name");
                 }
-                return new Full_Lsuffix(Parse_Lhs(T), Parse_LSuffix());
+                return new Full_Lsuffix(Parse_Lhs(t), Parse_Lsuffix());
             }
             else
             {
@@ -88,9 +88,9 @@ namespace RAPTOR_Avalonia_MVVM
             }
         }
         // Assignment => Lhs LSuffix[=|:=] Expression
-        public Assignment Parse_Assignment()
+        public assignment Parse_Assignment()
         {
-            Expr_Assignment result = new Expr_Assignment();
+            expr_assignment result = new expr_assignment();
             Expression e;
             Token t = lexer.Get_Token();
             if (t.kind!=Token_Type.Id)
@@ -220,11 +220,11 @@ namespace RAPTOR_Avalonia_MVVM
                 {
                     if (Plugins.Is_Function(func_name))
                     {
-                        Plugin_Func_Expon result = new Plugin_Func_Expon();
+                        Plugin_Func_Expon _result = new Plugin_Func_Expon();
                         int count, correct_count;
-                        result.id = ident;
-                        result.parameters = Parse_Parameter_List(func_name, false);
-                        count = Count_Parameters(result.parameters);
+                        _result.id = ident;
+                        _result.parameters = Parse_Parameter_List(func_name, false);
+                        count = Count_Parameters(_result.parameters);
                         correct_count = Plugins.Parameter_Count(func_name);
                         if (count!=correct_count)
                         {
@@ -236,7 +236,7 @@ namespace RAPTOR_Avalonia_MVVM
                         {
                             Raise_Exception(t, "missing right parenthesis");
                         }
-                        return result;
+                        return _result;
                     }
                 }
                 lexer.Unget_Token(t);
@@ -247,10 +247,10 @@ namespace RAPTOR_Avalonia_MVVM
                         Raise_Exception(ident, func_name + " should have " + 
                             Plugins.Parameter_Count(func_name) + " parameters.");
                     }
-                    Plugin_Func_Expon result = new Plugin_Func_Expon();
-                    result.id = ident;
-                    result.parameters = null;
-                    return result;
+                    Plugin_Func_Expon _result = new Plugin_Func_Expon();
+                    _result.id = ident;
+                    _result.parameters = null;
+                    return _result;
                 }
                 Rhs_Expon result;
                 result = new Rhs_Expon(Parse_Rhs(ident), Parse_Rsuffix);

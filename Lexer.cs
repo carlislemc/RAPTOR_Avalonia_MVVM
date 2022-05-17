@@ -233,7 +233,7 @@ namespace RAPTOR_Avalonia_MVVM
         public Token_Type Id_Kind(string lexeme)
         {
             Token_Type result;
-            if (Enum.TryParse<Token_Type>(lexeme,true,result))
+            if (Enum.TryParse<Token_Type>(lexeme,true,out result))
             {
                 return result;
             }
@@ -311,7 +311,7 @@ namespace RAPTOR_Avalonia_MVVM
         public void Verify_Parameter_Count(string Proc_Name, int count)
         {
             Token_Type t;
-            Enum.TryParse<Token_Type>(Proc_Name, true, t);
+            Enum.TryParse<Token_Type>(Proc_Name, true, out t);
             if (count!=Parameter_Count(t))
             {
                 throw new Bad_Count(Proc_Name + " should have " + Parameter_Count(t) + " parameters.");
