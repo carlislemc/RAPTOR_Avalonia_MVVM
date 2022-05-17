@@ -543,6 +543,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
 
         }
+
         public void OnPasteCommand() { }
         public void OnCopyCommand() { }
         public void OnSaveCommand() { }

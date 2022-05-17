@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
+using RAPTOR_Avalonia_MVVM.Views;
+
 namespace raptor
 {
 	/// <summary>
@@ -368,13 +370,13 @@ namespace raptor
 			{
 				if (this.is_input)
 				{
-					//Input_Dlg IOD = new Input_Dlg(this,form);
-					//IOD.ShowDialog();
+					InputDialog IOD = new InputDialog();
+					IOD.ShowDialog(MainWindow.topWindow);
 				}
 				else
 				{
-					//Output_Dlg IOD = new Output_Dlg(this,form);
-					//IOD.ShowDialog();
+					OutputDialog IOD = new OutputDialog();
+					IOD.ShowDialog(MainWindow.topWindow);
 				}
 				textset = true;
 				return textset;

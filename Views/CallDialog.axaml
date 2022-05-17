@@ -7,37 +7,26 @@
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
         Width="300" Height="450"
-        x:Class="RAPTOR_Avalonia_MVVM.Views.AssignmentDialog"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.CallDialog"
         Title="Enter Statement"
-        x:DataType="vm:AssignmentDialogViewModel">
+        x:DataType="vm:CallDialogViewModel">
         <!--x:CompileBindings="True"> -->
 
   <Design.DataContext>
-      <vm:AssignmentDialogViewModel/>
+      <vm:CallDialogViewModel/>
   </Design.DataContext>
 
   <StackPanel Background="Linen" Spacing="10">
     <TextBlock HorizontalAlignment="Center">
-      Enter an assignment:
+      Enter a proceude call.:
       
       Examples:
-         Set Coins to 5
-         Set Count to Count + 1
-         Set Board[3,3] to 0
+         Wait_For_Mouse_Button(Left_Button)
+         Open_Graph_Window(300,300)
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBlock>Set</TextBlock>
-      <TextBox Width="200" Watermark="variable" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Height="200" Watermark="Procedure" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
-    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBlock>to</TextBlock>
-      <ScrollViewer>
-      <TextBox Width="200" Watermark="value" AcceptsReturn="False" IsReadOnly="False"></TextBox>
-      </ScrollViewer>
-    </StackPanel>
-    <TextBlock Width="200" Height="200">
-
-    </TextBlock>
     <TextBlock Text="{Binding Text}"></TextBlock>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
