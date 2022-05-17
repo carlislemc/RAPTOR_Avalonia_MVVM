@@ -16,6 +16,7 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -24,9 +25,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public CallDialogViewModel() {
             this.text = "";
         }
+
+        public CallDialogViewModel(Rectangle r, Window w){
+            this.text = "";
+            this.r = r;
+            this.w = w;
+        }
+        public Rectangle r;
+        public Window w;
         public bool modified = false;
         public bool runningState = false;
 
+        public string procedure = "";
+
+        public string setProcedure{
+            get { return procedure; }
+            set { this.RaiseAndSetIfChanged(ref procedure, value); }
+        }
         public string text = "";
         public string Text   // property
         {
@@ -36,8 +51,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public void OnDoneCommand(){
+            r.text_str = setProcedure;
             Text += "Done Call\n";
-            //Console.WriteLine("hi there dude");
+            w.Close();
         }
 
     }

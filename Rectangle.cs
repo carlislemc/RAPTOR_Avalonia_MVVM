@@ -198,18 +198,18 @@ namespace raptor
 		// Get the text from a pop-up dialog and then set it?
 		public override bool setText(int x, int y)
 		{
-			
+
 			bool textset = false;
 			if (contains(x,y))
 			{
 				if (this.kind==Kind_Of.Assignment)
 				{
-					AssignmentDialog AD = new AssignmentDialog();
+					AssignmentDialog AD = new AssignmentDialog(this);
 					AD.ShowDialog(MainWindow.topWindow);
 				}
 				else
 				{
-					CallDialog CD = new CallDialog();
+					CallDialog CD = new CallDialog(this);
 					CD.ShowDialog(MainWindow.topWindow);
 				}
 				

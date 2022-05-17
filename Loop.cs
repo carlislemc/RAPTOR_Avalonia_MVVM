@@ -1007,7 +1007,7 @@ namespace raptor
 			//if (over_Diamond(x,y))
 			if (contains(x,y))
 			{
-				SelectionDialog CD = new SelectionDialog();
+				LoopDialog CD = new LoopDialog(this);
 				CD.ShowDialog(MainWindow.topWindow);
 				textset = true;
 				return textset;

@@ -7,29 +7,27 @@
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
         Width="300" Height="450"
-        x:Class="RAPTOR_Avalonia_MVVM.Views.OutputDialog"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.LoopDialog"
         Title="Enter Statement"
-        x:DataType="vm:OutputDialogViewModel">
+        x:DataType="vm:LoopDialogViewModel">
         <!--x:CompileBindings="True"> -->
 
   <Design.DataContext>
-      <vm:OutputDialogViewModel/>
+      <vm:LoopDialogViewModel/>
   </Design.DataContext>
 
   <StackPanel Background="Linen" Spacing="10">
     <TextBlock HorizontalAlignment="Center">
-      Enter Output Here:
-      
+      Enter Loop Exit Condition:
+
       Examples:
-        "Exact Text"
-        Coins
-        "Number of Coins: " + Coins
-        Board[3,3]
+      Count = X+2
+      Count != 5
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Height="200" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Height="120" Text="{Binding setLoop}" Watermark="selection condition" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock Text="{Binding Text}"></TextBlock>
-  <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
+    <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
 </Window>

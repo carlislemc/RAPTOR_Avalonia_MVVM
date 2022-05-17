@@ -47,7 +47,7 @@ namespace raptor
             //throw new NotImplementedException();
         }
         public static Syntax_Result assignment_syntax(string text, 
-            string text2, Rectangle rectangle)
+            string text2/*, Rectangle rectangle*/)
         { 
             Lexer lexer = new Lexer(text+":="+text2);
             Parser parser = new Parser(lexer);

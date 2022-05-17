@@ -5,18 +5,18 @@ using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
-    public partial class CallDialog : Window
+    public partial class LoopDialog : Window
     {
-        public CallDialog(){
+        public LoopDialog(){
 
         }
-        public CallDialog(Rectangle r)
+        public LoopDialog(Loop l)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel(r, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel(l, this);
 
         }
 

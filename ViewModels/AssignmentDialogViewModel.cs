@@ -16,6 +16,8 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
+
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -24,6 +26,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public AssignmentDialogViewModel() {
             this.text = "";
         }
+        public AssignmentDialogViewModel(Rectangle r, Window w) {
+            this.text = "";
+            this.r = r;
+            this.w = w;
+        }
+        public Rectangle r;
+        public Window w;
         public bool modified = false;
         public bool runningState = false;
 
@@ -47,10 +56,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnDoneCommand(){
-            if(setValue == "" || toValue == ""){
-                Text += "Error!\n";
+            Syntax_Result res = interpreter_pkg.assignment_syntax(setValue, toValue);
+            if(res.valid){
+                r.text_str = setValue + ":=" + toValue;
+                r.parse_tree = res.tree;
+                w.Close();
             } else {
-                Text += setValue + "<--" + toValue + "\n";
+                Text = res.message;
             }
             
         }

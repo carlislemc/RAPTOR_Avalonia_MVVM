@@ -19,18 +19,18 @@ using System.Reactive;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
-    public class SelectionDialogViewModel : ViewModelBase
+    public class LoopDialogViewModel : ViewModelBase
     {
-        public SelectionDialogViewModel() {
+        public LoopDialogViewModel() {
             this.text = "";
         }
 
-        public SelectionDialogViewModel(IF_Control i, Window w) {
+        public LoopDialogViewModel(Loop l, Window w) {
             this.text = "";
-            this.i = i;
+            this.l = l;
             this.w = w;
         }
-        public IF_Control i;
+        public Loop l;
         public Window w;
         public bool modified = false;
         public bool runningState = false;
@@ -42,16 +42,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
         }
 
-        public string selection = "";
+        public string loopCondition = "";
 
-        public string setSelection{
-            get { return selection; }
-            set {this.RaiseAndSetIfChanged(ref selection, value);}
+        public string setLoop{
+            get { return loopCondition; }
+            set {this.RaiseAndSetIfChanged(ref loopCondition, value);}
         }
 
         public void OnDoneCommand(){
-            i.text_str = setSelection;
-            Text += "Done Selection\n";
+            l.text_str = setLoop;
+            Text += "Done Loop\n";
             w.Close();
             //Console.WriteLine("hi there dude");
         }

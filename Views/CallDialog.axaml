@@ -25,7 +25,7 @@
          Open_Graph_Window(300,300)
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Height="200" Watermark="Procedure" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Height="200" Text="{Binding setProcedure}" Watermark="Procedure" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock Text="{Binding Text}"></TextBlock>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>

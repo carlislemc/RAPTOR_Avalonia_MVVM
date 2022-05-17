@@ -16,6 +16,7 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -24,6 +25,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public InputDialogViewModel() {
             this.text = "";
         }
+        public InputDialogViewModel(Parallelogram p, Window w) {
+            this.text = "";
+            this.p = p;
+            this.w = w;
+        }
+        public Parallelogram p;
+        public Window w;
         public bool modified = false;
         public bool runningState = false;
 
@@ -34,9 +42,26 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
         }
 
+        public string prompt = "";
+
+        public string getPrompt{
+            get { return prompt; }
+            set { this.RaiseAndSetIfChanged(ref prompt, value); }
+        }
+
+        public string variable = "";
+
+        public string getVariable{
+            get { return variable; }
+            set { this.RaiseAndSetIfChanged(ref variable, value); }
+        }
+
 
         public void OnDoneCommand(){
+            p.prompt = getPrompt;
+            p.text_str = getVariable;
             Text += "Done Input\n";
+            w.Close();
             //Console.WriteLine("hi there dude");
         }
 

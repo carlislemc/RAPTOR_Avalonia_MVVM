@@ -21,7 +21,7 @@
       Enter prompt here:
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Height="120" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Height="120" Text="{Binding getPrompt}" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock HorizontalAlignment="Center">
       Enter variable here:
@@ -31,7 +31,7 @@
       Board[3,3]
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Watermark="variable" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Watermark="variable" Text="{Binding getVariable}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock Text="{Binding Text}"></TextBlock>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>

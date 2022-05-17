@@ -370,12 +370,12 @@ namespace raptor
 			{
 				if (this.is_input)
 				{
-					InputDialog IOD = new InputDialog();
+					InputDialog IOD = new InputDialog(this);
 					IOD.ShowDialog(MainWindow.topWindow);
 				}
 				else
 				{
-					OutputDialog IOD = new OutputDialog();
+					OutputDialog IOD = new OutputDialog(this);
 					IOD.ShowDialog(MainWindow.topWindow);
 				}
 				textset = true;
