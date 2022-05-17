@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Avalonia;
 using Avalonia.Media;
 using RAPTOR_Avalonia_MVVM;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace raptor
 {
@@ -1069,8 +1070,8 @@ namespace raptor
 			bool textset = false;
 			if (contains(x,y))
 			{
-				//Control_Dlg CD = new Control_Dlg(this,form,false);
-				//CD.ShowDialog();
+				SelectionDialog CD = new SelectionDialog();
+				CD.ShowDialog(MainWindow.topWindow);
 				textset = true;
 				return textset;
 			}

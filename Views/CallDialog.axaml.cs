@@ -4,15 +4,15 @@ using Avalonia.Markup.Xaml;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
-    public partial class AssignmentDialog : Window
+    public partial class CallDialog : Window
     {
-        public AssignmentDialog()
+        public CallDialog()
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel();
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel();
 
         }
 
