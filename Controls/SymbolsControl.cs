@@ -33,7 +33,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 		public const int control_height = 24, control_width = 36;
 		// location of controls in left panel
 		public const int control_X = 65;
-		public static SymbolsControl theControl;
+		public static SymbolsControl? theControl;
 
 		static SymbolsControl()
 		{

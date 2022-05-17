@@ -42,7 +42,7 @@ namespace numbers
         public static value E = new value { V = Math.E, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
         public static value Two_Pi = new value { V = 2.0*Math.PI, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
         public static value Null_Ptr = new value { V = 0.0, C = ' ', S = null, Kind = Value_Kind.Object_Kind, Object = null };
-        public static object object_of(value v)
+        public static object? object_of(value v)
         {
             return v.Object;
         }

@@ -16,8 +16,8 @@ namespace raptor
 		public bool is_input;
 		public bool new_line=true;
 		public bool input_is_expression=false;
-		public parse_tree.parseable prompt_tree;
-		private interpreter.syntax_result prompt_result;
+		public parse_tree.Parseable prompt_tree;
+		private interpreter.Syntax_Result prompt_result;
 
 		public Parallelogram(int height, int width, String str_name, bool input)
 			: base(height, width, str_name)
@@ -530,7 +530,7 @@ namespace raptor
         {
             if (this.is_input && this.parse_tree != null)
             {
-                string name = interpreter_pkg.get_name_input((parse_tree.input)this.parse_tree, this.Text);
+                string name = interpreter_pkg.get_name_input((parse_tree.Input)this.parse_tree, this.Text);
                 l.Add(name);
             }
             if (this.Successor != null)

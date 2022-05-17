@@ -10,7 +10,7 @@ namespace raptor
     class ClipboardMultiplatform
     {
 
-        private static DataObject clipboard_data;
+        private static DataObject? clipboard_data;
         public static void SetDataObject(object data, bool afterExit)
         {
             DataObject dataObject = new DataObject();

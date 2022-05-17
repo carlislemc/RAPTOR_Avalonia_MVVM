@@ -27,7 +27,7 @@ namespace raptor
 		public bool light_head;
 		private bool has_diamond_breakpoint;
 		private String LP;
-		public Component before_Child
+		public Component? before_Child
 		{
 			get 
 			{
@@ -39,7 +39,7 @@ namespace raptor
 			}
 		}
 
-		public Component after_Child
+		public Component? after_Child
 		{
 			get 
 			{
@@ -1049,10 +1049,10 @@ namespace raptor
 
 		public override Component cut()
 		{
-			Component cut_before = null;
-			Component cut_after = null;
-			Component cut_successor = null;
-			Component start_selection, end_selection;
+			Component? cut_before = null;
+			Component? cut_after = null;
+			Component? cut_successor = null;
+			Component? start_selection, end_selection;
 			if (this.Successor != null)
 			{
 				// if my successor is selected, neither of my kids are
@@ -1144,7 +1144,7 @@ namespace raptor
 		}
 
 		// copy selected objects
-		public override Component copy()
+		public override Component? copy()
 		{
 			if (this.selected)
 			{

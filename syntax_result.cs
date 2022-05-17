@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace interpreter
 {
-    public class syntax_result
+    public class Syntax_Result
     {
         public bool valid = true;
-        public string message;
+        public string? message;
         public int location;
-        public parse_tree.parseable tree;
+        public parse_tree.Parseable? tree;
     }
 
-    public class suggestion_result
+    public class Suggestion_Result
     {
         public int bold_start;
         public int bold_finish;
-        public List<string> suggestions;
+        public List<string>? suggestions;
     }
 }

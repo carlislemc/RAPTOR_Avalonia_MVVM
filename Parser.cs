@@ -37,7 +37,7 @@ namespace RAPTOR_Avalonia_MVVM
             Expression e, e2;
             Array_Ref_Lhs lhsref;
             t = lexer.Get_Token();
-            if (t.kind==Token_Type.Left_Bracket)
+            if (t.kind == Token_Type.Left_Bracket)
             {
                 e = Parse_Expression();
                 Expression.Fix_Associativity(ref e);
@@ -53,7 +53,7 @@ namespace RAPTOR_Avalonia_MVVM
                 {
                     lhsref = new Array_Ref_Lhs(ident, e);
                 }
-                if (t.kind!=Token_Type.Right_Bracket)
+                if (t.kind != Token_Type.Right_Bracket)
                 {
                     Raise_Exception(t, "missing ]");
                 }
@@ -62,7 +62,7 @@ namespace RAPTOR_Avalonia_MVVM
             else
             {
                 lexer.Unget_Token(t);
-                return new Id_Lhs(ident);           
+                return new Id_Lhs(ident);
             }
         }
         public Lsuffix Parse_Lsuffix()
@@ -88,19 +88,19 @@ namespace RAPTOR_Avalonia_MVVM
             }
         }
         // Assignment => Lhs LSuffix[=|:=] Expression
-        public assignment Parse_Assignment()
+        public Assignment Parse_Assignment()
         {
-            expr_assignment result = new expr_assignment();
+            Expr_Assignment result = new Expr_Assignment();
             Expression e;
             Token t = lexer.Get_Token();
-            if (t.kind!=Token_Type.Id)
+            if (t.kind != Token_Type.Id)
             {
                 Raise_Exception(t, "assignment must begin with a variable");
             }
             result.lhs = Parse_Lhs(t);
             result.lsuffix = Parse_Lsuffix();
             t = lexer.Get_Token();
-            if (t.kind!=Token_Type.Equal && t.kind!=Token_Type.Colon_Equal)
+            if (t.kind != Token_Type.Equal && t.kind != Token_Type.Colon_Equal)
             {
                 Raise_Exception(t, "can only set 1 variable, found: " + t.kind.ToString());
             }
@@ -112,7 +112,7 @@ namespace RAPTOR_Avalonia_MVVM
 
         int Count_Parameters(Parameter_List l)
         {
-            if (l==null)
+            if (l == null)
             {
                 return 0;
             }
@@ -128,7 +128,7 @@ namespace RAPTOR_Avalonia_MVVM
             Token t = lexer.Get_Token();
             Expression e, e2;
             Array_Ref_Rhs reference;
-            if (t.kind==Token_Type.Left_Paren)
+            if (t.kind == Token_Type.Left_Paren)
             {
                 if (!raptor.Runtime.isObjectOriented())
                 {
@@ -139,18 +139,18 @@ namespace RAPTOR_Avalonia_MVVM
                 result.id = ident;
                 result.parameters = Parse_Parameter_List(lexer.Get_Text(ident.start, ident.finish), true);
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Right_Paren)
+                if (t.kind != Token_Type.Right_Paren)
                 {
                     Raise_Exception(t, "missing right parenthesis");
                 }
                 return result;
             }
-            else if (t.kind==Token_Type.Left_Bracket)
+            else if (t.kind == Token_Type.Left_Bracket)
             {
                 e = Parse_Expression();
                 Expression.Fix_Associativity(ref e);
                 t = lexer.Get_Token();
-                if (t.kind==Token_Type.Comma)
+                if (t.kind == Token_Type.Comma)
                 {
                     e2 = Parse_Expression();
                     Expression.Fix_Associativity(ref e2);
@@ -166,7 +166,7 @@ namespace RAPTOR_Avalonia_MVVM
                     reference.id = ident;
                     reference.reference = e;
                 }
-                if (t.kind!=Token_Type.Right_Bracket)
+                if (t.kind != Token_Type.Right_Bracket)
                 {
                     Raise_Exception(t, "missing ]");
                     return null; // shut up compiler
@@ -184,14 +184,14 @@ namespace RAPTOR_Avalonia_MVVM
         Rsuffix Parse_Rsuffix()
         {
             Token t = lexer.Get_Token();
-            if (t.kind==Token_Type.Dot)
+            if (t.kind == Token_Type.Dot)
             {
                 if (!raptor.Runtime.isObjectOriented())
                 {
                     Raise_Exception(t, "can't use '.' in variable name");
                 }
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Id)
+                if (t.kind != Token_Type.Id)
                 {
                     Raise_Exception(t, "expected name");
                 }
@@ -211,12 +211,12 @@ namespace RAPTOR_Avalonia_MVVM
         public Expon Parse_Expon()
         {
             Token t = lexer.Get_Token();
-            if (t.kind==Token_Type.Id)
+            if (t.kind == Token_Type.Id)
             {
                 Token ident = t;
                 t = lexer.Get_Token();
                 string func_name = lexer.Get_Text(ident.start, ident.finish);
-                if (t.kind==Token_Type.Left_Paren)
+                if (t.kind == Token_Type.Left_Paren)
                 {
                     if (Plugins.Is_Function(func_name))
                     {
@@ -226,13 +226,13 @@ namespace RAPTOR_Avalonia_MVVM
                         _result.parameters = Parse_Parameter_List(func_name, false);
                         count = Count_Parameters(_result.parameters);
                         correct_count = Plugins.Parameter_Count(func_name);
-                        if (count!=correct_count)
+                        if (count != correct_count)
                         {
                             Raise_Exception(t, func_name + " should have " + correct_count +
                                 "parameters.");
                         }
                         t = lexer.Get_Token();
-                        if (t.kind!=Token_Type.Right_Paren)
+                        if (t.kind != Token_Type.Right_Paren)
                         {
                             Raise_Exception(t, "missing right parenthesis");
                         }
@@ -242,9 +242,9 @@ namespace RAPTOR_Avalonia_MVVM
                 lexer.Unget_Token(t);
                 if (Plugins.Is_Function(func_name))
                 {
-                    if (Plugins.Parameter_Count(func_name)!=0)
+                    if (Plugins.Parameter_Count(func_name) != 0)
                     {
-                        Raise_Exception(ident, func_name + " should have " + 
+                        Raise_Exception(ident, func_name + " should have " +
                             Plugins.Parameter_Count(func_name) + " parameters.");
                     }
                     Plugin_Func_Expon _result = new Plugin_Func_Expon();
@@ -253,7 +253,7 @@ namespace RAPTOR_Avalonia_MVVM
                     return _result;
                 }
                 Rhs_Expon result;
-                result = new Rhs_Expon(Parse_Rhs(ident), Parse_Rsuffix);
+                result = new Rhs_Expon(Parse_Rhs(ident), Parse_Rsuffix());
                 if (!result.is_method_call())
                 {
                     return result;
@@ -269,7 +269,7 @@ namespace RAPTOR_Avalonia_MVVM
                     Raise_Exception(t, "unimplemented");
                 }
             }
-            else if (t.kind==Token_Type.New)
+            else if (t.kind == Token_Type.New)
             {
                 t = lexer.Get_Token();
                 if (t.kind != Token_Type.Id)
@@ -277,7 +277,7 @@ namespace RAPTOR_Avalonia_MVVM
                     Raise_Exception(t, "Expected name of class, found: " +
                         lexer.Get_Text(t.start, t.finish));
                 }
-                Raise_Exception(t,"OO mode not yet implemented");
+                Raise_Exception(t, "OO mode not yet implemented");
                 /*          -- mcc: TODO check that this is really a class
                -- this will require modifying the stuff for class deletion/renaming also
               declare
@@ -308,24 +308,24 @@ namespace RAPTOR_Avalonia_MVVM
             end;
 */
             }
-            else if (t.kind==Token_Type.Character)
+            else if (t.kind == Token_Type.Character)
             {
                 return new Character_Expon(t);
             }
-            else if (t.kind==Token_Type.String)
+            else if (t.kind == Token_Type.String)
             {
                 return new String_Expon(t);
             }
-            else if (t.kind==Token_Type.Number)
+            else if (t.kind == Token_Type.Number)
             {
                 return new Number_Expon(t);
             }
-            else if (t.kind==Token_Type.Left_Paren)
+            else if (t.kind == Token_Type.Left_Paren)
             {
                 Expression e = Parse_Expression();
                 Expression.Fix_Associativity(ref e);
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Right_Paren)
+                if (t.kind != Token_Type.Right_Paren)
                 {
                     Raise_Exception(t, "missing right parenthesis");
                 }
@@ -335,7 +335,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 return new Func0_Expon(t);
             }
-            else if (t.kind==Token_Type.Minus)
+            else if (t.kind == Token_Type.Minus)
             {
                 return new Negative_Expon(Parse_Expon());
             }
@@ -346,29 +346,29 @@ namespace RAPTOR_Avalonia_MVVM
                 int count;
                 result.id = t;
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Left_Paren)
+                if (t.kind != Token_Type.Left_Paren)
                 {
                     Raise_Exception(t, "missing left parenthesis");
                 }
                 string func_name = lexer.Get_Text(result.id.start, result.id.finish);
                 result.parameters = Parse_Parameter_List(func_name, false);
                 count = Count_Parameters(result.parameters);
-                if (Lexer.isFunc_Id0(func_kind)) { 
-                    if (count!=0)
+                if (Lexer.isFunc_Id0(func_kind)) {
+                    if (count != 0)
                     {
                         Raise_Exception(t, func_name + " should not have parameters.");
                     }
                 }
-                else if (Lexer.isFunc_Id1(func_kind)||func_kind==Token_Type.Load_Bitmap)
+                else if (Lexer.isFunc_Id1(func_kind) || func_kind == Token_Type.Load_Bitmap)
                 {
-                    if (count!=1)
+                    if (count != 1)
                     {
                         Raise_Exception(t, func_name + " should have 1 parameter, not " + count);
                     }
                 }
                 else if (Lexer.isFunc_Id1or2(func_kind))
                 {
-                    if (count!=1 && count !=2)
+                    if (count != 1 && count != 2)
                     {
                         Raise_Exception(t, func_name + " should have 1 or 2 parameters, not " + count);
                     }
@@ -395,7 +395,7 @@ namespace RAPTOR_Avalonia_MVVM
                     }
                 }
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Right_Paren)
+                if (t.kind != Token_Type.Right_Paren)
                 {
                     Raise_Exception(t, "missing right parenthesis");
                 }
@@ -416,9 +416,7 @@ namespace RAPTOR_Avalonia_MVVM
             Token t = lexer.Get_Token();
             if (t.kind == Token_Type.Exponent)
             {
-                Expon_Mult result = new Expon_Mult();
-                result.left = e;
-                result.right = Parse_Mult();
+                Expon_Mult result = new Expon_Mult(e, Parse_Mult());
                 return result;
             }
             else
@@ -433,7 +431,7 @@ namespace RAPTOR_Avalonia_MVVM
             Mult m = Parse_Mult();
             Mult.Fix_Associativity(ref m);
             Token t = lexer.Get_Token();
-            if (t.kind==Token_Type.Times)
+            if (t.kind == Token_Type.Times)
             {
                 return new Mult_Add(m, Parse_Add());
             }
@@ -464,13 +462,13 @@ namespace RAPTOR_Avalonia_MVVM
             a = Parse_Add();
             Add.Fix_Associativity(ref a);
             t = lexer.Get_Token();
-            if (t.kind==Token_Type.Plus)
+            if (t.kind == Token_Type.Plus)
             {
                 Add_Expression result = new Add_Expression(a);
                 result.right = Parse_Expression();
                 return result;
             }
-            else if (t.kind== Token_Type.Minus)
+            else if (t.kind == Token_Type.Minus)
             {
                 Minus_Expression result = new Minus_Expression(a);
                 result.right = Parse_Expression();
@@ -595,7 +593,7 @@ namespace RAPTOR_Avalonia_MVVM
             Expression e;
             Token_Type kind;
             Token t = lexer.Get_Token();
-            if (t.kind==Token_Type.Not)
+            if (t.kind == Token_Type.Not)
             {
                 t = lexer.Get_Token();
                 negated = true;
@@ -604,7 +602,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 negated = false;
             }
-            if (t.kind==Token_Type.Left_Paren)
+            if (t.kind == Token_Type.Left_Paren)
             {
                 // ok, so here we break being an LL(1) grammar
                 // in favor of not having a type checker
@@ -615,15 +613,15 @@ namespace RAPTOR_Avalonia_MVVM
                 {
                     left = Parse_Boolean_Expression();
                     t = lexer.Get_Token();
-                    if (t.kind!=Token_Type.Right_Paren)
+                    if (t.kind != Token_Type.Right_Paren)
                     {
                         Raise_Exception(t, "Expected right parenthesis");
                     }
                 }
                 catch (Syntax_Error exc)
                 {
-                    lexer.Rewind(T);
-                    lexer.Unget_Token(T);
+                    lexer.Rewind(t);
+                    lexer.Unget_Token(t);
                     left = Parse_Relation();
                 }
             }
@@ -643,12 +641,12 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 kind = t.kind;
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Left_Paren)
+                if (t.kind != Token_Type.Left_Paren)
                 {
                     Raise_Exception(t, "Expected left parenthesis");
                 }
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Id)
+                if (t.kind != Token_Type.Id)
                 {
                     Raise_Exception(t, "Must have variable name here");
                 }
@@ -663,7 +661,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 kind = t.kind;
                 t = lexer.Get_Token();
-                if (t.kind!=Token_Type.Left_Paren)
+                if (t.kind != Token_Type.Left_Paren)
                 {
                     Raise_Exception(t, "Expected left parenthesis");
                 }
@@ -676,9 +674,9 @@ namespace RAPTOR_Avalonia_MVVM
                     Raise_Exception(t, "Expected right parenthesis");
                 }
             }
-            else if (t.kind==Token_Type.Id)
+            else if (t.kind == Token_Type.Id)
             {
-                if (Plugins.Is_Boolean_Function(lexer.Get_Text(t.start,t.finish)))
+                if (Plugins.Is_Boolean_Function(lexer.Get_Text(t.start, t.finish)))
                 {
                     Boolean_Plugin result = new Boolean_Plugin();
                     int count, correct_count;
@@ -692,8 +690,8 @@ namespace RAPTOR_Avalonia_MVVM
                         lexer.Get_Text(result.id.start, result.id.finish), false);
                     count = Count_Parameters(result.parameters);
                     correct_count = Plugins.Parameter_Count(
-                        lexer.Get_Text(result.id.start,result.id.finish));
-                    if (count!=correct_count)
+                        lexer.Get_Text(result.id.start, result.id.finish));
+                    if (count != correct_count)
                     {
                         Raise_Exception(t,
                             lexer.Get_Text(result.id.start, result.id.finish) +
@@ -734,13 +732,13 @@ namespace RAPTOR_Avalonia_MVVM
         //                       Boolean2 xor Boolean_Expression | Boolean2
         public Boolean_Expression Parse_Boolean_Expression()
         {
-            Boolean2 left=Parse_Boolean2();
+            Boolean2 left = Parse_Boolean2();
             Token t = lexer.Get_Token();
-            if (t.kind==Token_Type.Or)
+            if (t.kind == Token_Type.Or)
             {
                 return new Or_Boolean(left, Parse_Boolean_Expression());
             }
-            else if (t.kind==Token_Type.Xor)
+            else if (t.kind == Token_Type.Xor)
             {
                 return new Xor_Boolean(left, Parse_Boolean_Expression());
             }
@@ -751,10 +749,116 @@ namespace RAPTOR_Avalonia_MVVM
             }
         }
 
-
-
-
-
+        // Condition => Boolean_Expression End_Input
+        public Boolean_Expression Parse_Condition() {
+            Boolean_Expression result = Parse_Boolean_Expression();
+            Token t = lexer.Get_Token();
+            if (t.kind != Token_Type.End_Input)
+            {
+                Raise_Exception(t, t.kind.ToString() + " is unexpected");
+            }
+            return result;
+        }
+        // Output => Expression [was Expression | String]
+        public Output Parse_Output(bool new_line)
+        {
+            Output result;
+            Expression e = Parse_Expression();
+            Expression.Fix_Associativity(ref e);
+            result = new Expr_Output(e, new_line);
+            return result;
+        }
+        // Input => Lhs LSuffix End_Input
+        public Input Parse_Input()
+        {
+            Input result;
+            Token t;
+            t = lexer.Get_Token();
+            if (t.kind != Token_Type.Id)
+            {
+                Raise_Exception(t, "Input must begin with variable");
+            }
+            result = new Input(Parse_Lhs(t), Parse_Lsuffix());
+            return result;
+        }
+        // Parameter_List => Output[, Parameter_List | Lambda]
+        public Parameter_List Parse_Parameter_List(string subprogram_name, bool allow_string_args = false)
+        {
+            Output result;
+            Expression e;
+            Token t = lexer.Get_Token();
+            if (t.kind == Token_Type.Right_Paren)
+            {
+                lexer.Unget_Token(t);
+                return null;
+            }
+            lexer.Unget_Token(t);
+            result = Parse_Output(false);
+            t = lexer.Get_Token();
+            if (t.kind == Token_Type.Comma)
+            {
+                return new Parameter_List(result,
+                    Parse_Parameter_List(subprogram_name));
+            }
+            else
+            {
+                lexer.Unget_Token(t);
+                return new Parameter_List(result, null);
+            }
+        }
+        public Statement? Parse_Proc_Call()
+        {
+            return null;
+        }
+        // Call_Statement => Proc_Call[;] End_Input
+        public Statement Parse_Call_Statement() {
+            Statement result = null;
+            Token t = lexer.Get_Token();
+            lexer.Unget_Token(t);
+            if (Lexer.isProc_Token_Type(t.kind))
+            {
+                result = Parse_Proc_Call();
+            }
+            else if (Lexer.isFunc_Token_Type(t.kind))
+            {
+                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                    " should appear in assignment");
+            }
+            else if (Lexer.isBoolean_Func_Type(t.kind))
+            {
+                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                    " should appear in diamond");
+            }
+            else
+            {
+                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                    " is not a valid procedure name");
+            }
+            t = lexer.Get_Token();
+            if (t.kind==Token_Type.Semicolon)
+            {
+                t = lexer.Get_Token();
+            }
+            if (t.kind!=Token_Type.End_Input)
+            {
+                Raise_Exception(t, t.kind.ToString() + " is unexpected");
+            }
+            return result;
+        }
+        /* elsif T.Kind = Id then
+         if raptor.Plugins.Is_Procedure(
+                 +Lexer.Get_Text(T.Start..T.Finish)) then
+              Result := Statement_Pointer(Parse_Plugin_Proc_Call);
+        elsif Raptor.Subchart.Is_Subchart_Name(
+               +Lexer.Get_Text(T.Start..T.Finish)) then
+            Result := Statement_Pointer(Parse_Tab_Proc_Call);
+        elsif Raptor.runtime.isObjectOriented then
+           Result := Statement_Pointer(Parse_Method_Call);
+         else
+            Raise_Exception(T,
+               Lexer.Get_Text(T.Start..T.Finish) &
+               " is not a valid procedure name");
+        end if; */
     }
 
 }

@@ -42,13 +42,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
         public float scale = 1.0f;
-        public Component clipboard;
-        public logging_info log = new logging_info();
+        public Component? clipboard;
+        public logging_info? log = new logging_info();
         public bool modified = false;
         public bool runningState = false;
         public string Text = "sdfasdf";
         private System.Guid file_guid_back = System.Guid.NewGuid();
-        public Component Current_Selection = null;
+        public Component? Current_Selection = null;
         public System.Guid file_guid
         {
             get
@@ -64,10 +64,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }*/
             }
         }
-        private string fileName;
+        private string? fileName;
 
-        private ObservableCollection<Subchart> privateTheTabs;
-        public ObservableCollection<Subchart> theTabs {
+        private ObservableCollection<Subchart>? privateTheTabs;
+        public ObservableCollection<Subchart>? theTabs {
             get
             {
                 return privateTheTabs;

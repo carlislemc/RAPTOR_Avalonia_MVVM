@@ -13,7 +13,7 @@ namespace raptor
         public const int control_height = 24, control_width = 36;
         // location of controls in left panel
         public const int control_X = 65;
-        public Component clipboard;
+        public Component? clipboard;
         public void Make_Undoable() { }
 
         public int scale;

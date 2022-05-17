@@ -172,17 +172,17 @@ namespace raptor
 		public int head_heightOrig, head_widthOrig;
 		public int connector_length;
 		public int x_location, y_location;
-		public Component Successor;
-		public Component parent;
-		public FootPrint FP;
+		public Component? Successor;
+		public Component? parent;
+		public FootPrint? FP;
 		public String text_str = "";
 		public String name = "";
 		public int proximity = 10;
-		public parse_tree.parseable parse_tree;
-		public interpreter.syntax_result result;
+		public parse_tree.Parseable? parse_tree;
+		public interpreter.Syntax_Result? result;
 		protected int drawing_text_width;
-		public System.Guid created_guid;
-		public System.Guid changed_guid;
+		public System.Guid? created_guid;
+		public System.Guid? changed_guid;
 
 		// Empty Class constructor
 		public Component(int h, int w, String str_name)

@@ -11,31 +11,31 @@ namespace raptor
 {
     class interpreter_pkg
     {
-        internal static syntax_result output_syntax(string text, bool v, Component oval_Return)
+        internal static Syntax_Result output_syntax(string text, bool v, Component oval_Return)
         {
-            return new syntax_result();
+            return new Syntax_Result();
             //throw new NotImplementedException();
         }
 
-        internal static syntax_result input_syntax(string text, Parallelogram parallelogram)
+        internal static Syntax_Result input_syntax(string text, Parallelogram parallelogram)
         {
-            return new syntax_result();
+            return new Syntax_Result();
             //throw new NotImplementedException();
         }
 
-        internal static syntax_result statement_syntax(string text, bool v, Rectangle rectangle)
+        internal static Syntax_Result statement_syntax(string text, bool v, Rectangle rectangle)
         {
-            return new syntax_result();
+            return new Syntax_Result();
             //throw new NotImplementedException();
         }
 
-        internal static syntax_result conditional_syntax(string text, BinaryComponent iF_Control)
+        internal static Syntax_Result conditional_syntax(string text, BinaryComponent iF_Control)
         {
-            return new syntax_result();
+            return new Syntax_Result();
             //throw new NotImplementedException();
         }
 
-        internal static string get_name_input(parse_tree.input parse_tree, string text)
+        internal static string get_name_input(parse_tree.Input parse_tree, string text)
         {
             return text;
             //throw new NotImplementedException();
@@ -47,13 +47,14 @@ namespace raptor
             //throw new NotImplementedException();
         }
 
-        internal static syntax_result call_syntax(string text, Rectangle rectangle)
+        internal static Syntax_Result call_syntax(string text, Rectangle rectangle)
         {
             Lexer lexer = new Lexer(text);
-            syntax_result result = new syntax_result();
+            Parser parser = new Parser(lexer);
+            Syntax_Result result = new Syntax_Result();
             try
             {
-                result.tree = parse_call_statement();
+                result.tree = parser.Parse_Call_Statement();
                 result.valid = true;
             }
             catch (Bad_Token e)
@@ -66,7 +67,7 @@ namespace raptor
             //throw new NotImplementedException();
         }
 
-        internal static string get_name(assignment parse_tree, string text)
+        internal static string get_name(Assignment parse_tree, string text)
         {
             return text;
         }

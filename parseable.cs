@@ -8,10 +8,10 @@ using RAPTOR_Avalonia_MVVM;
 
 namespace parse_tree
 {
-    public abstract class parseable
+    public abstract class Parseable
     {
     }
-    public abstract class Value_Parseable : parseable
+    public abstract class Value_Parseable : Parseable
     {
 
     }
@@ -42,24 +42,24 @@ namespace parse_tree
     public abstract class Binary_Expression : Expression
     {
         public Expression right;
-        public Binary_Expression(Expression left) : base(left) { }
+        public Binary_Expression(Value_Parseable left) : base(left) { }
     }
     public class Add_Expression : Binary_Expression
     {
-        public Add_Expression(Expression left) : base(left) { }
+        public Add_Expression(Value_Parseable left) : base(left) { }
     }
     public class Minus_Expression : Binary_Expression
     {
-        public Minus_Expression(Expression left) : base(left) { }
+        public Minus_Expression(Value_Parseable left) : base(left) { }
 
     }
 
     // Procedure_Call => proc_id(Parameter_List) | plugin_id(Parameter_List) | tab_id(Parameter_List) |
     // lhs msuffix
-    public abstract class procedure_call : parseable
+    public abstract class procedure_call : Parseable
     {
-        Token id;
-        Parameter_List param_list;
+        Token? id;
+        Parameter_List? param_list;
         public bool is_tab_call() { return false; }
     }
 
@@ -73,21 +73,21 @@ namespace parse_tree
 
     public class Method_Proc_Call : procedure_call
     {
-        Lhs lhs;
-        Msuffix msuffix;
+        Lhs? lhs;
+        Msuffix? msuffix;
     }
 
-    public abstract class assignment : Statement {
-        public Lhs lhs;
-        public Lsuffix lsuffix;
+    public abstract class Assignment : Statement {
+        public Lhs? lhs;
+        public Lsuffix? lsuffix;
     }
-    public class expr_assignment : assignment
+    public class Expr_Assignment : Assignment
     {
         public Expression expr_part;
     }
 
     // Statement => (Procedure_Call | Assignment) [;] End_Input
-    public abstract class Statement : parseable { }
+    public abstract class Statement : Parseable { }
 
     // Lhs => id[\[Expression[, Expression]\]]
     public class Lhs { }
@@ -290,7 +290,7 @@ namespace parse_tree
     public class Expon_Mult : Mult
     {
         public Mult right;
-        public Expon_Mult(Mult left, Mult right) : base(left)
+        public Expon_Mult(Value_Parseable left, Mult right) : base(left)
         {
             this.right = right;
         }
@@ -350,15 +350,15 @@ namespace parse_tree
         {
         }
     }
-    public abstract class Boolean_Parseable : parseable
+    public abstract class Boolean_Parseable : Parseable
     {
 
     }
     //  Relation => Expression > Expression | >=,<,<=,=,/=
     public class Relation : Boolean_Parseable
     {
-        public Expression left, right;
-        public Token_Type kind; // must be a relation
+        public Expression? left, right;
+        public Token_Type? kind; // must be a relation
     }
     public class Boolean0 : Boolean_Parseable
     {
@@ -398,8 +398,8 @@ namespace parse_tree
     }
     public class Boolean_Plugin : Boolean_Parseable
     {
-        public Token id;
-        public Parameter_List parameters;
+        public Token? id;
+        public Parameter_List? parameters;
     }
     public class Boolean2 : Boolean_Parseable
     {
@@ -443,24 +443,39 @@ namespace parse_tree
             this.right = r;
         }
     }
-    public class input : parseable
+    public class Input : Parseable
     {
-        public Lhs lhs;
-        public Lsuffix lsuffix;
+        public Lhs? lhs;
+        public Lsuffix? lsuffix;
+        public Input(Lhs l, Lsuffix s)
+        {
+            this.lhs = l;
+            this.lsuffix = s;
+        }
     }
 
-    public class Output : parseable
+    abstract public class Output : Parseable
     {
         public bool new_line;
     }
     public class Expr_Output : Output
     {
-        public Expression expr;
+        public Expression? expr;
+        public Expr_Output(Expression e, bool new_line)
+        {
+            this.expr = e;
+            this.new_line = new_line;
+        }
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
     public class Parameter_List
     {
-        public Output parameter;
-        public Parameter_List next;
+        public Output? parameter;
+        public Parameter_List? next;
+        public Parameter_List(Output p, Parameter_List n)
+        {
+            this.parameter = p;
+            this.next = n;
+        }
     }
 }

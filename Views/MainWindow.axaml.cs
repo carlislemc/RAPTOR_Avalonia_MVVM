@@ -7,8 +7,8 @@ namespace RAPTOR_Avalonia_MVVM.Views
     public partial class MainWindow : Window
     {
         private int x = 0;
-        private MasterConsole masterConsole;
-        public static MainWindow topWindow;
+        private MasterConsole? masterConsole;
+        public static MainWindow? topWindow;
 
         public MainWindow()
         {

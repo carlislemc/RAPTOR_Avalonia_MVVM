@@ -671,11 +671,11 @@ namespace raptor
         {
             if (this.kind == Kind_Of.Assignment && this.parse_tree != null)
             {
-                string name = interpreter_pkg.get_name((parse_tree.assignment)this.parse_tree, this.Text);
+                string name = interpreter_pkg.get_name((parse_tree.Assignment)this.parse_tree, this.Text);
                 l.Add(name);
-                if (this.parse_tree is parse_tree.expr_assignment)
+                if (this.parse_tree is parse_tree.Expr_Assignment)
                 {
-                    string typename = (this.parse_tree as parse_tree.expr_assignment).expr_part.get_class_decl();
+                    string typename = (this.parse_tree as parse_tree.Expr_Assignment).expr_part.get_class_decl();
                     if (typename != null)
                     {
                         if (!types.ContainsKey(name.ToLower()))
