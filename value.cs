@@ -103,18 +103,14 @@ namespace numbers
             {
                 case Value_Kind.Number_Kind:
                     return number_string(v);
-                    break;
                 case Value_Kind.String_Kind:
                     return "\"" + v.S + "\"";
-                    break;
                 case Value_Kind.Character_Kind:
                     return "'" + v.C + "'";
-                    break;
                 case Value_Kind.Object_Kind:
                 case Value_Kind.Ref_1D:
                 case Value_Kind.Ref_2D:
                     return object_image(v);
-                    break;
                 default:
                     throw new Exception("bad kind");
             }

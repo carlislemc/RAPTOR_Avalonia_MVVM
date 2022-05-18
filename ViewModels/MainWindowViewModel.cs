@@ -315,7 +315,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                         //this.carlisle.SelectedTab = this.mainSubchart();
                     }
-                    catch (System.Exception e)
+                    catch (System.Exception)
                     {
                         // previous to version 11, there is just one tab page
                         // moved this way down here for very old files (previous to version 11)

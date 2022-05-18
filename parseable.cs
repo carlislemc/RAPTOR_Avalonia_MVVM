@@ -472,7 +472,7 @@ namespace parse_tree
     {
         public Output? parameter;
         public Parameter_List? next;
-        public Parameter_List(Output p, Parameter_List n)
+        public Parameter_List(Output p, Parameter_List? n)
         {
             this.parameter = p;
             this.next = n;

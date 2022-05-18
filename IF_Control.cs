@@ -70,7 +70,7 @@ namespace raptor
                 }
             }
 		}
-		public Component left_Child
+		public Component? left_Child
 		{
 			get 
 			{
@@ -90,7 +90,7 @@ namespace raptor
 			}
 		}
 
-		public Component right_Child
+		public Component? right_Child
 		{
 			get 
 			{

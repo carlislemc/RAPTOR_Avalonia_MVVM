@@ -12,7 +12,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
     public class MasterConsoleViewModel : ReactiveObject
     {
-        public static MasterConsoleViewModel MC = null;
+        public static MasterConsoleViewModel? MC = null;
 
         private string text="Welcome to RAPTOR";
         public string Text   // property

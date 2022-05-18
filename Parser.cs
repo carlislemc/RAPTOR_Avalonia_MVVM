@@ -618,7 +618,7 @@ namespace RAPTOR_Avalonia_MVVM
                         Raise_Exception(t, "Expected right parenthesis");
                     }
                 }
-                catch (Syntax_Error exc)
+                catch (Syntax_Error)
                 {
                     lexer.Rewind(t);
                     lexer.Unget_Token(t);
@@ -962,7 +962,9 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 Raise_Exception(t, t.kind.ToString() + " is unexpected");
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return result;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 

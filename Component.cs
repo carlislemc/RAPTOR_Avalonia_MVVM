@@ -174,7 +174,7 @@ namespace raptor
 		public int x_location, y_location;
 		public Component? Successor;
 		public Component? parent;
-		public FootPrint? FP;
+		public FootPrint FP;
 		public String text_str = "";
 		public String name = "";
 		public int proximity = 10;
@@ -547,7 +547,7 @@ namespace raptor
 		}
 
 		// cut selected objects
-		public virtual Component cut()
+		public virtual Component? cut()
 		{
 			// can't cut if compiled
 			if (Component.compiled_flowchart)
@@ -586,7 +586,7 @@ namespace raptor
 		}
 
 		// copy selected objects
-		public virtual Component copy()
+		public virtual Component? copy()
 		{
 			// can't copy if compiled
 			if (Component.compiled_flowchart)

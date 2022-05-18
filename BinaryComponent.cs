@@ -195,9 +195,9 @@ namespace raptor
         // Find Component containing (x, y)
         public override Component Find_Component(int x, int y)
         {
-            Component succ_selected = null;
-            Component first_selected = null;
-            Component second_selected = null;
+            Component? succ_selected = null;
+            Component? first_selected = null;
+            Component? second_selected = null;
 
             if (this.first_child != null && !this.is_compressed)
             {
@@ -237,11 +237,11 @@ namespace raptor
         }
 
         // If (x, y) is over the object color it red?
-		public override CommentBox selectComment(int x, int y)
+		public override CommentBox? selectComment(int x, int y)
 		{
-			CommentBox succ_selected = null; 
-			CommentBox first_selected = null;
-			CommentBox second_selected= null;
+			CommentBox? succ_selected = null; 
+			CommentBox? first_selected = null;
+			CommentBox? second_selected= null;
 
             if (this.first_child != null && !this.is_compressed)
 			{
