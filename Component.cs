@@ -772,7 +772,7 @@ namespace raptor
 
 		// insert clipboard at a given x,y?
 		// if newObj == null, then just check to see if can insert at this location
-		public virtual bool insert(Component newObj, int x, int y, int connector_y)
+		public virtual bool insert(Component? newObj, int x, int y, int connector_y)
 		{
 			// can't insert if compiled
 			if (Component.compiled_flowchart)

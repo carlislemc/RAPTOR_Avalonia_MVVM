@@ -60,15 +60,15 @@ namespace raptor
 			}
 			if (is_input)
 			{
-				result = interpreter_pkg.input_syntax(this.Text,this);
+				result = interpreter_pkg.input_syntax(this.Text);
 				if (this.input_is_expression)
 				{
-					prompt_result = interpreter_pkg.output_syntax(this.prompt,false,this);
+					prompt_result = interpreter_pkg.output_syntax(this.prompt,false);
 				}
 			}
 			else
 			{
-				result = interpreter_pkg.output_syntax(this.Text,this.new_line,this);
+				result = interpreter_pkg.output_syntax(this.Text,this.new_line);
 			}
 
 			if (this.input_is_expression)

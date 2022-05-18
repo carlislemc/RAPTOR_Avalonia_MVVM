@@ -62,7 +62,7 @@ namespace raptor
 				}
 			}
 			result = interpreter_pkg.statement_syntax(this.Text,
-				(this.kind==Kind_Of.Call),this);
+				(this.kind==Kind_Of.Call));
 			if (result.valid)
 			{
 				this.parse_tree = result.tree;
@@ -297,7 +297,7 @@ namespace raptor
                         from.ToLower() == call_name.ToLower())
                     {
                         this.Text = this.Text.Replace(call_name, to);
-                        this.parse_tree = interpreter_pkg.call_syntax(this.Text,this).tree;
+                        this.parse_tree = interpreter_pkg.call_syntax(this.Text).tree;
                     }
                 }
             }

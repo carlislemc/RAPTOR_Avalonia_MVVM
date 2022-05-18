@@ -760,12 +760,12 @@ namespace RAPTOR_Avalonia_MVVM
             return result;
         }
         // Output => Expression [was Expression | String]
-        public Output Parse_Output(bool new_line)
+        public Output Parse_Output()
         {
             Output result;
             Expression e = Parse_Expression();
             Expression.Fix_Associativity(ref e);
-            result = new Expr_Output(e, new_line);
+            result = new Expr_Output(e, false);
             return result;
         }
         // Input => Lhs LSuffix End_Input
@@ -793,7 +793,7 @@ namespace RAPTOR_Avalonia_MVVM
                 return null;
             }
             lexer.Unget_Token(t);
-            result = Parse_Output(false);
+            result = Parse_Output();
             t = lexer.Get_Token();
             if (t.kind == Token_Type.Comma)
             {
@@ -819,9 +819,9 @@ namespace RAPTOR_Avalonia_MVVM
         }
 
         // Output_Statement => Output End_Input
-        public Output Parse_Output_Statement(bool new_line)
+        public Output Parse_Output_Statement()
         {
-            Output result = Parse_Output(new_line);
+            Output result = Parse_Output();
             Token t = lexer.Get_Token();
             if (t.kind != Token_Type.End_Input)
             {

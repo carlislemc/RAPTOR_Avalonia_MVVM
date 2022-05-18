@@ -13,7 +13,7 @@ namespace raptor
 		public Component? symbols;
 		public CommentBox? cb;
 		public System.Guid guid;
-		public logging_info log;
+		public logging_info? log;
 
 		public Clipboard_Data(Component c, System.Guid g, logging_info l)
 		{

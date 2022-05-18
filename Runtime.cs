@@ -925,8 +925,8 @@ namespace raptor
 		// as a double or return the smallest integer if the
 		// variable does not currently exist.
 		//****************************************************
-        private static Variable context;
-        public static void setContext(object c)
+        private static Variable? context;
+        public static void setContext(object? c)
         {
             context = c as Variable;
         }

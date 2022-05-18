@@ -163,7 +163,7 @@ namespace parse_tree
 
     public class Rhs_Method_Call : Id_Rhs
     {
-        public Parameter_List parameters;
+        public Parameter_List? parameters;
     }
 
     public abstract class Rsuffix { }
@@ -261,7 +261,7 @@ namespace parse_tree
     }
     public class Plugin_Func_Expon : Id_Expon
     {
-        public Parameter_List parameters;
+        public Parameter_List? parameters;
     }
 
     public class Mult : Value_Parseable

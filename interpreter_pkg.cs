@@ -11,30 +11,6 @@ namespace raptor
 {
     class interpreter_pkg
     {
-        internal static Syntax_Result output_syntax(string text, bool v, Component oval_Return)
-        {
-            return new Syntax_Result();
-            //throw new NotImplementedException();
-        }
-
-        internal static Syntax_Result input_syntax(string text, Parallelogram parallelogram)
-        {
-            return new Syntax_Result();
-            //throw new NotImplementedException();
-        }
-
-        internal static Syntax_Result statement_syntax(string text, bool v, Rectangle rectangle)
-        {
-            return new Syntax_Result();
-            //throw new NotImplementedException();
-        }
-
-        internal static Syntax_Result conditional_syntax(string text, BinaryComponent iF_Control)
-        {
-            return new Syntax_Result();
-            //throw new NotImplementedException();
-        }
-
         internal static string get_name_input(parse_tree.Input parse_tree, string text)
         {
             return text;
@@ -46,15 +22,12 @@ namespace raptor
             return text;
             //throw new NotImplementedException();
         }
-        public static Syntax_Result assignment_syntax(string text, 
-            string text2/*, Rectangle rectangle*/)
-        { 
-            Lexer lexer = new Lexer(text+":="+text2);
-            Parser parser = new Parser(lexer);
+        public static Syntax_Result generic_syntax(Lexer lexer, Parser parser, Func<Parseable> parse_method)
+        {
             Syntax_Result result = new Syntax_Result();
             try
             {
-                result.tree = parser.Parse_Assignment_Statement();
+                result.tree = parse_method();
                 result.valid = true;
             }
             catch (Syntax_Error e)
@@ -70,34 +43,60 @@ namespace raptor
                 result.message = e.Message;
             }
             return result;
-            //throw new NotImplementedException();
         }
-        public static Syntax_Result call_syntax(string text, Rectangle rectangle)
+        public static Syntax_Result assignment_syntax(string text, 
+            string text2)
+        {
+            Lexer lexer = new Lexer(text + ":=" + text2);
+            Parser parser = new Parser(lexer);
+
+            return generic_syntax(lexer,parser, parser.Parse_Assignment_Statement);
+        }
+        public static Syntax_Result call_syntax(string text)
         {
             Lexer lexer = new Lexer(text);
             Parser parser = new Parser(lexer);
-            Syntax_Result result = new Syntax_Result();
-            try
-            {
-                result.tree = parser.Parse_Call_Statement();
-                result.valid = true;
-            }
-            catch (Syntax_Error e)
-            {
-                result.valid = false;
-                result.location = parser.Get_Current_Token().start;
-                result.message = e.Message;
-            }
-            catch (Bad_Token e)
-            {
-                result.valid = false;
-                result.location = lexer.Get_Current_Location();
-                result.message = e.Message;
-            }
-            return result;
-            //throw new NotImplementedException();
+            return generic_syntax(lexer, parser, parser.Parse_Call_Statement);
         }
 
+        public static Syntax_Result conditional_syntax(string text)
+        {
+            Lexer lexer = new Lexer(text);
+            Parser parser = new Parser(lexer);
+            return generic_syntax(lexer, parser, parser.Parse_Condition);
+        }
+
+        public static Syntax_Result input_syntax(string text)
+        {
+            Lexer lexer = new Lexer(text);
+            Parser parser = new Parser(lexer);
+            return generic_syntax(lexer, parser, parser.Parse_Input_Statement);
+        }
+        public static Syntax_Result statement_syntax(string text, bool isCallBox)
+        {
+            if (isCallBox)
+            {
+                return call_syntax(text);
+            }
+            else
+            {
+                Lexer lexer = new Lexer(text);
+                Parser parser = new Parser(lexer);
+
+                return generic_syntax(lexer, parser, parser.Parse_Assignment_Statement);
+            }
+        }
+        public static Syntax_Result output_syntax(string text, bool new_line)
+        {
+            Lexer lexer = new Lexer(text);
+            Parser parser = new Parser(lexer);
+            Syntax_Result result = generic_syntax(lexer, parser, parser.Parse_Output_Statement);
+            if (result.valid && result.tree != null)
+            {
+                ((Output)result.tree).new_line = new_line;
+            }
+            return result;
+        }
         internal static string get_name(Assignment parse_tree, string text)
         {
             return text;

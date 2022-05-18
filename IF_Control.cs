@@ -20,7 +20,7 @@ namespace raptor
 		public int left_connector_y;
 		public int right_connector_y;
 		public int line_height;
-		public Component yes_child
+		public Component? yes_child
 		{
 			get 
 			{
@@ -45,7 +45,7 @@ namespace raptor
                 }
             }
 		}
-		public Component no_child
+		public Component? no_child
 		{
 			get 
 			{
@@ -141,7 +141,7 @@ namespace raptor
 			left_connector_y = (int)info.GetValue("_left_connector_y", typeof(int));
 			right_connector_y = (int)info.GetValue("_right_connector_y", typeof(int));
 			line_height = (int)info.GetValue("_line_height", typeof(int));
-			result = interpreter_pkg.conditional_syntax(this.Text,this);
+			result = interpreter_pkg.conditional_syntax(this.Text);
 			if (result.valid)
 			{
 				this.parse_tree = result.tree;

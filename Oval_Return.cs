@@ -26,7 +26,7 @@ namespace raptor
         public Oval_Return(SerializationInfo info, StreamingContext ctxt)
             : base(info, ctxt)
         {
-            result = interpreter_pkg.output_syntax(this.Text, false, this);
+            result = interpreter_pkg.output_syntax(this.Text, false);
             if (result.valid)
             {
                 this.parse_tree = result.tree;

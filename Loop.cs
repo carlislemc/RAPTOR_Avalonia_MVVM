@@ -120,7 +120,7 @@ namespace raptor
 					this.Text = this.Text.Substring(5,this.Text.Length-6);
 				}
 			}
-			result = interpreter_pkg.conditional_syntax(this.Text,this);
+			result = interpreter_pkg.conditional_syntax(this.Text);
 
 			if (result.valid)
 			{
@@ -1155,7 +1155,7 @@ namespace raptor
 			{
 				if (this.before_Child != null)
 				{
-					Component result = this.before_Child.copy();
+					Component? result = this.before_Child.copy();
 					if (result !=null) 
 					{
 						return result;
@@ -1163,7 +1163,7 @@ namespace raptor
 				}
 				if (this.after_Child != null)
 				{
-					Component result = this.after_Child.copy();
+					Component? result = this.after_Child.copy();
 					if (result!=null) 
 					{
 						return result;
