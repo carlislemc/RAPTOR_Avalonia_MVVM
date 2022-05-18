@@ -49,10 +49,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnDoneCommand(){
-            p.text_str = getOutput;
-            Text += "Done Output\n";
-            w.Close();
-            //Console.WriteLine("hi there dude");
+            Syntax_Result res = interpreter_pkg.output_syntax(getOutput, true);
+            if(res.valid){
+                p.text_str = getOutput;
+                p.parse_tree = res.tree;
+                Text += "Done Output\n";
+                w.Close();
+            } else{
+                Text = res.message;
+            }
         }
 
     }

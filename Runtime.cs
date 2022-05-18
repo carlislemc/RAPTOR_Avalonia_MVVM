@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 //using System.Windows.Forms;
 using System.Data;
@@ -9,7 +10,6 @@ using System.Data;
 
 namespace raptor
 {
-
 	public class Variables {
 		private string Name;
 		public string name
@@ -31,7 +31,78 @@ namespace raptor
             }
         }
 		public string value { get; set; }
+
+		public ObservableCollection<Arr> values { get; } = new ObservableCollection<Arr>();
+		public string displayStr {
+			get {
+				if(values.Count == 0){
+					return Name + ": " + value;
+				} else {
+					return Name;
+				}
+				
+			}
+		}
 	}
+
+	public class Arr{
+		private string Name;
+		public string name
+		{
+			get
+			{
+				return Name;
+			}
+			set
+			{
+				Name = value;
+			}
+		}
+		public string color
+        {
+			get
+            {
+				return "Red";
+            }
+        }
+		public string len { get; set; }
+		public ObservableCollection<Arr2> values { get; } = new ObservableCollection<Arr2>();
+		public string displayStr {
+			get {
+				return name;	
+			}
+		}
+	}
+
+	public class Arr2{
+		private string Name;
+		public string name
+		{
+			get
+			{
+				return Name;
+			}
+			set
+			{
+				Name = value;
+			}
+		}
+		public string color
+        {
+			get
+            {
+				return "Red";
+            }
+        }
+		public string len { get; set; }
+		public string displayStr {
+			get {
+				return name;	
+			}
+		}
+	}
+
+	
 	/// <summary>
 	/// Provides methods to set and get variables.
 	/// </summary>

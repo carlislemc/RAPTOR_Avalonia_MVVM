@@ -51,9 +51,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public void OnDoneCommand(){
-            r.text_str = setProcedure;
-            Text += "Done Call\n";
-            w.Close();
+            Syntax_Result res = interpreter_pkg.call_syntax(setProcedure);
+            if(res.valid){
+                r.text_str = setProcedure;
+                r.parse_tree = res.tree;
+                Text += "Done Call\n";
+                w.Close();
+            } else {
+                Text = res.message;
+            }
         }
 
     }

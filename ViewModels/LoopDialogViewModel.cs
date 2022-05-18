@@ -16,6 +16,7 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -50,10 +51,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnDoneCommand(){
-            l.text_str = setLoop;
-            Text += "Done Loop\n";
-            w.Close();
-            //Console.WriteLine("hi there dude");
+            Syntax_Result res = interpreter_pkg.conditional_syntax(setLoop);
+            if(res.valid){
+                l.text_str = setLoop;
+                l.parse_tree = res.tree;
+                Text += "Done Loop\n";
+                w.Close();
+            } else {
+                Text = res.message;
+            }
         }
 
     }

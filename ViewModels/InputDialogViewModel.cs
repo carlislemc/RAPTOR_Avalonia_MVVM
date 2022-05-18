@@ -58,11 +58,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public void OnDoneCommand(){
-            p.prompt = getPrompt;
-            p.text_str = getVariable;
-            Text += "Done Input\n";
-            w.Close();
-            //Console.WriteLine("hi there dude");
+            Syntax_Result res = interpreter_pkg.input_syntax(getVariable);
+            if(res.valid){
+                p.prompt = getPrompt;
+                p.text_str = getVariable;
+                p.parse_tree = res.tree;
+                Text += "Done Input\n";
+                w.Close();
+            } else {
+                Text = res.message;
+            }
         }
 
     }

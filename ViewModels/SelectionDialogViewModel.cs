@@ -16,6 +16,7 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -50,10 +51,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnDoneCommand(){
-            i.text_str = setSelection;
-            Text += "Done Selection\n";
-            w.Close();
-            //Console.WriteLine("hi there dude");
+            Syntax_Result res = interpreter_pkg.conditional_syntax(setSelection);
+            if(res.valid){
+                i.text_str = setSelection;
+                i.parse_tree = res.tree;
+                Text += "Done Selection\n";
+                w.Close();
+            } else {
+                Text = res.message;
+            }
         }
 
     }

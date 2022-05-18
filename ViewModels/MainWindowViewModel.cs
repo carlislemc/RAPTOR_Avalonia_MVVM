@@ -16,6 +16,7 @@ using System.IO;
 using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
+using interpreter;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -97,14 +98,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             return this.theTabs[0];
         }
-        private List<Variables> FillWatch()
+        
+        public static List<Variables> FillWatch()
         {
             //Fill league data here...
             return new List<Variables>()
             {
                 new Variables() {name="hi", value="there"},
-                new Variables() {name="hi2", value="there2"}
+                new Variables() {name="hi2", value="there2"},
+                new Variables() {name="hi3[3]", values={ new Arr(){name="a"}, new Arr(){name="b"}, new Arr(){name="c"} } },
+                new Variables() {name="hi4[2,2]", values={ new Arr(){name="a",
+                                                                     values={new Arr2(){name="1"}, new Arr2() {name="2"}}},
+                                                           new Arr(){name="b",
+                                                                     values={new Arr2(){name="3"}, new Arr2() {name="4"}}},          } }
+                                                            
             };
+
         }
         public int x = 0;
         /*public ObservableCollection<MenuItem> ContextMenuItemsFunction()
@@ -565,7 +574,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             msBoxStandardWindow.Show();
         }
         public void OnResetExecuteCommand() { }
-        public void OnExecuteCommand() { }
+        public void OnExecuteCommand() { 
+        }
         public void OnStepCommand() { }
 
         public void OnResetCommand() { }

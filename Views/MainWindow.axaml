@@ -192,9 +192,15 @@
       </UserControl>
       <TreeView DockPanel.Dock="Bottom" Items="{Binding theVariables}">
         <TreeView.DataTemplates>
-          <TreeDataTemplate DataType="models:Variables">
-            <TextBlock Foreground="{Binding color}" Text="{Binding name}"/>
+          <TreeDataTemplate DataType="models:Variables" ItemsSource="{Binding values}">
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
           </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr" ItemsSource="{Binding values}">
+                <TextBlock Text="{Binding name}"/>
+          </TreeDataTemplate>  
+          <DataTemplate DataType="models:Arr2">
+                <TextBlock Text="{Binding name}"/>
+          </DataTemplate>  
         </TreeView.DataTemplates>
       </TreeView>
     </DockPanel>
