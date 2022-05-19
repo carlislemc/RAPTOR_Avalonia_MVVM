@@ -190,6 +190,7 @@
         <controls:SymbolsControl Height="239">
         </controls:SymbolsControl>
       </UserControl>
+      <!--
       <TreeView DockPanel.Dock="Bottom" Items="{Binding theVariables}">
         <TreeView.DataTemplates>
           <TreeDataTemplate DataType="models:Variables" ItemsSource="{Binding values}">
@@ -203,6 +204,21 @@
           </DataTemplate>  
         </TreeView.DataTemplates>
       </TreeView>
+      -->
+      <TreeView DockPanel.Dock="Bottom" Items="{Binding theVariables}">
+        <TreeView.DataTemplates>
+          <TreeDataTemplate DataType="models:Variable" ItemsSource="{Binding values}">
+            <TextBlock Foreground="{Binding color}" Text="{Binding text}"/>
+          </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr" ItemsSource="{Binding values}">
+            <TextBlock Text="{Binding displayStr}"/>
+          </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr2">
+            <TextBlock Text="{Binding displayStr}"/>
+          </TreeDataTemplate>
+        </TreeView.DataTemplates>
+      </TreeView>
+
     </DockPanel>
 
     <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}">

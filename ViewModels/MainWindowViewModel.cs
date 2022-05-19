@@ -17,6 +17,7 @@ using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
 using interpreter;
+using numbers;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -78,8 +79,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 privateTheTabs = value;
             }
         }
-        private ObservableCollection<Variables> privateTheVariables;
-        public ObservableCollection<Variables> theVariables
+        private ObservableCollection<Variable> privateTheVariables;
+        public ObservableCollection<Variable> theVariables
         {
             get
             {
@@ -99,11 +100,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return this.theTabs[0];
         }
         
-        public static List<Variables> FillWatch()
+        public static List<Variable> FillWatch()
         {
+            numbers.value v = new numbers.value();
+            v.V = 5;
             //Fill league data here...
-            return new List<Variables>()
+            return new List<Variable>()
             {
+                /*
                 new Variables() {name="hi", value="there"},
                 new Variables() {name="hi2", value="there2"},
                 new Variables() {name="hi3[3]", values={ new Arr(){name="a"}, new Arr(){name="b"}, new Arr(){name="c"} } },
@@ -111,7 +115,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                                                      values={new Arr2(){name="1"}, new Arr2() {name="2"}}},
                                                            new Arr(){name="b",
                                                                      values={new Arr2(){name="3"}, new Arr2() {name="4"}}},          } }
-                                                            
+                  */    
+
+                // new Variable("hi",v),
+                // new Variable("hi2",v),
+                // new Variable("hi3",v)
+
             };
 
         }
@@ -141,7 +150,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public MainWindowViewModel()
         {
             theMainWindowViewModel = this;
-            theVariables = new ObservableCollection<Variables>(FillWatch());
+            theVariables = new ObservableCollection<Variable>(FillWatch());
             Subchart main_subchart = new Subchart("main");
             theTabs = new ObservableCollection<Subchart>(new List<Subchart>()
             {
@@ -558,7 +567,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnSaveCommand() { }
         public void OnSaveAsCommand() { }
         public void OnNextCommand() { }
-        public void OnPauseCommand() { }
+        public void OnPauseCommand() {
+         }
 
         public void OnNewCommand()
         {
@@ -576,7 +586,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnResetExecuteCommand() { }
         public void OnExecuteCommand() { 
         }
-        public void OnStepCommand() { }
+
+        public void OnStepCommand() {
+        }
 
         public void OnResetCommand() { }
         public void OnUndoCommand() {

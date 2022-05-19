@@ -7,9 +7,681 @@ using System.ComponentModel;
 using System.Data;
 //using dotnetgraphlibrary;
 //using PlaySound;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace raptor
 {
+	public class Variable
+	{
+			const int max_array_size = 10000;
+			public string Var_Name;
+			public string var_name{
+				get{
+					return Var_Name;
+				}
+				set{
+					Var_Name = value;
+				}
+			}
+			public string text{
+				get{
+					return Text;
+				}
+				set{
+					Text = value;
+				}
+			}
+			public string Text;
+			public string color
+        	{
+				get
+				{
+					return "Red";
+				}
+        	}
+			public Runtime.Variable_Kind Kind;
+			public numbers.value Variable_Value;
+
+			public ObservableCollection<Arr> values { get; set; } = new ObservableCollection<Arr>();
+			private bool isConstant = false;
+            //private NClass.Core.ClassType theClass;
+            /*internal NClass.Core.ClassType getClass()
+            {
+                return theClass;
+            }*/
+
+			public void addToList(Variable v){
+				MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(v);
+			}
+			public Variable(string name) : base ()
+			{
+				Var_Name = name;
+				Kind = Runtime.Variable_Kind.Scope;
+				this.Text = "--" + name + "--";
+			}
+
+            // create a value variable
+			public Variable(string name, numbers.value Value) : base() 
+			{
+				Var_Name = name;
+				Kind = Runtime.Variable_Kind.Value;
+				Variable_Value = Value;
+				this.Text = name + ": " + numbers.Numbers.msstring_view_image(Value);
+				addToList(this);
+				Runtime.Add_To_Updated(this);
+			}
+
+			/*
+            public Variable(NClass.Core.ClassType ct)
+            {
+                Var_Name = ct.Name;
+                Kind = Variable_Kind.Class_Value;
+                Variable_Value = numbers.Numbers.make_object_value((object) this);
+                this.theClass = ct;
+                this.Text = "<" + ct.Name + "> : static vars";
+                this.isConstant = true;
+                foreach (NClass.Core.Field f in ct.Fields)
+                {
+                    if (f.IsStatic)
+                    {
+                        addField(f);
+                    }
+                }
+            }
+            private void addField(NClass.Core.Field f)
+            {
+                if (f.Type.Contains("[][]"))
+                {
+                    this.Nodes.Add(new Variable(f.Name, 1, 1, numbers.Numbers.zero));
+                }
+                else if (f.Type.Contains("[]"))
+                {
+                    this.Nodes.Add(new Variable(f.Name, 1, numbers.Numbers.zero));
+                }
+                else
+                {
+                    numbers.value val;
+                    if (f.InitialValue != null && f.InitialValue != "")
+                    {
+                        if (f.InitialValue.Contains("\""))
+                        {
+                            val = numbers.Numbers.make_string_value(f.InitialValue);
+                        }
+                        else
+                        {
+                            val = numbers.Numbers.make_number_value(f.InitialValue);
+                        }
+                    }
+                    else
+                    {
+                        val = numbers.Numbers.zero;
+                    }
+                    Variable v = new Variable(f.Name, val);
+                    this.Nodes.Add(v);
+                    if (f.IsConstant || f.IsReadonly)
+                    {
+                        v.setConstant();
+                    }
+                }
+            }
+			*/
+            // create a variable which is an instance of an object
+            public Variable(string name, string class_name)
+                : base()
+            {
+                /*Var_Name = name;
+                Kind = Variable_Kind.Heap_Object;
+                Variable_Value = numbers.Numbers.make_object_value((object) this);
+                this.Text = "[" + this.GetHashCode() + "] : <" + class_name + ">";
+                if (Component.Current_Mode != Mode.Expert)
+                {
+                    throw new System.Exception("can't create object unless in OO mode");
+                }
+                theClass = Runtime.parent.projectCore.findClass(class_name);
+                if (theClass == null)
+                {
+                    throw new System.Exception("can't create object of class: " + class_name);
+                }
+                if (theClass.Modifier == NClass.Core.ClassModifier.Abstract)
+                {
+                    throw new System.Exception("can't create object of abstract class: " + class_name);
+                }
+                NClass.Core.ClassType ct = theClass;
+                while (ct != null)
+                {
+                    foreach (NClass.Core.Field f in ct.Fields)
+                    {
+                        if (!f.IsStatic)
+                        {
+                            addField(f);
+                        }
+                    }
+                    ct = ct.BaseClass;
+                }
+                Add_To_Updated(this);*/
+            }
+
+
+            
+            // create a 1D array variable
+			public Variable(string name, int index, numbers.value Value) : base() 
+			{
+				ObservableCollection<Arr> temp = new ObservableCollection<Arr>();
+
+				if (index>max_array_size)
+				{
+					throw new Exception("array index " + index + " too large.");
+				}
+				
+				Var_Name = name;
+				Kind = Runtime.Variable_Kind.One_D_Array;
+				
+				temp.Add(new Arr(){name="Size", value=numbers.Numbers.make_value__3(index)});
+                if (numbers.Numbers.is_string(Value))
+                {
+                    for (int i = 1; i < index; i++)
+                    {
+                       temp.Add(new Arr(){name="<" + i + ">", value=numbers.Numbers.make_string_value("")});
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i < index; i++)
+                    {
+                        temp.Add(new Arr(){name="<" + i + ">", value=numbers.Numbers.make_value__2(0.0)});
+                    }
+                }
+				temp.Add(new Arr(){name="<"+index+">",value=Value});
+				this.Text = name + "[]";
+				values = temp;
+				MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(this);
+				Runtime.Add_To_Updated(this);
+			}
+
+			public Variable(string name, int index1, int index2,
+				numbers.value Value) : base() 
+			{
+				if (index1*index2 > max_array_size)
+				{
+					throw new Exception("array indices " + index1 + "," +
+						index2 + " too large.");
+				}
+
+				ObservableCollection<Arr> temp = new ObservableCollection<Arr>();
+				Var_Name = name;
+				Kind = Runtime.Variable_Kind.Two_D_Array;
+				temp.Add(new Arr(){name="Rows",value=numbers.Numbers.make_value__3(index1)});
+                if (numbers.Numbers.is_string(Value))
+                {
+                    for (int i = 1; i <= index1; i++)
+                    {
+						if(i != index1){
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k <= index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">", value=numbers.Numbers.make_string_value("")});
+							}
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						} else{
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k < index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_string_value("")});
+							}
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						}
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= index1; i++)
+                    {
+						if(i != index1){
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k <= index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
+							}
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						} else{
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k < index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
+							}
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						}
+                    }
+                }
+				this.Text = name + "[,]";
+				values = temp;
+				//MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(new Variable(name, Value){values=temp});
+				MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(this);
+				Runtime.Add_To_Updated(this);
+			}
+
+			public void Add_Rows(int current_count, int new_count, 
+				int col_count) 
+			{
+				/*this.FirstNode.Text = "Rows: " + new_count;
+				((Variable) this.FirstNode).Variable_Value =
+					numbers.Numbers.make_value__3(new_count);
+				Add_To_Updated((Variable) this.FirstNode);
+				for (int index1=current_count+1; index1<=new_count;
+					index1++) 
+				{
+					this.Nodes.Add(new Variable("<"+index1+">",
+						col_count,numbers.Numbers.make_value__2(0.0)));
+				}*/
+			}
+			public void Add_Cols(int current_count, int new_count, 
+				int row_count) 
+			{/*
+				for (int index1=1; index1<=row_count;
+					index1++) 
+				{
+					this.Nodes[index1].FirstNode.Text =
+						"Size: " + new_count;
+					((Variable) this.Nodes[index1].FirstNode).Variable_Value =
+						numbers.Numbers.make_value__3(new_count);
+					Add_To_Updated((Variable) this.Nodes[index1].FirstNode);
+					for (int index2=current_count+1; index2<=new_count;
+						index2++) 
+					{
+						this.Nodes[index1].Nodes.Add(
+							new Variable("<"+index2+">",
+							numbers.Numbers.make_value__2(0.0)));
+					}
+				}*/
+			}
+            public void setConstant()
+            {
+                this.isConstant = true;
+            }
+			public void set_value(numbers.value v)
+			{
+                if (!this.isConstant)
+                {
+                    this.Variable_Value = v;
+                    this.Text = this.Var_Name + ": " + numbers.Numbers.msstring_view_image(v);
+                    Runtime.Add_To_Updated(this);
+                }
+                else
+                {
+                    throw new System.Exception("can't assign to constant variable: " + this.Var_Name);
+                }
+			}
+
+			public void Extend_1D(int index)
+			{
+				// how many entries are there now
+				/*int count = numbers.Numbers.integer_of (((Variable) 
+					(this.FirstNode)).Variable_Value);
+				// do we need to extend?
+				if (index > count)
+				{
+					((Variable) this.FirstNode).Variable_Value =
+						numbers.Numbers.make_value__3(index);
+					this.FirstNode.Text = "Size: " + index;
+					Runtime.Add_To_Updated(
+						(Variable) this.FirstNode);
+					for (int i=count+1; i<=index; i++) 
+					{
+						this.Nodes.Add(new Variable("<"+i+">",numbers.Numbers.make_value__2(0.0)));
+					}
+				}*/
+				
+				int count = numbers.Numbers.integer_of(this.values[0].value);
+				if(index > count){
+					this.values.RemoveAt(0);
+					this.values.Insert(0, new Arr(){name="Size",value=numbers.Numbers.make_value__3(index)});
+					for(int k = count+1; k <= index; k++){
+						this.values.Add(new Arr(){name="<" + k + ">", value=numbers.Numbers.make_value__2(0.0)});
+					}
+				}
+				
+				
+			}
+            public Variable? get_field_variable(string name)
+            {
+                /*foreach (Avalonia.Controls.TreeViewItem n in this.Nodes)
+                {
+                    if (n.Name == name)
+                    {
+                        return n as Variable;
+                    }
+                }*/
+                return null;
+            }
+            public numbers.value get_field_1d(string name, int index)
+            {
+                Variable v = this.get_field_variable(name);
+                if (v.Kind != Runtime.Variable_Kind.One_D_Array)
+                {
+                    throw new System.Exception("field " + name + " is not a 1D array");
+                }
+                return v.getArrayElement(index);
+            }
+            public numbers.value get_field_2d(string name, int index, int index2)
+            {
+                Variable v = this.get_field_variable(name);
+                if (v.Kind != Runtime.Variable_Kind.Two_D_Array)
+                {
+                    throw new System.Exception("field " + name + " is not a 2D array");
+                }
+                return v.get2DArrayElement(index,index2);
+            }
+            public numbers.value get_field(string name)
+            {
+                /*foreach (Avalonia.Controls.TreeViewItem n in this.Nodes)
+                {
+                    if (n.Name == name)
+                    {
+                        if ((n as Variable).Kind == Variable_Kind.Value
+                            || (n as Variable).Kind == Variable_Kind.Heap_Object)
+                        {
+                            return (n as Variable).Variable_Value;
+                        }
+                        else
+                        {
+                            throw new System.Exception("field " + name + " is " + (n as Variable).Kind);
+                        }
+                    }
+                }*/
+                throw new System.Exception("object doesn't have field: " + name);
+            }
+            public void set_field(string name, numbers.value f)
+            {
+                Variable field;
+                if (this.Kind != Runtime.Variable_Kind.Heap_Object)
+                {
+                    throw new Exception("can't set field: " + name + "-- not an object.");
+                }
+                field = this.get_field_variable(name);
+                if (field==null)
+                {
+                    throw new Exception("can't set field: " + name + "-- no such field.");
+                }
+                field.Text = name + ": " + numbers.Numbers.msstring_view_image(f);
+                field.Variable_Value = f;
+                Runtime.Add_To_Updated(this);
+                Runtime.Add_To_Updated(field);
+            }
+			public void set_1D_value(int index, numbers.value f)
+			{
+
+				if (index>max_array_size)
+				{
+					throw new Exception("array index " + index + " too large.");
+				}
+
+				if (this.Kind==Runtime.Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value))
+				{
+					int c;
+                    if (numbers.Numbers.is_number(f))
+                    {
+                        c = (int)numbers.Numbers.integer_of(f);
+                    }
+                    else if (numbers.Numbers.is_character(f))
+                    {
+                        c = (int)f.C;
+                    }
+                    else if (numbers.Numbers.is_string(f) && numbers.Numbers.length_of(f) == 1)
+                    {
+                        c = (int)f.S[0];
+                    }
+                    else
+                    {
+                        throw new Exception("Can't assign " + numbers.Numbers.msstring_view_image(f) + " to position " + index);
+                    }
+                    if (c < 0 || c > 65535) 
+					{
+						throw new Exception("Character values only 0-65535, not " + c);
+					}
+					// pad with spaces
+					string new_string;
+					if (index > numbers.Numbers.length_of(this.Variable_Value))
+					{
+						new_string = this.Variable_Value.S +
+							new String(' ',index-numbers.Numbers.length_of(this.Variable_Value)-1) + (char) c;
+					}
+					else
+					{
+						new_string = this.Variable_Value.S.Remove(index-1,1)
+							.Insert(index-1,"" + (char) c);
+					}
+					this.Variable_Value = numbers.Numbers.make_string_value(new_string);
+                    this.Text = this.Var_Name + ": " + '"' + new_string + '"';
+                    Runtime.Add_To_Updated(this);
+                    return;
+				}
+				else if (this.Kind==Runtime.Variable_Kind.One_D_Array) 
+				{
+					this.Extend_1D(index);
+					ObservableCollection<Arr> var = this.values;
+					var.RemoveAt(index);
+					var.Insert(index, new Arr(){name="<" + index + ">", value=f});
+                    //this.Nodes[index].Text = "<" + index + ">: " + numbers.Numbers.msstring_view_image(f);
+					//((Variable) this.Nodes[index]).Variable_Value = f;
+					Runtime.Add_To_Updated(this);
+					//Add_To_Updated((Variable) this.Nodes[index]);
+					return;
+				}
+				else
+				{
+					throw new Exception(this.Var_Name + " is not a 1D array");
+				}
+			}
+
+			public void set_2D_value(int index1, int index2, numbers.value Value)
+			{
+				if (index1*index2 > max_array_size)
+				{
+					throw new Exception("array indices " + index1 + "," +
+						index2 + " too large.");
+				}
+
+				int count = numbers.Numbers.integer_of(this.values[0].value);
+				ObservableCollection<Arr> val1 = this.values;
+				int curCols = numbers.Numbers.integer_of(val1[1].values[0].value);
+				if(index1 > count){
+					// handle adding more rows
+					val1.RemoveAt(0);
+					val1.Insert(0, new Arr(){name="Size",value=numbers.Numbers.make_value__3(index1)});
+					for(int k = count+1; k <= index1; k++){
+						ObservableCollection<Arr2> oc = new ObservableCollection<Arr2>();
+						oc.Add(new Arr2(){name="Size", value=numbers.Numbers.make_value__3(curCols)});
+						for(int j = 1; j <= curCols; j++){
+							oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_value__2(0.0)});
+						}
+						val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc});
+					}
+					count = index1;
+				}
+				for(int i = 1; i <= count; i++){
+					ObservableCollection<Arr2> val2 = val1[i].values;
+					int count2 = numbers.Numbers.integer_of(val2[0].value);
+					if(index2 > count2){
+						// handle adding more columns
+						val2.RemoveAt(0);
+						val2.Insert(0, new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+						for(int k = count2+1; k <= index2; k++){
+							val2.Add(new Arr2() {name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
+						}
+						count2 = index2;
+					}
+					if(i == index1){
+						val2.RemoveAt(index2);
+						val2.Insert(index2, new Arr2(){name="<" + index2 + ">", value=Value});
+					}
+				}
+			}
+			public numbers.value get2DArrayElement(int index1, int index2)
+			{
+				return numbers.Numbers.Null_Ptr;
+				/*if (this.Kind==Variable_Kind.Two_D_Array) 
+				{
+					int row_count = numbers.Numbers.integer_of(((Variable) 
+						(this.FirstNode)).Variable_Value);
+					int col_count = numbers.Numbers.integer_of(((Variable) 
+						(this.Nodes[1].FirstNode)).Variable_Value);
+					if (row_count >= index1)
+					{
+						if (col_count >= index2)
+						{
+							return ((Variable) this.Nodes[index1].Nodes[index2]).
+								Variable_Value;
+						}
+						else
+						{
+							throw new Exception(this.Var_Name + " doesn't have " +
+								index2 + " Columns.");
+						}
+					}
+					else
+					{
+						throw new Exception(this.Var_Name + " doesn't have " +
+							index1 + " Rows.");
+					}
+				}
+				else
+				{
+					throw new Exception(this.Var_Name + 
+						" is not a two-dimensional array");
+				}*/
+			}
+			public numbers.value getArrayElement(int index)
+			{
+				return numbers.Numbers.Null_Ptr;
+				/*if (this.Kind==Variable_Kind.One_D_Array) 
+				{
+					if (numbers.Numbers.integer_of(((Variable) 
+						(this.FirstNode)).Variable_Value) >=
+						index)
+					{
+						return ((Variable) this.Nodes[index]).
+							Variable_Value;
+					}
+					else
+					{
+						throw new Exception(this.Var_Name + " doesn't have " +
+							index + " elements.");
+					}
+				}
+				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
+				{
+					if (numbers.Numbers.length_of (this.Variable_Value) >=
+						index)
+					{
+						return numbers.Numbers.make_value__4 (this.Variable_Value.s[index-1]);
+					}
+					else
+					{
+						throw new Exception(this.Var_Name + " doesn't have " +
+							index + " elements.");
+					}
+				}
+				else
+				{
+					throw new Exception(this.Var_Name + 
+						" is not a one-dimensional array");
+				}*/
+			}
+
+			public int getArraySize()
+			{
+				/*if (this.Kind==Variable_Kind.One_D_Array) 
+				{
+					// first node is size of array
+					return numbers.Numbers.integer_of(((Variable) 
+						(this.FirstNode)).Variable_Value);
+				}
+				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value))
+				{
+					return numbers.Numbers.length_of(this.Variable_Value);
+				}
+				else*/
+				{
+					throw new Exception(this.Var_Name + " is not a 1D array.");
+				}
+			}
+
+			// only use this on a 2D array
+			public int row_count()
+			{
+				return 0;
+				//return numbers.Numbers.integer_of(((Variable) 
+				//	(this.FirstNode)).Variable_Value);
+			}
+
+			// only use this on a 2D array
+			public int col_count()
+			{
+				return 0;
+				//return numbers.Numbers.integer_of(((Variable) 
+				//	(this.Nodes[1].FirstNode)).Variable_Value);
+			}
+
+			public void Overwrite(Variable source) 
+			{
+				if (this.Kind==source.Kind)
+				{
+					throw new Exception("can't overwrite " + this.Text +
+						" with " + source.Text);
+				}
+				switch (this.Kind) 
+				{
+					case Runtime.Variable_Kind.One_D_Array:
+						this.Extend_1D(source.getArraySize());
+						for (int i=1; i<source.getArraySize(); i++)
+						{
+							if (this.getArrayElement(i)!=source.getArrayElement(i))
+							{
+								this.set_1D_value(i,source.getArrayElement(i));
+							}
+						}
+						break;
+					case Runtime.Variable_Kind.Value:
+                        try
+                        {
+                            if (!numbers.Numbers.Oeq(this.Variable_Value, source.Variable_Value))
+                            {
+                                this.set_value(source.Variable_Value);
+                            }
+                        }
+                        catch
+                        {
+                            this.set_value(source.Variable_Value);
+                        }
+                        break;
+					case Runtime.Variable_Kind.Two_D_Array:
+						if (this.row_count()!=source.row_count())
+						{
+							this.Add_Rows(this.row_count(),source.row_count(),
+								this.col_count());
+						}
+						if (this.col_count()!=source.col_count())
+						{
+							this.Add_Cols(this.col_count(),source.col_count(),
+								this.row_count());
+						}
+						for (int i=1; i<=this.row_count(); i++)
+						{
+							for (int j=1; j<=this.col_count(); j++)
+							{
+								if (this.get2DArrayElement(i,j)!=
+									source.get2DArrayElement(i,j))
+								{
+									this.set_2D_value(i,j,source.get2DArrayElement(i,j));
+								}
+							}
+						}
+						break;
+				}
+			}
+		}
 	public class Variables {
 		private string Name;
 		public string name
@@ -32,7 +704,7 @@ namespace raptor
         }
 		public string value { get; set; }
 
-		public ObservableCollection<Arr> values { get; } = new ObservableCollection<Arr>();
+		public ObservableCollection<Arr> values { get; set;} = new ObservableCollection<Arr>();
 		public string displayStr {
 			get {
 				if(values.Count == 0){
@@ -47,6 +719,16 @@ namespace raptor
 
 	public class Arr{
 		private string Name;
+		private numbers.value Value;
+
+		public numbers.value value{
+			get{
+				return Value;
+			}
+			set{
+				Value = value;
+			}
+		}
 		public string name
 		{
 			get
@@ -66,16 +748,29 @@ namespace raptor
             }
         }
 		public string len { get; set; }
-		public ObservableCollection<Arr2> values { get; } = new ObservableCollection<Arr2>();
+		public ObservableCollection<Arr2> values { get; set;} = new ObservableCollection<Arr2>();
 		public string displayStr {
 			get {
-				return name;	
+				if(values.Count > 0){
+					return name + "[]";
+				} else{
+					return name + ": " + value.V.ToString();
+				}
 			}
 		}
 	}
 
 	public class Arr2{
 		private string Name;
+		private numbers.value Value;
+		public numbers.value value{
+			get{
+				return Value;
+			}
+			set{
+				Value = value;
+			}
+		}
 		public string name
 		{
 			get
@@ -97,7 +792,7 @@ namespace raptor
 		public string len { get; set; }
 		public string displayStr {
 			get {
-				return name;	
+				return name + ": " + value.V.ToString();	
 			}
 		}
 	}
@@ -112,7 +807,7 @@ namespace raptor
         {
 
         }
-		const int max_array_size = 10000;
+	
 		// scoping rules (mcc: 11/25/03)
 		// If there is only one scope, it won't have any marker
 		// If there is more than one scope, each scope shall have a marker 
@@ -134,7 +829,7 @@ namespace raptor
         }
         public static numbers.value? method_return_value = null;
 
-		private static void Clear_Updated_Delegate()
+		/*private static void Clear_Updated_Delegate()
 		{
 			IEnumerator enumerator = updated_list.GetEnumerator();
 			Variable temp;
@@ -146,10 +841,12 @@ namespace raptor
 			}
 			updated_list.Clear();
 		}
+		
+		
 		private delegate void Clear_Updated_Delegate_Type();
 		private static Clear_Updated_Delegate_Type clear_updated_delegate=
 			new Clear_Updated_Delegate_Type(Clear_Updated_Delegate);
-
+		*/
         private static void Parent_Focus_Delegate(Avalonia.Controls.Window form)
         {
             form.Focus();
@@ -163,7 +860,7 @@ namespace raptor
 			//watchBox.Invoke(clear_updated_delegate,null);
 		}
 
-		private static void Add_To_Updated_Delegate(Variable temp)
+/*		private static void Add_To_Updated_Delegate(Variable temp)
 		{
 			temp.Foreground = Avalonia.Media.Brushes.Red;
 			updated_list.Add(temp);
@@ -171,7 +868,7 @@ namespace raptor
 		private delegate void Add_To_Updated_Delegate_Type(Variable temp);
 		private static Add_To_Updated_Delegate_Type add_to_updated_delegate =
 			new Add_To_Updated_Delegate_Type(Add_To_Updated_Delegate);
-		private static void Add_To_Updated(Variable temp)
+		*/public static void Add_To_Updated(Variable temp)
 		{
 			Object[] parameters=new Object[1];
 			parameters[0]=temp;
@@ -179,7 +876,7 @@ namespace raptor
 		}
 
 		public delegate void Add_Node_Delegate(Avalonia.Controls.TreeViewItem node);
-
+		
 		public static void Add_Node_To_WatchBox(Avalonia.Controls.TreeViewItem node) 
 		{
 			/*for (int i=0; i<watchBox.Nodes.Count; i++) 
@@ -308,590 +1005,12 @@ namespace raptor
 		public static Delete_Scope_Delegate delete_scope =
 			new Delete_Scope_Delegate(Delete_Scope_From_WatchBox);
 
-		internal class Variable : Avalonia.Controls.TreeViewItem
-		{
-			public string Var_Name;
-			public string Text;
-			public Variable_Kind Kind;
-			public numbers.value Variable_Value;
-            private bool isConstant = false;
-            //private NClass.Core.ClassType theClass;
-            /*internal NClass.Core.ClassType getClass()
-            {
-                return theClass;
-            }*/
-
-			public Variable(string name) : base ()
-			{
-				Var_Name = name;
-				Kind = Variable_Kind.Scope;
-				this.Text = "--" + name + "--";
-			}
-
-            // create a value variable
-			public Variable(string name, numbers.value Value) : base() 
-			{
-				Var_Name = name;
-				Kind = Variable_Kind.Value;
-				Variable_Value = Value;
-				this.Text = name + ": " + numbers.Numbers.msstring_view_image(Value);
-				Add_To_Updated(this);
-			}
-			/*
-            public Variable(NClass.Core.ClassType ct)
-            {
-                Var_Name = ct.Name;
-                Kind = Variable_Kind.Class_Value;
-                Variable_Value = numbers.Numbers.make_object_value((object) this);
-                this.theClass = ct;
-                this.Text = "<" + ct.Name + "> : static vars";
-                this.isConstant = true;
-                foreach (NClass.Core.Field f in ct.Fields)
-                {
-                    if (f.IsStatic)
-                    {
-                        addField(f);
-                    }
-                }
-            }
-            private void addField(NClass.Core.Field f)
-            {
-                if (f.Type.Contains("[][]"))
-                {
-                    this.Nodes.Add(new Variable(f.Name, 1, 1, numbers.Numbers.zero));
-                }
-                else if (f.Type.Contains("[]"))
-                {
-                    this.Nodes.Add(new Variable(f.Name, 1, numbers.Numbers.zero));
-                }
-                else
-                {
-                    numbers.value val;
-                    if (f.InitialValue != null && f.InitialValue != "")
-                    {
-                        if (f.InitialValue.Contains("\""))
-                        {
-                            val = numbers.Numbers.make_string_value(f.InitialValue);
-                        }
-                        else
-                        {
-                            val = numbers.Numbers.make_number_value(f.InitialValue);
-                        }
-                    }
-                    else
-                    {
-                        val = numbers.Numbers.zero;
-                    }
-                    Variable v = new Variable(f.Name, val);
-                    this.Nodes.Add(v);
-                    if (f.IsConstant || f.IsReadonly)
-                    {
-                        v.setConstant();
-                    }
-                }
-            }
-			*/
-            // create a variable which is an instance of an object
-            public Variable(string name, string class_name)
-                : base()
-            {
-                /*Var_Name = name;
-                Kind = Variable_Kind.Heap_Object;
-                Variable_Value = numbers.Numbers.make_object_value((object) this);
-                this.Text = "[" + this.GetHashCode() + "] : <" + class_name + ">";
-                if (Component.Current_Mode != Mode.Expert)
-                {
-                    throw new System.Exception("can't create object unless in OO mode");
-                }
-                theClass = Runtime.parent.projectCore.findClass(class_name);
-                if (theClass == null)
-                {
-                    throw new System.Exception("can't create object of class: " + class_name);
-                }
-                if (theClass.Modifier == NClass.Core.ClassModifier.Abstract)
-                {
-                    throw new System.Exception("can't create object of abstract class: " + class_name);
-                }
-                NClass.Core.ClassType ct = theClass;
-                while (ct != null)
-                {
-                    foreach (NClass.Core.Field f in ct.Fields)
-                    {
-                        if (!f.IsStatic)
-                        {
-                            addField(f);
-                        }
-                    }
-                    ct = ct.BaseClass;
-                }
-                Add_To_Updated(this);*/
-            }
-
-
-            
-            // create a 1D array variable
-			public Variable(string name, int index, numbers.value Value) : base() 
-			{
-				/*if (index>max_array_size)
-				{
-					throw new Exception("array index " + index + " too large.");
-				}
-				
-				Var_Name = name;
-				Kind = Variable_Kind.One_D_Array;
-				this.Nodes.Add(new Variable("Size",numbers.Numbers.make_value__3(index)));
-                if (numbers.Numbers.is_string(Value))
-                {
-                    for (int i = 1; i < index; i++)
-                    {
-                        this.Nodes.Add(new Variable("<" + i + ">", numbers.Numbers.make_string_value("")));
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < index; i++)
-                    {
-                        this.Nodes.Add(new Variable("<" + i + ">", numbers.Numbers.make_value__2(0.0)));
-                    }
-                }
-				this.Nodes.Add(new Variable("<"+index+">",Value));
-				this.Text = name + "[]";
-				Add_To_Updated(this);*/
-			}
-
-			public Variable(string name, int index1, int index2,
-				numbers.value Value) : base() 
-			{
-				/*if (index1*index2 > max_array_size)
-				{
-					throw new Exception("array indices " + index1 + "," +
-						index2 + " too large.");
-				}
-
-				Var_Name = name;
-				Kind = Variable_Kind.Two_D_Array;
-				this.Nodes.Add(new Variable("Rows",numbers.Numbers.make_value__3(index1)));
-                if (numbers.Numbers.is_string(Value))
-                {
-                    for (int i = 1; i < index1; i++)
-                    {
-                        //this.Nodes.Add(new Variable("<" + i + ">", index2, numbers.Numbers.make_string_value("")));
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < index1; i++)
-                    {
-                        //this.Nodes.Add(new Variable("<" + i + ">", index2, numbers.Numbers.make_value__2(0.0)));
-                    }
-                }
-				//this.Nodes.Add(new Variable("<"+index1+">",index2,Value));
-				this.Text = name + "[,]";
-				Add_To_Updated(this);*/
-			}
-
-			public void Add_Rows(int current_count, int new_count, 
-				int col_count) 
-			{
-				/*this.FirstNode.Text = "Rows: " + new_count;
-				((Variable) this.FirstNode).Variable_Value =
-					numbers.Numbers.make_value__3(new_count);
-				Add_To_Updated((Variable) this.FirstNode);
-				for (int index1=current_count+1; index1<=new_count;
-					index1++) 
-				{
-					this.Nodes.Add(new Variable("<"+index1+">",
-						col_count,numbers.Numbers.make_value__2(0.0)));
-				}*/
-			}
-			public void Add_Cols(int current_count, int new_count, 
-				int row_count) 
-			{/*
-				for (int index1=1; index1<=row_count;
-					index1++) 
-				{
-					this.Nodes[index1].FirstNode.Text =
-						"Size: " + new_count;
-					((Variable) this.Nodes[index1].FirstNode).Variable_Value =
-						numbers.Numbers.make_value__3(new_count);
-					Add_To_Updated((Variable) this.Nodes[index1].FirstNode);
-					for (int index2=current_count+1; index2<=new_count;
-						index2++) 
-					{
-						this.Nodes[index1].Nodes.Add(
-							new Variable("<"+index2+">",
-							numbers.Numbers.make_value__2(0.0)));
-					}
-				}*/
-			}
-            public void setConstant()
-            {
-                this.isConstant = true;
-            }
-			public void set_value(numbers.value v)
-			{
-                if (!this.isConstant)
-                {
-                    this.Variable_Value = v;
-                    this.Text = this.Var_Name + ": " + numbers.Numbers.msstring_view_image(v);
-                    Add_To_Updated(this);
-                }
-                else
-                {
-                    throw new System.Exception("can't assign to constant variable: " + this.Var_Name);
-                }
-			}
-
-			public void Extend_1D(int index)
-			{
-				// how many entries are there now
-				/*int count = numbers.Numbers.integer_of (((Variable) 
-					(this.FirstNode)).Variable_Value);
-				// do we need to extend?
-				if (index > count)
-				{
-					((Variable) this.FirstNode).Variable_Value =
-						numbers.Numbers.make_value__3(index);
-					this.FirstNode.Text = "Size: " + index;
-					Runtime.Add_To_Updated(
-						(Variable) this.FirstNode);
-					for (int i=count+1; i<=index; i++) 
-					{
-						this.Nodes.Add(new Variable("<"+i+">",numbers.Numbers.make_value__2(0.0)));
-					}
-				}*/
-			}
-            public Variable? get_field_variable(string name)
-            {
-                /*foreach (Avalonia.Controls.TreeViewItem n in this.Nodes)
-                {
-                    if (n.Name == name)
-                    {
-                        return n as Variable;
-                    }
-                }*/
-                return null;
-            }
-            public numbers.value get_field_1d(string name, int index)
-            {
-                Variable v = this.get_field_variable(name);
-                if (v.Kind != Variable_Kind.One_D_Array)
-                {
-                    throw new System.Exception("field " + name + " is not a 1D array");
-                }
-                return v.getArrayElement(index);
-            }
-            public numbers.value get_field_2d(string name, int index, int index2)
-            {
-                Variable v = this.get_field_variable(name);
-                if (v.Kind != Variable_Kind.Two_D_Array)
-                {
-                    throw new System.Exception("field " + name + " is not a 2D array");
-                }
-                return v.get2DArrayElement(index,index2);
-            }
-            public numbers.value get_field(string name)
-            {
-                /*foreach (Avalonia.Controls.TreeViewItem n in this.Nodes)
-                {
-                    if (n.Name == name)
-                    {
-                        if ((n as Variable).Kind == Variable_Kind.Value
-                            || (n as Variable).Kind == Variable_Kind.Heap_Object)
-                        {
-                            return (n as Variable).Variable_Value;
-                        }
-                        else
-                        {
-                            throw new System.Exception("field " + name + " is " + (n as Variable).Kind);
-                        }
-                    }
-                }*/
-                throw new System.Exception("object doesn't have field: " + name);
-            }
-            public void set_field(string name, numbers.value f)
-            {
-                Variable field;
-                if (this.Kind != Variable_Kind.Heap_Object)
-                {
-                    throw new Exception("can't set field: " + name + "-- not an object.");
-                }
-                field = this.get_field_variable(name);
-                if (field==null)
-                {
-                    throw new Exception("can't set field: " + name + "-- no such field.");
-                }
-                field.Text = name + ": " + numbers.Numbers.msstring_view_image(f);
-                field.Variable_Value = f;
-                Runtime.Add_To_Updated(this);
-                Add_To_Updated(field);
-            }
-			public void set_1D_value(int index, numbers.value f)
-			{
-				if (index>max_array_size)
-				{
-					throw new Exception("array index " + index + " too large.");
-				}
-
-				if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value))
-				{
-					int c;
-                    if (numbers.Numbers.is_number(f))
-                    {
-                        c = (int)numbers.Numbers.integer_of(f);
-                    }
-                    else if (numbers.Numbers.is_character(f))
-                    {
-                        c = (int)f.C;
-                    }
-                    else if (numbers.Numbers.is_string(f) && numbers.Numbers.length_of(f) == 1)
-                    {
-                        c = (int)f.S[0];
-                    }
-                    else
-                    {
-                        throw new Exception("Can't assign " + numbers.Numbers.msstring_view_image(f) + " to position " + index);
-                    }
-                    if (c < 0 || c > 65535) 
-					{
-						throw new Exception("Character values only 0-65535, not " + c);
-					}
-					// pad with spaces
-					string new_string;
-					if (index > numbers.Numbers.length_of(this.Variable_Value))
-					{
-						new_string = this.Variable_Value.S +
-							new String(' ',index-numbers.Numbers.length_of(this.Variable_Value)-1) + (char) c;
-					}
-					else
-					{
-						new_string = this.Variable_Value.S.Remove(index-1,1)
-							.Insert(index-1,"" + (char) c);
-					}
-					this.Variable_Value = numbers.Numbers.make_string_value(new_string);
-                    this.Text = this.Var_Name + ": " + '"' + new_string + '"';
-                    Runtime.Add_To_Updated(this);
-                    return;
-				}
-				else if (this.Kind==Variable_Kind.One_D_Array) 
-				{
-					this.Extend_1D(index);
-                    //this.Nodes[index].Text = "<" + index + ">: " + numbers.Numbers.msstring_view_image(f);
-					//((Variable) this.Nodes[index]).Variable_Value = f;
-					Runtime.Add_To_Updated(this);
-					//Add_To_Updated((Variable) this.Nodes[index]);
-					return;
-				}
-				else
-				{
-					throw new Exception(this.Var_Name + " is not a 1D array");
-				}
-			}
-
-			public void set_2D_value(int index1, int index2, numbers.value Value)
-			{
-				/*if (index1*index2 > max_array_size)
-				{
-					throw new Exception("array indices " + index1 + "," +
-						index2 + " too large.");
-				}
-
-				// how many entries are there now
-				int row_count = numbers.Numbers.integer_of(((Variable) 
-					(this.FirstNode)).Variable_Value);
-				int col_count = numbers.Numbers.integer_of(((Variable) 
-					(this.Nodes[1].FirstNode)).Variable_Value);
-				// do we need to extend columns?
-				if (index2 > col_count)
-				{
-					this.Add_Cols(col_count, index2, row_count);
-					col_count = index2;
-				}
-				if (index1 > row_count) 
-				{
-					this.Add_Rows(row_count, index1, col_count);
-				}
-				this.Nodes[index1].Nodes[index2].Text = 
-					"<"+index2+">: " + numbers.Numbers.msstring_view_image(Value);
-				((Variable) this.Nodes[index1].Nodes[index2]).
-					Variable_Value = Value;
-				Runtime.Add_To_Updated(this);
-				Runtime.Add_To_Updated(
-					(Variable) this.Nodes[index1]);
-				Add_To_Updated((Variable) 
-					this.Nodes[index1].Nodes[index2]);*/
-			}
-			public numbers.value get2DArrayElement(int index1, int index2)
-			{
-				return numbers.Numbers.Null_Ptr;
-				/*if (this.Kind==Variable_Kind.Two_D_Array) 
-				{
-					int row_count = numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value);
-					int col_count = numbers.Numbers.integer_of(((Variable) 
-						(this.Nodes[1].FirstNode)).Variable_Value);
-					if (row_count >= index1)
-					{
-						if (col_count >= index2)
-						{
-							return ((Variable) this.Nodes[index1].Nodes[index2]).
-								Variable_Value;
-						}
-						else
-						{
-							throw new Exception(this.Var_Name + " doesn't have " +
-								index2 + " Columns.");
-						}
-					}
-					else
-					{
-						throw new Exception(this.Var_Name + " doesn't have " +
-							index1 + " Rows.");
-					}
-				}
-				else
-				{
-					throw new Exception(this.Var_Name + 
-						" is not a two-dimensional array");
-				}*/
-			}
-			public numbers.value getArrayElement(int index)
-			{
-				return numbers.Numbers.Null_Ptr;
-				/*if (this.Kind==Variable_Kind.One_D_Array) 
-				{
-					if (numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value) >=
-						index)
-					{
-						return ((Variable) this.Nodes[index]).
-							Variable_Value;
-					}
-					else
-					{
-						throw new Exception(this.Var_Name + " doesn't have " +
-							index + " elements.");
-					}
-				}
-				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
-				{
-					if (numbers.Numbers.length_of (this.Variable_Value) >=
-						index)
-					{
-						return numbers.Numbers.make_value__4 (this.Variable_Value.s[index-1]);
-					}
-					else
-					{
-						throw new Exception(this.Var_Name + " doesn't have " +
-							index + " elements.");
-					}
-				}
-				else
-				{
-					throw new Exception(this.Var_Name + 
-						" is not a one-dimensional array");
-				}*/
-			}
-
-			public int getArraySize()
-			{
-				/*if (this.Kind==Variable_Kind.One_D_Array) 
-				{
-					// first node is size of array
-					return numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value);
-				}
-				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value))
-				{
-					return numbers.Numbers.length_of(this.Variable_Value);
-				}
-				else*/
-				{
-					throw new Exception(this.Var_Name + " is not a 1D array.");
-				}
-			}
-
-			// only use this on a 2D array
-			public int row_count()
-			{
-				return 0;
-				//return numbers.Numbers.integer_of(((Variable) 
-				//	(this.FirstNode)).Variable_Value);
-			}
-
-			// only use this on a 2D array
-			public int col_count()
-			{
-				return 0;
-				//return numbers.Numbers.integer_of(((Variable) 
-				//	(this.Nodes[1].FirstNode)).Variable_Value);
-			}
-
-			public void Overwrite(Variable source) 
-			{
-				if (this.Kind==source.Kind)
-				{
-					throw new Exception("can't overwrite " + this.Text +
-						" with " + source.Text);
-				}
-				switch (this.Kind) 
-				{
-					case Variable_Kind.One_D_Array:
-						this.Extend_1D(source.getArraySize());
-						for (int i=1; i<source.getArraySize(); i++)
-						{
-							if (this.getArrayElement(i)!=source.getArrayElement(i))
-							{
-								this.set_1D_value(i,source.getArrayElement(i));
-							}
-						}
-						break;
-					case Variable_Kind.Value:
-                        try
-                        {
-                            if (!numbers.Numbers.Oeq(this.Variable_Value, source.Variable_Value))
-                            {
-                                this.set_value(source.Variable_Value);
-                            }
-                        }
-                        catch
-                        {
-                            this.set_value(source.Variable_Value);
-                        }
-                        break;
-					case Variable_Kind.Two_D_Array:
-						if (this.row_count()!=source.row_count())
-						{
-							this.Add_Rows(this.row_count(),source.row_count(),
-								this.col_count());
-						}
-						if (this.col_count()!=source.col_count())
-						{
-							this.Add_Cols(this.col_count(),source.col_count(),
-								this.row_count());
-						}
-						for (int i=1; i<=this.row_count(); i++)
-						{
-							for (int j=1; j<=this.col_count(); j++)
-							{
-								if (this.get2DArrayElement(i,j)!=
-									source.get2DArrayElement(i,j))
-								{
-									this.set_2D_value(i,j,source.get2DArrayElement(i,j));
-								}
-							}
-						}
-						break;
-				}
-			}
-		}
+		
 
         internal static void consoleWriteln(string v)
         {
             throw new NotImplementedException();
         }
-
-
 
         // Container holding all variables and their values
         public static Avalonia.Controls.Window parent;
@@ -1031,22 +1150,25 @@ namespace raptor
         private static Variable? Lookup_Variable(string s)
 		{
 			Variable temp;
+			/*
             if (s.ToLower().Equals("super"))
             {
                 temp = Lookup_Variable("this");
                 Runtime.superContext = true;
                 return temp;
             }
+			*/
             Runtime.superContext = false;
             if (context == null)
             {
                 // loop through the top level looking for s
-               /* for (int i = 0; i < watchBox.Nodes.Count; i++)
+               for (int i = 0; i < MainWindowViewModel.GetMainWindowViewModel().theVariables.Count; i++)
                 {
-                    temp = (Variable)watchBox.Nodes[i];
+                    temp = (Variable)MainWindowViewModel.GetMainWindowViewModel().theVariables[i];
                     if (temp.Var_Name.ToLower() == s.ToLower())
                     {
-                        return temp;
+						//temp = new Variable(s, temp.Variable_Value);
+                        return MainWindowViewModel.GetMainWindowViewModel().theVariables[i];
                     }
                     else if (temp.Kind == Variable_Kind.Scope && ((i > 0) || (temp.Var_Name=="Classes")))
                     {
@@ -1059,7 +1181,7 @@ namespace raptor
                             return null;
                         }
                     }
-                }*/
+                }
             }
             else // context is not null
             {
@@ -1084,15 +1206,20 @@ namespace raptor
 		// or adds the variable and its value to the list if
 		// it does not currently exist.
 		//****************************************************
-		private static void setVariable_Delegate(string s, numbers.value f)
+		public static void setVariable(string s, numbers.value f)
 		{
 			Variable temp=Runtime.Lookup_Variable(s);
 
 			if (temp!=null)
 			{
+				
 				if (temp.Kind==Variable_Kind.Value || temp.Kind==Variable_Kind.Heap_Object) 
 				{
+					ObservableCollection<Variable> var =MainWindowViewModel.GetMainWindowViewModel().theVariables;
+					int index=var.IndexOf(temp);
+					var.RemoveAt(index);
 					temp.set_value(f);
+					var.Insert(index,temp);
 					return;
 				}
                 else if (temp.Kind == Variable_Kind.Class_Value)
@@ -1109,18 +1236,17 @@ namespace raptor
                     throw new Exception("Invalid assignment to 2D array " + s + " -- missing indices (e.g. " +
                         s + "[3,3]).");
                 }
+				
 			}
 			else
 			{
 				// variable doesn't currently exist
 				// add variable and initial value to variableList
-				temp = new Variable(s.ToLower(), f);
-				object[] args = new Object[1];
-				args[0] = temp;
-				//watchBox.Invoke(add_delegate,args);
+				temp = new Variable(s,f);
 			}
 			
 		}
+		/*
 		private delegate void setVariable_Delegate_Type(string s,
 			numbers.value f);
 		private static setVariable_Delegate_Type setVariable_delegate=
@@ -1136,6 +1262,7 @@ namespace raptor
 				//watchBox.Invoke(setVariable_delegate,parameters);
 			}
 		}
+		*/
         internal static numbers.value[] getValueArray(Variable temp)
         {
 			int count = 2; // numbers.Numbers.integer_of(((Variable)
@@ -1416,18 +1543,23 @@ namespace raptor
 		// or adds the variable and its value to the array if
 		// it does not currently exist.
 		//****************************************************
-		private static void setArrayElement_Delegate(string s, int index, numbers.value f)
+		public static void setArrayElement(string s, int index, numbers.value f)
 		{
 			if (index <= 0) 
 			{
 				throw new Exception("can't use " + index +
 					" as an array index");
 			}
-			Variable temp=Runtime.Lookup_Variable(s);
+			Variable temp = Runtime.Lookup_Variable(s);
 
 			if (temp!=null)
 			{
+				ObservableCollection<Variable> var=MainWindowViewModel.GetMainWindowViewModel().theVariables;
+				int i=var.IndexOf(temp);
+				var.RemoveAt(i);
 				temp.set_1D_value(index,f);
+				
+				var.Insert(i,temp);
 				return;
 			}
 
@@ -1447,6 +1579,7 @@ namespace raptor
 
 
 		}
+		/*
 		private delegate void setArrayElement_Delegate_Type(string s,
 			int index, numbers.value f);
 		private static setArrayElement_Delegate_Type 
@@ -1461,6 +1594,7 @@ namespace raptor
 			parameters[2]=f;
 			//watchBox.Invoke(setArrayElement_delegate,parameters);
 		}
+		*/
 
 		//****************************************************
 		// set2DArrayElement
@@ -1468,7 +1602,7 @@ namespace raptor
 		// or adds the variable and its value to the array if
 		// it does not currently exist.
 		//****************************************************
-		private static void set2DArrayElement_Delegate(string s, int index1, 
+		public static void set2DArrayElement(string s, int index1, 
 			int index2, numbers.value f)
 		{
 			if (index1 <= 0) 
@@ -1487,7 +1621,11 @@ namespace raptor
 			{
 				if (temp.Kind==Variable_Kind.Two_D_Array) 
 				{
+					ObservableCollection<Variable> var=MainWindowViewModel.GetMainWindowViewModel().theVariables;
+					int i=var.IndexOf(temp);
+					var.RemoveAt(i);
 					temp.set_2D_value(index1,index2,f);
+					var.Insert(i,temp);
 					return;
 				}
 				else
@@ -1512,7 +1650,8 @@ namespace raptor
 			}
 
 		}
-		private delegate void set2DArrayElement_Delegate_Type(string s,
+
+/*		private delegate void set2DArrayElement_Delegate_Type(string s,
 			int index1, int index2, numbers.value f);
 		private static set2DArrayElement_Delegate_Type 
 			set2DArrayElement_delegate=
@@ -1527,7 +1666,7 @@ namespace raptor
 			parameters[3]=f;
 			//watchBox.Invoke(set2DArrayElement_delegate,parameters);
 		}
-
+*/
 		public static void Increase_Scope(string s)
 		{
 			/*Object[] parameters = new Object[1];
