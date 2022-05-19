@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RAPTOR_Avalonia_MVVM.ViewModels"
+        xmlns:models="clr-namespace:raptor;assembly=raptor"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        Width="400" Height="450"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.AddSubchartDialog"
+        Title="Enter Statement"
+        x:DataType="vm:AddSubchartDialogViewModel">
+        <!--x:CompileBindings="True"> -->
+
+  <Design.DataContext>
+      <vm:AddSubchartDialogViewModel/>
+  </Design.DataContext>
+  <ScrollViewer>
+    <StackPanel Background="Linen" Spacing="10">
+        <TextBlock HorizontalAlignment="Center">
+        Please enter name of the Subchart!
+
+        Names must begin with a letter and
+        contain only:letters, numbers, 
+        and underscores
+
+        Examples:
+            Draw_Boxes
+            Find_Smallest
+        </TextBlock>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
+        <TextBlock>Set Procedure Name</TextBlock>
+        </StackPanel>
+        <StackPanel>
+        <TextBox Width="200" Watermark="Name" Text="{Binding setSubchartName}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        </StackPanel>
+        <TextBlock Text="{Binding Text}"></TextBlock>
+    <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

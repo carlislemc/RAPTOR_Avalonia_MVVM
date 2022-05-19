@@ -100,27 +100,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return this.theTabs[0];
         }
         
+        public static List<Subchart> FillTabs(){
+            Subchart main_subchart = new Subchart("main");
+            return new List<Subchart>(){
+                main_subchart
+            };
+        }
         public static List<Variable> FillWatch()
         {
-            numbers.value v = new numbers.value();
-            v.V = 5;
             //Fill league data here...
             return new List<Variable>()
             {
-                /*
-                new Variables() {name="hi", value="there"},
-                new Variables() {name="hi2", value="there2"},
-                new Variables() {name="hi3[3]", values={ new Arr(){name="a"}, new Arr(){name="b"}, new Arr(){name="c"} } },
-                new Variables() {name="hi4[2,2]", values={ new Arr(){name="a",
-                                                                     values={new Arr2(){name="1"}, new Arr2() {name="2"}}},
-                                                           new Arr(){name="b",
-                                                                     values={new Arr2(){name="3"}, new Arr2() {name="4"}}},          } }
-                  */    
-
-                // new Variable("hi",v),
-                // new Variable("hi2",v),
-                // new Variable("hi3",v)
-
             };
 
         }
@@ -151,11 +141,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             theMainWindowViewModel = this;
             theVariables = new ObservableCollection<Variable>(FillWatch());
-            Subchart main_subchart = new Subchart("main");
-            theTabs = new ObservableCollection<Subchart>(new List<Subchart>()
-            {
-                main_subchart
-            });
+            //Subchart main_subchart = new Subchart("main");
+            theTabs = new ObservableCollection<Subchart>(FillTabs());
 
             /*
             GetWindow().Closing += (s, e) =>
@@ -585,11 +572,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnResetExecuteCommand() { }
         public void OnExecuteCommand() { 
-            // int i1 = 3;
-            // int i2 = 5;
-            // numbers.value n = new numbers.value();
-            // n.V = 5;
-            // Variable var1 = new Variable("Array", i1, n);
         }
 
         public void OnStepCommand() {

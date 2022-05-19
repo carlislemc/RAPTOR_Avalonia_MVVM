@@ -224,7 +224,14 @@
     <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}">
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
-          <TextBlock Text="{Binding Header}" />
+          <TextBlock Text="{Binding Header}">
+            <TextBlock.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add Subchart" Command="{Binding onAddSubchartCommand}"/>
+                    <MenuItem Header="Add Procedure" Command="{Binding onAddProcedureCommand}"/>
+                </ContextMenu>
+            </TextBlock.ContextMenu>
+          </TextBlock>
         </DataTemplate>
       </TabControl.ItemTemplate>
       <TabControl.ContentTemplate>

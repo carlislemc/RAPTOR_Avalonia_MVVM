@@ -4,6 +4,7 @@ using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace raptor
 {
@@ -13,7 +14,7 @@ namespace raptor
     {
         public Oval Start, End;
         public string Text = "Main";
-        protected Subchart_Kinds kind = Subchart_Kinds.Subchart;
+        public Subchart_Kinds kind = Subchart_Kinds.Subchart;
         public int positionX {
             get; set; 
         }
@@ -214,15 +215,24 @@ namespace raptor
             MainWindowViewModel.GetMainWindowViewModel().OnDeleteCommand();
         }
 
+        public void onAddSubchartCommand(){
+            AddSubchartDialog asc = new AddSubchartDialog();
+            asc.ShowDialog(MainWindow.topWindow);
+        }
+        public void onAddProcedureCommand(){
+            AddProcedureDialog avm = new AddProcedureDialog();
+            avm.ShowDialog(MainWindow.topWindow);
+        }
+
         public Subchart(string name)
         {
             initContextMenu();
 
-            Text = name;
-            End = new Oval(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
-            End.Text = "end";
-            Start = new Oval(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
-            Start.Text = "start";
+                Text = name;
+                End = new Oval(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
+                End.Text = "end";
+                Start = new Oval(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
+                Start.Text = "start";
         }
 
 
@@ -238,7 +248,7 @@ namespace raptor
 
             }
         }
-
+        
         public virtual int num_params
         {
             get
