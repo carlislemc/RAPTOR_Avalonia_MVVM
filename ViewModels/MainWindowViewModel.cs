@@ -585,6 +585,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnResetExecuteCommand() { }
         public void OnExecuteCommand() { 
+            // int i1 = 3;
+            // int i2 = 5;
+            // numbers.value n = new numbers.value();
+            // n.V = 5;
+            // Variable var1 = new Variable("Array", i1, n);
         }
 
         public void OnStepCommand() {

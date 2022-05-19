@@ -520,19 +520,19 @@ namespace raptor
 			}
 			public numbers.value get2DArrayElement(int index1, int index2)
 			{
-				return numbers.Numbers.Null_Ptr;
-				/*if (this.Kind==Variable_Kind.Two_D_Array) 
+				//return numbers.Numbers.Null_Ptr;
+				if (this.Kind==Runtime.Variable_Kind.Two_D_Array) 
 				{
-					int row_count = numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value);
-					int col_count = numbers.Numbers.integer_of(((Variable) 
-						(this.Nodes[1].FirstNode)).Variable_Value);
+					ObservableCollection<Arr> val1 = this.values;
+					ObservableCollection<Arr2> val2 = val1[1].values;
+					int row_count = numbers.Numbers.integer_of(val1[0].value);
+					int col_count = numbers.Numbers.integer_of(val2[0].value);
 					if (row_count >= index1)
 					{
 						if (col_count >= index2)
 						{
-							return ((Variable) this.Nodes[index1].Nodes[index2]).
-								Variable_Value;
+							//Variable newGuy = new Variable("Im new", val1[index1].values[index2].value);
+							return (val1[index1].values[index2].value);
 						}
 						else
 						{
@@ -550,19 +550,19 @@ namespace raptor
 				{
 					throw new Exception(this.Var_Name + 
 						" is not a two-dimensional array");
-				}*/
+				}
 			}
 			public numbers.value getArrayElement(int index)
 			{
-				return numbers.Numbers.Null_Ptr;
-				/*if (this.Kind==Variable_Kind.One_D_Array) 
+				//return numbers.Numbers.Null_Ptr;
+				if (this.Kind==Runtime.Variable_Kind.One_D_Array) 
 				{
-					if (numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value) >=
-						index)
+					ObservableCollection<Arr> val = this.values;
+					int count = numbers.Numbers.integer_of(val[0].value);
+					if (count >= index)
 					{
-						return ((Variable) this.Nodes[index]).
-							Variable_Value;
+						Variable newGuy = new Variable("Im new", val[index].value);
+						return val[index].value;
 					}
 					else
 					{
@@ -570,7 +570,7 @@ namespace raptor
 							index + " elements.");
 					}
 				}
-				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
+				/*else if (this.Kind==Runtime.Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
 				{
 					if (numbers.Numbers.length_of (this.Variable_Value) >=
 						index)
@@ -582,12 +582,12 @@ namespace raptor
 						throw new Exception(this.Var_Name + " doesn't have " +
 							index + " elements.");
 					}
-				}
+				}*/
 				else
 				{
 					throw new Exception(this.Var_Name + 
 						" is not a one-dimensional array");
-				}*/
+				}
 			}
 
 			public int getArraySize()
@@ -992,14 +992,14 @@ namespace raptor
 		public static void Delete_Scope_From_WatchBox() 
 		{
 			// delete the first scope marker
-			/*watchBox.Nodes.RemoveAt(0);
-			while (((Variable) watchBox.Nodes[0]).Kind!=Variable_Kind.Scope)
+			ObservableCollection<Variable> vals = MainWindowViewModel.GetMainWindowViewModel().theVariables;
+			vals.RemoveAt(0);
+			while (vals[0].Kind!=Variable_Kind.Scope)
 			{
-				watchBox.Nodes.RemoveAt(0);
+				vals.RemoveAt(0);
 			}
-            Clear_Updated_Delegate();
-            System.Diagnostics.Trace.WriteLine(watchBox.Nodes.Count);
-            watchBox.Invalidate();*/
+            //Clear_Updated_Delegate();
+            System.Diagnostics.Trace.WriteLine(vals.Count);
 		}
 
 		public static Delete_Scope_Delegate delete_scope =
@@ -1669,26 +1669,21 @@ namespace raptor
 */
 		public static void Increase_Scope(string s)
 		{
-			/*Object[] parameters = new Object[1];
+			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
 			// if there aren't any variables, or the first one isn't a
 			// scope (meaning only one scope)
-			if (watchBox.Nodes.Count==0 ||
-				((Variable) watchBox.Nodes[0]).Kind!=Variable_Kind.Scope ||
-                ((Variable) watchBox.Nodes[0]).Var_Name.CompareTo("Heap")==0)
+			if (vars.Count==0 || vars[0].Kind!=Variable_Kind.Scope || vars[0].Var_Name.CompareTo("Heap")==0)
 			{
 				Variable new_scope = new Variable("main");
-				parameters[0]=new_scope;
-				watchBox.Invoke(add_at_front_delegate,parameters);
+				vars.Insert(0, new_scope);
 			}
 			Variable second_scope = new Variable(s);
-			parameters[0]=second_scope;
-			watchBox.Invoke(add_at_front_delegate,parameters);*/
+			vars.Insert(0, second_scope);
 		}
 
 		public static void Decrease_Scope()
 		{
-			Object[] parameters = new Object[0];
-			//watchBox.Invoke(delete_scope,parameters);
+			Delete_Scope_From_WatchBox();
 		}
 
 		private static Variable_Kind Kind_Of(string s)
