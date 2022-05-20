@@ -10,7 +10,6 @@
         x:Class="RAPTOR_Avalonia_MVVM.Views.AddProcedureDialog"
         Title="Enter Statement"
         x:DataType="vm:AddProcedureDialogViewModel">
-        <!--x:CompileBindings="True"> -->
 
   <Design.DataContext>
       <vm:AddProcedureDialogViewModel/>
@@ -34,7 +33,10 @@
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 1 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+
+        <CheckBox IsChecked="{Binding setIn1}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut1}">Output</CheckBox>
+
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 1" Text="{Binding setParam1}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
@@ -42,7 +44,8 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 2 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+        <CheckBox IsChecked="{Binding setIn2}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut2}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 2" Text="{Binding setParam2}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
@@ -50,7 +53,8 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 3 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+        <CheckBox IsChecked="{Binding setIn3}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut3}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 3" Text="{Binding setParam3}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
@@ -58,7 +62,8 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 4 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+        <CheckBox IsChecked="{Binding setIn4}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut4}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 4" Text="{Binding setParam4}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
@@ -66,7 +71,8 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 5 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+        <CheckBox IsChecked="{Binding setIn5}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut5}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 5" Text="{Binding setParam5}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
@@ -74,7 +80,8 @@
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 6 (or blank)</TextBlock>
-        <CheckBox IsChecked="True">Input</CheckBox><CheckBox>Output</CheckBox>
+        <CheckBox IsChecked="{Binding setIn6}">Input</CheckBox>
+        <CheckBox IsChecked="{Binding setOut6}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Parameter 6" Text="{Binding setParam6}" AcceptsReturn="False" IsReadOnly="False"></TextBox>

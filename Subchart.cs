@@ -249,11 +249,15 @@ namespace raptor
             }
         }
         
-        public virtual int num_params
+        public int num_params;
+        public virtual int Num_Params
         {
             get
             {
-                return 0;
+                return ((Oval_Procedure)this.Start).Parameter_Count;
+            }
+            set{
+                ((Oval_Procedure)this.Start).Parameter_Count = value;
             }
         }
 
@@ -276,7 +280,15 @@ namespace raptor
             Start = new Oval_Procedure(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval", parameter_count);
             Start.Text = "start";
         }
-        public override int num_params
+        public Procedure_Chart(string name, string[] incoming_params, bool[] ins, bool[] outs) 
+        {
+            Header = name;
+            End = new Oval(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
+            End.Text = "end";
+            Start = new Oval_Procedure(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval", incoming_params, ins, outs);
+            //Start.Text = "start";
+        }
+        public override int Num_Params
         {
             get
             {

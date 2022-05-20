@@ -51,6 +51,9 @@ namespace raptor
             {
                 return num_params;
             }
+            set{
+                num_params = value;
+            }
         }
         public string Parameter_String
         {

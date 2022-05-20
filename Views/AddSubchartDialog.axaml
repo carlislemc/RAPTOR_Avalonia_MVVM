@@ -29,7 +29,7 @@
             Find_Smallest
         </TextBlock>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
-        <TextBlock>Set Procedure Name</TextBlock>
+        <TextBlock>Subchart Name</TextBlock>
         </StackPanel>
         <StackPanel>
         <TextBox Width="200" Watermark="Name" Text="{Binding setSubchartName}" AcceptsReturn="False" IsReadOnly="False"></TextBox>

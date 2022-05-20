@@ -116,6 +116,15 @@ namespace numbers
             }
         }
 
+        internal static value make_value__4(bool b)
+        {
+            if(b){
+                return new value { V = 1.0, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
+            }else{
+                return new value { V = 0.0, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
+            }
+            
+        }
         internal static value make_value__3(int index)
         {
             return new value { V = index, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
