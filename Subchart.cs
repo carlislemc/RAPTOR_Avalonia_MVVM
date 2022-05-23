@@ -21,6 +21,13 @@ namespace raptor
             get; set; 
         }
 
+        public int positionXTapped{
+            get; set;
+        }
+        public int positionYTapped{
+            get; set;
+        }
+
         private int privatePositionY;
         // This will be 0 at an insertable point and 1 otherwise
         // to trigger the appropriate context menu
@@ -133,7 +140,9 @@ namespace raptor
             Start.Text = "start";
         }
 
-        public void OnPasteCommand() { }
+        public void OnPasteCommand() { 
+            MainWindowViewModel.GetMainWindowViewModel().OnPasteCommand();
+        }
         public void OnInsertAssignmentCommand() {
             Undo_Stack.Make_Undoable(this);
             if (Start.insert(new Rectangle(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,

@@ -527,11 +527,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnEditCommand()
         {
-            this.mainSubchart().Start.setText(this.mainSubchart().positionX,this.mainSubchart().positionY);
+            this.theTabs[this.activeTab].Start.setText(this.theTabs[this.activeTab].positionX,this.theTabs[this.activeTab].positionY);
         }
         public void OnCutCommand()
         {
-            Component cutReturn = this.mainSubchart().Start.cut();
+            Component cutReturn = this.theTabs[this.activeTab].Start.cut();
             if (cutReturn!=null)
             {
                 Clipboard_Data cd = new Clipboard_Data(
@@ -549,8 +549,27 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        public void OnPasteCommand() { }
-        public void OnCopyCommand() { }
+        public async void OnPasteCommand() { 
+            int x_position = this.theTabs[this.activeTab].positionXTapped;
+            int y_position = this.theTabs[this.activeTab].positionYTapped;
+
+            Object thing = await ClipboardMultiplatform.GetDataObjectAsync();
+            if(thing != null){
+                Component obj = ((Clipboard_Data)thing).symbols;
+                this.theTabs[this.activeTab].Start.insert(obj, x_position, y_position, 0);
+            }
+            
+        }
+        public void OnCopyCommand() {
+            Component copyReturn = this.theTabs[this.activeTab].Start.copy();
+            if (copyReturn!=null)
+            {
+                Clipboard_Data cd = new Clipboard_Data(
+                copyReturn,
+                this.file_guid, this.log.Clone());
+                ClipboardMultiplatform.SetDataObject(cd, true);
+            }
+        }
         public void OnSaveCommand() { }
         public void OnSaveAsCommand() { }
         public void OnNextCommand() { }

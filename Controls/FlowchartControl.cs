@@ -36,6 +36,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             TappedEventArgs f = (TappedEventArgs)e;
             this.sc.positionX = (int)f.GetPosition(this).X;
             this.sc.positionY = (int)f.GetPosition(this).Y;
+            this.sc.positionXTapped = (int)f.GetPosition(this).X;
+            this.sc.positionYTapped = (int)f.GetPosition(this).Y;
             this.sc.Start.select(this.sc.positionX,this.sc.positionY);
             if (SymbolsControl.control_figure_selected==SymbolsControl.assignment_fig)
             {
