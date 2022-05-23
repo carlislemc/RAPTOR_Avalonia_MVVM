@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using RAPTOR_Avalonia_MVVM.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace raptor
 {
@@ -44,6 +46,9 @@ namespace raptor
 
 		private static void Add_Undo_Action(Action new_action/*, Visual_Flow_Form form*/)
 		{
+			if(num_undo == 0){
+				MainWindowViewModel.GetMainWindowViewModel().toggleUndoCommand = true;
+			}
 			num_undo++;
 			/*form.undoButton.ImageIndex = Can_Undo;
 			form.menuItemUndo.Enabled=true;*/
@@ -60,12 +65,16 @@ namespace raptor
 		private static void Clear_Redo(/*Visual_Flow_Form form*/)
 		{
 			num_redo=0;
+			//MainWindowViewModel.GetMainWindowViewModel().toggleRedoCommand = false;
 			/*form.redoButton.ImageIndex = No_Redo;
 			form.menuItemRedo.Enabled=false;*/
 		}
 
 		private static void Add_Redo_Action(Action new_action/*, Visual_Flow_Form form*/)
 		{
+			if(num_redo == 0){
+				MainWindowViewModel.GetMainWindowViewModel().toggleRedoCommand = true;
+			}
 			num_redo++;
 			/*form.redoButton.ImageIndex = Can_Redo;
 			form.menuItemRedo.Enabled=true;*/
@@ -84,6 +93,7 @@ namespace raptor
 			num_undo--;
 			if (num_undo  < 1)
 			{
+				MainWindowViewModel.GetMainWindowViewModel().toggleUndoCommand = false;
 				/*form.undoButton.ImageIndex = No_Undo;
 				form.menuItemUndo.Enabled=false;
 				form.modified = false;*/
@@ -95,9 +105,11 @@ namespace raptor
 			num_redo--;
 			if (num_redo  < 1)
 			{
+				MainWindowViewModel.GetMainWindowViewModel().toggleRedoCommand = false;
 				/*form.redoButton.ImageIndex = No_Redo;
 				form.menuItemRedo.Enabled=false;
 				form.modified = false;*/
+
 				num_redo = 0;
 			}
 		}
@@ -152,13 +164,11 @@ namespace raptor
 			new_action.clone = current.Start.Clone();
 			new_action.kind = Action_Kind.Change_Tab;
 			new_action.chart = current;
-            /*if (!Component.BARTPE && !Component.VM && !Component.MONO)
-            {
-                was_enabled = new_action.chart.tab_overlay.Enabled;
-                new_action.chart.tab_overlay.Enabled = false;
-                new_action.ink = new_action.chart.tab_overlay.Ink.Clone();
-                new_action.chart.tab_overlay.Enabled = was_enabled;
-            }*/
+            
+            // was_enabled = new_action.chart.tab_overlay.Enabled;
+            // new_action.chart.tab_overlay.Enabled = false;
+            // new_action.chart.tab_overlay.Enabled = was_enabled;
+
             Add_Undo_Action(new_action/*, form*/);
 			Clear_Redo(/*form*/);
 		}
@@ -169,6 +179,7 @@ namespace raptor
 			//Subchart current = null;
 			if (num_undo > 0 && current!=null)
 			{
+				ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
 				Action this_action = ((Action) Undo_array[num_undo-1]);
 				Action redo_action;
 				redo_action = new Action();
@@ -188,12 +199,12 @@ namespace raptor
 						break;
 					case Action_Kind.Add_Tab:
 						Add_Redo_Action(redo_action/*,form*/);
-						
+						tbs.Remove(this_action.chart);
 						//form.carlisle.TabPages.Remove(this_action.chart);
 						break;
 					case Action_Kind.Delete_Tab:
 						Add_Redo_Action(redo_action/*,form*/);
-						
+						tbs.Add(this_action.chart);
 						//form.carlisle.TabPages.Add(this_action.chart);
 						//form.carlisle.SelectedTab=this_action.chart;
 						break;
@@ -238,6 +249,7 @@ namespace raptor
 			//Subchart current = null;
 			if (num_redo > 0 && current!=null)
 			{
+				ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
 				Action this_action = ((Action) Redo_array[num_redo-1]);
 				Action undo_action;
 				undo_action = new Action();
@@ -257,13 +269,13 @@ namespace raptor
 						break;
 					case Action_Kind.Add_Tab:
 						Add_Undo_Action(undo_action/*,form*/);
-						
+						tbs.Add(this_action.chart);
 						//form.carlisle.TabPages.Add(this_action.chart);
 						//form.carlisle.SelectedTab=this_action.chart;
 						break;
 					case Action_Kind.Delete_Tab:
 						Add_Undo_Action(undo_action/*,form*/);
-						
+						tbs.Remove(this_action.chart);
 						//form.carlisle.TabPages.Remove(this_action.chart);
 						break;
 					case Action_Kind.Change_Tab:

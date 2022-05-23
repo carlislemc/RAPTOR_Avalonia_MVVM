@@ -52,6 +52,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //Syntax_Result res = interpreter_pkg.assignment_syntax(setValue, toValue);
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
             tbs.Add(new Subchart(setSubchartName));
+            Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count-1]);
             w.Close();
         }
 

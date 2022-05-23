@@ -177,8 +177,8 @@
       <Button Classes="CutButton" ToolTip.Tip="Cut" Command="{Binding OnCutCommand}"></Button>
       <Button Classes="CopyButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
       <Button Classes="PasteButton" ToolTip.Tip="Paste" Command="{Binding OnPasteCommand}"></Button>
-      <Button Classes="UndoButton" ToolTip.Tip="Undo" Command="{Binding OnUndoCommand}"></Button>
-      <Button Classes="RedoButton" ToolTip.Tip="Redo" Command="{Binding OnRedoCommand}"></Button>
+      <Button Classes="UndoButton" IsEnabled="{Binding toggleUndoCommand}" ToolTip.Tip="Undo" Command="{Binding OnUndoCommand}"></Button>
+      <Button Classes="RedoButton" IsEnabled="{Binding toggleRedoCommand}" ToolTip.Tip="Redo" Command="{Binding OnRedoCommand}"></Button>
       <Button Classes="PlayButton" ToolTip.Tip="Play" Command="{Binding OnExecuteCommand}"></Button>
       <Button Classes="PauseButton" ToolTip.Tip="Pause" Command="{Binding OnPauseCommand}"></Button>
       <Button Classes="StopButton" ToolTip.Tip="Reset" Command="{Binding OnResetCommand}"></Button>
@@ -221,7 +221,7 @@
 
     </DockPanel>
 
-    <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}">
+    <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}" SelectedIndex="{Binding setActiveTab}">
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
           <TextBlock Text="{Binding Header}">

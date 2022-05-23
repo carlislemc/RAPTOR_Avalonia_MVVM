@@ -239,6 +239,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             addMe.kind=Subchart_Kinds.Procedure;
             addMe.Num_Params = paramCount();
             tbs.Add(addMe);
+            Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count-1]);
             w.Close();
         }
 

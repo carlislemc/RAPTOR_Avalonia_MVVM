@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using RAPTOR_Avalonia_MVVM.Views;
+using numbers;
+using Avalonia;
 
 namespace raptor
 {
@@ -65,8 +67,9 @@ namespace raptor
         public string Header
         {
             get { return this.Text; }
-            set { Text = value;  }
+            set { Text = value; }
         }
+
         public Subchart Content()
         {
             return this;

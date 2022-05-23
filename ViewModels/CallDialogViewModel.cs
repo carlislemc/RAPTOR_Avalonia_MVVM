@@ -49,10 +49,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
         }
 
+        public Subchart getSubchart(){
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            ObservableCollection<Variable> vars = mw.theVariables;
+            ObservableCollection<Subchart> sc = mw.theTabs;
+            if(sc.Count == 1){
+                return sc[0];
+            }
+            else{
+                int i = mw.activeTab;
+                return sc[i];
+            }
+        }
 
         public void OnDoneCommand(){
             Syntax_Result res = interpreter_pkg.call_syntax(setProcedure);
             if(res.valid){
+                Undo_Stack.Make_Undoable(getSubchart());
                 r.text_str = setProcedure;
                 r.parse_tree = res.tree;
                 Text += "Done Call\n";

@@ -578,8 +578,27 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnResetCommand() { }
+
+        public bool isUndoable = false;
+        public bool toggleUndoCommand{
+            get{ return isUndoable; }
+            set{ this.RaiseAndSetIfChanged(ref isUndoable, value); }
+        }
         public void OnUndoCommand() {
             Undo_Stack.Undo_Action(this.mainSubchart());
+        }
+
+        public bool isRedoable = false;
+        public bool toggleRedoCommand{
+            get{ return isRedoable; }
+            set{ this.RaiseAndSetIfChanged(ref isRedoable, value); }
+        }
+
+        // need active tab so we know where to undo and redo changes.
+        public int activeTab = 0;
+        public int setActiveTab{
+            get{return activeTab;}
+            set{this.RaiseAndSetIfChanged(ref activeTab, value); }
         }
         public void OnRedoCommand() {
             Undo_Stack.Redo_Action(this.mainSubchart());
