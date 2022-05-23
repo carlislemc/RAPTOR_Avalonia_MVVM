@@ -682,40 +682,6 @@ namespace raptor
 				}
 			}
 		}
-	public class Variables {
-		private string Name;
-		public string name
-		{
-			get
-			{
-				return Name;
-			}
-			set
-			{
-				Name = value;
-			}
-		}
-		public string color
-        {
-			get
-            {
-				return "Red";
-            }
-        }
-		public string value { get; set; }
-
-		public ObservableCollection<Arr> values { get; set;} = new ObservableCollection<Arr>();
-		public string displayStr {
-			get {
-				if(values.Count == 0){
-					return Name + ": " + value;
-				} else {
-					return Name;
-				}
-				
-			}
-		}
-	}
 
 	public class Arr{
 		private string Name;
@@ -747,7 +713,6 @@ namespace raptor
 				return "Red";
             }
         }
-		public string len { get; set; }
 		public ObservableCollection<Arr2> values { get; set;} = new ObservableCollection<Arr2>();
 		public string displayStr {
 			get {
@@ -789,7 +754,6 @@ namespace raptor
 				return "Red";
             }
         }
-		public string len { get; set; }
 		public string displayStr {
 			get {
 				return name + ": " + value.V.ToString();	

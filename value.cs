@@ -152,7 +152,16 @@ namespace numbers
 
         internal static value make_string_value(string new_string)
         {
-            throw new NotImplementedException();
+            if(new_string.Contains(".")){
+                numbers.value ans = new numbers.value();
+                ans.V = Convert.ToDouble(new_string);
+                return ans;
+            }else{
+                numbers.value ans = new numbers.value();
+                ans.V = Convert.ToInt32(new_string);
+                return ans;
+            }
+            //throw new NotImplementedException();
         }
 
         public static bool is_character(value f)

@@ -18,6 +18,7 @@ using ReactiveUI;
 using System.Reactive;
 using interpreter;
 using numbers;
+using parse_tree;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -572,9 +573,83 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnSaveCommand() { }
         public void OnSaveAsCommand() { }
-        public void OnNextCommand() { }
-        public void OnPauseCommand() {
+        
+        public Component currentActiveComponent;
+        public Component activeComponent{
+            get{return currentActiveComponent;}
+            set{currentActiveComponent = value;}
+        }
+
+        public void OnNextCommand() {
+            if(activeComponent == null){
+                activeComponent = this.mainSubchart().Start;
+                activeComponent.running = true;
+            } else {
+                if(activeComponent.Successor == null){
+                    //for testing purposes -- when it reaches the end it restarts
+                    activeComponent.running = false;
+                    activeComponent = this.mainSubchart().Start;
+                    activeComponent.running = true;
+                    return;
+                }
+                if(activeComponent.GetType() == typeof(Rectangle)){
+                    Rectangle temp = (Rectangle)activeComponent;
+                    if(temp.kind == Rectangle.Kind_Of.Assignment){
+                        string ts = activeComponent.text_str;
+                        if(ts == ""){
+                            throw new NotImplementedException();
+                        }
+                        string[] thingy = ts.Split(":=");
+                        string name = thingy[0];
+                        string v = thingy[1];
+                        numbers.value val;
+                        if(v.Contains('"')){
+                            val = new numbers.value() {S=v.Split('"')[1]};
+                            val.Kind = Value_Kind.String_Kind;
+                        }else{
+                            val = numbers.Numbers.make_string_value(v);
+                        }
+                        if(name.Contains(",")){
+                            string[] n = name.Split('[');
+                            string[] fi = n[1].Split(',');
+                            int i1;
+                            int i2;
+                            try{
+                                i1 = Convert.ToInt32(fi[0]);
+                                i2 = Convert.ToInt32(fi[1].Substring(0, fi[1].Length-1));
+                            } catch {
+                                i1 = 0;
+                                i2 = 0;
+                            }
+                            Runtime.set2DArrayElement(n[0], i1, i2, val);
+                        } else if(name.Contains("[")){
+                            string[] n = name.Split('[');
+                            int i1;
+                            try{
+                                i1 = Convert.ToInt32(n[1].Substring(0, n[1].Length-1));
+                            } catch{
+                                i1 = 0;
+                            }
+                            Runtime.setArrayElement(n[0], i1, val);
+                        }
+                        else{
+                            Runtime.setVariable(name, val);
+                        }
+
+                    }
+                    activeComponent.running = false;
+                    activeComponent = activeComponent.Successor;
+                    activeComponent.running = true;
+                } else if(activeComponent.GetType() == typeof(IF_Control)){
+                    
+                }
+                
+            }           
+            
          }
+        public void OnPauseCommand() {
+
+        }
 
         public void OnNewCommand()
         {
@@ -590,10 +665,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             msBoxStandardWindow.Show();
         }
         public void OnResetExecuteCommand() { }
-        public void OnExecuteCommand() { 
+        public async void OnExecuteCommand() {
+            OnNextCommand(); 
+            await Task.Delay(1000);
+            while(activeComponent.Successor != null){
+                OnNextCommand();
+                await Task.Delay(1000);
+            }
         }
 
         public void OnStepCommand() {
+            OnNextCommand();
         }
 
         public void OnResetCommand() { }
