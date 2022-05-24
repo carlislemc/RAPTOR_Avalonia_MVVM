@@ -607,7 +607,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             val = new numbers.value() {S=v.Split('"')[1]};
                             val.Kind = Value_Kind.String_Kind;
                         }else{
-                            val = numbers.Numbers.make_string_value(v);
+                            val = numbers.Numbers.make_value__5(v);
                         }
                         if(name.Contains(",")){
                             string[] n = name.Split('[');
@@ -637,12 +637,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
 
                     }
-                    activeComponent.running = false;
-                    activeComponent = activeComponent.Successor;
-                    activeComponent.running = true;
+                    
                 } else if(activeComponent.GetType() == typeof(IF_Control)){
                     
                 }
+                activeComponent.running = false;
+                activeComponent = activeComponent.Successor;
+                activeComponent.running = true;
                 
             }           
             

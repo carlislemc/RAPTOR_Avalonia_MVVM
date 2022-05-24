@@ -116,6 +116,18 @@ namespace numbers
             }
         }
 
+        internal static value make_value__5(string s)
+        {
+            if(s.Contains(".")){
+                numbers.value ans = new numbers.value();
+                ans.V = Convert.ToDouble(s);
+                return ans;
+            }else{
+                numbers.value ans = new numbers.value();
+                ans.V = Convert.ToInt32(s);
+                return ans;
+            }
+        }
         internal static value make_value__4(bool b)
         {
             if(b){
@@ -152,15 +164,7 @@ namespace numbers
 
         internal static value make_string_value(string new_string)
         {
-            if(new_string.Contains(".")){
-                numbers.value ans = new numbers.value();
-                ans.V = Convert.ToDouble(new_string);
-                return ans;
-            }else{
-                numbers.value ans = new numbers.value();
-                ans.V = Convert.ToInt32(new_string);
-                return ans;
-            }
+            return new value { V = 0.0, C = ' ', S = new_string, Kind = Value_Kind.String_Kind, Object = null };
             //throw new NotImplementedException();
         }
 

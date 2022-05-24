@@ -334,11 +334,16 @@ namespace raptor
 				}*/
 				
 				int count = numbers.Numbers.integer_of(this.values[0].value);
+				bool str = this.values[1].value.Kind == numbers.Value_Kind.String_Kind;
 				if(index > count){
 					this.values.RemoveAt(0);
 					this.values.Insert(0, new Arr(){name="Size",value=numbers.Numbers.make_value__3(index)});
 					for(int k = count+1; k <= index; k++){
-						this.values.Add(new Arr(){name="<" + k + ">", value=numbers.Numbers.make_value__2(0.0)});
+						if(!str){
+							this.values.Add(new Arr(){name="<" + k + ">", value=numbers.Numbers.make_value__2(0.0)});
+						} else{
+							this.values.Add(new Arr(){name="<" + k + ">", value=numbers.Numbers.make_string_value("")});
+						}
 					}
 				}
 				
@@ -486,6 +491,7 @@ namespace raptor
 				int count = numbers.Numbers.integer_of(this.values[0].value);
 				ObservableCollection<Arr> val1 = this.values;
 				int curCols = numbers.Numbers.integer_of(val1[1].values[0].value);
+				bool str = Value.Kind == numbers.Value_Kind.String_Kind;
 				if(index1 > count){
 					// handle adding more rows
 					val1.RemoveAt(0);
@@ -494,9 +500,18 @@ namespace raptor
 						ObservableCollection<Arr2> oc = new ObservableCollection<Arr2>();
 						oc.Add(new Arr2(){name="Size", value=numbers.Numbers.make_value__3(curCols)});
 						for(int j = 1; j <= curCols; j++){
-							oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_value__2(0.0)});
+							if(!str){
+								oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_value__2(0.0)});
+							} else{
+								//Variable asdfasdf = new Variable("im in the thing", new numbers.value() {Kind = numbers.Value_Kind.String_Kind, S="hi"});
+								oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_string_value("")});
+							}
 						}
-						val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc});
+						if(!str){
+							val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc});
+						} else{
+							val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_string_value(""), values=oc});
+						}
 					}
 					count = index1;
 				}
@@ -508,7 +523,11 @@ namespace raptor
 						val2.RemoveAt(0);
 						val2.Insert(0, new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
 						for(int k = count2+1; k <= index2; k++){
-							val2.Add(new Arr2() {name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
+							if(!str){
+								val2.Add(new Arr2() {name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
+							} else{
+								val2.Add(new Arr2() {name="<" + k + ">",value=numbers.Numbers.make_string_value("")});
+							}
 						}
 						count2 = index2;
 					}
@@ -719,7 +738,11 @@ namespace raptor
 				if(values.Count > 0){
 					return name + "[]";
 				} else{
-					return name + ": " + value.V.ToString();
+					if(value.Kind != numbers.Value_Kind.String_Kind){
+						return name + ": " + value.V.ToString();
+					} else{
+						return name + ": " + '"' + value.S + '"';
+					}
 				}
 			}
 		}
@@ -756,7 +779,11 @@ namespace raptor
         }
 		public string displayStr {
 			get {
-				return name + ": " + value.V.ToString();	
+				if(value.Kind != numbers.Value_Kind.String_Kind){
+					return name + ": " + value.V.ToString();
+				} else{
+					return name + ": " + '"' + value.S + '"';
+				}
 			}
 		}
 	}
