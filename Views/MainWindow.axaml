@@ -184,7 +184,15 @@
       <Button Classes="StopButton" ToolTip.Tip="Reset" Command="{Binding OnResetCommand}"></Button>
       <Button Classes="NextButton" ToolTip.Tip="Next" Command="{Binding OnNextCommand}"></Button>
 
+      <StackPanel Margin="50,0,0,0">
+        <Slider Name="speedSlider" Width="100"  
+          Background="Gray" Maximum="100" Minimum="10" Value="{Binding setSpeed}">  
+        </Slider>
+      </StackPanel>
+      <TextBlock Text="{Binding setSpeed}" Height="15"/>
+
     </StackPanel>
+    
     <DockPanel Width="129" DockPanel.Dock="Left">
       <UserControl Background="White" Height="239" DockPanel.Dock="Top">
         <controls:SymbolsControl Height="239">

@@ -557,6 +557,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             Object thing = await ClipboardMultiplatform.GetDataObjectAsync();
             if(thing != null){
                 Component obj = ((Clipboard_Data)thing).symbols;
+                Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
                 this.theTabs[this.activeTab].Start.insert(obj, x_position, y_position, 0);
             }
             
@@ -597,7 +598,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     if(temp.kind == Rectangle.Kind_Of.Assignment){
                         string ts = activeComponent.text_str;
                         if(ts == ""){
-                            throw new NotImplementedException();
+                            throw new Exception("Assignment not defined!");
                         }
                         string[] thingy = ts.Split(":=");
                         string name = thingy[0];
@@ -639,7 +640,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     }
                     
                 } else if(activeComponent.GetType() == typeof(IF_Control)){
-                    
+                    IF_Control temp = (IF_Control)activeComponent;
+                    string ts = activeComponent.text_str;
+                    if(ts == ""){
+                        throw new Exception("Selection not defined!");
+                    }
+                    parse_tree.Boolean_Expression state = (parse_tree.Boolean_Expression)temp.parse_tree;
+                    Variable v = new Variable(state.left.left + "", new numbers.value() {V=3});
+                    temp.text_str = ((Relation)state.left.left).right + "";
+
                 }
                 activeComponent.running = false;
                 activeComponent = activeComponent.Successor;
@@ -649,7 +658,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             
          }
         public void OnPauseCommand() {
-
+            
         }
 
         public void OnNewCommand()
@@ -665,13 +674,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 });
             msBoxStandardWindow.Show();
         }
-        public void OnResetExecuteCommand() { }
+        public void OnResetExecuteCommand() {
+            OnResetCommand();
+            OnExecuteCommand();
+        }
+
+        public int executeSpeed = 70;
+        public int setSpeed{
+            get{return executeSpeed;}
+            set{this.RaiseAndSetIfChanged(ref executeSpeed, value);}
+        }
         public async void OnExecuteCommand() {
-            OnNextCommand(); 
-            await Task.Delay(1000);
+            OnNextCommand();
+            await Task.Delay((int)(5000 * (1-((double)setSpeed/100))));
             while(activeComponent.Successor != null){
                 OnNextCommand();
-                await Task.Delay(1000);
+                await Task.Delay((int)(5000 * (1-((double)setSpeed/100))));
             }
         }
 
@@ -679,7 +697,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             OnNextCommand();
         }
 
-        public void OnResetCommand() { }
+        public void OnResetCommand() {
+            FillWatch();
+            if(this.activeComponent == null){
+                return;
+            }
+            if(this.activeComponent.running){
+                this.activeComponent.running = false;
+                this.activeComponent = null;
+            }
+        }
 
         public bool isUndoable = false;
         public bool toggleUndoCommand{

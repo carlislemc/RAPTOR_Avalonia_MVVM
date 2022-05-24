@@ -7,6 +7,7 @@ using System.Reactive;
 using RAPTOR_Avalonia_MVVM.Views;
 using numbers;
 using Avalonia;
+using System.Windows.Input;
 
 namespace raptor
 {
