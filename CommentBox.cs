@@ -2,6 +2,9 @@ using System;
 
 using System.Runtime.Serialization;
 using System.Diagnostics;
+using RAPTOR_Avalonia_MVVM;
+using Avalonia;
+using RAPTOR_Avalonia_MVVM.Views;
 
 
 namespace raptor
@@ -32,6 +35,12 @@ namespace raptor
 		public CommentBox(Component my_parent)
 		{
 			parent = my_parent;
+			this.Text_Array = new string[1];
+			this.Text_Array[0] = "";
+		}
+
+		public CommentBox(){
+			parent = new Rectangle(10, 10, "test", Rectangle.Kind_Of.Assignment);
 			this.Text_Array = new string[1];
 			this.Text_Array[0] = "";
 		}
@@ -296,10 +305,10 @@ namespace raptor
 		}
 
 		// Get the text from a pop-up dialog and then set it?
-		public void setText(Visual_Flow_Form form)
+		public void setText(/*Visual_Flow_Form form*/)
 		{
-			//Comment_Dlg CD = new Comment_Dlg(this,form);
-			//CD.ShowDialog();
+			CommentDialog CD = new CommentDialog(this);
+			CD.ShowDialog(MainWindow.topWindow);
 			if (this.text_change)
 			{
 				//this.resize(form.CreateGraphics());

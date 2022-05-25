@@ -90,6 +90,7 @@ namespace raptor
         public ReactiveCommand<Unit, Unit> InsertSelectionCommand { get; set; }
         public ReactiveCommand<Unit, Unit> InsertLoopCommand { get; set; }
         public ReactiveCommand<Unit, Unit> EditCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> CommentCommand { get; set; }
         public ReactiveCommand<Unit, Unit> ToggleBreakpointCommand { get; set; }
         public ReactiveCommand<Unit, Unit> CutCommand { get; set; }
         public ReactiveCommand<Unit, Unit> CopyCommand { get; set; }
@@ -104,6 +105,7 @@ namespace raptor
             InsertSelectionCommand = ReactiveCommand.Create(OnInsertSelectionCommand);
             InsertLoopCommand = ReactiveCommand.Create(OnInsertLoopCommand);
             EditCommand = ReactiveCommand.Create(OnEditCommand);
+            CommentCommand = ReactiveCommand.Create(OnCommentCommand);
             ToggleBreakpointCommand = ReactiveCommand.Create(OnToggleBreakpointCommand);
             CutCommand = ReactiveCommand.Create(OnCutCommand);
             CopyCommand = ReactiveCommand.Create(OnCopyCommand);
@@ -123,6 +125,7 @@ namespace raptor
             OverSymbolMenuItemsFunction = new[]
 {
                 new MenuItemViewModel { Header = "_Edit", Command = EditCommand },
+                new MenuItemViewModel { Header = "Comment", Command = CommentCommand },
                 new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand },
                 new MenuItemViewModel { Header = "C_ut", Command = CutCommand },
                 new MenuItemViewModel { Header = "C_opy", Command = CopyCommand },
@@ -216,6 +219,11 @@ namespace raptor
         }
         public void OnEditCommand() {
             MainWindowViewModel.GetMainWindowViewModel().OnEditCommand();
+        }
+
+        public void OnCommentCommand(){
+            CommentBox cb = new CommentBox();
+            cb.setText();
         }
         public void OnToggleBreakpointCommand() { }
         public void OnCutCommand() {

@@ -80,10 +80,12 @@ namespace parse_tree
     public abstract class Assignment : Statement {
         public Lhs? lhs;
         public Lsuffix? lsuffix;
+
     }
     public class Expr_Assignment : Assignment
     {
         public Expression expr_part;
+
     }
 
     // Statement => (Procedure_Call | Assignment) [;] End_Input

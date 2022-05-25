@@ -49,6 +49,25 @@
     </Menu>
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
       <StackPanel.Styles>
+
+        <Style Selector="Button.NewButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/NEW.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.NewButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/NEW.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
         <Style Selector="Button.NewButton">
           <Setter Property="FontSize" Value="30" />
           <Setter Property="Width" Value="24" />
@@ -59,6 +78,26 @@
             </Setter.Value>
           </Setter>
         </Style>
+
+      <Style Selector="Button.OpenButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/OPEN.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.OpenButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/OPEN.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+
       <Style Selector="Button.OpenButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -69,6 +108,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.SaveButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/SAVE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.SaveButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/SAVE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.SaveButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -79,6 +137,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.CutButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/CUT.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.CutButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/CUT.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.CutButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -89,6 +166,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.CopyButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/COPY.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.CopyButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/COPY.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.CopyButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -99,6 +195,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.PasteButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/PASTE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PasteButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/PASTE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.PasteButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -109,6 +224,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.UndoButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.UndoButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.UndoButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -119,6 +253,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.RedoButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.RedoButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.RedoButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -129,6 +282,26 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.PlayButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Play.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PlayButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Play.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+
       <Style Selector="Button.PlayButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -139,6 +312,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.PauseButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Pause.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PauseButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Pause.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+      
       <Style Selector="Button.PauseButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -149,6 +341,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+      
+       <Style Selector="Button.StopButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Stop.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.StopButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Stop.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.StopButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />
@@ -159,6 +370,25 @@
           </Setter.Value>
         </Setter>
       </Style>
+
+      <Style Selector="Button.NextButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Next.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.NextButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Next.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
       <Style Selector="Button.NextButton">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="Width" Value="24" />

@@ -1252,7 +1252,7 @@ namespace raptor
             object o=gen.If_Start();
             if (this.parse_tree!=null)
 			{
-				interpreter_pkg.emit_code(this.parse_tree,this.Text,gen);
+				interpreter_pkg.Emit_Code(this.parse_tree,this.Text,gen);
 			}
             gen.If_Then_Part(o);
 			if (this.yes_child!=null)

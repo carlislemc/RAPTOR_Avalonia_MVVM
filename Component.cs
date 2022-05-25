@@ -431,7 +431,7 @@ namespace raptor
 
 		// Get the comment text from a pop-up dialog and then set it?
 		public virtual void addComment(Visual_Flow_Form form)
-		{
+		{	/*
 			if (this.My_Comment == null)
 			{
 				form.Make_Undoable();
@@ -448,6 +448,7 @@ namespace raptor
 				this.My_Comment.Scale(form.scale);
 			}
 			this.My_Comment.setText(form);
+			*/
 		}
 
 
