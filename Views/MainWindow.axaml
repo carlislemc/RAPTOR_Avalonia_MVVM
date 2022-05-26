@@ -477,7 +477,7 @@
           <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <!-- we need to set the background of the UserControl so that it gets the mouse clicks outside
             of the flowchart symbols -->
-            <UserControl Width="200" Height="250"  Background="Black" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
+            <UserControl Width="200" Height="250" Background="Black" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
 
               <controls:FlowchartControl Tag="{Binding Content}" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
                 <controls:FlowchartControl.ContextMenu>

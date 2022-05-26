@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace raptor
 {
@@ -430,25 +431,25 @@ namespace raptor
 		}
 
 		// Get the comment text from a pop-up dialog and then set it?
-		public virtual void addComment(Visual_Flow_Form form)
-		{	/*
+		public virtual void addComment(/*Visual_Flow_Form form*/)
+		{	
 			if (this.My_Comment == null)
 			{
-				form.Make_Undoable();
+				Undo_Stack.Make_Undoable(MainWindowViewModel.GetMainWindowViewModel().theTabs[MainWindowViewModel.GetMainWindowViewModel().activeTab]);
 				this.My_Comment = new CommentBox(this);
 				if (this.drawing_text_width > this.W)
 				{
-					this.My_Comment.X = (int) (((float) (this.drawing_text_width/2 + 20))/form.scale);
+					this.My_Comment.X = (int) (((float) (this.drawing_text_width/2 + 20))/*/form.scale*/);
 				}
 				else
 				{
-					this.My_Comment.X = (int) (((float) (this.W/2+20))/form.scale);
+					this.My_Comment.X = (int) (((float) (this.W/2+20))/*/form.scale*/);
 				}
 				this.My_Comment.Y = 0;
-				this.My_Comment.Scale(form.scale);
+				//this.My_Comment.Scale(form.scale);
 			}
-			this.My_Comment.setText(form);
-			*/
+			this.My_Comment.setText();
+			
 		}
 
 

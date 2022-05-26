@@ -17,7 +17,8 @@ using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
 using interpreter;
-
+using Avalonia.Media;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -57,10 +58,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        public void OnDoneCommand(){
+        public void OnDoneCommand(DrawingContext d){
             Undo_Stack.Make_Undoable(getSubchart());
-            //Balloon.Make_Path(c.Get_Bounds(), Balloon.Corner.Upper_Right);
-            //c.draw(,50,50);
+            if(Text != ""){
+                c.Text_Array[c.Text_Array.Length-1] = Text;
+                c.text_change = true;
+            }
             w.Close();            
         }
 

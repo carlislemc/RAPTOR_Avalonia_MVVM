@@ -222,8 +222,14 @@ namespace raptor
         }
 
         public void OnCommentCommand(){
-            CommentBox cb = new CommentBox();
-            cb.setText();
+            Component ans = Start;
+            while(!ans.selected){
+                if(ans.Successor == null){
+                    return;
+                }
+                ans = ans.Successor;
+            }
+            ans.addComment();
         }
         public void OnToggleBreakpointCommand() { }
         public void OnCutCommand() {

@@ -113,7 +113,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             drawingContext.DrawRectangle(PensBrushes.whitebrush, PensBrushes.white_pen,
                 new Rect(new Point(0, 0), new Point(draw_width, draw_height)));
             sc.Start.draw(drawingContext, x1, y1);
-
         }
     }
 }
