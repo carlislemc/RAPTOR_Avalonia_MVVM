@@ -152,6 +152,10 @@ namespace raptor
 			this.width_of_text = max_width;
 			W = width_of_text + 4;
 			H = height_of_text * this.num_lines + 4;
+
+			// fix for rectangle only, stretches other components.
+			//parent.W += this.W+1000;
+			parent.wide_footprint(gr);
 		}
 
 		public void draw(Avalonia.Media.DrawingContext gr, int parent_x, int parent_y)
@@ -197,7 +201,7 @@ namespace raptor
 			}
 			else
 			{
-				gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W, H));
+				gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W+5, H));
 				/*gr.DrawPath(PensBrushes.green_pen, Balloon.Make_Path(
 					new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
 					corner));*/
@@ -309,7 +313,7 @@ namespace raptor
 			CD.ShowDialog(MainWindow.topWindow);
 			if (this.text_change)
 			{
-				
+
 				//this.resize(form.CreateGraphics());
 				this.text_change = false;
 			}

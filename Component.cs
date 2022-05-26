@@ -700,11 +700,34 @@ namespace raptor
 			}
 		}
 
+		private int commentLength(){
+			if(My_Comment == null){
+				return 0;
+			}
+			if(My_Comment.Text_Array == null){
+				return 0;
+			}
+			int ans = 0;
+			foreach(string s in My_Comment.Text_Array){
+				int temp = s.Length;
+				if(temp > ans){
+					ans = temp;
+				}
+			}
+
+			return ans * 5;
+		}
 		public virtual void init()
 		{
-			FP.left = W/2;
-			FP.right = W/2;
-			FP.height = H;
+			if(this.My_Comment != null){
+				FP.left = W/2 + commentLength();
+				FP.right = W/2 + commentLength();
+				FP.height = H;
+			} else{
+				FP.left = W/2;
+				FP.right = W/2;
+				FP.height = H;
+			}
 		}
 		public virtual void wide_footprint(Avalonia.Media.DrawingContext gr)
 		{
