@@ -11,6 +11,10 @@ using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace raptor
 {
+	public class RuntimeException : Exception
+    {
+		public RuntimeException(string s) : base(s) { }
+    }
 	public class Variable
 	{
 			const int max_array_size = 10000;

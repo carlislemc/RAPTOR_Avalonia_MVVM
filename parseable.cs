@@ -113,35 +113,8 @@ namespace parse_tree
         public Lsuffix? lsuffix;
 
         // execute the lhs of an assignment, takes in a value v --> what the rhs produced
-        public void Execute(Lexer l, numbers.value v){
-            
-            // execute lhs
-            if(lhs.GetType() == typeof(Id_Lhs)){
-                Id_Lhs idLhs = (Id_Lhs)lhs;
-                string varname = idLhs.Execute(l);
-                Runtime.setVariable(varname, v);
+        public abstract void Execute(Lexer l);
 
-            } else if(lhs.GetType() == typeof(Array_Ref_Lhs)){
-                Array_Ref_Lhs alhs = (Array_Ref_Lhs)lhs;
-                object[] comps = alhs.Execute(l);
-                string varname = (string)comps[0];
-                numbers.value ref1 = (numbers.value)comps[1];
-                int i = numbers.Numbers.integer_of(ref1);
-                Runtime.setArrayElement(varname, i, v);
-
-            } else if(lhs.GetType() == typeof(Array_2D_Ref_Lhs)){
-                Array_2D_Ref_Lhs alhs2 = (Array_2D_Ref_Lhs)lhs;
-                object[] comps = alhs2.Execute(l);
-                string varname = (string)comps[0];
-                numbers.value ref1 = (numbers.value)comps[1];
-                int i1 = numbers.Numbers.integer_of(ref1);
-                numbers.value ref2 = (numbers.value)comps[2];
-                int i2 = numbers.Numbers.integer_of(ref2);
-                Runtime.set2DArrayElement(varname, i1, i2, v);
-            }
-            
-            
-        }
 
     }
     public class Expr_Assignment : Assignment
@@ -149,10 +122,9 @@ namespace parse_tree
         public Expression expr_part;
 
         // execute expr_part (rhs) return the value of expr_part
-        public void Execute(Lexer l){
+        public override void Execute(Lexer l){
             numbers.value val = expr_part.Execute(l); /* get rhs into a value */
-            Execute(l, val);
-            
+            this.lhs.Execute(l, val);
         }
 
     }
@@ -161,7 +133,9 @@ namespace parse_tree
     public abstract class Statement : Parseable { }
 
     // Lhs => id[\[Expression[, Expression]\]]
-    public class Lhs { }
+    public abstract class Lhs {
+        public abstract void Execute(Lexer l, numbers.value v);
+    }
     public class Id_Lhs : Lhs
     {
         public Token id;
@@ -170,9 +144,9 @@ namespace parse_tree
             this.id = id;
         }
 
-        public string Execute(Lexer l){
-
-            return l.Get_Text(id.start, id.finish);
+        public override void Execute(Lexer l, numbers.value v){
+           string varname = l.Get_Text(id.start, id.finish);
+           Runtime.setVariable(varname, v);
         }
 
     }
@@ -184,14 +158,16 @@ namespace parse_tree
             this.reference = reference;
         }
 
-        public object[] Execute(Lexer l){
-            object[] ans = new object[2];
-            string name = l.Get_Text(id.start, id.finish);
-            ans[0] = name;
-
-            numbers.value val = reference.Execute(l);
-            ans[1] = val;
-            return ans;
+        public override void Execute(Lexer l, numbers.value v){
+            numbers.value ref_val = reference.Execute(l);
+            string varname = l.Get_Text(id.start, id.finish);
+            if (!numbers.Numbers.is_integer(ref_val))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val) +
+                    " not a valid array location--must be integer");
+            }
+            int i = numbers.Numbers.integer_of(ref_val);
+            Runtime.setArrayElement(varname, i, v);
         }
 
     }
@@ -203,17 +179,23 @@ namespace parse_tree
             this.reference2 = ref2;
         }
 
-        public object[] Execute(Lexer l){
-            object[] ans = new object[3];
-            string name = l.Get_Text(id.start, id.finish);
-            ans[0] = name;
-
-            numbers.value val = reference.Execute(l);
-            ans[1] = val;
-
-            numbers.value val2 = reference2.Execute(l);
-            ans[2] = val2;
-            return ans;
+        public override void Execute(Lexer l, numbers.value v){
+            numbers.value ref_val1 = reference.Execute(l);
+            if (!numbers.Numbers.is_integer(ref_val1))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val1) +
+                    " not a valid array location--must be integer");
+            }
+            numbers.value ref_val2 = reference2.Execute(l);
+            if (!numbers.Numbers.is_integer(ref_val2))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val2) +
+                    " not a valid array location--must be integer");
+            }
+            string varname = l.Get_Text(id.start, id.finish);
+            int i1 = numbers.Numbers.integer_of(ref_val1);
+            int i2 = numbers.Numbers.integer_of(ref_val2);
+            Runtime.set2DArrayElement(varname, i1, i2, v);
         }
 
     }
