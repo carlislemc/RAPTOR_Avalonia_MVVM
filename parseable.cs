@@ -43,49 +43,55 @@ namespace parse_tree
             return left.Execute(l);
         }
 
-        /*public numbers.value Execute(Lexer l){
-            if(left.GetType() == typeof(Add)){
-                Add leftAdd = (Add)left;
-                numbers.value val = leftAdd.Exectue(l);
-                return val;
-
-            } else if(left.GetType() == typeof(Mult_Add)){
-                Mult_Add leftMultAdd = (Mult_Add)left;
-                numbers.value val = leftMultAdd.Exectue(l);
-                return val;
-               
-            } else if(left.GetType() == typeof(Div_Add)){
-                Div_Add leftDivAdd = (Div_Add)left;
-                numbers.value val = leftDivAdd.Exectue(l);
-                return val;
-                
-            } else if(left.GetType() == typeof(Mod_Add)){
-                Mod_Add leftModAdd = (Mod_Add)left;
-                numbers.value val = leftModAdd.Exectue(l);
-                return val;
-
-            } else if (left.GetType() == typeof(Rem_Add)){
-                Rem_Add leftRemAdd = (Rem_Add)left;
-                numbers.value val = leftRemAdd.Exectue(l);
-                return val;
-
-            }
-
-            return new numbers.value();
-        }*/
     }
     public abstract class Binary_Expression : Expression
     {
         public Expression right;
         public Binary_Expression(Value_Parseable left) : base(left) { }
+
     }
     public class Add_Expression : Binary_Expression
     {
         public Add_Expression(Value_Parseable left) : base(left) { }
+
+        public override numbers.value Execute(Lexer l){
+
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V + second.V};
+            } else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.String_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.S.Replace("\"","")};
+            } else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
+                ans = new numbers.value() {V=first.C + second.C};
+            }else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.V};
+            }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.String_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.V + second.S.Replace("\"","")};
+            }
+            else {
+                throw new Exception("Cannot add type: [" + first.Kind + "] from type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
     }
     public class Minus_Expression : Binary_Expression
     {
         public Minus_Expression(Value_Parseable left) : base(left) { }
+
+        public override numbers.value Execute(Lexer l){
+
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V - second.V};
+            } else{
+                throw new Exception("Cannot subtract type: [" + first.Kind + "] from type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
 
     }
 
@@ -368,7 +374,7 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             Number_Expon ne = (Number_Expon)e;
             numbers.value temp = ne.Execute(l);
-            temp.V = temp.V * -1;
+            temp.V = temp.V * -1 - 1;
             return temp;
         }
 
@@ -464,37 +470,7 @@ namespace parse_tree
 
         public override numbers.value Execute(Lexer l){
             return left.Execute(l);
-
-            // if(left.GetType() == typeof(Number_Expon)){
-            //     Number_Expon v = (Number_Expon)left;
-            //     return v.Execute(l);
-            // }else if (left.GetType() == typeof(String_Expon)){
-            //     String_Expon s = (String_Expon)left;
-            //     return s.Execute(l); 
-            // } else if(left.GetType() == typeof(Negative_Expon)){
-            //     Negative_Expon n = (Negative_Expon)left;
-            //     return n.Execute(l);
-
-            // }else if(left.GetType() == typeof(Paren_Expon)){
-            //     Paren_Expon p = (Paren_Expon)left;
-            //     return p.Execute(l);
-
-            // }else if(left.GetType() == typeof(Character_Expon)){
-            //     Character_Expon c = (Character_Expon)left;
-            //     return c.Execute(l);
-
-            // }else if(left.GetType() == typeof(Rhs_Expon)){
-            //     Rhs_Expon r = (Rhs_Expon)left;
-            //     return r.Execute(l);
-
-            // }else{
-            //     Variable vvv = new Variable(left.GetType() + "" , new numbers.value(){V=11});
-            // }
-            // return new numbers.value();
         }
-
-
-
 
     }
     public class Expon_Mult : Mult
