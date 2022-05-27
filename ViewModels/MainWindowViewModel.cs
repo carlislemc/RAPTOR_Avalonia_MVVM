@@ -596,59 +596,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if(activeComponent.GetType() == typeof(Rectangle)){
                     Rectangle temp = (Rectangle)activeComponent;
                     if(temp.kind == Rectangle.Kind_Of.Assignment){
-                        string ts = activeComponent.text_str;
-                        if(ts == ""){
-                            throw new Exception("Assignment not defined!");
+                        string str = temp.text_str;
+                        if(temp.text_str == ""){
+                            throw new Exception("Assignment not instantiated");
                         }
-                        string[] thingy = ts.Split(":=");
-                        string name = thingy[0];
-                        string v = thingy[1];
-                        numbers.value val;
-                        if(v.Contains('"')){
-                            val = new numbers.value() {S=v.Split('"')[1]};
-                            val.Kind = Value_Kind.String_Kind;
-                        }else{
-                            val = numbers.Numbers.make_value__5(v);
+                        Lexer l = new Lexer(str);
+                        if(temp.parse_tree != null){
+                            Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
+                            ea.Execute(l);
+                            
                         }
-                        if(name.Contains(",")){
-                            string[] n = name.Split('[');
-                            string[] fi = n[1].Split(',');
-                            int i1;
-                            int i2;
-                            try{
-                                i1 = Convert.ToInt32(fi[0]);
-                                i2 = Convert.ToInt32(fi[1].Substring(0, fi[1].Length-1));
-                            } catch {
-                                i1 = 0;
-                                i2 = 0;
-                            }
-                            Runtime.set2DArrayElement(n[0], i1, i2, val);
-                        } else if(name.Contains("[")){
-                            string[] n = name.Split('[');
-                            int i1;
-                            try{
-                                i1 = Convert.ToInt32(n[1].Substring(0, n[1].Length-1));
-                            } catch{
-                                i1 = 0;
-                            }
-                            Runtime.setArrayElement(n[0], i1, val);
-                        }
-                        else{
-                            Runtime.setVariable(name, val);
-                        }
+
 
                     }
                     
-                } else if(activeComponent.GetType() == typeof(IF_Control)){
-                    IF_Control temp = (IF_Control)activeComponent;
-                    string ts = activeComponent.text_str;
-                    if(ts == ""){
-                        throw new Exception("Selection not defined!");
-                    }
-                    parse_tree.Boolean_Expression state = (parse_tree.Boolean_Expression)temp.parse_tree;
-                    Variable v = new Variable(state.left.left + "", new numbers.value() {V=3});
-                    temp.text_str = ((Relation)state.left.left).right + "";
-
                 }
                 activeComponent.running = false;
                 activeComponent = activeComponent.Successor;

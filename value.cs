@@ -78,7 +78,7 @@ namespace numbers
         {
             if (is_integer(v) && !Precision_Set)
             {
-                return Convert.ToString(((int) v.V+0.1));
+                return Convert.ToString(((int) (v.V+0.1)));
             }
             else
             {
@@ -121,10 +121,12 @@ namespace numbers
             if(s.Contains(".")){
                 numbers.value ans = new numbers.value();
                 ans.V = Convert.ToDouble(s);
+                ans.Kind = Value_Kind.Number_Kind;
                 return ans;
             }else{
                 numbers.value ans = new numbers.value();
                 ans.V = Convert.ToInt32(s);
+                ans.Kind = Value_Kind.Number_Kind;
                 return ans;
             }
         }

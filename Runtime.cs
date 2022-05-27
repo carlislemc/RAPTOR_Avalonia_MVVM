@@ -580,7 +580,6 @@ namespace raptor
 					int count = numbers.Numbers.integer_of(val[0].value);
 					if (count >= index)
 					{
-						Variable newGuy = new Variable("Im new", val[index].value);
 						return val[index].value;
 					}
 					else
@@ -1041,7 +1040,7 @@ namespace raptor
 		// as a double or return the smallest integer if the
 		// variable does not currently exist.
 		//****************************************************
-		private static numbers.value getVariable_Delegate(string s)
+		public static numbers.value getVariable(string s)
 		{
 			Variable? temp=Runtime.Lookup_Variable(s);
 
@@ -1082,6 +1081,7 @@ namespace raptor
             }
             
 		}
+		/*
 		private delegate numbers.value getVariable_Delegate_Type(string s);
 		private static getVariable_Delegate_Type getVariable_delegate=
 			new getVariable_Delegate_Type(getVariable_Delegate);
@@ -1100,6 +1100,7 @@ namespace raptor
 			return null;
             //return numbers.Numbers.object_of((numbers.value)watchBox.Invoke(getVariable_delegate, parameters));
         }
+		*/
 		//****************************************************
 		// getVariable
 		// Returns the current value of an existing variable

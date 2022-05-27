@@ -17,7 +17,7 @@ namespace parse_tree
     }
     public class Expression : Value_Parseable
     {
-        Value_Parseable left;
+        public Value_Parseable left;
         public Expression(Value_Parseable left)
         {
             this.left = left;
@@ -37,6 +37,37 @@ namespace parse_tree
                 }
 
             }
+        }
+
+        public numbers.value Execute(Lexer l){
+            if(left.GetType() == typeof(Add)){
+                Add leftAdd = (Add)left;
+                numbers.value val = leftAdd.Exectue(l);
+                return val;
+
+            } else if(left.GetType() == typeof(Mult_Add)){
+                Mult_Add leftMultAdd = (Mult_Add)left;
+                numbers.value val = leftMultAdd.Exectue(l);
+                return val;
+               
+            } else if(left.GetType() == typeof(Div_Add)){
+                Div_Add leftDivAdd = (Div_Add)left;
+                numbers.value val = leftDivAdd.Exectue(l);
+                return val;
+                
+            } else if(left.GetType() == typeof(Mod_Add)){
+                Mod_Add leftModAdd = (Mod_Add)left;
+                numbers.value val = leftModAdd.Exectue(l);
+                return val;
+
+            } else if (left.GetType() == typeof(Rem_Add)){
+                Rem_Add leftRemAdd = (Rem_Add)left;
+                numbers.value val = leftRemAdd.Exectue(l);
+                return val;
+
+            }
+
+            return new numbers.value();
         }
     }
     public abstract class Binary_Expression : Expression
@@ -81,10 +112,48 @@ namespace parse_tree
         public Lhs? lhs;
         public Lsuffix? lsuffix;
 
+        // execute the lhs of an assignment, takes in a value v --> what the rhs produced
+        public void Execute(Lexer l, numbers.value v){
+            
+            // execute lhs
+            if(lhs.GetType() == typeof(Id_Lhs)){
+                Id_Lhs idLhs = (Id_Lhs)lhs;
+                string varname = idLhs.Execute(l);
+                Runtime.setVariable(varname, v);
+
+            } else if(lhs.GetType() == typeof(Array_Ref_Lhs)){
+                Array_Ref_Lhs alhs = (Array_Ref_Lhs)lhs;
+                object[] comps = alhs.Execute(l);
+                string varname = (string)comps[0];
+                numbers.value ref1 = (numbers.value)comps[1];
+                int i = numbers.Numbers.integer_of(ref1);
+                Runtime.setArrayElement(varname, i, v);
+
+            } else if(lhs.GetType() == typeof(Array_2D_Ref_Lhs)){
+                Array_2D_Ref_Lhs alhs2 = (Array_2D_Ref_Lhs)lhs;
+                object[] comps = alhs2.Execute(l);
+                string varname = (string)comps[0];
+                numbers.value ref1 = (numbers.value)comps[1];
+                int i1 = numbers.Numbers.integer_of(ref1);
+                numbers.value ref2 = (numbers.value)comps[2];
+                int i2 = numbers.Numbers.integer_of(ref2);
+                Runtime.set2DArrayElement(varname, i1, i2, v);
+            }
+            
+            
+        }
+
     }
     public class Expr_Assignment : Assignment
     {
         public Expression expr_part;
+
+        // execute expr_part (rhs) return the value of expr_part
+        public void Execute(Lexer l){
+            numbers.value val = expr_part.Execute(l); /* get rhs into a value */
+            Execute(l, val);
+            
+        }
 
     }
 
@@ -100,6 +169,12 @@ namespace parse_tree
         {
             this.id = id;
         }
+
+        public string Execute(Lexer l){
+
+            return l.Get_Text(id.start, id.finish);
+        }
+
     }
     public class Array_Ref_Lhs : Id_Lhs
     {
@@ -108,6 +183,17 @@ namespace parse_tree
         {
             this.reference = reference;
         }
+
+        public object[] Execute(Lexer l){
+            object[] ans = new object[2];
+            string name = l.Get_Text(id.start, id.finish);
+            ans[0] = name;
+
+            numbers.value val = reference.Execute(l);
+            ans[1] = val;
+            return ans;
+        }
+
     }
     public class Array_2D_Ref_Lhs : Array_Ref_Lhs
     {
@@ -116,6 +202,20 @@ namespace parse_tree
         {
             this.reference2 = ref2;
         }
+
+        public object[] Execute(Lexer l){
+            object[] ans = new object[3];
+            string name = l.Get_Text(id.start, id.finish);
+            ans[0] = name;
+
+            numbers.value val = reference.Execute(l);
+            ans[1] = val;
+
+            numbers.value val2 = reference2.Execute(l);
+            ans[2] = val2;
+            return ans;
+        }
+
     }
 
     // Msuffix => . Lhs Msuffix | .id | .id(Parameter_list)
@@ -153,14 +253,33 @@ namespace parse_tree
         {
             this.id = ident;
         }
+
+        public string Execute(Lexer l){
+            return l.Get_Text(id.start, id.finish);
+        }
     }
     public class Array_Ref_Rhs : Id_Rhs
     {
         public Expression reference;
+
+        public object[] Execute(Lexer l){
+            object[] o = new object[2];
+            o[0] = l.Get_Text(id.start, id.finish);
+            o[1] = reference.Execute(l);
+            return o;
+        }
     }
     public class Array_Ref_2D_Rhs : Array_Ref_Rhs
     {
         public Expression reference2;
+
+        public object[] Execute(Lexer l){
+            object[] o = new object[3];
+            o[0] = l.Get_Text(id.start, id.finish);
+            o[1] = reference.Execute(l);
+            o[2] = reference2.Execute(l);
+            return o;
+        }
     }
 
     public class Rhs_Method_Call : Id_Rhs
@@ -203,6 +322,33 @@ namespace parse_tree
         {
             return false;
         }
+
+        public numbers.value Execute(Lexer l){
+
+            if(rhs.GetType() == typeof(Id_Rhs)){
+                Id_Rhs idRhs = (Id_Rhs)rhs;
+                string varname = idRhs.Execute(l);
+                return Runtime.getVariable(varname);
+                    
+            } else if(rhs.GetType() == typeof(Array_Ref_Rhs)){
+                Array_Ref_Rhs arhs = (Array_Ref_Rhs)rhs;
+                string varname = (string)arhs.Execute(l)[0];
+                int i = numbers.Numbers.integer_of((numbers.value)arhs.Execute(l)[1]);
+                return Runtime.getArrayElement(varname, i);
+                
+
+            } else if(rhs.GetType() == typeof(Array_Ref_2D_Rhs)){
+                Array_Ref_2D_Rhs arhs2 = (Array_Ref_2D_Rhs)rhs;
+                string varname = (string)arhs2.Execute(l)[0];
+                int i1 = numbers.Numbers.integer_of((numbers.value)arhs2.Execute(l)[1]);
+                int i2 = numbers.Numbers.integer_of((numbers.value)arhs2.Execute(l)[2]);
+                return Runtime.get2DArrayElement(varname, i1, i2);
+                
+            }
+
+            return new numbers.value();
+        }
+
     }
     public class Number_Expon : Expon
     {
@@ -210,6 +356,11 @@ namespace parse_tree
         public Number_Expon(Token t)
         {
             this.number = t;
+        }
+
+        public numbers.value Execute(Lexer l){
+            string s = l.Get_Text(number.start, number.finish);
+            return numbers.Numbers.make_value__5(s);
         }
     }
     public class Negative_Expon : Expon
@@ -219,6 +370,15 @@ namespace parse_tree
         {
             this.e = e;
         }
+
+        public numbers.value Execute(Lexer l){
+            //Variable v = new Variable(e.GetType() + "" , new numbers.value(){V=123123});
+            Number_Expon ne = (Number_Expon)e;
+            numbers.value temp = ne.Execute(l);
+            temp.V = temp.V * -1;
+            return temp;
+        }
+
     }
     public class String_Expon : Expon
     {
@@ -227,6 +387,9 @@ namespace parse_tree
         {
             this.s = s;
         }
+        public numbers.value Execute(Lexer l){
+            return new numbers.value(){Kind=numbers.Value_Kind.String_Kind, S=l.Get_Text(s.start, s.finish)};
+        }
     }
     public class Paren_Expon : Expon
     {
@@ -234,6 +397,10 @@ namespace parse_tree
         public Paren_Expon(Expression e)
         {
             this.expr_part = e;
+        }
+
+        public numbers.value Execute(Lexer l){
+            return expr_part.Execute(l);
         }
     }
     public class Id_Expon : Expon
@@ -244,6 +411,8 @@ namespace parse_tree
         {
             this.id = id;
         }
+
+
     }
     public class Func0_Expon : Id_Expon
     {
@@ -255,6 +424,11 @@ namespace parse_tree
         public Character_Expon(Token s)
         {
             this.s = s;
+        }
+
+        public numbers.value Execute(Lexer l){
+            char ans = l.Get_Text(s.start, s.finish)[0];
+            return new numbers.value(){C=ans, Kind=numbers.Value_Kind.Character_Kind};
         }
     }
 
@@ -288,6 +462,37 @@ namespace parse_tree
 
             }
         }
+
+        public numbers.value Execute(Lexer l){
+            if(left.GetType() == typeof(Number_Expon)){
+                Number_Expon v = (Number_Expon)left;
+                return v.Execute(l);
+            }else if (left.GetType() == typeof(String_Expon)){
+                String_Expon s = (String_Expon)left;
+                return s.Execute(l); 
+            } else if(left.GetType() == typeof(Negative_Expon)){
+                Negative_Expon n = (Negative_Expon)left;
+                return n.Execute(l);
+
+            }else if(left.GetType() == typeof(Paren_Expon)){
+                Paren_Expon p = (Paren_Expon)left;
+                return p.Execute(l);
+
+            }else if(left.GetType() == typeof(Character_Expon)){
+                Character_Expon c = (Character_Expon)left;
+                return c.Execute(l);
+
+            }else if(left.GetType() == typeof(Rhs_Expon)){
+                Rhs_Expon r = (Rhs_Expon)left;
+                return r.Execute(l);
+
+            }else{
+                Variable vvv = new Variable(left.GetType() + "" , new numbers.value(){V=11});
+            }
+            return new numbers.value();
+        }
+
+
     }
     public class Expon_Mult : Mult
     {
@@ -319,6 +524,17 @@ namespace parse_tree
 
             }
         }
+
+        public numbers.value Exectue(Lexer l){
+            if(left.GetType() == typeof(Mult)){
+                Mult leftMult = (Mult)left;
+                return leftMult.Execute(l);
+            } else{
+
+            }
+            return new numbers.value();
+        }
+
     }
     public class Binary_Add : Add
     {
