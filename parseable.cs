@@ -13,7 +13,7 @@ namespace parse_tree
     }
     public abstract class Value_Parseable : Parseable
     {
-
+        public abstract numbers.value Execute(Lexer l);
     }
     public class Expression : Value_Parseable
     {
@@ -39,7 +39,11 @@ namespace parse_tree
             }
         }
 
-        public numbers.value Execute(Lexer l){
+        public override numbers.value Execute(Lexer l){
+            return left.Execute(l);
+        }
+
+        /*public numbers.value Execute(Lexer l){
             if(left.GetType() == typeof(Add)){
                 Add leftAdd = (Add)left;
                 numbers.value val = leftAdd.Exectue(l);
@@ -68,7 +72,7 @@ namespace parse_tree
             }
 
             return new numbers.value();
-        }
+        }*/
     }
     public abstract class Binary_Expression : Expression
     {
@@ -226,7 +230,9 @@ namespace parse_tree
     }
     public class Empty_Lsuffix : Lsuffix { }
 
-    public abstract class Rhs { }
+    public abstract class Rhs { 
+        public abstract numbers.value Execute(Lexer l);
+    }
     public class Id_Rhs : Rhs
     {
         public Token id;
@@ -236,32 +242,52 @@ namespace parse_tree
             this.id = ident;
         }
 
-        public string Execute(Lexer l){
-            return l.Get_Text(id.start, id.finish);
+        public override numbers.value Execute(Lexer l){
+            string varname = l.Get_Text(id.start, id.finish);
+            return Runtime.getVariable(varname);
         }
+
     }
     public class Array_Ref_Rhs : Id_Rhs
     {
         public Expression reference;
 
-        public object[] Execute(Lexer l){
-            object[] o = new object[2];
-            o[0] = l.Get_Text(id.start, id.finish);
-            o[1] = reference.Execute(l);
-            return o;
+        public override numbers.value Execute(Lexer l){
+            numbers.value ref_val = reference.Execute(l);
+            string varname = l.Get_Text(id.start, id.finish);
+            if (!numbers.Numbers.is_integer(ref_val))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val) +
+                    " not a valid array location--must be integer");
+            }
+            int i = numbers.Numbers.integer_of(ref_val);
+            return Runtime.getArrayElement(varname, i);
         }
+
     }
     public class Array_Ref_2D_Rhs : Array_Ref_Rhs
     {
         public Expression reference2;
 
-        public object[] Execute(Lexer l){
-            object[] o = new object[3];
-            o[0] = l.Get_Text(id.start, id.finish);
-            o[1] = reference.Execute(l);
-            o[2] = reference2.Execute(l);
-            return o;
+        public override numbers.value Execute(Lexer l){
+            numbers.value ref_val = reference.Execute(l);
+            numbers.value ref_val2 = reference2.Execute(l);
+            string varname = l.Get_Text(id.start, id.finish);
+            if (!numbers.Numbers.is_integer(ref_val))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val) +
+                    " not a valid array location--must be integer");
+            }
+            if (!numbers.Numbers.is_integer(ref_val2))
+            {
+                throw new raptor.RuntimeException(numbers.Numbers.msstring_view_image(ref_val2) +
+                    " not a valid array location--must be integer");
+            }
+            int i = numbers.Numbers.integer_of(ref_val);
+            int i2 = numbers.Numbers.integer_of(ref_val2);
+            return Runtime.get2DArrayElement(varname, i, i2);
         }
+
     }
 
     public class Rhs_Method_Call : Id_Rhs
@@ -282,13 +308,20 @@ namespace parse_tree
     }
     public class Empty_Rsuffix : Rsuffix { }
 
-    public abstract class Expon : Value_Parseable { }
+    public abstract class Expon : Value_Parseable { 
+        public override abstract numbers.value Execute(Lexer l);
+
+    }
 
     public class Expon_Stub : Expon
     {
         public Component component;
         public int index;
         public Expon expon_parse_tree;
+
+        public override numbers.value Execute(Lexer l){
+            return new numbers.value(){V=666};
+        }
     }
 
     public class Rhs_Expon : Expon
@@ -305,30 +338,8 @@ namespace parse_tree
             return false;
         }
 
-        public numbers.value Execute(Lexer l){
-
-            if(rhs.GetType() == typeof(Id_Rhs)){
-                Id_Rhs idRhs = (Id_Rhs)rhs;
-                string varname = idRhs.Execute(l);
-                return Runtime.getVariable(varname);
-                    
-            } else if(rhs.GetType() == typeof(Array_Ref_Rhs)){
-                Array_Ref_Rhs arhs = (Array_Ref_Rhs)rhs;
-                string varname = (string)arhs.Execute(l)[0];
-                int i = numbers.Numbers.integer_of((numbers.value)arhs.Execute(l)[1]);
-                return Runtime.getArrayElement(varname, i);
-                
-
-            } else if(rhs.GetType() == typeof(Array_Ref_2D_Rhs)){
-                Array_Ref_2D_Rhs arhs2 = (Array_Ref_2D_Rhs)rhs;
-                string varname = (string)arhs2.Execute(l)[0];
-                int i1 = numbers.Numbers.integer_of((numbers.value)arhs2.Execute(l)[1]);
-                int i2 = numbers.Numbers.integer_of((numbers.value)arhs2.Execute(l)[2]);
-                return Runtime.get2DArrayElement(varname, i1, i2);
-                
-            }
-
-            return new numbers.value();
+        public override numbers.value Execute(Lexer l){
+            return rhs.Execute(l);
         }
 
     }
@@ -340,10 +351,11 @@ namespace parse_tree
             this.number = t;
         }
 
-        public numbers.value Execute(Lexer l){
+        public override numbers.value Execute(Lexer l){
             string s = l.Get_Text(number.start, number.finish);
             return numbers.Numbers.make_value__5(s);
         }
+
     }
     public class Negative_Expon : Expon
     {
@@ -352,9 +364,8 @@ namespace parse_tree
         {
             this.e = e;
         }
-
-        public numbers.value Execute(Lexer l){
-            //Variable v = new Variable(e.GetType() + "" , new numbers.value(){V=123123});
+        
+        public override numbers.value Execute(Lexer l){
             Number_Expon ne = (Number_Expon)e;
             numbers.value temp = ne.Execute(l);
             temp.V = temp.V * -1;
@@ -369,9 +380,11 @@ namespace parse_tree
         {
             this.s = s;
         }
-        public numbers.value Execute(Lexer l){
+
+        public override numbers.value Execute(Lexer l){
             return new numbers.value(){Kind=numbers.Value_Kind.String_Kind, S=l.Get_Text(s.start, s.finish)};
         }
+
     }
     public class Paren_Expon : Expon
     {
@@ -381,7 +394,7 @@ namespace parse_tree
             this.expr_part = e;
         }
 
-        public numbers.value Execute(Lexer l){
+        public override numbers.value Execute(Lexer l){
             return expr_part.Execute(l);
         }
     }
@@ -392,6 +405,10 @@ namespace parse_tree
         public Id_Expon(Token id)
         {
             this.id = id;
+        }
+
+        public override numbers.value Execute(Lexer l){
+            return new numbers.value(){V=666};
         }
 
 
@@ -408,7 +425,7 @@ namespace parse_tree
             this.s = s;
         }
 
-        public numbers.value Execute(Lexer l){
+        public override numbers.value Execute(Lexer l){
             char ans = l.Get_Text(s.start, s.finish)[0];
             return new numbers.value(){C=ans, Kind=numbers.Value_Kind.Character_Kind};
         }
@@ -445,34 +462,38 @@ namespace parse_tree
             }
         }
 
-        public numbers.value Execute(Lexer l){
-            if(left.GetType() == typeof(Number_Expon)){
-                Number_Expon v = (Number_Expon)left;
-                return v.Execute(l);
-            }else if (left.GetType() == typeof(String_Expon)){
-                String_Expon s = (String_Expon)left;
-                return s.Execute(l); 
-            } else if(left.GetType() == typeof(Negative_Expon)){
-                Negative_Expon n = (Negative_Expon)left;
-                return n.Execute(l);
+        public override numbers.value Execute(Lexer l){
+            return left.Execute(l);
 
-            }else if(left.GetType() == typeof(Paren_Expon)){
-                Paren_Expon p = (Paren_Expon)left;
-                return p.Execute(l);
+            // if(left.GetType() == typeof(Number_Expon)){
+            //     Number_Expon v = (Number_Expon)left;
+            //     return v.Execute(l);
+            // }else if (left.GetType() == typeof(String_Expon)){
+            //     String_Expon s = (String_Expon)left;
+            //     return s.Execute(l); 
+            // } else if(left.GetType() == typeof(Negative_Expon)){
+            //     Negative_Expon n = (Negative_Expon)left;
+            //     return n.Execute(l);
 
-            }else if(left.GetType() == typeof(Character_Expon)){
-                Character_Expon c = (Character_Expon)left;
-                return c.Execute(l);
+            // }else if(left.GetType() == typeof(Paren_Expon)){
+            //     Paren_Expon p = (Paren_Expon)left;
+            //     return p.Execute(l);
 
-            }else if(left.GetType() == typeof(Rhs_Expon)){
-                Rhs_Expon r = (Rhs_Expon)left;
-                return r.Execute(l);
+            // }else if(left.GetType() == typeof(Character_Expon)){
+            //     Character_Expon c = (Character_Expon)left;
+            //     return c.Execute(l);
 
-            }else{
-                Variable vvv = new Variable(left.GetType() + "" , new numbers.value(){V=11});
-            }
-            return new numbers.value();
+            // }else if(left.GetType() == typeof(Rhs_Expon)){
+            //     Rhs_Expon r = (Rhs_Expon)left;
+            //     return r.Execute(l);
+
+            // }else{
+            //     Variable vvv = new Variable(left.GetType() + "" , new numbers.value(){V=11});
+            // }
+            // return new numbers.value();
         }
+
+
 
 
     }
@@ -507,14 +528,8 @@ namespace parse_tree
             }
         }
 
-        public numbers.value Exectue(Lexer l){
-            if(left.GetType() == typeof(Mult)){
-                Mult leftMult = (Mult)left;
-                return leftMult.Execute(l);
-            } else{
-
-            }
-            return new numbers.value();
+        public override numbers.value Execute(Lexer l){
+            return left.Execute(l);
         }
 
     }
