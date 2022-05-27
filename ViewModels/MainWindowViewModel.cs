@@ -604,7 +604,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
                             ea.Execute(l);
-                            
                         }
 
 

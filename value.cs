@@ -174,5 +174,95 @@ namespace numbers
         {
             return f.Kind == Value_Kind.Character_Kind;
         }
+
+        public static numbers.value addValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V + second.V};
+            } else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.String_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.S.Replace("\"","")};
+            } else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
+                ans = new numbers.value() {V=first.C + second.C};
+            }else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.V};
+            }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.String_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.V + second.S.Replace("\"","")};
+            }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind && is_integer(first)){
+                char c = Convert.ToChar(first.V + (int)second.C);
+                ans = new numbers.value() {Kind=numbers.Value_Kind.Character_Kind, C=c};
+            }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind && is_integer(second)){
+                char c = Convert.ToChar((int)first.C + second.V);
+                ans = new numbers.value() {Kind=numbers.Value_Kind.Character_Kind, C=c};
+            }else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S + second.C};
+            }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.String_Kind){
+                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.C + second.S};
+            }
+            else {
+                throw new Exception("Cannot add type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value subValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V - second.V};
+            } else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
+                ans = new numbers.value() {V=first.V - (int)second.C};
+            }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=(int)first.C - second.V};
+            }
+            else{
+                throw new Exception("Cannot subtract type: [" + first.Kind + "] from type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value multValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V * second.V};
+            } else{
+                throw new Exception("Cannot multiply type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value divValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                if(second.V == 0){
+                    throw new Exception("Cannot divide by 0!");
+                }
+                ans = new numbers.value() {V=first.V / second.V};
+            } else{
+                throw new Exception("Cannot divide type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value modValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = new numbers.value() {V=first.V % second.V};
+            } else{
+                throw new Exception("Cannot mod type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value remValues(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                int temp; 
+                Math.DivRem((int)first.V, (int)second.V, out temp);
+                ans = new numbers.value() {V=temp};
+            } else{
+                throw new Exception("Cannot mod type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
     }
 }

@@ -58,22 +58,7 @@ namespace parse_tree
 
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
-            numbers.value ans = new numbers.value();
-            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=first.V + second.V};
-            } else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.String_Kind){
-                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.S.Replace("\"","")};
-            } else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
-                ans = new numbers.value() {V=first.C + second.C};
-            }else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S.Replace("\"","") + second.V};
-            }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.String_Kind){
-                ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.V + second.S.Replace("\"","")};
-            }
-            else {
-                throw new Exception("Cannot add type: [" + first.Kind + "] from type: [" + second.Kind + "]");
-            }
-            return ans;
+            return numbers.Numbers.addValues(first, second);
         }
     }
     public class Minus_Expression : Binary_Expression
@@ -84,13 +69,7 @@ namespace parse_tree
 
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
-            numbers.value ans = new numbers.value();
-            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=first.V - second.V};
-            } else{
-                throw new Exception("Cannot subtract type: [" + first.Kind + "] from type: [" + second.Kind + "]");
-            }
-            return ans;
+            return numbers.Numbers.subValues(first, second);
         }
 
     }
@@ -480,6 +459,13 @@ namespace parse_tree
         {
             this.right = right;
         }
+
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.multValues(first, second);
+
+        }
     }
     public class Add : Value_Parseable
     {
@@ -516,17 +502,35 @@ namespace parse_tree
         {
             this.right = right;
         }
+
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.addValues(first, second);
+        }
     }
     public class Div_Add : Binary_Add
     {
         public Div_Add(Value_Parseable left, Add right) : base(left,right)
         {
         }
+
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.divValues(first, second);
+        }
+
     }
     public class Mult_Add : Binary_Add
     {
         public Mult_Add(Value_Parseable left, Add right) : base(left,right)
         {
+        }
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.multValues(first, second);
         }
     }
     public class Mod_Add : Binary_Add
@@ -534,11 +538,23 @@ namespace parse_tree
         public Mod_Add(Value_Parseable left, Add right) : base(left,right)
         {
         }
+
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.modValues(first, second);
+        }
     }
     public class Rem_Add : Binary_Add
     {
         public Rem_Add(Value_Parseable left, Add right) : base(left,right)
         {
+        }
+
+        public override numbers.value Execute(Lexer l){
+            numbers.value first = left.Execute(l);
+            numbers.value second = right.Execute(l);
+            return numbers.Numbers.remValues(first, second);
         }
     }
     public abstract class Boolean_Parseable : Parseable
