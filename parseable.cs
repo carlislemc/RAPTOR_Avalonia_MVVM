@@ -403,6 +403,64 @@ namespace parse_tree
         public Func0_Expon(Token id) : base(id) { }
 
         public override numbers.value Execute(Lexer l){
+           string s = l.Get_Text(id.start, id.finish);
+           switch(s.ToLower()){
+                case "true":
+                    return new numbers.value(){V=1};
+                case "false":
+                    return new numbers.value(){V=0};
+                case "pi":
+                    return new numbers.value(){V=3.14159};
+                case "e":
+                    return new numbers.value(){V=2.71828};
+                case "random":
+                    Random r = new Random();
+                    return new numbers.value(){V=r.NextDouble()};
+                case "black":
+                    return new numbers.value(){V=0};
+                case "blue":
+                    return new numbers.value(){V=1};
+                case "green":
+                    return new numbers.value(){V=2};
+                case "cyan":
+                    return new numbers.value(){V=3};
+                case "red":
+                    return new numbers.value(){V=4};
+                case "magenta":
+                    return new numbers.value(){V=5};
+                case "brown":
+                    return new numbers.value(){V=6};
+                case "light_gray":
+                    return new numbers.value(){V=7};
+                case "dark_gray":
+                    return new numbers.value(){V=8};
+                case "light_blue":
+                    return new numbers.value(){V=9};
+                case "light_green":
+                    return new numbers.value(){V=10};
+                case "light_cyan":
+                    return new numbers.value(){V=11};
+                case "light_red":
+                    return new numbers.value(){V=12};
+                case "light_magenta":
+                    return new numbers.value(){V=13};
+                case "yellow":
+                    return new numbers.value(){V=14};
+                case "pink":
+                    return new numbers.value(){V=15};
+                case "purple":
+                    return new numbers.value(){V=16};
+                case "white":
+                    return new numbers.value(){V=17};
+                case "unfilled":
+                    return new numbers.value(){V=0};
+                case "filled":
+                    return new numbers.value(){V=1};
+                case "yes":
+                    return new numbers.value(){V=1};
+                case "no":
+                    return new numbers.value(){V=0};
+           }
             throw new NotImplementedException();
         }
     }
@@ -415,7 +473,7 @@ namespace parse_tree
         }
 
         public override numbers.value Execute(Lexer l){
-            char ans = l.Get_Text(s.start, s.finish)[0];
+            char ans = l.Get_Text(s.start, s.finish)[1];
             return new numbers.value(){C=ans, Kind=numbers.Value_Kind.Character_Kind};
         }
     }
@@ -622,7 +680,7 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
-            throw new NotImplementedException();
+            return value;
         }
     }
     public class Boolean1 : Boolean_Parseable

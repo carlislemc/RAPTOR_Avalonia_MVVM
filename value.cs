@@ -261,6 +261,13 @@ namespace numbers
             //throw new NotImplementedException();
         }
 
+        internal static value make_character_value(char new_char)
+        {
+            return new value { V = 0.0, C = new_char, S = "", Kind = Value_Kind.Character_Kind, Object = null };
+            //throw new NotImplementedException();
+        }
+
+
         public static bool is_character(value f)
         {
             return f.Kind == Value_Kind.Character_Kind;
@@ -279,10 +286,10 @@ namespace numbers
             }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.String_Kind){
                 ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.V + second.S.Replace("\"","")};
             }else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind && is_integer(first)){
-                char c = Convert.ToChar(first.V + (int)second.C);
+                char c = Convert.ToChar((int)first.V + (int)second.C);
                 ans = new numbers.value() {Kind=numbers.Value_Kind.Character_Kind, C=c};
             }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind && is_integer(second)){
-                char c = Convert.ToChar((int)first.C + second.V);
+                char c = Convert.ToChar((int)first.C + (int)second.V);
                 ans = new numbers.value() {Kind=numbers.Value_Kind.Character_Kind, C=c};
             }else if(first.Kind == numbers.Value_Kind.String_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
                 ans = new numbers.value() {Kind=numbers.Value_Kind.String_Kind, S=first.S + second.C};

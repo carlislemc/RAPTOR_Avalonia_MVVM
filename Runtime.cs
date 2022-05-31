@@ -187,7 +187,12 @@ namespace raptor
                     {
                        temp.Add(new Arr(){name="<" + i + ">", value=numbers.Numbers.make_string_value("")});
                     }
-                }
+                }else if(numbers.Numbers.is_character(Value)){
+					for (int i = 1; i < index; i++)
+                    {
+                       temp.Add(new Arr(){name="<" + i + ">", value=numbers.Numbers.make_value__3(0)});
+                    }
+				}
                 else
                 {
                     for (int i = 1; i < index; i++)
@@ -236,7 +241,27 @@ namespace raptor
 							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
 						}
                     }
-                }
+                } else if(numbers.Numbers.is_character(Value)){
+					for (int i = 1; i <= index1; i++)
+                    {
+						if(i != index1){
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k <= index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">", value=numbers.Numbers.make_value__3(0)});
+							}
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						} else{
+							ObservableCollection<Arr2> temp2 = new ObservableCollection<Arr2>();
+							temp2.Add(new Arr2(){name="Size",value=numbers.Numbers.make_value__3(index2)});
+							for(int k = 1; k < index2; k++){
+								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_value__3(0)});
+							}
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+						}
+                    }
+				}
                 else
                 {
                     for (int i = 1; i <= index1; i++)
@@ -741,9 +766,12 @@ namespace raptor
 				if(values.Count > 0){
 					return name + "[]";
 				} else{
-					if(value.Kind != numbers.Value_Kind.String_Kind){
+					if(value.Kind == numbers.Value_Kind.Number_Kind){
 						return name + ": " + value.V.ToString();
-					} else{
+					}else if(value.Kind == numbers.Value_Kind.Character_Kind){
+						return name + ": '" + value.C.ToString() + "'";
+					} 
+					else{
 						return name + ": " + '"' + value.S + '"';
 					}
 				}
@@ -782,9 +810,12 @@ namespace raptor
         }
 		public string displayStr {
 			get {
-				if(value.Kind != numbers.Value_Kind.String_Kind){
+				if(value.Kind == numbers.Value_Kind.Number_Kind){
 					return name + ": " + value.V.ToString();
-				} else{
+				} else if(value.Kind == numbers.Value_Kind.Character_Kind){
+					return name + ": '" + value.C.ToString() + "'";
+				} 
+				else{
 					return name + ": " + '"' + value.S + '"';
 				}
 			}
