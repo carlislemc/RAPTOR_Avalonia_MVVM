@@ -19,6 +19,8 @@ using System.Reactive;
 using interpreter;
 using numbers;
 using parse_tree;
+using System.Timers;
+using System.Threading;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -708,7 +710,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             
          }
         public void OnPauseCommand() {
-            
+            myTimer.Stop();
         }
 
         public void OnNewCommand()
@@ -732,22 +734,55 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public int executeSpeed = 70;
         public int setSpeed{
             get{return executeSpeed;}
-            set{this.RaiseAndSetIfChanged(ref executeSpeed, value);}
-        }
-        public async void OnExecuteCommand() {
-            OnNextCommand();
-            await Task.Delay((int)(5000 * (1-((double)setSpeed/100))));
-            while(activeComponent.Successor != null){
-                OnNextCommand();
-                await Task.Delay((int)(5000 * (1-((double)setSpeed/100))));
+            set{
+                this.RaiseAndSetIfChanged(ref executeSpeed, value);
+                if(myTimer != null){
+                    myTimer.Interval = 1000 * (1.01 - (double)setSpeed/100);
+                }
             }
         }
+
+        private System.Timers.Timer myTimer;
+        public void OnExecuteCommand() {
+            if(myTimer == null){
+                myTimer = new System.Timers.Timer(1000 * (1.01 - (double)setSpeed/100));
+                myTimer.Elapsed += new System.Timers.ElapsedEventHandler(stepper);
+            }
+            myTimer.Start();
+        }
+
+        private Thread InstanceCaller;
+        private void stepper(Object source, ElapsedEventArgs e)
+        {
+            if (InstanceCaller != null && InstanceCaller.IsAlive)
+			{
+				return;
+			}
+			//this.myTimer.Stop();
+			try 
+			{
+				InstanceCaller = new Thread(new ThreadStart(this.OnNextCommand));
+                InstanceCaller.SetApartmentState(ApartmentState.MTA);
+                InstanceCaller.Priority = ThreadPriority.BelowNormal;
+				InstanceCaller.Start();
+			}
+			catch (System.Exception exc)
+			{
+				Console.WriteLine(exc.Message);
+			}
+
+        }
+
 
         public void OnStepCommand() {
             OnNextCommand();
         }
 
         public void OnResetCommand() {
+            myTimer.Stop();
+            if(theVariables.Count != 0){
+                theVariables = new ObservableCollection<Variable>();
+            }
             FillWatch();
             if(this.activeComponent == null){
                 return;

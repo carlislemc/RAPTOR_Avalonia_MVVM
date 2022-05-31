@@ -416,7 +416,7 @@
 
       <StackPanel Margin="50,0,0,0">
         <Slider Name="speedSlider" Width="100"  
-          Background="Gray" Maximum="100" Minimum="10" Value="{Binding setSpeed}">  
+          Background="Gray" Maximum="100" Minimum="1" Value="{Binding setSpeed}">  
         </Slider>
       </StackPanel>
       <TextBlock Text="{Binding setSpeed}" Height="15"/>
