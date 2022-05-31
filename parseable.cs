@@ -393,7 +393,7 @@ namespace parse_tree
         }
 
         public override numbers.value Execute(Lexer l){
-            return new numbers.value(){V=666};
+            throw new NotImplementedException();
         }
 
 
@@ -401,6 +401,10 @@ namespace parse_tree
     public class Func0_Expon : Id_Expon
     {
         public Func0_Expon(Token id) : base(id) { }
+
+        public override numbers.value Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
     public class Character_Expon : Expon
     {
@@ -418,10 +422,18 @@ namespace parse_tree
 
     public class Func_Expon : Id_Expon {
         public Parameter_List parameters;
+
+        public override numbers.value Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
     public class Plugin_Func_Expon : Id_Expon
     {
         public Parameter_List? parameters;
+
+        public override numbers.value Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
 
     public class Mult : Value_Parseable
@@ -559,13 +571,34 @@ namespace parse_tree
     }
     public abstract class Boolean_Parseable : Parseable
     {
-
+        public abstract bool Execute(Lexer l);
     }
     //  Relation => Expression > Expression | >=,<,<=,=,/=
     public class Relation : Boolean_Parseable
     {
         public Expression? left, right;
         public Token_Type? kind; // must be a relation
+
+        public override bool Execute(Lexer l)
+        {
+            //Variable v = new Variable(left.Execute(l).V + "", new numbers.value(){S=right.Execute(l).V + "", Kind=numbers.Value_Kind.String_Kind});
+            switch(kind){
+                case Token_Type.Equal:
+                    return left.Execute(l) == right.Execute(l);
+                case Token_Type.Not_Equal:
+                    return left.Execute(l) != right.Execute(l);
+                case Token_Type.Greater:
+                    return left.Execute(l) > right.Execute(l);
+                case Token_Type.Greater_Equal:
+                    return left.Execute(l) >= right.Execute(l);
+                case Token_Type.Less:
+                    return left.Execute(l) < right.Execute(l);
+                case Token_Type.Less_Equal:
+                    return left.Execute(l) <= right.Execute(l);
+            }
+            return false;
+        }
+
     }
     public class Boolean0 : Boolean_Parseable
     {
@@ -574,6 +607,11 @@ namespace parse_tree
         {
             this.kind = kind;
         }
+
+        public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
+
     }
     public class Boolean_Constant : Boolean_Parseable
     {
@@ -581,6 +619,10 @@ namespace parse_tree
         public Boolean_Constant(bool val)
         {
             this.value = val;
+        }
+
+        public override bool Execute(Lexer l){
+            throw new NotImplementedException();
         }
     }
     public class Boolean1 : Boolean_Parseable
@@ -592,6 +634,10 @@ namespace parse_tree
             this.kind = k;
             this.parameter = e;
         }
+
+        public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
     public class Boolean_Reflection : Boolean_Parseable
     {
@@ -602,11 +648,19 @@ namespace parse_tree
             this.kind = k;
             this.id = t;
         }
+
+        public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
     public class Boolean_Plugin : Boolean_Parseable
     {
         public Token? id;
         public Parameter_List? parameters;
+
+        public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
     }
     public class Boolean2 : Boolean_Parseable
     {
@@ -617,6 +671,14 @@ namespace parse_tree
             this.negated = n;
             this.left = l;
         }
+
+        public override bool Execute(Lexer l){
+            if(negated){
+                return !left.Execute(l);
+            }else{
+                return left.Execute(l);
+            }
+        }
     }
     public class And_Boolean2 : Boolean2
     {
@@ -624,6 +686,10 @@ namespace parse_tree
         public And_Boolean2(bool n, Boolean_Parseable l, Boolean2 r) : base(n,l)
         {
             this.right = r;
+        }
+
+        public override bool Execute(Lexer l){
+            return left.Execute(l) && right.Execute(l);
         }
     }
     public class Boolean_Expression : Boolean_Parseable
@@ -633,6 +699,10 @@ namespace parse_tree
         {
             this.left = l;
         }
+
+        public override bool Execute(Lexer l){
+            return left.Execute(l);
+        }
     }
     public class Xor_Boolean : Boolean_Expression
     {
@@ -641,6 +711,10 @@ namespace parse_tree
         {
             this.right = r;
         }
+
+        public override bool Execute(Lexer l){
+            return left.Execute(l) ^ right.Execute(l);
+        }
     }
     public class Or_Boolean : Boolean_Expression
     {
@@ -648,6 +722,10 @@ namespace parse_tree
         public Or_Boolean(Boolean2 l, Boolean_Expression r) : base(l)
         {
             this.right = r;
+        }
+
+        public override bool Execute(Lexer l){
+            return left.Execute(l) || right.Execute(l);
         }
     }
     public class Input : Parseable

@@ -581,19 +581,54 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set{currentActiveComponent = value;}
         }
 
+        public Component currentParentComponent;
+        public Component parentComponent{
+            get{return currentParentComponent;}
+            set{currentParentComponent = value;}
+        }
+
+        public bool currentInLoop;
+        public bool inLoop{
+            get{return currentInLoop;}
+            set{currentInLoop = value;}
+        }
+
+        private void goToNextComponent(){
+            if(activeComponent.Successor == null && parentComponent != null) {
+                if(inLoop){
+                   activeComponent.running = false;
+                   activeComponent = parentComponent;
+                   activeComponent.running = true;
+                }else {
+                    activeComponent.running = false;
+                    activeComponent = parentComponent.Successor;
+                    activeComponent.running = true;
+                    parentComponent = null;
+                }
+            } else{
+                activeComponent.running = false;
+                activeComponent = activeComponent.Successor;
+                activeComponent.running = true;
+            }
+        }
+
         public void OnNextCommand() {
             if(activeComponent == null){
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
             } else {
-                if(activeComponent.Successor == null){
+                if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null){
                     //for testing purposes -- when it reaches the end it restarts
                     activeComponent.running = false;
                     activeComponent = this.mainSubchart().Start;
                     activeComponent.running = true;
                     return;
                 }
-                if(activeComponent.GetType() == typeof(Rectangle)){
+                else if(activeComponent.GetType() == typeof(Oval)){
+                    goToNextComponent();
+                    return;
+                }
+                else if(activeComponent.GetType() == typeof(Rectangle)){
                     Rectangle temp = (Rectangle)activeComponent;
                     if(temp.kind == Rectangle.Kind_Of.Assignment){
                         string str = temp.text_str;
@@ -605,14 +640,69 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
                             ea.Execute(l);
                         }
-
-
+                    } else {
+                        string str = temp.text_str;
+                        if(temp.text_str == ""){
+                            throw new Exception("Call not instantiated");
+                        }
+                        Lexer l = new Lexer(str);
+                        // if(temp.parse_tree != null){
+                        //     Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
+                        //     ea.Execute(l);
+                        // }
                     }
-                    
+                    goToNextComponent();
+                } else if(activeComponent.GetType() == typeof(IF_Control)){
+                    IF_Control temp = (IF_Control)activeComponent;
+                    string str = temp.text_str;
+                    if(temp.text_str == ""){
+                        throw new Exception("Selection not instantiated");
+                    }
+                    Lexer l = new Lexer(str);
+                    if(temp.parse_tree != null){
+                        Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
+                        bool rel = r.Execute(l);
+                        parentComponent = temp;
+                        if(rel){
+                            if(temp.left_Child != null){
+                                activeComponent.running = false;
+                                activeComponent = temp.left_Child;
+                                activeComponent.running = true;
+                            }
+                        } else{
+                            if(temp.right_Child != null){
+                                activeComponent.running = false;
+                                activeComponent = temp.right_Child;
+                                activeComponent.running = true;
+                            }
+                        }
+                    }
+                } else if(activeComponent.GetType() == typeof(Loop)){
+                    Loop temp = (Loop)activeComponent;
+                    string str = temp.text_str;
+                    if(temp.text_str == ""){
+                        throw new Exception("Loop not instantiated");
+                    }
+                    Lexer l = new Lexer(str);
+                    if(temp.parse_tree != null){
+                        Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
+                        bool rel = r.Execute(l);
+                        parentComponent = temp;
+                        if(rel){
+                            inLoop = false;
+                            goToNextComponent();
+                        } else{
+                            if(temp.after_Child != null){
+                                activeComponent.running = false;
+                                activeComponent = temp.after_Child;
+                                activeComponent.running = true;
+                            }
+                            inLoop = true;
+                        }
+                    }
                 }
-                activeComponent.running = false;
-                activeComponent = activeComponent.Successor;
-                activeComponent.running = true;
+
+                
                 
             }           
             

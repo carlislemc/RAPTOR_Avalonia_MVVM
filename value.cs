@@ -18,6 +18,97 @@ namespace numbers
         public char C;
         public object? Object;
         public Value_Kind Kind;
+
+        public static bool operator ==(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V == second.V;
+                case Value_Kind.String_Kind:
+                    return first.S == second.S;
+                case Value_Kind.Character_Kind:
+                    return first.C == second.C;
+            }
+            return false;
+        }
+
+        public static bool operator !=(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V != second.V;
+                case Value_Kind.String_Kind:
+                    return first.S != second.S;
+                case Value_Kind.Character_Kind:
+                    return first.C != second.C;
+            }
+            return false;
+        }
+
+        public static bool operator >(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V > second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) > 0;
+                case Value_Kind.Character_Kind:
+                    return first.C > second.C;
+            }
+            return false;
+        }
+
+        public static bool operator <(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V < second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) < 0;
+                case Value_Kind.Character_Kind:
+                    return first.C < second.C;
+            }
+            return false;
+        }
+
+        public static bool operator >=(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V >= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) >= 0;
+                case Value_Kind.Character_Kind:
+                    return first.C >= second.C;
+            }
+            return false;
+        }
+
+        public static bool operator <=(value first, value second){
+            if(first.Kind != second.Kind){
+                return false;
+            }
+            switch(first.Kind){
+                case Value_Kind.Number_Kind:
+                    return first.V <= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) <= 0;
+                case Value_Kind.Character_Kind:
+                    return first.C <= second.C;
+            }
+            return false;
+        }
+
     }
     public class Numbers
     {
