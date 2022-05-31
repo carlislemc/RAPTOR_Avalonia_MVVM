@@ -449,10 +449,10 @@
             <TextBlock Foreground="{Binding color}" Text="{Binding text}"/>
           </TreeDataTemplate>
           <TreeDataTemplate DataType="models:Arr" ItemsSource="{Binding values}">
-            <TextBlock Text="{Binding displayStr}"/>
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
           </TreeDataTemplate>
           <TreeDataTemplate DataType="models:Arr2">
-            <TextBlock Text="{Binding displayStr}"/>
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
           </TreeDataTemplate>
         </TreeView.DataTemplates>
       </TreeView>

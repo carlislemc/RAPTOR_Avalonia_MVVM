@@ -8,6 +8,7 @@ using System.Data;
 //using dotnetgraphlibrary;
 //using PlaySound;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using ReactiveUI;
 
 namespace raptor
 {
@@ -15,7 +16,7 @@ namespace raptor
     {
 		public RuntimeException(string s) : base(s) { }
     }
-	public class Variable
+	public class Variable : ReactiveObject
 	{
 			const int max_array_size = 10000;
 			public string Var_Name;
@@ -36,11 +37,15 @@ namespace raptor
 				}
 			}
 			public string Text;
+			public string Color = "Black";
 			public string color
         	{
 				get
 				{
-					return "Red";
+					return Color;
+				}
+				set{
+					this.RaiseAndSetIfChanged(ref Color, value);
 				}
         	}
 			public Runtime.Variable_Kind Kind;
@@ -71,6 +76,7 @@ namespace raptor
 				Kind = Runtime.Variable_Kind.Value;
 				Variable_Value = Value;
 				this.Text = name + ": " + numbers.Numbers.msstring_view_image(Value);
+				color = "Red";
 				addToList(this);
 				Runtime.Add_To_Updated(this);
 			}
@@ -200,9 +206,10 @@ namespace raptor
                         temp.Add(new Arr(){name="<" + i + ">", value=numbers.Numbers.make_value__2(0.0)});
                     }
                 }
-				temp.Add(new Arr(){name="<"+index+">",value=Value});
+				temp.Add(new Arr(){name="<"+index+">",value=Value, color="Red"});
 				this.Text = name + "[]";
 				values = temp;
+				color = "Red";
 				MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(this);
 				Runtime.Add_To_Updated(this);
 			}
@@ -237,8 +244,8 @@ namespace raptor
 							for(int k = 1; k < index2; k++){
 								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_string_value("")});
 							}
-							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
-							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value, color="Red"});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2, color="Red"});
 						}
                     }
                 } else if(numbers.Numbers.is_character(Value)){
@@ -257,8 +264,8 @@ namespace raptor
 							for(int k = 1; k < index2; k++){
 								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_value__3(0)});
 							}
-							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
-							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value, color="Red"});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2, color="Red"});
 						}
                     }
 				}
@@ -279,13 +286,14 @@ namespace raptor
 							for(int k = 1; k < index2; k++){
 								temp2.Add(new Arr2(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0)});
 							}
-							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value});
-							temp.Add(new Arr(){name="<" + i + ">", values=temp2});
+							temp2.Add(new Arr2(){name="<" + index2 + ">", value=Value, color="Red"});
+							temp.Add(new Arr(){name="<" + i + ">", values=temp2, color="Red"});
 						}
                     }
                 }
 				this.Text = name + "[,]";
 				values = temp;
+				color = "Red";
 				//MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(new Variable(name, Value){values=temp});
 				MainWindowViewModel.GetMainWindowViewModel().theVariables.Add(this);
 				Runtime.Add_To_Updated(this);
@@ -496,7 +504,7 @@ namespace raptor
 					this.Extend_1D(index);
 					ObservableCollection<Arr> var = this.values;
 					var.RemoveAt(index);
-					var.Insert(index, new Arr(){name="<" + index + ">", value=f});
+					var.Insert(index, new Arr(){name="<" + index + ">", value=f, color="Red"});
                     //this.Nodes[index].Text = "<" + index + ">: " + numbers.Numbers.msstring_view_image(f);
 					//((Variable) this.Nodes[index]).Variable_Value = f;
 					Runtime.Add_To_Updated(this);
@@ -532,18 +540,26 @@ namespace raptor
 							if(!str){
 								oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_value__2(0.0)});
 							} else{
-								//Variable asdfasdf = new Variable("im in the thing", new numbers.value() {Kind = numbers.Value_Kind.String_Kind, S="hi"});
 								oc.Add(new Arr2() {name="<" + j + ">", value=numbers.Numbers.make_string_value("")});
 							}
 						}
 						if(!str){
-							val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc});
+							if(k == index1){
+								val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc, color="Red"});
+							}else{
+								val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_value__2(0.0), values=oc});
+							}
 						} else{
-							val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_string_value(""), values=oc});
+							if(k == index1){
+								val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_string_value(""), values=oc, color="Red"});
+							}else{
+								val1.Add(new Arr(){name="<" + k + ">",value=numbers.Numbers.make_string_value(""), values=oc});
+							}
 						}
 					}
 					count = index1;
 				}
+				val1[index1].color = "Red";
 				for(int i = 1; i <= count; i++){
 					ObservableCollection<Arr2> val2 = val1[i].values;
 					int count2 = numbers.Numbers.integer_of(val2[0].value);
@@ -562,7 +578,7 @@ namespace raptor
 					}
 					if(i == index1){
 						val2.RemoveAt(index2);
-						val2.Insert(index2, new Arr2(){name="<" + index2 + ">", value=Value});
+						val2.Insert(index2, new Arr2(){name="<" + index2 + ">", value=Value, color="Red"});
 					}
 				}
 			}
@@ -730,7 +746,7 @@ namespace raptor
 			}
 		}
 
-	public class Arr{
+	public class Arr : ReactiveObject {
 		private string Name;
 		private numbers.value Value;
 
@@ -753,13 +769,17 @@ namespace raptor
 				Name = value;
 			}
 		}
-		public string color
-        {
-			get
-            {
-				return "Red";
-            }
-        }
+		public string Color = "Black";
+			public string color
+        	{
+				get
+				{
+					return Color;
+				}
+				set{
+					this.RaiseAndSetIfChanged(ref Color, value);
+				}
+        	}
 		public ObservableCollection<Arr2> values { get; set;} = new ObservableCollection<Arr2>();
 		public string displayStr {
 			get {
@@ -779,7 +799,7 @@ namespace raptor
 		}
 	}
 
-	public class Arr2{
+	public class Arr2 : ReactiveObject{
 		private string Name;
 		private numbers.value Value;
 		public numbers.value value{
@@ -801,13 +821,17 @@ namespace raptor
 				Name = value;
 			}
 		}
-		public string color
-        {
-			get
-            {
-				return "Red";
-            }
-        }
+		public string Color = "Black";
+			public string color
+        	{
+				get
+				{
+					return Color;
+				}
+				set{
+					this.RaiseAndSetIfChanged(ref Color, value);
+				}
+        	}
 		public string displayStr {
 			get {
 				if(value.Kind == numbers.Value_Kind.Number_Kind){
@@ -839,6 +863,25 @@ namespace raptor
 		// (variable of type scope)
 		// The scope stack shall grow up (i.e. new scopes are added at the front of
 		// the list)
+
+		public static void resetColors(){
+			ObservableCollection<Variable> var = MainWindowViewModel.GetMainWindowViewModel().theVariables;
+			foreach(Variable v in var){
+					if(v.Kind == Variable_Kind.One_D_Array){
+						foreach(Arr a in v.values){
+							a.color = "Black";
+						}
+					} else if(v.Kind == Variable_Kind.Two_D_Array){
+						foreach(Arr a in v.values){
+							foreach(Arr2 a2 in a.values){
+								a2.color = "Black";
+							}
+							a.color = "Black";
+						}
+					}
+					v.color = "Black";
+				}
+		}
         public static bool processing_parameter_list = false;
         private static bool superContext = false;
         public enum Parameter_Kind
@@ -1239,6 +1282,7 @@ namespace raptor
 
 			if (temp!=null)
 			{
+				temp.color = "Red";
 				
 				if (temp.Kind==Variable_Kind.Value || temp.Kind==Variable_Kind.Heap_Object) 
 				{
@@ -1246,6 +1290,7 @@ namespace raptor
 					int index=var.IndexOf(temp);
 					var.RemoveAt(index);
 					temp.set_value(f);
+					resetColors();
 					var.Insert(index,temp);
 					return;
 				}
@@ -1269,6 +1314,7 @@ namespace raptor
 			{
 				// variable doesn't currently exist
 				// add variable and initial value to variableList
+				resetColors();
 				temp = new Variable(s,f);
 			}
 			
@@ -1581,17 +1627,19 @@ namespace raptor
 
 			if (temp!=null)
 			{
+				resetColors();
+				temp.color = "Red";
 				ObservableCollection<Variable> var=MainWindowViewModel.GetMainWindowViewModel().theVariables;
 				int i=var.IndexOf(temp);
 				var.RemoveAt(i);
 				temp.set_1D_value(index,f);
-				
 				var.Insert(i,temp);
 				return;
 			}
 
 			// variable doesn't currently exist
 			// add variable and initial value to variableList
+			resetColors();
 			temp = new Variable(s, index, f);
 			try 
 			{
@@ -1646,8 +1694,11 @@ namespace raptor
 
 			if (temp!=null)
 			{
+				
 				if (temp.Kind==Variable_Kind.Two_D_Array) 
 				{
+					resetColors();
+					temp.color = "Red";
 					ObservableCollection<Variable> var=MainWindowViewModel.GetMainWindowViewModel().theVariables;
 					int i=var.IndexOf(temp);
 					var.RemoveAt(i);
@@ -1663,6 +1714,7 @@ namespace raptor
 
 			// variable doesn't currently exist
 			// add variable and initial value to variableList
+			resetColors();
 			temp = new Variable(s, index1, index2, f);
 			try 
 			{

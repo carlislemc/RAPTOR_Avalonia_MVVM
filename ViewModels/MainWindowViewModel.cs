@@ -82,6 +82,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 privateTheTabs = value;
             }
         }
+
         private ObservableCollection<Variable> privateTheVariables;
         public ObservableCollection<Variable> theVariables
         {
@@ -781,11 +782,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnResetCommand() {
-            myTimer.Stop();
-            if(theVariables.Count != 0){
-                theVariables = new ObservableCollection<Variable>();
+            if(myTimer != null){
+                myTimer.Stop();
+                myTimer = null;
             }
-            FillWatch();
+            this.theVariables.Clear();
             if(this.activeComponent == null){
                 return;
             }
