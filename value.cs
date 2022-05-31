@@ -362,5 +362,25 @@ namespace numbers
             return ans;
         }
 
+        public static numbers.value findMax(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = Math.Max(first.V, second.V) == first.V ? first : second; 
+            } else{
+                throw new Exception("Cannot find max of type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
+        public static numbers.value findMin(numbers.value first, numbers.value second){
+            numbers.value ans = new numbers.value();
+            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
+                ans = Math.Min(first.V, second.V) == first.V ? first : second; 
+            } else{
+                throw new Exception("Cannot find max of type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
     }
 }

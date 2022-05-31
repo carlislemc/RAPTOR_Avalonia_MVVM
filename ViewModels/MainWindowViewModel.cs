@@ -648,10 +648,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             throw new Exception("Call not instantiated");
                         }
                         Lexer l = new Lexer(str);
-                        // if(temp.parse_tree != null){
-                        //     Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
-                        //     ea.Execute(l);
-                        // }
+                        if(temp.parse_tree != null){
+                            Procedure_Call ea = (Procedure_Call)temp.parse_tree;
+                            ea.Execute(l);
+                        }
                     }
                     goToNextComponent();
                 } else if(activeComponent.GetType() == typeof(IF_Control)){
@@ -702,6 +702,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             inLoop = true;
                         }
                     }
+                } else if(activeComponent.GetType() == typeof(Parallelogram)){
+
                 }
 
                 

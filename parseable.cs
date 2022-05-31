@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using raptor;
 using RAPTOR_Avalonia_MVVM;
+using System.Collections;
 
 namespace parse_tree
 {
@@ -81,20 +82,46 @@ namespace parse_tree
         public Token? id;
         public Parameter_List? param_list;
         public bool is_tab_call() { return false; }
+
+        public abstract void Execute(Lexer l);
     }
 
     public class Proc_Call : Procedure_Call
     {
+        public override void Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=1});
+            return;
+        }
 
     }
-    public class Plugin_Proc_Call : Procedure_Call { }
+    public class Plugin_Proc_Call : Procedure_Call {
+        public override void Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=2});
+            return;
+        }
+     }
 
-    public class Tabid_Proc_Call : Procedure_Call { }
+    public class Tabid_Proc_Call : Procedure_Call {
+        public override void Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=3});
+            return;
+        }
+     }
 
     public class Method_Proc_Call : Procedure_Call
     {
         Lhs? lhs;
         Msuffix? msuffix;
+
+        public override void Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=4});
+            return;
+        }
+
     }
 
     public abstract class Assignment : Statement {
@@ -482,6 +509,62 @@ namespace parse_tree
         public Parameter_List parameters;
 
         public override numbers.value Execute(Lexer l){
+            string s = l.Get_Text(id.start, id.finish);
+            numbers.value[] ps = parameters.Execute(l);
+            switch(s.ToLower()){
+                case "sin":
+                    return new numbers.value(){V=Math.Sin(ps[0].V)};
+                case "cos":
+                    return new numbers.value(){V=Math.Cos(ps[0].V)};
+                case "tan":
+                    return new numbers.value(){V=Math.Tan(ps[0].V)};
+                case "cot":
+                    return new numbers.value(){V=1/Math.Tan(ps[0].V)};
+                case "arcsin":
+                    return new numbers.value(){V=Math.Asin(ps[0].V)};
+                case "arccos":
+                    return new numbers.value(){V=Math.Acos(ps[0].V)};
+                case "log":
+                    return new numbers.value(){V=Math.Log(ps[0].V)};
+                case "arctan":
+                    return new numbers.value(){V=Math.Atan(ps[0].V)};
+                case "arccot":
+                    return new numbers.value(){V=1/Math.Atan(ps[0].V)};
+                case "min":
+                    return numbers.Numbers.findMin(ps[0],ps[1]);
+                case "max":
+                    return numbers.Numbers.findMax(ps[0],ps[1]);
+                case "sinh":
+                    return new numbers.value(){V=Math.Sinh(ps[0].V)};
+                case "tanh":
+                    return new numbers.value(){V=Math.Tanh(ps[0].V)};
+                case "cosh":
+                    return new numbers.value(){V=Math.Cosh(ps[0].V)};
+                case "arccosh":
+                    return new numbers.value(){V=Math.Acosh(ps[0].V)};
+                case "arcsinh":
+                    return new numbers.value(){V=Math.Asinh(ps[0].V)};
+                case "arctanh":
+                    return new numbers.value(){V=Math.Atanh(ps[0].V)};
+                case "coth":
+                    return new numbers.value(){V=1/Math.Tanh(ps[0].V)};;
+                case "arccoth":
+                    return new numbers.value(){V=1/Math.Atanh(ps[0].V)};
+                case "sqrt":
+                    return new numbers.value(){V=Math.Sqrt(ps[0].V)};
+                case "floor":
+                    return new numbers.value(){V=Math.Floor(ps[0].V)};
+                case "ceiling":
+                    return new numbers.value(){V=Math.Ceiling(ps[0].V)};
+                case "to_ascii":
+                    throw new NotImplementedException();
+                case "to_character":
+                    throw new NotImplementedException();
+                case "length_of":
+                    throw new NotImplementedException();
+                case "abs":
+                    throw new NotImplementedException();
+            }
             throw new NotImplementedException();
         }
     }
@@ -800,6 +883,8 @@ namespace parse_tree
     abstract public class Output : Parseable
     {
         public bool new_line;
+
+        public abstract numbers.value Execute(Lexer l);
     }
     public class Expr_Output : Output
     {
@@ -808,6 +893,10 @@ namespace parse_tree
         {
             this.expr = e;
             this.new_line = new_line;
+        }
+
+        public override numbers.value Execute(Lexer l){
+            return expr.Execute(l);
         }
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
@@ -820,5 +909,29 @@ namespace parse_tree
             this.parameter = p;
             this.next = n;
         }
+
+        private int getLen(){
+            if(parameter == null){
+                return 0;
+            } else if(next == null){
+                return 1;
+            }else{
+                return 1 + next.getLen();
+            }
+        }
+        public numbers.value[] Execute(Lexer l){
+            numbers.value[] ans = new numbers.value[getLen()];
+            int spot = 0;
+            if(next == null){
+                ans[spot] = parameter.Execute(l);
+            }else{
+                ans[spot] = parameter.Execute(l);
+                spot++;
+                ans[spot] = next.Execute(l)[0];
+                
+            }
+            return ans;
+        }
+
     }
 }
