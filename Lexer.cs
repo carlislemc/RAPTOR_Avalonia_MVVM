@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using raptor;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace RAPTOR_Avalonia_MVVM
 {
@@ -180,6 +182,15 @@ namespace RAPTOR_Avalonia_MVVM
         public static bool Is_Procedure(Token_Type t)
         {
             return isProc_Token_Type(t);
+        }
+        public static bool Is_Valid_Procedure(string s)
+        {
+            foreach(Subchart v in MainWindowViewModel.GetMainWindowViewModel().theTabs){
+                if(v.Text.Equals(s)){
+                    return true;
+                }
+            }
+            return false;
         }
         private string Current_String;
         private int Current_Location;

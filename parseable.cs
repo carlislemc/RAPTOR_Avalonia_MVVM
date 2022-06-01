@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using raptor;
 using RAPTOR_Avalonia_MVVM;
 using System.Collections;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace parse_tree
 {
@@ -90,7 +91,31 @@ namespace parse_tree
     {
         public override void Execute(Lexer l)
         {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=1});
+            numbers.value[] ps = param_list.Execute(l);
+            
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            string head = l.Get_Text(id.start, id.finish);
+            Subchart sub = mw.mainSubchart();
+            foreach(Subchart s in mw.theTabs){
+                if(s.Header == head){
+                    sub = s;
+                }
+            }
+            string[] paramNames = ((Oval_Procedure)sub.Start).param_names;
+            Runtime.Increase_Scope(head);
+            mw.decreaseScope = true;
+            mw.parentComponent = mw.activeComponent;
+            mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+            mw.activeComponent.running = true;
+            mw.activeTab = mw.theTabs.IndexOf(sub);
+            for(int i = 0; i < ps.Length-1; i++){
+               numbers.value num = ps[i];
+               Variable v2 = new Variable(paramNames[i], num);
+               Variable temp = v2;
+               mw.theVariables.RemoveAt(mw.theVariables.Count-1);
+               mw.theVariables.Insert(1, temp);
+               //mw.theVariables.Insert(1, new Variable(paramNames[i], num));
+            }
             return;
         }
 

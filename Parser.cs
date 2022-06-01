@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using raptor;
 
 namespace RAPTOR_Avalonia_MVVM
 {
@@ -834,7 +835,11 @@ namespace RAPTOR_Avalonia_MVVM
         {
             Proc_Call result = new Proc_Call();
             Token t = lexer.Get_Token();
-            if (!Lexer.isProc_Token_Type(t.kind))
+            bool userProc = false;
+            if(Lexer.Is_Valid_Procedure(lexer.Get_Text(t.start, t.finish))){
+                userProc = true;
+            }
+            if (!Lexer.isProc_Token_Type(t.kind) && !userProc)
             {
                 Raise_Exception(t, t.kind.ToString() +
                     " is unexpected in procedure call");
@@ -855,14 +860,16 @@ namespace RAPTOR_Avalonia_MVVM
                 result.param_list = null;
                 lexer.Unget_Token(t);
             }
-            try
-            {
-                lexer.Verify_Parameter_Count(
-                   lexer.Get_Text(result.id.start, result.id.finish),
-                   Count_Parameters(result.param_list));
-            } catch (Exception e)
-            {
-                Raise_Exception(t, e.Message);
+            if(!userProc){
+                try
+                {
+                    lexer.Verify_Parameter_Count(
+                    lexer.Get_Text(result.id.start, result.id.finish),
+                    Count_Parameters(result.param_list));
+                } catch (Exception e)
+                {
+                    Raise_Exception(t, e.Message);
+                }
             }
             return result;
         }
@@ -889,8 +896,13 @@ namespace RAPTOR_Avalonia_MVVM
             }
             else
             {
-                Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
-                    " is not a valid procedure name");
+                if(Lexer.Is_Valid_Procedure(lexer.Get_Text(t.start, t.finish))){
+                    //Variable v = new Variable(lexer.Get_Text(t.start, t.finish), new numbers.value(){V=3});
+                    result = Parse_Proc_Call();
+                } else{
+                    Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
+                        " is not a valid procedure name");
+                }
             }
             t = lexer.Get_Token();
             if (t.kind==Token_Type.Semicolon)

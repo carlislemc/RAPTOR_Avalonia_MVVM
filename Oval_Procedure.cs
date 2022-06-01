@@ -10,9 +10,9 @@ namespace raptor
     class Oval_Procedure : Oval
     {
         protected int num_params;
-        protected string[] param_names;
+        public string[] param_names;
         protected bool[] param_is_input;
-        protected bool[] param_is_output;
+        public bool[] param_is_output;
         public void changeParameters(int num_params, string[] param_names, bool[] param_is_input, bool[] param_is_output)
         {
             this.num_params = num_params;

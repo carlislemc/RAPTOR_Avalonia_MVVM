@@ -601,6 +601,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public int symbolCount = 0;
+        public bool decreaseScope = false;
         private void goToNextComponent(){
             symbolCount++;
             if(activeComponent.Successor == null && parentComponent != null) {
@@ -608,7 +609,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                    activeComponent.running = false;
                    activeComponent = parentComponent;
                    activeComponent.running = true;
-                }else {
+                } else {
+                    if(decreaseScope){
+                        Runtime.Decrease_Scope();
+                        decreaseScope = false;
+                        activeTab = 0;
+                    }
+                    parentComponent.running = false;
                     activeComponent.running = false;
                     activeComponent = parentComponent.Successor;
                     activeComponent.running = true;
@@ -627,18 +634,48 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
             } else {
-                if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null){
+                if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
                     symbolCount++;
                     MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
                     mc.Text += "--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n";
                     MainWindow.masterConsole.Activate();
                     symbolCount = 0;
-
                     activeComponent.running = false;
                     activeComponent = null;
                     if(myTimer != null){
                         myTimer.Stop();
                         myTimer = null;
+                    }
+                    return;
+                } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null){
+
+                    /*
+                    * idea for this to work
+                    * takes information from closing scope and sets any output parameters for the scope below it
+                    * still need to handle parameter is an arrary
+                    */
+
+                    Subchart activeSubchart = theTabs[activeTab];
+                    symbolCount++;
+                    activeComponent.running = false;
+
+                    Oval_Procedure tempStart = (Oval_Procedure)activeSubchart.Start;
+                    ObservableCollection<numbers.value> outVals = new ObservableCollection<numbers.value>();
+                    for(int i = 0; i < tempStart.param_names.Length; i++){
+                        if(tempStart.param_is_output[i]){
+                            numbers.value outVal = Runtime.getVariable(tempStart.param_names[i]);
+                            outVals.Add(outVal);
+                        }
+                    }
+                    string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
+                    goToNextComponent();
+
+                    for(int i = 0; i < outVals.Count; i++){
+                        for(int k = 0; k < tempStart.param_names.Length; k++){
+                            if(tempStart.param_is_output[k]){
+                                Runtime.setVariable(textStr[k].Replace(")", "").Replace(" ",""), outVals[i]);
+                            }
+                        }
                     }
                     return;
                 }
@@ -657,6 +694,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
                             ea.Execute(l);
+                            if(decreaseScope){
+                                Variable tempVar = theVariables[theVariables.Count-1];
+                                theVariables.RemoveAt(theVariables.Count-1);
+                                theVariables.Insert(1, tempVar);
+                            }
                         }
                     } else {
                         string str = temp.text_str;
@@ -871,6 +913,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             if(this.activeComponent.running){
                 this.activeComponent.running = false;
                 this.activeComponent = null;
+            }
+            Component temp = this.mainSubchart().Start;
+            while(temp != null){
+                temp.selected = false;
+                temp = temp.Successor;
             }
         }
 
