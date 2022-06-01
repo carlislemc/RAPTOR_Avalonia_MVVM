@@ -23,6 +23,9 @@ using System.Timers;
 using System.Threading;
 using RAPTOR_Avalonia_MVVM.Views;
 
+using Avalonia.Markup.Xaml;
+using RAPTOR_Avalonia_MVVM.ViewModels;
+
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
 
@@ -620,14 +623,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public async void OnNextCommand() {
             if(activeComponent == null){
+                startRun();
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
             } else {
                 if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null){
-                    //for testing purposes -- when it reaches the end it restarts
+                    symbolCount++;
+                    MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+                    mc.Text += "\n--- Run Complete! " + symbolCount + " Symbols Evaluated ---";
+                    MainWindow.masterConsole.Activate();
+                    symbolCount = 0;
+
                     activeComponent.running = false;
-                    activeComponent = this.mainSubchart().Start;
-                    activeComponent.running = true;
+                    activeComponent = null;
+                    if(myTimer != null){
+                        myTimer.Stop();
+                        myTimer = null;
+                    }
                     return;
                 }
                 else if(activeComponent.GetType() == typeof(Oval)){
@@ -743,6 +755,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             
          }
         public void OnPauseCommand() {
+            MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+            mc.Text += "\nRun Paused!";
             myTimer.Stop();
         }
 
@@ -778,8 +792,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         private System.Timers.Timer myTimer;
         public void OnExecuteCommand() {
             if(myTimer == null){
+                
                 myTimer = new System.Timers.Timer(1000 * (1.01 - (double)setSpeed/100));
                 myTimer.Elapsed += new System.Timers.ElapsedEventHandler(stepper);
+            }else{
+                MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+                mc.Text += "\nRun Resumed!";
             }
             myTimer.Start();
         }
@@ -818,6 +836,18 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 myTimer.Stop();
                 myTimer = null;
             }
+            this.theVariables.Clear();
+            if(this.activeComponent == null){
+                return;
+            }
+            if(this.activeComponent.running){
+                this.activeComponent.running = false;
+                this.activeComponent = null;
+            }
+        }
+
+        public void startRun() {
+            symbolCount = 0;
             this.theVariables.Clear();
             if(this.activeComponent == null){
                 return;

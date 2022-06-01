@@ -26,7 +26,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnClearPush()
         {
-            Text += "cleared\n";
+            Text = "cleared\n";
         }
     }
 }
