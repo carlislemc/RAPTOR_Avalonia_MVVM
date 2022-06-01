@@ -14,7 +14,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
     {
         public static MasterConsoleViewModel? MC = null;
 
-        private string text="Welcome to RAPTOR";
+        private string text="Welcome to RAPTOR\n";
         public string Text   // property
         {
             get { return text; }   // get method

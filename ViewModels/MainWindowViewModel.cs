@@ -630,7 +630,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null){
                     symbolCount++;
                     MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-                    mc.Text += "\n--- Run Complete! " + symbolCount + " Symbols Evaluated ---";
+                    mc.Text += "--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n";
                     MainWindow.masterConsole.Activate();
                     symbolCount = 0;
 
@@ -740,6 +740,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             
                         }
                     } else{
+                        string str = temp.text_str;
+                        if(str == ""){
+                            throw new Exception("Output not instantiated");
+                        }
+                        Lexer l = new Lexer(str);
+                        if(temp.parse_tree != null){
+                            Output op = (Output)temp.parse_tree;
+                            numbers.value v = op.Execute(l);
+                            MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+                            mc.Text += numbers.Numbers.msstring_view_image(v).Replace("\"","");
+                            if(temp.new_line){
+                                mc.Text += "\n";
+                            }
+                            MainWindow.masterConsole.Activate();
+
+                        }
 
                     }
                     if(myTimer != null){
@@ -756,7 +772,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
          }
         public void OnPauseCommand() {
             MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-            mc.Text += "\nRun Paused!";
+            mc.Text += "Run Paused!\n";
             myTimer.Stop();
         }
 
@@ -797,7 +813,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 myTimer.Elapsed += new System.Timers.ElapsedEventHandler(stepper);
             }else{
                 MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-                mc.Text += "\nRun Resumed!";
+                mc.Text += "Run Resumed!\n";
             }
             myTimer.Start();
         }

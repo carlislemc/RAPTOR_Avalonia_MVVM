@@ -48,6 +48,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref output, value); }
         }
 
+        public bool checkBox = true;
+
+        public bool checkedBox{
+            get{ return checkBox; }
+            set{ checkBox = value;
+                 p.new_line = checkBox; }
+        }
+
         public Subchart getSubchart(){
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             ObservableCollection<Variable> vars = mw.theVariables;
@@ -62,7 +70,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnDoneCommand(){
-            Syntax_Result res = interpreter_pkg.output_syntax(getOutput, true);
+            Syntax_Result res = interpreter_pkg.output_syntax(getOutput, checkedBox);
             if(res.valid){
                 Undo_Stack.Make_Undoable(getSubchart());
                 p.text_str = getOutput;
