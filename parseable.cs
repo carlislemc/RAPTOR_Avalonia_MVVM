@@ -129,7 +129,7 @@ namespace parse_tree
         public Lsuffix? lsuffix;
 
         // execute the lhs of an assignment, takes in a value v --> what the rhs produced
-        public abstract void Execute(Lexer l);
+        public abstract numbers.value Execute(Lexer l);
 
 
     }
@@ -138,9 +138,10 @@ namespace parse_tree
         public Expression expr_part;
 
         // execute expr_part (rhs) return the value of expr_part
-        public override void Execute(Lexer l){
+        public override numbers.value Execute(Lexer l){
             numbers.value val = expr_part.Execute(l); /* get rhs into a value */
             this.lhs.Execute(l, val);
+            return val;
         }
 
     }
@@ -878,6 +879,9 @@ namespace parse_tree
             this.lhs = l;
             this.lsuffix = s;
         }
+        public void Execute(Lexer l, numbers.value v){
+            lhs.Execute(l, v);
+        }
     }
 
     abstract public class Output : Parseable
@@ -896,7 +900,8 @@ namespace parse_tree
         }
 
         public override numbers.value Execute(Lexer l){
-            return expr.Execute(l);
+            numbers.value v =  expr.Execute(l);
+            return v;
         }
     }
     //Parameter_List => Output[, Parameter_List | Lambda]

@@ -19,7 +19,8 @@ namespace raptor
 		public bool new_line=true;
 		public bool input_is_expression=false;
 		public parse_tree.Parseable prompt_tree;
-		private interpreter.Syntax_Result prompt_result;
+		public interpreter.Syntax_Result prompt_result;
+		public string assign = "";
 
 		public Parallelogram(int height, int width, String str_name, bool input)
 			: base(height, width, str_name)

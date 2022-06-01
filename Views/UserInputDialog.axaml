@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RAPTOR_Avalonia_MVVM.ViewModels"
+        xmlns:models="clr-namespace:raptor;assembly=raptor"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+        Width="300" Height="450"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.UserInputDialog"
+        Title="Input"
+        x:DataType="vm:UserInputDialogViewModel">
+        <!--x:CompileBindings="True"> -->
+
+  <Design.DataContext>
+      <vm:UserInputDialogViewModel/>
+  </Design.DataContext>
+
+  <StackPanel Background="Linen" Spacing="20">
+    <TextBlock HorizontalAlignment="Center" Text="{Binding Text}"/>
+    <TextBlock HorizontalAlignment="Center">
+    </TextBlock>
+    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
+      <TextBox Width="200" Watermark="value" Text="{Binding getVariable}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+    </StackPanel>
+  <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
+  </StackPanel>
+</Window>

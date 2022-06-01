@@ -21,6 +21,7 @@ using numbers;
 using parse_tree;
 using System.Timers;
 using System.Threading;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -596,7 +597,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set{currentInLoop = value;}
         }
 
+        public int symbolCount = 0;
         private void goToNextComponent(){
+            symbolCount++;
             if(activeComponent.Successor == null && parentComponent != null) {
                 if(inLoop){
                    activeComponent.running = false;
@@ -615,7 +618,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        public void OnNextCommand() {
+        public async void OnNextCommand() {
             if(activeComponent == null){
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
@@ -704,6 +707,33 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                     }
                 } else if(activeComponent.GetType() == typeof(Parallelogram)){
+                    if(myTimer != null){
+                        OnPauseCommand();
+                    }
+                    Parallelogram temp = (Parallelogram)activeComponent;
+                    if(temp.is_input){
+                        string str = temp.text_str;
+                        if(str == ""){
+                            throw new Exception("Input not instantiated");
+                        }
+                        if(temp.parse_tree != null){
+                            Input inp = (Input)temp.parse_tree;
+                            UserInputDialog uid = new UserInputDialog(temp);
+                            await uid.ShowDialog(MainWindow.topWindow);
+                            Lexer l = new Lexer(temp.assign);
+                            Syntax_Result r = temp.result;
+                            Expr_Assignment ex = (Expr_Assignment)r.tree;
+                            numbers.value v = ex.Execute(l);
+                            inp.Execute(l, v);
+                            
+                        }
+                    } else{
+
+                    }
+                    if(myTimer != null){
+                        OnExecuteCommand();
+                    }
+                    goToNextComponent();
 
                 }
 
@@ -757,22 +787,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         private Thread InstanceCaller;
         private void stepper(Object source, ElapsedEventArgs e)
         {
-            if (InstanceCaller != null && InstanceCaller.IsAlive)
-			{
-				return;
-			}
-			//this.myTimer.Stop();
-			try 
-			{
-				InstanceCaller = new Thread(new ThreadStart(this.OnNextCommand));
-                InstanceCaller.SetApartmentState(ApartmentState.MTA);
-                InstanceCaller.Priority = ThreadPriority.BelowNormal;
-				InstanceCaller.Start();
-			}
-			catch (System.Exception exc)
-			{
-				Console.WriteLine(exc.Message);
-			}
+
+            OnNextCommand();
+            // if (InstanceCaller != null && InstanceCaller.IsAlive)
+			// {
+			// 	return;
+			// }
+			// try 
+			// {
+			// 	InstanceCaller = new Thread(new ThreadStart(this.OnNextCommand));
+            //     InstanceCaller.SetApartmentState(ApartmentState.MTA);
+            //     InstanceCaller.Priority = ThreadPriority.BelowNormal;
+			// 	InstanceCaller.Start();
+			// }
+			// catch (System.Exception exc)
+			// {
+			// 	Console.WriteLine(exc.Message);
+			// }
 
         }
 
@@ -782,6 +813,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public void OnResetCommand() {
+            symbolCount = 0;
             if(myTimer != null){
                 myTimer.Stop();
                 myTimer = null;
