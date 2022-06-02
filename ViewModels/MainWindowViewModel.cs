@@ -26,6 +26,7 @@ using RAPTOR_Avalonia_MVVM.Views;
 using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using System.Collections;
+using Avalonia.Threading;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -800,9 +801,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                     }
                 } else if(activeComponent.GetType() == typeof(Parallelogram)){
-                    if(myTimer != null){
-                        OnPauseCommand();
-                    }
                     Parallelogram temp = (Parallelogram)activeComponent;
                     if(temp.is_input){
                         string str = temp.text_str;
@@ -811,14 +809,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                         if(temp.parse_tree != null){
                             Input inp = (Input)temp.parse_tree;
-                            UserInputDialog uid = new UserInputDialog(temp);
-                            await uid.ShowDialog(MainWindow.topWindow);
-                            Lexer l = new Lexer(temp.assign);
-                            Syntax_Result r = temp.result;
-                            Expr_Assignment ex = (Expr_Assignment)r.tree;
-                            numbers.value v = ex.Execute(l);
-                            inp.Execute(l, v);
-                            
+
+                            Dispatcher.UIThread.InvokeAsync(async () => {
+                                if(myTimer != null){
+                                    OnPauseCommand();
+                                }
+                                UserInputDialog uid = new UserInputDialog(temp);
+                                await uid.ShowDialog(MainWindow.topWindow);
+                                Lexer l = new Lexer(temp.assign);
+                                Syntax_Result r = temp.result;
+                                Expr_Assignment ex = (Expr_Assignment)r.tree;
+                                numbers.value v = ex.Execute(l);
+                                inp.Execute(l, v);
+                                 if(myTimer != null){
+                                    OnExecuteCommand();
+                                }
+                            });
                         }
                     } else{
                         string str = temp.text_str;
@@ -838,9 +844,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                         }
 
-                    }
-                    if(myTimer != null){
-                        OnExecuteCommand();
                     }
                     goToNextComponent();
 
