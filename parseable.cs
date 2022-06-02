@@ -7,6 +7,7 @@ using raptor;
 using RAPTOR_Avalonia_MVVM;
 using System.Collections;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace parse_tree
 {
@@ -91,6 +92,7 @@ namespace parse_tree
     {
         public override void Execute(Lexer l)
         {
+            Runtime.processing_parameter_list = true;
             numbers.value[] ps = param_list.Execute(l);
             
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
@@ -104,22 +106,46 @@ namespace parse_tree
             Oval_Procedure st = ((Oval_Procedure)sub.Start);
             string[] paramNames = st.param_names;
             Runtime.Increase_Scope(head);
-            mw.decreaseScope = true;
+            mw.decreaseScope++;
             mw.activeScope = head;
             mw.parentComponent = mw.activeComponent;
+            //mw.parentCount.Add(mw.activeComponent);
             mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
             mw.activeComponent.running = true;
             mw.activeTab = mw.theTabs.IndexOf(sub);
             for(int i = 0; i < ps.Length; i++){
-               if(!st.is_input_parameter(i)){
-                   break;
-               }
-               numbers.value num = ps[i];
-               Variable v2 = new Variable(paramNames[i], num);
-               Variable temp = v2;
-               mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-               mw.theVariables.Insert(1, temp);
+                if(!st.is_input_parameter(i)){
+                    break;
+                }
+                numbers.value num = ps[i];
+
+                // ObservableCollection<string> textStr = mw.getParamNames(mw.parentComponent.text_str);
+                
+                // for(int k = 0; k < textStr.Count; k++){
+                //     Variable tempVar = Runtime.getAnyVariableRef(textStr[k], "main");
+                //     Variable iusdbhfiuashdfiuashdfius = new Variable("!"+textStr[k], num);
+                //     // if(tempVar == null){
+                //     //     break;
+                //     // }
+                //     if(tempVar.Kind == Runtime.Variable_Kind.Value){
+                //         Variable v2 = new Variable(paramNames[i], num);
+                //         Variable temp = v2;
+                //         mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                //         mw.theVariables.Insert(1, temp);
+                //     } else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
+                //         Variable flabberghast = new Variable("asdf", new numbers.value(){V=1212});
+                //         Variable v2 = tempVar;
+                //         v2.Var_Name = paramNames[i];
+                //         mw.theVariables.Insert(1, v2);
+                //     }
+                // }
+
+                Variable v2 = new Variable(paramNames[i], num);
+                Variable temp = v2;
+                mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                mw.theVariables.Insert(1, temp);
             }
+            Runtime.processing_parameter_list = false;
             return;
         }
 

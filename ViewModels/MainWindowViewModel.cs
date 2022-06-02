@@ -25,6 +25,7 @@ using RAPTOR_Avalonia_MVVM.Views;
 
 using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using System.Collections;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -601,19 +602,27 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public int symbolCount = 0;
-        public bool decreaseScope = false;
+        public int decreaseScope = 0;
+        //public ArrayList parentCount = new ArrayList();
         public string activeScope = "main";
         private void goToNextComponent(){
             symbolCount++;
-            if(activeComponent.Successor == null && parentComponent != null) {
+            if(activeComponent.Successor == null && parentComponent != null /*(parentComponent != null || parentCount.Count != 0)*/) {
                 if(inLoop){
                    activeComponent.running = false;
                    activeComponent = parentComponent;
                    activeComponent.running = true;
                 } else {
-                    if(decreaseScope){
+                    // if(parentCount.Count != 0 && parentComponent == null){
+                    //     Variable asdf = new Variable("here" , new numbers.value(){V=123});
+                    //     parentComponent = (Component)parentCount[parentCount.Count-1];
+                    //     parentCount.RemoveAt(parentCount.Count-1);
+                    // }else if(parentCount.Count != 0){
+                    //     parentCount.RemoveAt(parentCount.Count-1);
+                    // }
+                    if(decreaseScope != 0){
                         Runtime.Decrease_Scope();
-                        decreaseScope = false;
+                        decreaseScope--;
                         activeTab = 0;
                     }
                     parentComponent.running = false;
@@ -631,6 +640,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private bool varFound(string s){
             return Runtime.getAnyVariable(s,activeScope);
+        }
+
+        public ObservableCollection<string> getParamNames(string s){
+            
+            // string of the form func_name(param1, param2, param3)
+            ;
+            ObservableCollection<string> ans = new ObservableCollection<string>();
+            s = s.Replace(" ", "");
+            string[] temp = s.Split("(")[1].Split(",");
+            for(int i = 0; i < temp.Length; i++){
+                ans.Add(temp[i].Replace(")", ""));
+            }
+
+            return ans;
+
         }
 
         public async void OnNextCommand() {
@@ -673,11 +697,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                     }
                     string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
+                    //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
                     goToNextComponent();
 
                     for(int i = 0; i < outVals.Count; i++){
                         for(int k = 0; k < tempStart.param_names.Length; k++){
                             if(tempStart.param_is_output[k]){
+                                // Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
+                                // if(tempVar.Kind == Runtime.Variable_Kind.Value){
+                                //     Runtime.setVariable(textStr[k], outVals[i]);
+                                // }
+                                // else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
+                                //     Runtime.setArrayElement(textStr[k], numbers.Numbers.integer_of(tempVar.values[0].value) ,outVals[i]);
+                                // }
+
                                 Runtime.setVariable(textStr[k].Replace(")", "").Replace(" ",""), outVals[i]);
                             }
                         }
@@ -699,7 +732,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
                             ea.Execute(l);
-                            if(decreaseScope && !varFound(l.Get_Text(0, str.IndexOf(":")))){
+                            if(decreaseScope != 0 && !varFound(l.Get_Text(0, str.IndexOf(":")))){
+                                //decreaseScope--;
                                 Variable tempVar = theVariables[theVariables.Count-1];
                                 theVariables.RemoveAt(theVariables.Count-1);
                                 theVariables.Insert(1, tempVar);

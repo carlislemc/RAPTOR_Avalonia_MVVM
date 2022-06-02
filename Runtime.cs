@@ -1119,11 +1119,13 @@ namespace raptor
 		public static bool getAnyVariable(string s, string sc){
 			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
 			int spot = -1;
+			int varCount = 0;
 			for(int i = 0; i < vars.Count; i++){
 				if(vars[i].Text == "--" + sc + "--"){
 					spot = i+1;
 					break;
 				}
+				varCount++;
 			}
 			for(int i = spot; i < vars.Count; i++){
 				if(vars[i].Text.Contains("--")){
@@ -1138,6 +1140,32 @@ namespace raptor
 				}
 			}
 			return false;
+		}
+
+		public static Variable getAnyVariableRef(string s, string sc){
+			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
+			int spot = -1;
+			int varCount = 0;
+			for(int i = 0; i < vars.Count; i++){
+				if(vars[i].Text == "--" + sc + "--"){
+					spot = i+1;
+					break;
+				}
+				varCount++;
+			}
+			for(int i = spot; i < vars.Count; i++){
+				if(vars[i].Text.Contains("--")){
+					//Variable jdhfg = new Variable(vars[i].Text.Replace("--","") + " found!" ,new numbers.value(){V=666});
+					break;
+				}else{
+					if(vars[i].Text.IndexOf(":") != -1 && s.IndexOf(":") != -1){
+						if(s.Substring(0, s.IndexOf(":")) == vars[i].Text.Substring(0, vars[i].Text.IndexOf(":"))){
+							return vars[i];
+						}
+					}
+				}
+			}
+			return null;
 		}
 
 		//****************************************************
@@ -1245,7 +1273,7 @@ namespace raptor
             }*/
             return null;
         }
-        private static Variable? Lookup_Variable(string s)
+        public static Variable? Lookup_Variable(string s)
 		{
 			Variable temp;
 			/*
@@ -1395,21 +1423,21 @@ namespace raptor
             throw new Exception(s + " not found.");
         }
 
-		public static double[] getArray(string s)
+		public static numbers.value[] getArray(string s)
 		{
-			return null;
-			/*Variable temp=Runtime.Lookup_Variable(s);
+			//return null;
+			Variable temp=Runtime.Lookup_Variable(s);
+			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
 
 			if (temp!=null)
 			{
 				if (temp.Kind==Variable_Kind.One_D_Array) 
 				{
-					int count = numbers.Numbers.integer_of (((Variable) 
-						(temp.FirstNode)).Variable_Value);
-					double[] result = new double[count];
+					int count = numbers.Numbers.integer_of (temp.values[0].value);
+					numbers.value[] result = new numbers.value[count];
 					for (int i=0; i<count; i++) 
 					{
-						result[i] = numbers.Numbers.long_float_of(temp.getArrayElement(i+1));
+						result[i] = temp.getArrayElement(i+1);
 					}
 					return result;
 				}
@@ -1419,7 +1447,7 @@ namespace raptor
 						" is not a one-dimensional array");
 				}
 			}
-			throw new Exception(s + " not found.");*/
+			throw new Exception(s + " not found.");
 		}
 
 		public static int[] getIntArray(string s)
