@@ -120,32 +120,23 @@ namespace parse_tree
                         break;
                     }
                     numbers.value num = ps[i];
-
-                    // ObservableCollection<string> textStr = mw.getParamNames(mw.parentComponent.text_str);
-                    
-                    // for(int k = 0; k < textStr.Count; k++){
-                    //     Variable tempVar = Runtime.getAnyVariableRef(textStr[k], "main");
-                    //     Variable iusdbhfiuashdfiuashdfius = new Variable("!"+textStr[k], num);
-                    //     // if(tempVar == null){
-                    //     //     break;
-                    //     // }
-                    //     if(tempVar.Kind == Runtime.Variable_Kind.Value){
-                    //         Variable v2 = new Variable(paramNames[i], num);
-                    //         Variable temp = v2;
-                    //         mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                    //         mw.theVariables.Insert(1, temp);
-                    //     } else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
-                    //         Variable flabberghast = new Variable("asdf", new numbers.value(){V=1212});
-                    //         Variable v2 = tempVar;
-                    //         v2.Var_Name = paramNames[i];
-                    //         mw.theVariables.Insert(1, v2);
-                    //     }
-                    // }
-
-                    Variable v2 = new Variable(paramNames[i], num);
-                    Variable temp = v2;
-                    mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                    mw.theVariables.Insert(1, temp);
+                    if(num.Kind == numbers.Value_Kind.Ref_1D){
+                        
+                        Variable v2 = new Variable(paramNames[i], num);
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+                    } else if(num.Kind == numbers.Value_Kind.Ref_2D){
+                        Variable v2 = new Variable(paramNames[i], num);
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+                    }else{
+                        Variable v2 = new Variable(paramNames[i], num);
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+                    }
                 }
                 Runtime.processing_parameter_list = false;
                 return;
@@ -995,19 +986,25 @@ namespace parse_tree
 
         public numbers.value[] Execute(Lexer l){
             numbers.value[] ans = new numbers.value[getLen()];
-            int spot = 0;
-            if(parameter == null){
-                return ans;
-            } else if(next == null){
-                ans[spot] = parameter.Execute(l);
-            }else{
-                ans[spot] = parameter.Execute(l);
-                while(spot != getLen()-1){
-                    spot++;
-                    ans[spot] = next.Execute(l)[spot-1];
-                }
+            // int spot = 0;
+            // if(parameter == null){
+            //     return ans;
+            // } else if(next == null){
+            //     ans[spot] = parameter.Execute(l);
+            // }else{
+            //     ans[spot] = parameter.Execute(l);
+            //     while(spot != getLen()-1){
+            //         spot++;
+            //         ans[spot] = next.Execute(l)[spot-1];
+            //     }
                 
+            // }
+
+            for(int i = 0; i < ans.Length; i++){
+                ans[i] = parameter.Execute(l);
+                parameter = next.parameter;
             }
+
             return ans;
         }
 

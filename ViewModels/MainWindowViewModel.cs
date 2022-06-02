@@ -810,9 +810,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Input inp = (Input)temp.parse_tree;
 
-                            Dispatcher.UIThread.InvokeAsync(async () => {
+                            await Dispatcher.UIThread.InvokeAsync(async () => {
                                 if(myTimer != null){
-                                    OnPauseCommand();
+                                    myTimer.Stop();
                                 }
                                 UserInputDialog uid = new UserInputDialog(temp);
                                 await uid.ShowDialog(MainWindow.topWindow);
@@ -822,7 +822,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 numbers.value v = ex.Execute(l);
                                 inp.Execute(l, v);
                                  if(myTimer != null){
-                                    OnExecuteCommand();
+                                    myTimer.Start();
                                 }
                             });
                         }
