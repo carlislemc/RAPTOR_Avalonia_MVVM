@@ -602,6 +602,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public int symbolCount = 0;
         public bool decreaseScope = false;
+        public string activeScope = "main";
         private void goToNextComponent(){
             symbolCount++;
             if(activeComponent.Successor == null && parentComponent != null) {
@@ -626,6 +627,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 activeComponent = activeComponent.Successor;
                 activeComponent.running = true;
             }
+        }
+
+        private bool varFound(string s){
+            return Runtime.getAnyVariable(s,activeScope);
         }
 
         public async void OnNextCommand() {
@@ -694,7 +699,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
                             ea.Execute(l);
-                            if(decreaseScope){
+                            if(decreaseScope && !varFound(l.Get_Text(0, str.IndexOf(":")))){
                                 Variable tempVar = theVariables[theVariables.Count-1];
                                 theVariables.RemoveAt(theVariables.Count-1);
                                 theVariables.Insert(1, tempVar);

@@ -101,20 +101,24 @@ namespace parse_tree
                     sub = s;
                 }
             }
-            string[] paramNames = ((Oval_Procedure)sub.Start).param_names;
+            Oval_Procedure st = ((Oval_Procedure)sub.Start);
+            string[] paramNames = st.param_names;
             Runtime.Increase_Scope(head);
             mw.decreaseScope = true;
+            mw.activeScope = head;
             mw.parentComponent = mw.activeComponent;
             mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
             mw.activeComponent.running = true;
             mw.activeTab = mw.theTabs.IndexOf(sub);
-            for(int i = 0; i < ps.Length-1; i++){
+            for(int i = 0; i < ps.Length; i++){
+               if(!st.is_input_parameter(i)){
+                   break;
+               }
                numbers.value num = ps[i];
                Variable v2 = new Variable(paramNames[i], num);
                Variable temp = v2;
-               mw.theVariables.RemoveAt(mw.theVariables.Count-1);
+               mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
                mw.theVariables.Insert(1, temp);
-               //mw.theVariables.Insert(1, new Variable(paramNames[i], num));
             }
             return;
         }
@@ -949,15 +953,20 @@ namespace parse_tree
                 return 1 + next.getLen();
             }
         }
+
         public numbers.value[] Execute(Lexer l){
             numbers.value[] ans = new numbers.value[getLen()];
             int spot = 0;
-            if(next == null){
+            if(parameter == null){
+                return ans;
+            } else if(next == null){
                 ans[spot] = parameter.Execute(l);
             }else{
                 ans[spot] = parameter.Execute(l);
-                spot++;
-                ans[spot] = next.Execute(l)[0];
+                while(spot != getLen()-1){
+                    spot++;
+                    ans[spot] = next.Execute(l)[spot-1];
+                }
                 
             }
             return ans;

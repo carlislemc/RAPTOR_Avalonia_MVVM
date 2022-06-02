@@ -1112,6 +1112,34 @@ namespace raptor
 		{
 		}
 
+		public static bool getAnyVariable(string s){
+			return Runtime.Lookup_Variable(s) != null;
+		}
+
+		public static bool getAnyVariable(string s, string sc){
+			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
+			int spot = -1;
+			for(int i = 0; i < vars.Count; i++){
+				if(vars[i].Text == "--" + sc + "--"){
+					spot = i+1;
+					break;
+				}
+			}
+			for(int i = spot; i < vars.Count; i++){
+				if(vars[i].Text.Contains("--")){
+					//Variable jdhfg = new Variable(vars[i].Text.Replace("--","") + " found!" ,new numbers.value(){V=666});
+					break;
+				}else{
+					if(vars[i].Text.IndexOf(":") != -1){
+						if(s.Substring(0, s.IndexOf(":")) == vars[i].Text.Substring(0, vars[i].Text.IndexOf(":"))){
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
 		//****************************************************
 		// getVariable
 		// Returns the current value of an existing variable
