@@ -718,6 +718,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                     //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
                     goToNextComponent();
+                    setViewTab = activeTab;
 
                     string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
 
@@ -1024,6 +1025,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public int setActiveTab{
             get{return activeTab;}
             set{ this.RaiseAndSetIfChanged(ref activeTab, value); }
+        }
+
+        public int viewTab = 0;
+        public int setViewTab{
+            get{return viewTab; }
+            set{this.RaiseAndSetIfChanged(ref viewTab, value); }
         }
         public void OnRedoCommand() {
             Undo_Stack.Redo_Action(this.mainSubchart());

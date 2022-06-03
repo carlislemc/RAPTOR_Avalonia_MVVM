@@ -242,13 +242,17 @@ namespace raptor
             MainWindowViewModel.GetMainWindowViewModel().OnDeleteCommand();
         }
 
-        public void onAddSubchartCommand(){
+        public async void onAddSubchartCommand(){
+            ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
             AddSubchartDialog asc = new AddSubchartDialog();
-            asc.ShowDialog(MainWindow.topWindow);
+            await asc.ShowDialog(MainWindow.topWindow);
+            MainWindowViewModel.GetMainWindowViewModel().setViewTab = tbs.Count-1;
         }
-        public void onAddProcedureCommand(){
+        public async void onAddProcedureCommand(){
+            ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
             AddProcedureDialog avm = new AddProcedureDialog();
-            avm.ShowDialog(MainWindow.topWindow);
+            await avm.ShowDialog(MainWindow.topWindow);
+            MainWindowViewModel.GetMainWindowViewModel().setViewTab = tbs.Count-1;
         }
 
         public Subchart(string name)

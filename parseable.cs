@@ -161,6 +161,7 @@ namespace parse_tree
                     }
                 }
                 Runtime.processing_parameter_list = false;
+                mw.setViewTab = mw.theTabs.IndexOf(sub);
                 return;
 
 
