@@ -109,28 +109,50 @@ namespace parse_tree
                 string[] paramNames = st.param_names;
                 Runtime.Increase_Scope(head);
                 mw.decreaseScope++;
-                mw.activeScope = head;
+                mw.activeScopes.Add(head);
                 mw.parentComponent = mw.activeComponent;
-                //mw.parentCount.Add(mw.activeComponent);
+                mw.parentCount.Add(mw.activeComponent);
                 mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
                 mw.activeComponent.running = true;
                 mw.activeTab = mw.theTabs.IndexOf(sub);
+                mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
                 for(int i = 0; i < ps.Length; i++){
                     if(!st.is_input_parameter(i)){
                         break;
                     }
                     numbers.value num = ps[i];
                     if(num.Kind == numbers.Value_Kind.Ref_1D){
-                        
-                        Variable v2 = new Variable(paramNames[i], num);
+
+                        Variable oneD = (Variable)num.Object;
+                        ObservableCollection<Arr> a = oneD.values;
+                        int size = numbers.Numbers.integer_of(oneD.values[0].value);
+                        Variable v2 = new Variable(paramNames[i], size, new numbers.value());
                         Variable temp = v2;
                         mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
                         mw.theVariables.Insert(1, temp);
+                        for(int j = 1; j < a.Count; j++){
+                            Runtime.setArrayElement(v2.Var_Name, j, a[j].value);
+                        }
+
                     } else if(num.Kind == numbers.Value_Kind.Ref_2D){
-                        Variable v2 = new Variable(paramNames[i], num);
+
+                        Variable twoD = (Variable)num.Object;
+                        ObservableCollection<Arr> a = twoD.values;
+                        int rows = numbers.Numbers.integer_of(twoD.values[0].value);
+                        int cols = numbers.Numbers.integer_of(twoD.values[1].values[0].value);
+
+                        Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
                         Variable temp = v2;
                         mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
                         mw.theVariables.Insert(1, temp);
+
+                        for(int r = 1; r < rows; r++){
+                            ObservableCollection<Arr2> a2 = a[r].values;
+                            for(int c = 1; c < cols; c++){
+                                Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
+                            }
+                        }
+
                     }else{
                         Variable v2 = new Variable(paramNames[i], num);
                         Variable temp = v2;
@@ -140,6 +162,8 @@ namespace parse_tree
                 }
                 Runtime.processing_parameter_list = false;
                 return;
+
+
             } else{
 
                 string str = l.Get_Text(id.start, id.finish);
@@ -1002,7 +1026,12 @@ namespace parse_tree
 
             for(int i = 0; i < ans.Length; i++){
                 ans[i] = parameter.Execute(l);
-                parameter = next.parameter;
+                if(next != null){
+                    parameter = next.parameter;
+                    if(next.next != null){
+                        next = next.next;
+                    }
+                }
             }
 
             return ans;

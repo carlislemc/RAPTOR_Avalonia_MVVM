@@ -674,17 +674,14 @@ namespace raptor
 			// only use this on a 2D array
 			public int row_count()
 			{
-				return 0;
-				//return numbers.Numbers.integer_of(((Variable) 
-				//	(this.FirstNode)).Variable_Value);
+				
+				return numbers.Numbers.integer_of(this.values[0].value);
 			}
 
 			// only use this on a 2D array
 			public int col_count()
 			{
-				return 0;
-				//return numbers.Numbers.integer_of(((Variable) 
-				//	(this.Nodes[1].FirstNode)).Variable_Value);
+				return numbers.Numbers.integer_of(this.values[1].values[0].value);
 			}
 
 			public void Overwrite(Variable source) 
@@ -1132,8 +1129,12 @@ namespace raptor
 					//Variable jdhfg = new Variable(vars[i].Text.Replace("--","") + " found!" ,new numbers.value(){V=666});
 					break;
 				}else{
-					if(vars[i].Text.IndexOf(":") != -1){
+					if(vars[i].Kind==Variable_Kind.Value){
 						if(s.Substring(0, s.IndexOf(":")) == vars[i].Text.Substring(0, vars[i].Text.IndexOf(":"))){
+							return true;
+						}
+					}else if(s.Contains("[") && (vars[i].Kind==Variable_Kind.One_D_Array || vars[i].Kind==Variable_Kind.Two_D_Array)){
+						if(s.Substring(0, s.IndexOf("[")) == vars[i].Text.Substring(0, vars[i].Text.IndexOf("["))){
 							return true;
 						}
 					}
@@ -1394,8 +1395,7 @@ namespace raptor
 		*/
         internal static numbers.value[] getValueArray(Variable temp)
         {
-			int count = 2; // numbers.Numbers.integer_of(((Variable)
-                //(temp.FirstNode)).Variable_Value);
+			int count = numbers.Numbers.integer_of(temp.values[0].value);
             numbers.value[] result = new numbers.value[count];
             for (int i = 0; i < count; i++)
             {

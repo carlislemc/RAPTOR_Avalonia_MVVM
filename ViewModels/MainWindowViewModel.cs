@@ -604,33 +604,44 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public int symbolCount = 0;
         public int decreaseScope = 0;
-        //public ArrayList parentCount = new ArrayList();
-        public string activeScope = "main";
+        public ObservableCollection<Component> parentCount = new ObservableCollection<Component>();
+
+        public ObservableCollection<string> activeScopes = new ObservableCollection<string>() {"main"};
+
+        private int huh = 0;
         private void goToNextComponent(){
             symbolCount++;
-            if(activeComponent.Successor == null && parentComponent != null /*(parentComponent != null || parentCount.Count != 0)*/) {
+            if(parentCount.Count != 0 && parentComponent == null){
+                parentComponent = parentCount[parentCount.Count-1];
+                parentCount.RemoveAt(parentCount.Count-1);
+            }
+            if(activeComponent.Successor == null && parentComponent != null) {
                 if(inLoop){
                    activeComponent.running = false;
                    activeComponent = parentComponent;
                    activeComponent.running = true;
                 } else {
-                    // if(parentCount.Count != 0 && parentComponent == null){
-                    //     Variable asdf = new Variable("here" , new numbers.value(){V=123});
-                    //     parentComponent = (Component)parentCount[parentCount.Count-1];
-                    //     parentCount.RemoveAt(parentCount.Count-1);
-                    // }else if(parentCount.Count != 0){
-                    //     parentCount.RemoveAt(parentCount.Count-1);
-                    // }
                     if(decreaseScope != 0){
                         Runtime.Decrease_Scope();
                         decreaseScope--;
-                        activeTab = 0;
+                        if(activeTabs.Count > 1){
+                            activeTab = activeTabs[activeTabs.Count-2];
+                            activeTabs.RemoveAt(activeTabs.Count-1);
+                        }else{
+                            activeTab = 0;
+                        }
+                        activeScopes.RemoveAt(activeScopes.Count-1);
                     }
                     parentComponent.running = false;
                     activeComponent.running = false;
+                    if(parentCount.Count != 0){
+                        parentComponent = parentCount[parentCount.Count-1];
+                        parentCount.RemoveAt(parentCount.Count-1);
+                    }
+                    parentComponent.running = false;
                     activeComponent = parentComponent.Successor;
                     activeComponent.running = true;
-                    parentComponent = null;
+                    
                 }
             } else{
                 activeComponent.running = false;
@@ -640,7 +651,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         private bool varFound(string s){
-            return Runtime.getAnyVariable(s,activeScope);
+            return Runtime.getAnyVariable(s, activeScopes[activeScopes.Count-1]);
         }
 
         public ObservableCollection<string> getParamNames(string s){
@@ -664,7 +675,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
             } else {
-                if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
+                if((activeComponent.Successor == null && activeTab==0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
                     symbolCount++;
                     MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
                     mc.Text += "--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n";
@@ -677,42 +688,70 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         myTimer = null;
                     }
                     return;
-                } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null){
-
-                    /*
-                    * idea for this to work
-                    * takes information from closing scope and sets any output parameters for the scope below it
-                    * still need to handle parameter is an arrary
-                    */
+                } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null){                  
 
                     Subchart activeSubchart = theTabs[activeTab];
                     symbolCount++;
                     activeComponent.running = false;
 
                     Oval_Procedure tempStart = (Oval_Procedure)activeSubchart.Start;
-                    ObservableCollection<numbers.value> outVals = new ObservableCollection<numbers.value>();
+                    ObservableCollection<Object> outVals = new ObservableCollection<Object>();
+
                     for(int i = 0; i < tempStart.param_names.Length; i++){
                         if(tempStart.param_is_output[i]){
-                            numbers.value outVal = Runtime.getVariable(tempStart.param_names[i]);
-                            outVals.Add(outVal);
+                            Variable tempVar = Runtime.Lookup_Variable(tempStart.param_names[i]);
+                            if(tempVar.Kind == Runtime.Variable_Kind.Value){
+                                numbers.value outVal = Runtime.getVariable(tempStart.param_names[i]);
+                                outVals.Add(outVal);
+                            } else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
+                                numbers.value[] outVal = Runtime.getValueArray(tempStart.param_names[i]);
+                                outVals.Add(outVal);
+                            }else if(tempVar.Kind == Runtime.Variable_Kind.Two_D_Array){
+                                numbers.value[][] outVal = Runtime.get2DValueArray(tempStart.param_names[i]);
+                                outVals.Add(outVal);
+                            }
+                            
                         }
                     }
-                    string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
+
+                    //string[] textStr = parentComponent.text_str.Split("(")[1].Split(","); // wont work for array[3,5] 
+
                     //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
                     goToNextComponent();
 
-                    for(int i = 0; i < outVals.Count; i++){
-                        for(int k = 0; k < tempStart.param_names.Length; k++){
-                            if(tempStart.param_is_output[k]){
-                                // Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
-                                // if(tempVar.Kind == Runtime.Variable_Kind.Value){
-                                //     Runtime.setVariable(textStr[k], outVals[i]);
-                                // }
-                                // else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
-                                //     Runtime.setArrayElement(textStr[k], numbers.Numbers.integer_of(tempVar.values[0].value) ,outVals[i]);
-                                // }
+                    string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
 
-                                Runtime.setVariable(textStr[k].Replace(")", "").Replace(" ",""), outVals[i]);
+                    int spot = 0;
+                    for(int i = 0; i < outVals.Count; i++){
+                        for(int k = spot; k < tempStart.param_names.Length; k++){
+                            if(tempStart.param_is_output[k]){
+                                textStr[k] = textStr[k].Replace(")", "");
+                                Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
+                                if(tempVar == null){
+                                    throw new Exception("Variable " + textStr[k] + " not found!");
+                                }
+                                if(tempVar.Kind == Runtime.Variable_Kind.Value){
+                                    Runtime.setVariable(textStr[k], (numbers.value)outVals[i]);
+                                    spot = k+1;
+                                    break;
+                                }
+                                else if(tempVar.Kind == Runtime.Variable_Kind.One_D_Array){
+                                    numbers.value[] arr = (numbers.value[])outVals[i];
+                                    for(int n = 0; n < arr.Length; n++){
+                                        Runtime.setArrayElement(textStr[k], n+1 , arr[n]);
+                                        spot = k+1;
+                                        break;
+                                    }
+                                }else if(tempVar.Kind == Runtime.Variable_Kind.Two_D_Array){
+                                    numbers.value[][] arr = (numbers.value[][])outVals[i];
+                                    for(int r = 0; r < arr.Length; r++){
+                                        for(int c = 0; c < arr[r].Length; c++){
+                                            Runtime.set2DArrayElement(textStr[k], r+1, c+1, arr[r][c]);
+                                            spot = k+1;
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -956,11 +995,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 this.activeComponent.running = false;
                 this.activeComponent = null;
             }
-            Component temp = this.mainSubchart().Start;
-            while(temp != null){
-                temp.selected = false;
-                temp = temp.Successor;
-            }
+            parentComponent = null;
+            parentCount = new ObservableCollection<Component>();
+            activeTab = 0;
+            activeTabs = new ObservableCollection<int>(){0};
+
         }
 
         public bool isUndoable = false;
@@ -980,9 +1019,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         // need active tab so we know where to undo and redo changes.
         public int activeTab = 0;
+        public ObservableCollection<int> activeTabs = new ObservableCollection<int>() {0};
+
         public int setActiveTab{
             get{return activeTab;}
-            set{this.RaiseAndSetIfChanged(ref activeTab, value); }
+            set{ this.RaiseAndSetIfChanged(ref activeTab, value); }
         }
         public void OnRedoCommand() {
             Undo_Stack.Redo_Action(this.mainSubchart());
