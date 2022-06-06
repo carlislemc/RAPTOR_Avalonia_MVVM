@@ -923,7 +923,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 outputAns += "\n";
                             }
 
-                            Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n"), DispatcherPriority.Background);
+                            Dispatcher.UIThread.Post(() => postDialog(outputAns), DispatcherPriority.Background);
                             //MainWindow.masterConsole.Activate();
 
                         }
