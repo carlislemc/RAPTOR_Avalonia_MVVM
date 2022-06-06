@@ -596,10 +596,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set{currentParentComponent = value;}
         }
 
-        public int currentInLoop;
+        public int currentInLoop = 0;
         public int inLoop{
             get{return currentInLoop;}
             set{currentInLoop = value;}
+        }
+
+        public int currentInSelection = 0;
+        public int inSelection{
+            get{return currentInSelection;}
+            set{currentInSelection = value;}
         }
 
         public int symbolCount = 0;
@@ -616,22 +622,24 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 parentCount.RemoveAt(parentCount.Count-1);
             }
             if(activeComponent.Successor == null && parentComponent != null) {
-                if(inLoop != 0){
-                    activeComponent.running = false;
 
-                    if(activeComponent.parent != null && activeComponent.parent.GetType() == typeof(Loop) && getParent){
-                        activeComponent = parentCount[parentCount.Count-1].parent;
-                        getParent = false;
-                        inLoop--;
-                        parentCount.RemoveAt(parentCount.Count-1);
-                    }else{
-                        activeComponent = parentCount[parentCount.Count-1];
-                        //parentCount.RemoveAt(parentCount.Count-1);
+                if(inSelection != 0 || inLoop != 0){
+                    activeComponent.running = false;
+                    if(activeComponent.Successor == null){
+                        while(activeComponent.parent.GetType() != typeof(Loop) && activeComponent.parent.Successor == null){
+                            activeComponent = activeComponent.parent;
+                            inSelection--;
+                        }
+                        if(activeComponent.parent.GetType() == typeof(Loop)){
+                            activeComponent = activeComponent.parent;
+                            inLoop--;
+                        } else if(activeComponent.parent.GetType() == typeof(IF_Control)){
+                            activeComponent = activeComponent.parent.Successor;
+                            inSelection--;
+                        }
                     }
                     activeComponent.running = true;
-                    if(parentCount.Count > 0){
-                        parentComponent = parentCount[parentCount.Count-1];
-                    }
+                    parentCount.RemoveAt(parentCount.Count-1);
                 } else {
                     if(decreaseScope != 0){
                         Runtime.Decrease_Scope();
@@ -655,7 +663,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     activeComponent.running = true;
                     
                 }
-            } else{
+            } else {
                 activeComponent.running = false;
                 activeComponent = activeComponent.Successor;
                 activeComponent.running = true;
@@ -695,7 +703,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 activeComponent = this.mainSubchart().Start;
                 activeComponent.running = true;
             } else {
-                if((activeComponent.Successor == null && activeTab==0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
+                if((activeComponent.Successor == null && activeTab==0 && inLoop == 0 && inSelection == 0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
                     symbolCount++;
           
                     Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n"), DispatcherPriority.Background);
@@ -827,6 +835,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
                         bool rel = r.Execute(l);
                         parentComponent = temp;
+                        if(!parentCount.Contains(parentComponent)){
+                            parentCount.Add(parentComponent);
+                            inSelection++;
+                        }
                         if(rel){
                             if(temp.left_Child != null){
                                 activeComponent.running = false;
