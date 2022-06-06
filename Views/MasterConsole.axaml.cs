@@ -8,7 +8,7 @@ namespace RAPTOR_Avalonia_MVVM
     public partial class MasterConsole : Window
     {
         public MasterConsole()
-        {
+        { 
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();

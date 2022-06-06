@@ -681,6 +681,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
+        public async void postDialog(string text)
+        {
+            MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+            mc.Text += text;
+            MainWindow.masterConsole.Activate();
+            symbolCount = 0;
+        }
+
         public async void OnNextCommand() {
             if(activeComponent == null){
                 startRun();
@@ -689,10 +697,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             } else {
                 if((activeComponent.Successor == null && activeTab==0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
                     symbolCount++;
-                    MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-                    mc.Text += "--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n";
-                    MainWindow.masterConsole.Activate();
-                    symbolCount = 0;
+          
+                    Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n"), DispatcherPriority.Background);
+                    
+                    
                     activeComponent.running = false;
                     activeComponent = null;
                     if(myTimer != null){
@@ -898,12 +906,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         if(temp.parse_tree != null){
                             Output op = (Output)temp.parse_tree;
                             numbers.value v = op.Execute(l);
-                            MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-                            mc.Text += numbers.Numbers.msstring_view_image(v).Replace("\"","");
+                            string outputAns = numbers.Numbers.msstring_view_image(v).Replace("\"", "");
                             if(temp.new_line){
-                                mc.Text += "\n";
+                                outputAns += "\n";
                             }
-                            MainWindow.masterConsole.Activate();
+
+                            Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n"), DispatcherPriority.Background);
+                            //MainWindow.masterConsole.Activate();
 
                         }
 

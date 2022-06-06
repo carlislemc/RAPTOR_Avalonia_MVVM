@@ -12,13 +12,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
     public class MasterConsoleViewModel : ReactiveObject
     {
+
         public static MasterConsoleViewModel? MC = null;
 
         private string text="Welcome to RAPTOR\n";
         public string Text   // property
         {
             get { return text; }   // get method
-            set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
+            set {
+                
+                this.RaiseAndSetIfChanged(ref text,value);
+            }  // set method
         }
         public void clear_txt()
         {
