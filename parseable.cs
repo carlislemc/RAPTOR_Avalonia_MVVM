@@ -138,17 +138,17 @@ namespace parse_tree
 
                         Variable twoD = (Variable)num.Object;
                         ObservableCollection<Arr> a = twoD.values;
-                        int rows = numbers.Numbers.integer_of(twoD.values[0].value);
-                        int cols = numbers.Numbers.integer_of(twoD.values[1].values[0].value);
+                        int rows = numbers.Numbers.integer_of(a[0].value);
+                        int cols = numbers.Numbers.integer_of(a[1].values[0].value);
 
                         Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
                         Variable temp = v2;
                         mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
                         mw.theVariables.Insert(1, temp);
 
-                        for(int r = 1; r < rows; r++){
+                        for(int r = 1; r < rows+1; r++){
                             ObservableCollection<Arr2> a2 = a[r].values;
-                            for(int c = 1; c < cols; c++){
+                            for(int c = 1; c < cols+1; c++){
                                 Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
                             }
                         }
@@ -1011,26 +1011,15 @@ namespace parse_tree
 
         public numbers.value[] Execute(Lexer l){
             numbers.value[] ans = new numbers.value[getLen()];
-            // int spot = 0;
-            // if(parameter == null){
-            //     return ans;
-            // } else if(next == null){
-            //     ans[spot] = parameter.Execute(l);
-            // }else{
-            //     ans[spot] = parameter.Execute(l);
-            //     while(spot != getLen()-1){
-            //         spot++;
-            //         ans[spot] = next.Execute(l)[spot-1];
-            //     }
-                
-            // }
+            Output tempParam = parameter;
+            Parameter_List tempNext = next;
 
             for(int i = 0; i < ans.Length; i++){
-                ans[i] = parameter.Execute(l);
-                if(next != null){
-                    parameter = next.parameter;
-                    if(next.next != null){
-                        next = next.next;
+                ans[i] = tempParam.Execute(l);
+                if(tempNext != null){
+                    tempParam = tempNext.parameter;
+                    if(tempNext.next != null){
+                        tempNext = tempNext.next;
                     }
                 }
             }

@@ -596,8 +596,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set{currentParentComponent = value;}
         }
 
-        public bool currentInLoop;
-        public bool inLoop{
+        public int currentInLoop;
+        public int inLoop{
             get{return currentInLoop;}
             set{currentInLoop = value;}
         }
@@ -608,7 +608,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public ObservableCollection<string> activeScopes = new ObservableCollection<string>() {"main"};
 
-        private int huh = 0;
+        private bool getParent = false;
         private void goToNextComponent(){
             symbolCount++;
             if(parentCount.Count != 0 && parentComponent == null){
@@ -616,10 +616,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 parentCount.RemoveAt(parentCount.Count-1);
             }
             if(activeComponent.Successor == null && parentComponent != null) {
-                if(inLoop){
-                   activeComponent.running = false;
-                   activeComponent = parentComponent;
-                   activeComponent.running = true;
+                if(inLoop != 0){
+                    activeComponent.running = false;
+
+                    if(activeComponent.parent != null && activeComponent.parent.GetType() == typeof(Loop) && getParent){
+                        activeComponent = parentCount[parentCount.Count-1].parent;
+                        getParent = false;
+                        inLoop--;
+                        parentCount.RemoveAt(parentCount.Count-1);
+                    }else{
+                        activeComponent = parentCount[parentCount.Count-1];
+                        //parentCount.RemoveAt(parentCount.Count-1);
+                    }
+                    activeComponent.running = true;
+                    if(parentCount.Count > 0){
+                        parentComponent = parentCount[parentCount.Count-1];
+                    }
                 } else {
                     if(decreaseScope != 0){
                         Runtime.Decrease_Scope();
@@ -687,6 +699,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         myTimer.Stop();
                         myTimer = null;
                     }
+                    parentCount.Clear();
+                    parentComponent = null;
+                    decreaseScope = 0;
+                    activeTab = 0;
                     return;
                 } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null){                  
 
@@ -719,7 +735,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
                     goToNextComponent();
                     setViewTab = activeTab;
-
+                    
                     string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
 
                     int spot = 0;
@@ -740,18 +756,18 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     numbers.value[] arr = (numbers.value[])outVals[i];
                                     for(int n = 0; n < arr.Length; n++){
                                         Runtime.setArrayElement(textStr[k], n+1 , arr[n]);
-                                        spot = k+1;
-                                        break;
+                                        spot = k+1; 
                                     }
+                                    break;
                                 }else if(tempVar.Kind == Runtime.Variable_Kind.Two_D_Array){
                                     numbers.value[][] arr = (numbers.value[][])outVals[i];
                                     for(int r = 0; r < arr.Length; r++){
                                         for(int c = 0; c < arr[r].Length; c++){
                                             Runtime.set2DArrayElement(textStr[k], r+1, c+1, arr[r][c]);
                                             spot = k+1;
-                                            break;
                                         }
                                     }
+                                    break;
                                 }
                             }
                         }
@@ -828,16 +844,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
                         bool rel = r.Execute(l);
                         parentComponent = temp;
+                        if(!parentCount.Contains(parentComponent)){
+                            parentCount.Add(parentComponent);
+                            inLoop++;
+                        }
                         if(rel){
-                            inLoop = false;
+                            if(inLoop > 1){
+                                getParent = true;
+                            }
+                            inLoop--;
                             goToNextComponent();
-                        } else{
+                            parentCount.RemoveAt(parentCount.Count-1);
+                        } else {
                             if(temp.after_Child != null){
                                 activeComponent.running = false;
                                 activeComponent = temp.after_Child;
                                 activeComponent.running = true;
                             }
-                            inLoop = true;
                         }
                     }
                 } else if(activeComponent.GetType() == typeof(Parallelogram)){
@@ -997,9 +1020,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 this.activeComponent = null;
             }
             parentComponent = null;
-            parentCount = new ObservableCollection<Component>();
+            parentCount.Clear();
             activeTab = 0;
-            activeTabs = new ObservableCollection<int>(){0};
+            activeTabs.Clear();
+            activeTabs.Add(0);
+            decreaseScope = 0;
 
         }
 
