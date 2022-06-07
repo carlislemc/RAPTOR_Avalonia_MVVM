@@ -611,6 +611,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public int symbolCount = 0;
         public int decreaseScope = 0;
+        public int decreaseSub = 0;
+        public bool isSub = false;
+
         public ObservableCollection<Component> parentCount = new ObservableCollection<Component>();
 
         public ObservableCollection<string> activeScopes = new ObservableCollection<string>() {"main"};
@@ -664,7 +667,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     }
                     
                 } else {
-                    if(decreaseScope != 0){
+                    if (isSub)
+                    {
+                        decreaseSub--;
+                        if (activeTabs.Count > 1)
+                        {
+                            activeTab = activeTabs[activeTabs.Count - 2];
+                            activeTabs.RemoveAt(activeTabs.Count - 1);
+                        }
+                        else
+                        {
+                            activeTab = 0;
+                        }
+                        isSub = false;
+                    }
+                    else if (decreaseScope != 0){
                         Runtime.Decrease_Scope();
                         decreaseScope--;
                         if(activeTabs.Count > 1){
@@ -770,6 +787,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     Subchart activeSubchart = theTabs[activeTab];
                     symbolCount++;
                     activeComponent.running = false;
+
+                    if(activeSubchart.Start.GetType() != typeof(Oval_Procedure))
+                    {
+                        isSub = true;
+                        goToNextComponent();
+                        setViewTab = activeTab;
+                        return;
+                    }
 
                     Oval_Procedure tempStart = (Oval_Procedure)activeSubchart.Start;
                     ObservableCollection<Object> outVals = new ObservableCollection<Object>();
