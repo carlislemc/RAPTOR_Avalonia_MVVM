@@ -26,10 +26,59 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public AddProcedureDialogViewModel() {
             this.text = "";
         }
-        public AddProcedureDialogViewModel(Window w) {
+        public AddProcedureDialogViewModel(Window w, bool modding) {
             this.text = "";
             this.w = w;
+            this.modding = modding;
+
+            if(modding){
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                Subchart s = mw.theTabs[mw.setViewTab];
+                procedureName = s.Header;
+
+                Oval_Procedure op = (Oval_Procedure)s.Start;
+                string[] ps = op.param_names;
+                switch(ps.Length){
+                    case 0:
+                        return;
+                    case 1:
+                        param1 = ps[0];
+                        return;
+                    case 2:
+                        param1 = ps[0];
+                        param2 = ps[1];
+                        return;
+                    case 3:
+                        param1 = ps[0];
+                        param2 = ps[1];
+                        param3 = ps[2];
+                        return;
+                    case 4:
+                        param1 = ps[0];
+                        param2 = ps[1];
+                        param3 = ps[2];
+                        param4 = ps[3];
+                        return;
+                    case 5:
+                        param1 = ps[0];
+                        param2 = ps[1];
+                        param3 = ps[2];
+                        param4 = ps[3];
+                        param5 = ps[4];
+                        return;
+                    case 6:
+                        param1 = ps[0];
+                        param2 = ps[1];
+                        param3 = ps[2];
+                        param4 = ps[3];
+                        param5 = ps[4];
+                        param6 = ps[5];
+                        return;
+                    
+                }
+            }
         }
+        public bool modding;
         public Window w;
         public bool modified = false;
         public bool runningState = false;
@@ -42,6 +91,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public string procedureName = "";
+
         public string setProcedureName { 
             get { return procedureName; } 
             set { this.RaiseAndSetIfChanged(ref procedureName, value); } 
@@ -238,7 +288,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
             addMe.kind=Subchart_Kinds.Procedure;
             addMe.Num_Params = paramCount();
-            tbs.Add(addMe);
+  
+            if(!modding){
+                tbs.Add(addMe);
+            }else{
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                int spot = mw.setViewTab;
+                tbs.RemoveAt(spot);
+                tbs.Insert(spot, addMe);
+                mw.setViewTab = spot;
+            }
+
             Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count-1]);
             w.Close();
         }

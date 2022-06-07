@@ -481,12 +481,26 @@
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
           <TextBlock Text="{Binding Header}">
-            <TextBlock.ContextMenu>
+          <TextBlock.ContextMenu>
+            <ContextMenu Items="{Binding TabContextMenuItems}">
+
+              <ContextMenu.Styles>
+                      <Style Selector="MenuItem">
+                        <Setter Property="Header" Value="{Binding Header}"/>
+                        <Setter Property="Items" Value="{Binding Items}"/>
+                        <Setter Property="Command" Value="{Binding Command}"/>
+                        <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                      </Style>
+              </ContextMenu.Styles>
+            <!--
                 <ContextMenu>
                     <MenuItem Header="Add Subchart" Command="{Binding onAddSubchartCommand}"/>
                     <MenuItem Header="Add Procedure" Command="{Binding onAddProcedureCommand}"/>
                 </ContextMenu>
-            </TextBlock.ContextMenu>
+            -->
+
+            </ContextMenu>
+          </TextBlock.ContextMenu>
           </TextBlock>
         </DataTemplate>
       </TabControl.ItemTemplate>

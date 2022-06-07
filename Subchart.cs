@@ -262,9 +262,22 @@ namespace raptor
         }
         public async void onAddProcedureCommand(){
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
-            AddProcedureDialog avm = new AddProcedureDialog();
+            AddProcedureDialog avm = new AddProcedureDialog(false);
             await avm.ShowDialog(MainWindow.topWindow);
             MainWindowViewModel.GetMainWindowViewModel().setViewTab = tbs.Count-1;
+        }
+        public async void onModSubchartCommand(){
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            Subchart modMe = mw.theTabs[mw.setViewTab];
+
+
+        }
+        public async void onModProcedureCommand(){
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            Subchart modMe = mw.theTabs[mw.setViewTab];
+
+            AddProcedureDialog avm = new AddProcedureDialog(true);
+            await avm.ShowDialog(MainWindow.topWindow);
         }
 
         public Subchart(string name)
@@ -285,7 +298,18 @@ namespace raptor
 
         public ReactiveCommand<Unit, Unit> AddSub { get; set; }
         public ReactiveCommand<Unit, Unit> AddProc { get; set; }
-        private ObservableCollection<MenuItemViewModel> PrivateTabContextMenuItems;
+        public ReactiveCommand<Unit, Unit> ModSub { get; set; }
+        public ReactiveCommand<Unit, Unit> ModProc { get; set; }
+        private ObservableCollection<MenuItemViewModel> PrivateTabContextMenuItems = new ObservableCollection<MenuItemViewModel>(){
+            new MenuItemViewModel() { Header = "Add Subchart"},
+            new MenuItemViewModel() { Header = "Add Procedure"}
+
+        };
+
+        public int setViewTab {
+            get{ return MainWindowViewModel.GetMainWindowViewModel().setViewTab; }
+            set{ MainWindowViewModel.GetMainWindowViewModel().setViewTab = value; }
+        }
         public ObservableCollection<MenuItemViewModel> TabContextMenuItems
         {
             get
@@ -297,19 +321,21 @@ namespace raptor
                 
                 AddSub = ReactiveCommand.Create(onAddSubchartCommand);
                 AddProc = ReactiveCommand.Create(onAddProcedureCommand);
+                ModSub = ReactiveCommand.Create(onModSubchartCommand);
+                ModProc = ReactiveCommand.Create(onModProcedureCommand);
 
-                if (mw.activeTab != 0)
+                if (mw.setViewTab != 0)
                 {
                     PrivateTabContextMenuItems.Clear();
                     PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart",  Command = AddSub });
                     PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure", Command = AddProc});
-                    if (mw.theTabs[mw.activeTab].Start.GetType() == typeof(Oval_Procedure))
+                    if (mw.theTabs[mw.setViewTab].Start.GetType() == typeof(Oval_Procedure))
                     {
-                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Procedure" });
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Procedure", Command = ModProc});
                     }
                     else
                     {
-                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Subchart" });
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Rename Subchart", Command = ModSub});
                     }
 
 
@@ -317,8 +343,8 @@ namespace raptor
                 else
                 {
                     PrivateTabContextMenuItems.Clear();
-                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart" });
-                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure" });
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart", Command = AddSub });
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure", Command = AddProc });
                 }
                 return PrivateTabContextMenuItems;
             }
