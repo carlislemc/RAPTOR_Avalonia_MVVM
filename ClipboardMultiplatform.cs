@@ -2,6 +2,7 @@
 using Avalonia.Input;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace raptor
         {
             DataObject dataObject = new DataObject();
             dataObject.Set("raptor-data", data);
-            if (Component.MONO)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 clipboard_data = dataObject;
             }
@@ -26,9 +27,9 @@ namespace raptor
         }
         public static async Task<object> GetDataObjectAsync()
         {
-            if (Component.MONO)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                return clipboard_data;
+                return clipboard_data.Get("raptor-data");
             }
             else
             {

@@ -33,11 +33,15 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         private void onClick(object? sender, RoutedEventArgs e)
         {
-            TappedEventArgs f = (TappedEventArgs)e;
+            PointerPressedEventArgs f = (PointerPressedEventArgs)e;
             this.sc.positionX = (int)f.GetPosition(this).X;
             this.sc.positionY = (int)f.GetPosition(this).Y;
             this.sc.positionXTapped = (int)f.GetPosition(this).X;
             this.sc.positionYTapped = (int)f.GetPosition(this).Y;
+            if (f.MouseButton!=MouseButton.Left)
+            {
+                return;
+            }
             this.sc.Start.select(this.sc.positionX,this.sc.positionY);
             if (SymbolsControl.control_figure_selected==SymbolsControl.assignment_fig)
             {
@@ -80,7 +84,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             timer.Tick += (sender, e) => Angle += Math.PI / 360;
             timer.Start();
             this.PointerMoved += this.onMouseMove;
-            this.Tapped += this.onClick;
+            //this.Tapped += this.onClick;
+            this.PointerPressed += this.onClick;
             this.DoubleTapped += this.doubleClick;
         }
 

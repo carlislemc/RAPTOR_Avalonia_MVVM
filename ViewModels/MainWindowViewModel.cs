@@ -567,7 +567,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             if(thing != null){
                 Component obj = ((Clipboard_Data)thing).symbols;
                 Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
-                this.theTabs[this.activeTab].Start.insert(obj, x_position, y_position, 0);
+                Component the_clone = obj.Clone();
+                this.theTabs[this.activeTab].Start.insert(the_clone, x_position, y_position, 0);
             }
             
         }
@@ -622,7 +623,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 parentCount.RemoveAt(parentCount.Count-1);
             }
             if(activeComponent.Successor == null && parentComponent != null) {
-
+                bool removeMe = true;
                 if(inSelection != 0 || inLoop != 0){
                     activeComponent.running = false;
                     if(activeComponent.Successor == null){
@@ -631,15 +632,37 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             inSelection--;
                         }
                         if(activeComponent.parent.GetType() == typeof(Loop)){
-                            activeComponent = activeComponent.parent;
-                            inLoop--;
+                            Loop tempLoop = (Loop)activeComponent.parent;
+                            if(!activeComponent.is_beforeChild && tempLoop.before_Child != null)
+                            {
+                                activeComponent = tempLoop.before_Child;
+                                parentComponent = tempLoop;
+                                //parentCount.Add(tempLoop);
+                                removeMe = true;
+                                //inLoop++;
+                            }
+                            else
+                            {
+                                activeComponent = activeComponent.parent;
+                                if (!parentCount.Contains(activeComponent))
+                                {
+                                    parentCount.Add(activeComponent);
+                                }
+                                inLoop--;
+                       
+                            }
+                            
                         } else if(activeComponent.parent.GetType() == typeof(IF_Control)){
                             activeComponent = activeComponent.parent.Successor;
                             inSelection--;
                         }
                     }
                     activeComponent.running = true;
-                    parentCount.RemoveAt(parentCount.Count-1);
+                    if (removeMe)
+                    {
+                        parentCount.RemoveAt(parentCount.Count - 1);
+                    }
+                    
                 } else {
                     if(decreaseScope != 0){
                         Runtime.Decrease_Scope();
@@ -665,7 +688,25 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             } else {
                 activeComponent.running = false;
-                activeComponent = activeComponent.Successor;
+                
+                if(activeComponent.Successor != null && activeComponent.Successor.GetType() == typeof(Loop))
+                {
+                    Loop tempComponent = (Loop)activeComponent.Successor;
+                    if(tempComponent.before_Child != null) {
+                        parentComponent = activeComponent;
+                        parentCount.Add(parentComponent);
+                        activeComponent = tempComponent.before_Child;
+                        inLoop++;
+                    }
+                    else
+                    {
+                        activeComponent = activeComponent.Successor;
+                    }
+                }
+                else
+                {
+                    activeComponent = activeComponent.Successor;
+                }
                 activeComponent.running = true;
             }
         }
@@ -689,12 +730,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        public async void postDialog(string text)
+        public async void postDialog(string text, bool isEnd)
         {
             MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
             mc.Text += text;
             MainWindow.masterConsole.Activate();
-            symbolCount = 0;
+            if (isEnd)
+            {
+                symbolCount = 0;
+            }
+            
         }
 
         public async void OnNextCommand() {
@@ -706,7 +751,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if((activeComponent.Successor == null && activeTab==0 && inLoop == 0 && inSelection == 0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null){
                     symbolCount++;
           
-                    Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n"), DispatcherPriority.Background);
+                    Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n",true), DispatcherPriority.Background);
                     
                     
                     activeComponent.running = false;
@@ -720,7 +765,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     decreaseScope = 0;
                     activeTab = 0;
                     return;
-                } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null){                  
+                } else if(activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null) { 
 
                     Subchart activeSubchart = theTabs[activeTab];
                     symbolCount++;
@@ -864,11 +909,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
                         bool rel = r.Execute(l);
                         parentComponent = temp;
-                        if(!parentCount.Contains(parentComponent)){
+                        if (!parentCount.Contains(parentComponent))
+                        {
                             parentCount.Add(parentComponent);
-                            inLoop++;
                         }
-                        if(rel){
+                        inLoop++;
+                        if (rel){
                             if(inLoop > 1){
                                 getParent = true;
                             }
@@ -923,7 +969,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 outputAns += "\n";
                             }
 
-                            Dispatcher.UIThread.Post(() => postDialog(outputAns), DispatcherPriority.Background);
+                            Dispatcher.UIThread.Post(() => postDialog(outputAns, false), DispatcherPriority.Background);
                             //MainWindow.masterConsole.Activate();
 
                         }

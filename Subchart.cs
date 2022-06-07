@@ -274,7 +274,8 @@ namespace raptor
         {
             get
             {
-
+                    positionXTapped = positionX;
+                    positionYTapped = positionY;
                     return ObservableMenuItems;
 
             }
