@@ -131,6 +131,7 @@ namespace raptor
                 new MenuItemViewModel { Header = "C_opy", Command = CopyCommand },
                 new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand }
             };
+
             this.ObservableMenuItems = new ObservableCollection<MenuItemViewModel>();
 
         }
@@ -231,7 +232,18 @@ namespace raptor
             }
             ans.addComment();
         }
-        public void OnToggleBreakpointCommand() { }
+        public void OnToggleBreakpointCommand() {
+            Component ans = Start;
+            while (!ans.selected)
+            {
+                if (ans.Successor == null)
+                {
+                    return;
+                }
+                ans = ans.Successor;
+            }
+            ans.Toggle_Breakpoint(ans.X, ans.Y);
+        }
         public void OnCutCommand() {
             MainWindowViewModel.GetMainWindowViewModel().OnCutCommand();
         }
@@ -269,6 +281,49 @@ namespace raptor
 
         private IList<MenuItemViewModel> OverArrowMenuItemsFunction;
         private IList<MenuItemViewModel> OverSymbolMenuItemsFunction;
+
+
+        public ReactiveCommand<Unit, Unit> AddSub { get; set; }
+        public ReactiveCommand<Unit, Unit> AddProc { get; set; }
+        private ObservableCollection<MenuItemViewModel> PrivateTabContextMenuItems;
+        public ObservableCollection<MenuItemViewModel> TabContextMenuItems
+        {
+            get
+            {
+                positionXTapped = positionX;
+                positionYTapped = positionY;
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
+                
+                AddSub = ReactiveCommand.Create(onAddSubchartCommand);
+                AddProc = ReactiveCommand.Create(onAddProcedureCommand);
+
+                if (mw.activeTab != 0)
+                {
+                    PrivateTabContextMenuItems.Clear();
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart",  Command = AddSub });
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure", Command = AddProc});
+                    if (mw.theTabs[mw.activeTab].Start.GetType() == typeof(Oval_Procedure))
+                    {
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Procedure" });
+                    }
+                    else
+                    {
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Subchart" });
+                    }
+
+
+                }
+                else
+                {
+                    PrivateTabContextMenuItems.Clear();
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart" });
+                    PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure" });
+                }
+                return PrivateTabContextMenuItems;
+            }
+        }
+
         private ObservableCollection<MenuItemViewModel> ObservableMenuItems;
         public ObservableCollection<MenuItemViewModel> ContextMenuItemsFunction
         {

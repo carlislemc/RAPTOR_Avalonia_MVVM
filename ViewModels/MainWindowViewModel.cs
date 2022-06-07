@@ -582,8 +582,55 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 ClipboardMultiplatform.SetDataObject(cd, true);
             }
         }
-        public void OnSaveCommand() { }
-        public void OnSaveAsCommand() { }
+        public void OnSaveCommand() {
+
+
+        }
+        public async void OnSaveAsCommand() {
+
+            string dialog_fileName;
+            string oldName = this.fileName;
+
+            if (!Component.BARTPE)
+            {
+                SaveFileDialog fileChooser = new SaveFileDialog();
+                
+
+                //fileChooser.CheckFileExists = false;
+                //fileChooser.Filter = "Raptor files (*.rap)|*.rap|All files (*.*)|*.*";
+                //fileChooser.DefaultExt = ".rap";
+                //fileChooser.RestoreDirectory = false;
+                //DialogResult result = fileChooser.ShowDialog();
+
+
+                //if (result == DialogResult.Cancel)
+                //{
+                //    return;
+                //}
+
+                //dialog_fileName = fileChooser.FileName;
+
+
+                //fileChooser.InitialFileName = Path.GetFullPath(this.fileName);
+                //fileChooser.Directory = workdir;
+                List<FileDialogFilter> Filters = new List<FileDialogFilter>();
+                FileDialogFilter filter = new FileDialogFilter();
+                List<string> extension = new List<string>();
+                extension.Add("rap");
+                filter.Extensions = extension;
+                filter.Name = "Raptor Files";
+                Filters.Add(filter);
+                fileChooser.Filters = Filters;
+
+                fileChooser.DefaultExtension = "rap";
+
+                await fileChooser.ShowAsync(MainWindow.topWindow);
+
+               
+            }
+
+
+        }
         
         public Component currentActiveComponent;
         public Component activeComponent{
@@ -621,6 +668,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         private bool getParent = false;
         private void goToNextComponent(){
             symbolCount++;
+
+            if (activeComponent.break_now())
+            {
+                if(myTimer != null)
+                {
+                    OnPauseCommand();
+                }
+            }
             if(parentCount.Count != 0 && parentComponent == null){
                 parentComponent = parentCount[parentCount.Count-1];
                 parentCount.RemoveAt(parentCount.Count-1);
