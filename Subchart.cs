@@ -239,6 +239,12 @@ namespace raptor
                     p.RemoveAt(p.Count - 1);
                 }
 
+                else if(ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
+                {
+                    ans = p[p.Count - 1];
+                
+                }
+
                 if (ans.GetType() == typeof(Loop))
                 {
                     Loop temp = (Loop)ans;

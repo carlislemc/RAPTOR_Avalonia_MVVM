@@ -703,9 +703,12 @@ namespace raptor
 		public virtual void init()
 		{
 			if(this.My_Comment != null){
-				FP.left = Convert.ToInt32(comment_footprint().Width/2);
-				FP.right = Convert.ToInt32(comment_footprint().Width/2);
-				FP.height = Convert.ToInt32(comment_footprint().Height);
+				//FP.left = Convert.ToInt32(comment_footprint().Width/2);
+				//FP.right = Convert.ToInt32(comment_footprint().Width/2);
+				//FP.height = Convert.ToInt32(comment_footprint().Height);
+				FP.left = W / 2;
+				FP.right = W / 2;
+				FP.height = H;
 			} else{
 				FP.left = W/2;
 				FP.right = W/2;
