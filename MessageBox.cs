@@ -12,6 +12,7 @@ namespace RAPTOR_Avalonia_MVVM
     class MessageBoxButtons
     {
         public const int OK = 0;
+        public const int YesNoCancel = 1;
     }
     class MessageBoxIcon
     {

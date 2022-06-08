@@ -1223,18 +1223,70 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             myTimer.Stop();
         }
 
+        public void Create_Flow_graphx()
+        {
+            Oval End = new Oval(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
+            if (!Component.USMA_mode)
+            {
+                End.Text = "End";
+            }
+            else
+            {
+                End.Text = "Stop";
+            }
+
+            this.mainSubchart().Start = new Oval(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
+            this.mainSubchart().Start.Text = "Start";
+            this.mainSubchart().Start.scale = this.scale;
+            this.mainSubchart().Start.Scale(this.scale);
+
+            this.Clear_Undo();
+            this.modified = false;
+
+            //flow_panel.Invalidate();
+        }
+
+        private bool Save_Before_Losing()
+        {
+            return true;
+        }
+
         public void OnNewCommand()
         {
-            var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow(new MessageBoxStandardParams
-                {
-                    ButtonDefinitions = ButtonEnum.OkAbort,
-                    ContentTitle = "Title",
-                    ContentMessage = "Message",
-                    Icon = Icon.Plus,
-                    Style = Style.Windows
-                });
-            msBoxStandardWindow.Show();
+            //var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+            //    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+            //    {
+            //        ButtonDefinitions = ButtonEnum.OkAbort,
+            //        ContentTitle = "Title",
+            //        ContentMessage = "Message",
+            //        Icon = Icon.Plus,
+            //        Style = Style.Windows
+            //    });
+            //msBoxStandardWindow.Show();
+
+
+            if (!this.Save_Before_Losing())
+            {
+                return;
+            }
+            Clear_Subcharts();
+            Create_Flow_graphx();
+            Runtime.Clear_Variables();
+            Component.compiled_flowchart = false;
+            this.runningState = false;
+            this.mainSubchart().Start.scale = this.scale;
+            this.mainSubchart().Start.Scale(this.scale);
+            //mainSubchart().flow_panel.Invalidate();
+
+            Undo_Stack.Clear_Undo();
+            this.Text = My_Title + "- Untitled";
+  
+            this.modified = false;
+            this.fileName = null;
+            this.file_guid = System.Guid.NewGuid();
+            MasterConsoleViewModel.MC.clear_txt();
+            this.Update_View_Variables();
+
         }
         public void OnResetExecuteCommand() {
             OnResetCommand();
