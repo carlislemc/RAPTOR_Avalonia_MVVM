@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public OutputDialog(){
             
         }
-        public OutputDialog(Parallelogram p)
+        public OutputDialog(Parallelogram p, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel(p, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel(p, this, modding);
 
         }
 

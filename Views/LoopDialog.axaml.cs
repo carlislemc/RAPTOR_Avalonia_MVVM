@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public LoopDialog(){
 
         }
-        public LoopDialog(Loop l)
+        public LoopDialog(Loop l, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel(l, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel(l, this, modding);
 
         }
 

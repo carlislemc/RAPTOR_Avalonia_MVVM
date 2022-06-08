@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public CallDialog(){
 
         }
-        public CallDialog(Rectangle r)
+        public CallDialog(Rectangle r, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel(r, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel(r, this, modding);
 
         }
 

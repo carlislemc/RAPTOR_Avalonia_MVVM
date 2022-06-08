@@ -556,6 +556,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnDeleteCommand()
         {
+            this.theTabs[this.activeTab].Start.delete();
 
         }
 
@@ -668,14 +669,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         private bool getParent = false;
         private void goToNextComponent(){
             symbolCount++;
-
-            if (activeComponent.break_now())
-            {
-                if(myTimer != null)
-                {
-                    OnPauseCommand();
-                }
-            }
             if(parentCount.Count != 0 && parentComponent == null){
                 parentComponent = parentCount[parentCount.Count-1];
                 parentCount.RemoveAt(parentCount.Count-1);
@@ -758,6 +751,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     activeComponent.running = true;
                     
                 }
+
             } else {
                 activeComponent.running = false;
                 
@@ -780,6 +774,18 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     activeComponent = activeComponent.Successor;
                 }
                 activeComponent.running = true;
+            }
+
+            if (activeComponent.break_now())
+            {
+                if (myTimer != null)
+                {
+                    OnPauseCommand();
+                }
+            }
+            if (activeComponent.selected)
+            {
+                activeComponent.selected = false;
             }
         }
 
@@ -1209,14 +1215,32 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnClearBreakpointsCommand()
         {
-
+            foreach(Subchart s in theTabs)
+            {
+                s.Start.Clear_Breakpoints();
+            }
+          
         }
         public void OnAboutCommand()
         {
 
         }
         public void OnShowLogCommand() { }
-        public void OnCountSymbolsCommand() { }
+        public void OnCountSymbolsCommand() {
+            int count = 0;
+            foreach(Subchart s in theTabs)
+            {
+                Component temp = s.Start;
+                while(temp != null)
+                {
+                    count++;
+                    temp = temp.Successor;
+                }
+            }
+
+            Dispatcher.UIThread.Post(() => postDialog("The total number of symbols is: " + count, false), DispatcherPriority.Background);
+
+        }
 
     }
 }

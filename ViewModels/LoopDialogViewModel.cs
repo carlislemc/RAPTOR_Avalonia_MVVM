@@ -26,13 +26,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.text = "";
         }
 
-        public LoopDialogViewModel(Loop l, Window w) {
+        public LoopDialogViewModel(Loop l, Window w, bool modding) {
             this.text = "";
             this.l = l;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                loopCondition = l.Text;
+            }
         }
         public Loop l;
         public Window w;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 

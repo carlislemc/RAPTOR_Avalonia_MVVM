@@ -204,13 +204,31 @@ namespace raptor
 			{
 				if (this.kind==Kind_Of.Assignment)
 				{
-					AssignmentDialog AD = new AssignmentDialog(this);
-					AD.ShowDialog(MainWindow.topWindow);
+					if(this.text_str == "")
+                    {
+						AssignmentDialog AD = new AssignmentDialog(this, false);
+						AD.ShowDialog(MainWindow.topWindow);
+                    }
+                    else
+                    {
+						AssignmentDialog AD = new AssignmentDialog(this, true);
+						AD.ShowDialog(MainWindow.topWindow);
+					}
+					
 				}
 				else
 				{
-					CallDialog CD = new CallDialog(this);
-					CD.ShowDialog(MainWindow.topWindow);
+					if(this.text_str == "")
+                    {
+						CallDialog CD = new CallDialog(this, false);
+						CD.ShowDialog(MainWindow.topWindow);
+                    }
+                    else
+                    {
+						CallDialog CD = new CallDialog(this, true);
+						CD.ShowDialog(MainWindow.topWindow);
+					}
+					
 				}
 				
 				

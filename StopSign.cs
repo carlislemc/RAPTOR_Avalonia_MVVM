@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 
 namespace raptor
@@ -20,6 +20,7 @@ namespace raptor
 			int x, int y, int size)
 		{
 			Avalonia.Controls.Shapes.Polygon result = new Avalonia.Controls.Shapes.Polygon();
+			result.Points = new List<Avalonia.Point>();
 			result.Points.Add(new Avalonia.Point(x, y + size / 3));
 			result.Points.Add(new Avalonia.Point(x + size / 3, y));
 			result.Points.Add(new Avalonia.Point(x + 2 * size / 3, y));

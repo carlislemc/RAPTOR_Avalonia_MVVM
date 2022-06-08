@@ -26,13 +26,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public AssignmentDialogViewModel() {
             this.text = "";
         }
-        public AssignmentDialogViewModel(Rectangle r, Window w) {
+        public AssignmentDialogViewModel(Rectangle r, Window w, bool modding) {
             this.text = "";
             this.r = r;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                string[] temp = r.text_str.Split(":=");
+                variableName = temp[0];
+                variableValue = temp[1];
+            }
         }
         public Rectangle r;
         public Window w;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 

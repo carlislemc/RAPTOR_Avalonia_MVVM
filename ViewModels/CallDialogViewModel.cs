@@ -26,13 +26,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.text = "";
         }
 
-        public CallDialogViewModel(Rectangle r, Window w){
+        public CallDialogViewModel(Rectangle r, Window w, bool modding){
             this.text = "";
             this.r = r;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                procedure = r.text_str;
+            }
         }
         public Rectangle r;
         public Window w;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 

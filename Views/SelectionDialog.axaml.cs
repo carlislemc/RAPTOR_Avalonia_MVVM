@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public SelectionDialog(){
 
         }
-        public SelectionDialog(IF_Control i)
+        public SelectionDialog(IF_Control i, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.SelectionDialogViewModel(i, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.SelectionDialogViewModel(i, this, modding);
 
         }
 

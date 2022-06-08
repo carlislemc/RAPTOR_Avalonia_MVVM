@@ -25,13 +25,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public OutputDialogViewModel() {
             this.text = "";
         }
-        public OutputDialogViewModel(Parallelogram p, Window w) {
+        public OutputDialogViewModel(Parallelogram p, Window w, bool modding) {
             this.text = "";
             this.p = p;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                this.output = p.Text;
+                this.checkBox = p.new_line;
+            }
         }
         public Parallelogram p;
         public Window w;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 

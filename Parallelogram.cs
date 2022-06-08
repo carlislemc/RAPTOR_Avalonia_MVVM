@@ -371,13 +371,31 @@ namespace raptor
 			{
 				if (this.is_input)
 				{
-					InputDialog IOD = new InputDialog(this);
-					IOD.ShowDialog(MainWindow.topWindow);
+					if(this.text_str == "")
+                    {
+						InputDialog IOD = new InputDialog(this, false);
+						IOD.ShowDialog(MainWindow.topWindow);
+                    }
+                    else
+                    {
+						InputDialog IOD = new InputDialog(this, true);
+						IOD.ShowDialog(MainWindow.topWindow);
+					}
+					
 				}
 				else
 				{
-					OutputDialog IOD = new OutputDialog(this);
-					IOD.ShowDialog(MainWindow.topWindow);
+					if(this.text_str == "")
+                    {
+						OutputDialog IOD = new OutputDialog(this, false);
+						IOD.ShowDialog(MainWindow.topWindow);
+                    }
+                    else
+                    {
+						OutputDialog IOD = new OutputDialog(this, true);
+						IOD.ShowDialog(MainWindow.topWindow);
+					}
+					
 				}
 				textset = true;
 				return textset;

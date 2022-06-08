@@ -1070,10 +1070,21 @@ namespace raptor
 			bool textset = false;
 			if (contains(x,y))
 			{
-				SelectionDialog CD = new SelectionDialog(this);
-				CD.ShowDialog(MainWindow.topWindow);
-				textset = true;
-				return textset;
+				if(this.text_str == "")
+                {
+					SelectionDialog CD = new SelectionDialog(this, false);
+					CD.ShowDialog(MainWindow.topWindow);
+					textset = true;
+					return textset;
+                }
+                else
+                {
+					SelectionDialog CD = new SelectionDialog(this, true);
+					CD.ShowDialog(MainWindow.topWindow);
+					textset = true;
+					return textset;
+				}
+				
 			}
 	
 			if (this.Successor != null)

@@ -1007,10 +1007,21 @@ namespace raptor
 			//if (over_Diamond(x,y))
 			if (contains(x,y))
 			{
-				LoopDialog CD = new LoopDialog(this);
-				CD.ShowDialog(MainWindow.topWindow);
-				textset = true;
-				return textset;
+				if(this.text_str == "")
+                {
+					LoopDialog CD = new LoopDialog(this, false);
+					CD.ShowDialog(MainWindow.topWindow);
+					textset = true;
+					return textset;
+                }
+                else
+                {
+					LoopDialog CD = new LoopDialog(this, true);
+					CD.ShowDialog(MainWindow.topWindow);
+					textset = true;
+					return textset;
+				}
+				
 			}
 	
 			if (this.Successor != null)

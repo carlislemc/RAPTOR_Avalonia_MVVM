@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public InputDialog(){
 
         }
-        public InputDialog(Parallelogram p)
+        public InputDialog(Parallelogram p, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.InputDialogViewModel(p, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.InputDialogViewModel(p, this, modding);
 
         }
 

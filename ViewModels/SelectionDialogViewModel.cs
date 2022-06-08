@@ -26,15 +26,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.text = "";
         }
 
-        public SelectionDialogViewModel(IF_Control i, Window w) {
+        public SelectionDialogViewModel(IF_Control i, Window w, bool modding) {
             this.text = "";
             this.i = i;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                selection = i.text_str;
+            }
         }
         public IF_Control i;
         public Window w;
         public bool modified = false;
         public bool runningState = false;
+        public bool modding;
 
         public string text = "";
         public string Text   // property
