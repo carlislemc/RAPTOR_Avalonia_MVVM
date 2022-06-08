@@ -64,6 +64,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 c.Text_Array[c.Text_Array.Length-1] = Text;
                 c.text_change = true;
             }
+            MainWindowViewModel.GetMainWindowViewModel().modified = true;
             w.Close();            
         }
 

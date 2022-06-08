@@ -77,6 +77,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 l.text_str = setLoop;
                 l.parse_tree = res.tree;
                 Text += "Done Loop\n";
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else {
                 Text = res.message;

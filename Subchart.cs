@@ -154,6 +154,7 @@ namespace raptor
                 "Rectangle",
                 Rectangle.Kind_Of.Assignment), this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {
@@ -166,6 +167,7 @@ namespace raptor
                 "Rectangle",
                 Rectangle.Kind_Of.Call), this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {
@@ -178,6 +180,7 @@ namespace raptor
                 "Parallelogram",
                 true), this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {
@@ -190,6 +193,7 @@ namespace raptor
                 "Parallelogram",
                 false), this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {
@@ -201,6 +205,7 @@ namespace raptor
             if (Start.insert(new IF_Control(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "IF_Control"),
                 this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {
@@ -212,6 +217,7 @@ namespace raptor
             if (Start.insert(new Loop(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width,
                 "Loop"), this.positionX, this.positionY, 0))
             {
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
             }
             else
             {

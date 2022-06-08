@@ -77,6 +77,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 i.text_str = setSelection;
                 i.parse_tree = res.tree;
                 Text += "Done Selection\n";
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else {
                 Text = res.message;

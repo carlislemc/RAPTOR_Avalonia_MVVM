@@ -83,6 +83,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 Undo_Stack.Make_Undoable(getSubchart());
                 r.text_str = setValue + ":=" + toValue;
                 r.parse_tree = res.tree;
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else {
                 Text = res.message;

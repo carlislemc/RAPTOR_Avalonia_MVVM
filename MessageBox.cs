@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using RAPTOR_Avalonia_MVVM.ViewModels;
+using raptor;
+
 namespace RAPTOR_Avalonia_MVVM
 {
     class MessageBoxButtons
@@ -40,11 +43,49 @@ namespace RAPTOR_Avalonia_MVVM
         }
 
         
-        internal static void Show(string v1, string v2, int oK, int warning)
+        internal async static Task Show(string v1, string v2, int oK, int warning)
         {
 
+            if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                Icon icon;
+                if(warning == 0)
+                {
+                    icon = Icon.Warning;
+                }
+                else
+                {
+                    icon = Icon.Error;
+                }
 
-            throw new NotImplementedException();
+                ButtonEnum b;
+                if(oK == 0)
+                {
+                    b = ButtonEnum.Ok;
+                }
+                else
+                {
+                    b = ButtonEnum.YesNoCancel;
+                }
+
+                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    {
+                        ButtonDefinitions = b,
+                        ContentTitle = v2,
+                        ContentMessage = v1,
+                        Icon = icon, 
+                        Style = Style.Windows
+                    });
+
+             
+
+               MainWindowViewModel.GetMainWindowViewModel().buttonAnswer =  await msBoxStandardWindow.ShowDialog(desktop.MainWindow);
+               return;
+            }
+
+            MainWindowViewModel.GetMainWindowViewModel().buttonAnswer = ButtonResult.Cancel;
+            //throw new NotImplementedException();
         }
     }
 }

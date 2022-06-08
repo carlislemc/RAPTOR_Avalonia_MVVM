@@ -1246,12 +1246,83 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //flow_panel.Invalidate();
         }
 
-        private bool Save_Before_Losing()
+        private async Task Save_Before_Losing()
         {
-            return true;
+            //DialogResult dr = DialogResult.No;
+            //if (this.modified)
+            //{
+            //    string msg = "Choosing this option will delete the current flow chart!" + '\n' + "Do you want to save first?";
+            //    dr = MessageBox.Show(msg,
+            //        "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            //}
+
+            //if (dr == DialogResult.Cancel)
+            //{
+            //    return false;
+            //}
+            //if (dr == DialogResult.Yes)
+            //{
+            //    this.FileSave_Click(sender, e);
+
+            //    while (this.Save_Error)
+            //    {
+            //        dr = MessageBox.Show("Save failed-- try again?",
+            //            "Open New Chart",
+            //            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            //        if (dr == DialogResult.Yes)
+            //        {
+            //            this.SaveAs_Click(sender, e);
+            //        }
+            //        else if (dr == DialogResult.Cancel)
+            //        {
+            //            return false;
+            //        }
+            //        else
+            //        {
+            //            this.Save_Error = false;
+            //        }
+            //    }
+            //}
+            //return true;
+
+            
+
+            if (this.modified)
+            {
+               
+                string msg = "Choosing this option will delete the current flow chart!" + '\n' + "Do you want to save first?";
+
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+
+                    await MessageBoxClass.Show(msg, "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+                    if (buttonAnswer == ButtonResult.Yes)
+                    {
+                        OnSaveCommand();
+                        checkSave = false;
+                    }
+                    else if (buttonAnswer == ButtonResult.No)
+                    {
+                        checkSave = false;
+                    }
+                    else
+                    {
+                        checkSave = false;
+                    }
+                });
+
+            }
+            else
+            {
+                checkSave = true;
+            }
+            
         }
 
-        public void OnNewCommand()
+        public ButtonResult buttonAnswer = new ButtonResult();
+        public bool checkSave = true;
+
+        public async void OnNewCommand()
         {
             //var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
             //    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
@@ -1264,8 +1335,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //    });
             //msBoxStandardWindow.Show();
 
+            await Dispatcher.UIThread.InvokeAsync(async () => { await Save_Before_Losing(); });
 
-            if (!this.Save_Before_Losing())
+            if (checkSave)
             {
                 return;
             }

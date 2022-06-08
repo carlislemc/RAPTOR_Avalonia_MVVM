@@ -76,6 +76,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 r.text_str = setProcedure;
                 r.parse_tree = res.tree;
                 Text += "Done Call\n";
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else {
                 Text = res.message;

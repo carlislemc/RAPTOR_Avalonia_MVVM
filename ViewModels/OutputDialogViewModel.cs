@@ -84,6 +84,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 p.text_str = getOutput;
                 p.parse_tree = res.tree;
                 Text += "Done Output\n";
+                MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else{
                 Text = res.message;
