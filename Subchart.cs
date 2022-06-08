@@ -224,11 +224,106 @@ namespace raptor
 
         public void OnCommentCommand(){
             Component ans = Start;
+            ObservableCollection<int> loopPass = new ObservableCollection<int>() { 0 };
+            ObservableCollection<int> selectionPass = new ObservableCollection<int>() { 0 };
+            ObservableCollection<Component> p = new ObservableCollection<Component>();
             while(!ans.selected){
-                if(ans.Successor == null){
+                if (ans.Successor == null && p.Count == 0)
+                {
                     return;
                 }
-                ans = ans.Successor;
+
+                else if(ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count-1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
+                {
+                    ans = p[p.Count - 1];
+                    p.RemoveAt(p.Count - 1);
+                }
+
+                if (ans.GetType() == typeof(Loop))
+                {
+                    Loop temp = (Loop)ans;
+                    if (!p.Contains(temp))
+                    {
+                        loopPass.Add(1);
+                        p.Add(temp);
+                    }
+
+                    if(loopPass[loopPass.Count - 1] == 1)
+                    {
+                        if(temp.before_Child != null)
+                        {
+                            ans = temp.before_Child;
+                        }
+
+                        loopPass[loopPass.Count - 1]++;
+                    }else if(loopPass[loopPass.Count - 1] == 2)
+                    {
+                        if (temp.after_Child != null)
+                        {
+                            ans = temp.after_Child;
+                        }
+                        loopPass[loopPass.Count - 1]++;
+                    }else if(loopPass[loopPass.Count - 1] == 3)
+                    {
+                        
+                        p.RemoveAt(p.Count - 1);
+                        if(temp.Successor != null)
+                        {
+                            ans = temp.Successor;
+                        }
+                        else
+                        {
+                            ans = p[p.Count - 1];
+                        }
+                        loopPass.RemoveAt(loopPass.Count - 1);
+                    }
+                }
+
+                else if(ans.GetType() == typeof(IF_Control))
+                {
+                    IF_Control temp = (IF_Control)ans;
+                    if (!p.Contains(temp))
+                    {
+                        selectionPass.Add(1);
+                        p.Add(temp);
+                    }
+
+                    if (selectionPass[selectionPass.Count - 1] == 1)
+                    {
+                        if(temp.left_Child != null)
+                        {
+                            ans = temp.left_Child;
+                        }
+                        selectionPass[selectionPass.Count - 1]++;
+                    }
+                    else if (selectionPass[selectionPass.Count - 1] == 2)
+                    {
+                        if (temp.right_Child != null)
+                        {
+                            ans = temp.right_Child;
+                        }
+                        selectionPass[selectionPass.Count - 1]++;
+                    }
+                    else if (selectionPass[selectionPass.Count - 1] == 3)
+                    {
+                        p.RemoveAt(p.Count - 1);
+                        if (temp.Successor != null)
+                        {
+                            ans = temp.Successor;
+                        }
+                        else
+                        {
+                            ans = p[p.Count - 1];
+                        }
+                        selectionPass.RemoveAt(selectionPass.Count - 1);
+                    }
+                }
+
+                else
+                {
+                    ans = ans.Successor;
+                }
+                
             }
             ans.addComment();
         }
