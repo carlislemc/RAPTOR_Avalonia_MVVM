@@ -41,6 +41,8 @@ namespace RAPTOR_Avalonia_MVVM
         
         internal static void Show(string v1, string v2, int oK, int warning)
         {
+
+
             throw new NotImplementedException();
         }
     }

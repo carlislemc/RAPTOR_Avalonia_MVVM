@@ -194,14 +194,14 @@ namespace raptor
 			}
 			if (this.selected)
 			{
-				gr.DrawRectangle(PensBrushes.red_pen, new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W, H));
+				gr.DrawRectangle(PensBrushes.red_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W, H));
 				/*gr.DrawPath(PensBrushes.red_pen, Balloon.Make_Path(
-					new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
+					new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 10, H),
 					corner));*/
 			}
 			else
 			{
-				gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W+5, H));
+				gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 5, H));
 				/*gr.DrawPath(PensBrushes.green_pen, Balloon.Make_Path(
 					new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
 					corner));*/

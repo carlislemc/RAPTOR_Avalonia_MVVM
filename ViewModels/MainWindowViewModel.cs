@@ -28,6 +28,7 @@ using RAPTOR_Avalonia_MVVM.ViewModels;
 using System.Collections;
 using Avalonia.Threading;
 
+
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
 
@@ -376,14 +377,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             }
                         }
                     }*/
-                    if (Component.last_incoming_serialization_version >= 4)
-                    {
-                        this.log = (logging_info)bformatter.Deserialize(stream);
-                    }
-                    else
-                    {
-                        this.log.Clear();
-                    }
+                    //if (Component.last_incoming_serialization_version >= 4)
+                    //{
+                    //    this.log = (logging_info)bformatter.Deserialize(stream);
+                    //}
+                    //else
+                    //{
+                    //    this.log.Clear();
+                    //}
                     if (Component.last_incoming_serialization_version >= 6)
                     {
                         Component.compiled_flowchart = (bool)bformatter.Deserialize(stream);
@@ -585,8 +586,145 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnSaveCommand() {
 
+            FileSave_Click();
 
         }
+
+        private void FileSave_Click()
+        {
+            if (fileName == "" || fileName == null)
+            {
+                this.OnSaveAsCommand();
+            }
+            else
+            {
+                this.Perform_Save(this.fileName, false);
+            }
+        }
+
+        private bool Save_Error = false;
+        private void Perform_Save(string name, bool is_autosave)
+        {
+            Stream stream;
+            string prefix;
+
+            if (is_autosave)
+            {
+                prefix = "Error during autosave:";
+            }
+            else
+            {
+                prefix = "Error during save:";
+            }
+
+            try
+            {
+                stream = File.Open(name, FileMode.Create);
+            }
+            catch
+            {
+                if (File.Exists(name) &&
+                    (File.GetAttributes(name) & FileAttributes.ReadOnly) > 0)
+                {
+                    MessageBoxClass.Show(
+                        prefix + '\n' +
+                        name + " is a read-only file",
+                        "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBoxClass.Show(
+                        prefix + '\n' +
+                        "Unable to create file: " +
+                        name, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                this.Save_Error = true;
+                return;
+            }
+
+            try
+            {
+
+                BinaryFormatter bformatter = new BinaryFormatter();
+                //bformatter.Serialize(stream, 
+                bformatter.Serialize(stream, Component.current_serialization_version);
+                // USMA_mode new in file version 13
+                bformatter.Serialize(stream, Component.reverse_loop_logic);
+
+                bformatter.Serialize(stream, theTabs.Count);
+
+                for (int i = mainIndex; i < theTabs.Count; i++)
+                {
+                    bformatter.Serialize(stream, this.theTabs[i].Text);
+                    // subchart kind is new in file version 14
+                    bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Subchart_Kind);
+                    if (((Subchart)this.theTabs[i]) is Procedure_Chart)
+                    {
+                        bformatter.Serialize(stream, ((Procedure_Chart)this.theTabs[i]).num_params);
+                    }
+                }
+
+                for (int i = mainIndex; i < this.theTabs.Count; i++)
+                {
+                    bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Start);
+                    // new in version 17
+                    byte[] output;
+                    if (!Component.BARTPE && !Component.VM && !Component.MONO)
+                    {
+                        //output = ((Subchart)this.theTabs[i]).tab_overlay.Ink.Save();
+                        output = new byte[1];
+                    }
+                    else
+                    {
+                        output = new byte[1];
+                    }
+                    bformatter.Serialize(stream, output);
+                }
+
+                //if (!is_autosave)
+                //{
+                //    this.log.Record_Save();
+                //}
+                //else
+                //{
+                //    this.log.Record_Autosave();
+                //}
+
+                //bformatter.Serialize(stream, this.log);
+                bformatter.Serialize(stream, Component.compiled_flowchart);
+                bformatter.Serialize(stream, this.file_guid);
+                stream.Close();
+                this.Save_Error = false;
+                if (!is_autosave)
+                {
+                    this.modified = false;
+                }
+
+
+            }
+            catch (System.Exception exc)
+            {
+                MessageBoxClass.Show(
+                    prefix + '\n' +
+                    "Please report to Martin.Carlisle@usafa.edu" + '\n' +
+                    "Meantime, try undo then save (keep doing undo until success)" + '\n' +
+                    "Or open an autosave file: " + this.fileName + ".[0-9]" + '\n' +
+                    "Use Alt-PrtSc and paste into email" + '\n' +
+                    exc.Message + '\n' +
+                    exc.StackTrace, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Save_Error = true;
+            }
+
+
+
+
+
+
+        }
+
         public async void OnSaveAsCommand() {
 
             string dialog_fileName;
@@ -595,25 +733,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             if (!Component.BARTPE)
             {
                 SaveFileDialog fileChooser = new SaveFileDialog();
-                
 
-                //fileChooser.CheckFileExists = false;
-                //fileChooser.Filter = "Raptor files (*.rap)|*.rap|All files (*.*)|*.*";
-                //fileChooser.DefaultExt = ".rap";
-                //fileChooser.RestoreDirectory = false;
-                //DialogResult result = fileChooser.ShowDialog();
-
-
-                //if (result == DialogResult.Cancel)
-                //{
-                //    return;
-                //}
-
-                //dialog_fileName = fileChooser.FileName;
-
-
-                //fileChooser.InitialFileName = Path.GetFullPath(this.fileName);
-                //fileChooser.Directory = workdir;
                 List<FileDialogFilter> Filters = new List<FileDialogFilter>();
                 FileDialogFilter filter = new FileDialogFilter();
                 List<string> extension = new List<string>();
@@ -625,11 +745,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 fileChooser.DefaultExtension = "rap";
 
-                await fileChooser.ShowAsync(MainWindow.topWindow);
+                string ans = await fileChooser.ShowAsync(MainWindow.topWindow);
 
-               
+                if(ans == null || ans == "")
+                {
+                    return;
+                }
+
+                this.fileName = ans;
+                this.FileSave_Click();
+
             }
-
 
         }
         
@@ -974,12 +1100,26 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             if(temp.left_Child != null){
                                 activeComponent.running = false;
                                 activeComponent = temp.left_Child;
+                                if (activeComponent.break_now())
+                                {
+                                    if (myTimer != null)
+                                    {
+                                        OnPauseCommand();
+                                    }
+                                }
                                 activeComponent.running = true;
                             }
                         } else{
                             if(temp.right_Child != null){
                                 activeComponent.running = false;
                                 activeComponent = temp.right_Child;
+                                if (activeComponent.break_now())
+                                {
+                                    if (myTimer != null)
+                                    {
+                                        OnPauseCommand();
+                                    }
+                                }
                                 activeComponent.running = true;
                             }
                         }
@@ -1011,6 +1151,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             if(temp.after_Child != null){
                                 activeComponent.running = false;
                                 activeComponent = temp.after_Child;
+                                if (activeComponent.break_now())
+                                {
+                                    if (myTimer != null)
+                                    {
+                                        OnPauseCommand();
+                                    }
+                                }
                                 activeComponent.running = true;
                             }
                         }
