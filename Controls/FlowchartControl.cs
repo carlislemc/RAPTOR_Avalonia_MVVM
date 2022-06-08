@@ -109,6 +109,17 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             sc.Start.footprint(drawingContext);
             int draw_width = sc.Start.FP.right + sc.Start.FP.left + Visual_Flow_Form.flow_width;
             int draw_height = sc.Start.FP.height + Visual_Flow_Form.flow_height;
+
+            Avalonia.Rect comment_rec = sc.Start.comment_footprint();
+            if (comment_rec.Height > draw_height)
+            {
+                draw_height = (int)comment_rec.Height + 20;
+            }
+            if (comment_rec.Width > draw_width)
+            {
+               draw_width = (int)comment_rec.Width + 20;
+            }
+
             (this.Parent as UserControl).Width = draw_width;
             (this.Parent as UserControl).Height = draw_height;
             Point pt1 = new Point(50, 50);

@@ -689,6 +689,31 @@ namespace raptor
 			{
 				succ_rec = new Avalonia.Rect(0,0,0,0);
 			}
+			if(this.GetType() == typeof(Loop))
+            {
+				Loop temp = (Loop)this;
+				if(temp.before_Child != null)
+                {
+					succ_rec = temp.before_Child.comment_footprint();
+                }
+				if (temp.after_Child != null)
+				{
+					succ_rec = temp.after_Child.comment_footprint();
+				}
+			}
+			if (this.GetType() == typeof(IF_Control))
+			{
+				IF_Control temp = (IF_Control)this;
+				if (temp.left_Child != null)
+				{
+					succ_rec = temp.left_Child.comment_footprint();
+				}
+				if (temp.right_Child != null)
+				{
+					succ_rec = temp.right_Child.comment_footprint();
+				}
+			}
+
 			if (this.My_Comment != null && Component.view_comments)
 			{
 				result = this.My_Comment.Get_Bounds();
