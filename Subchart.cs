@@ -279,6 +279,13 @@ namespace raptor
             AddProcedureDialog avm = new AddProcedureDialog(true);
             await avm.ShowDialog(MainWindow.topWindow);
         }
+        public async void onDelProcedureCommand(){
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            int spot = mw.setViewTab;
+            mw.setViewTab = 0;
+            mw.theTabs.RemoveAt(spot);
+
+        }
 
         public Subchart(string name)
         {
@@ -300,6 +307,7 @@ namespace raptor
         public ReactiveCommand<Unit, Unit> AddProc { get; set; }
         public ReactiveCommand<Unit, Unit> ModSub { get; set; }
         public ReactiveCommand<Unit, Unit> ModProc { get; set; }
+        public ReactiveCommand<Unit, Unit> DelProc { get; set; }
         private ObservableCollection<MenuItemViewModel> PrivateTabContextMenuItems = new ObservableCollection<MenuItemViewModel>(){
             new MenuItemViewModel() { Header = "Add Subchart"},
             new MenuItemViewModel() { Header = "Add Procedure"}
@@ -308,7 +316,7 @@ namespace raptor
 
         public int setViewTab {
             get{ return MainWindowViewModel.GetMainWindowViewModel().setViewTab; }
-            set{ MainWindowViewModel.GetMainWindowViewModel().setViewTab = value; }
+            set{ MainWindowViewModel.GetMainWindowViewModel().setViewTab = 1; }
         }
         public ObservableCollection<MenuItemViewModel> TabContextMenuItems
         {
@@ -323,6 +331,7 @@ namespace raptor
                 AddProc = ReactiveCommand.Create(onAddProcedureCommand);
                 ModSub = ReactiveCommand.Create(onModSubchartCommand);
                 ModProc = ReactiveCommand.Create(onModProcedureCommand);
+                DelProc = ReactiveCommand.Create(onDelProcedureCommand);
 
                 if (mw.setViewTab != 0)
                 {
@@ -332,10 +341,12 @@ namespace raptor
                     if (mw.theTabs[mw.setViewTab].Start.GetType() == typeof(Oval_Procedure))
                     {
                         PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Procedure", Command = ModProc});
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Delete Procedure", Command = DelProc});
                     }
                     else
                     {
                         PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Rename Subchart", Command = ModSub});
+                        PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Delete Subchart", Command = DelProc});
                     }
 
 
