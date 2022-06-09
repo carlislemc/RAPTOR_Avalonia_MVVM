@@ -26,11 +26,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public AddSubchartDialogViewModel() {
             this.text = "";
         }
-        public AddSubchartDialogViewModel(Window w) {
+        public AddSubchartDialogViewModel(Window w, bool modding) {
             this.text = "";
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                Subchart s = mw.theTabs[mw.setViewTab];
+                subchartName = s.Header;
+            }
         }
         public Window w;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 
@@ -51,7 +60,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnDoneCommand(){
             //Syntax_Result res = interpreter_pkg.assignment_syntax(setValue, toValue);
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
-            tbs.Add(new Subchart(setSubchartName));
+            Subchart addMe = new Subchart(setSubchartName);
+
+            if (!modding)
+            {
+                tbs.Add(addMe);
+            }
+            else
+            {
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                int spot = mw.setViewTab;
+                tbs.RemoveAt(spot);
+                tbs.Insert(spot, addMe);
+                mw.setViewTab = spot;
+            }
+
             Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count-1]);
             w.Close();
         }

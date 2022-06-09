@@ -462,7 +462,7 @@ namespace raptor
 
         public async void onAddSubchartCommand(){
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
-            AddSubchartDialog asc = new AddSubchartDialog();
+            AddSubchartDialog asc = new AddSubchartDialog(false);
             await asc.ShowDialog(MainWindow.topWindow);
             MainWindowViewModel.GetMainWindowViewModel().setViewTab = tbs.Count-1;
         }
@@ -474,9 +474,9 @@ namespace raptor
         }
         public async void onModSubchartCommand(){
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            Subchart modMe = mw.theTabs[mw.setViewTab];
 
-
+            AddSubchartDialog asc = new AddSubchartDialog(true);
+            await asc.ShowDialog(MainWindow.topWindow);
         }
         public async void onModProcedureCommand(){
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();

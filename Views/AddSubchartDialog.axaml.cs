@@ -9,11 +9,15 @@ namespace RAPTOR_Avalonia_MVVM.Views
     {
         public AddSubchartDialog()
         {
+
+        }
+        public AddSubchartDialog(bool modding)
+        {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.AddSubchartDialogViewModel(this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.AddSubchartDialogViewModel(this, modding);
 
         }
 
