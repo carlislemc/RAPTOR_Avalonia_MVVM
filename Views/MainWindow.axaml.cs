@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using System.Reflection;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -21,12 +22,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
             {
                 e.Cancel = (this.DataContext as RAPTOR_Avalonia_MVVM.ViewModels.MainWindowViewModel).OnClosingCommand();
             };
+
             this.FindControl<TabControl>("tc12").PointerPressed += (s, e) =>
             {
-                // if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && e.Pointer.Type == PointerType.Mouse)
-                // {
-                //     e.Handled = ((TabControl) s).UpdateSelectionFromEventSource(e.Source);
-                // }
+                MethodInfo mi = typeof(TabControl).GetMethod("UpdateSelectionFromEventSource", BindingFlags.NonPublic | BindingFlags.Instance);
+                mi.Invoke(s, new object[] { e.Source, true, false, false, false });
             };
         }
 

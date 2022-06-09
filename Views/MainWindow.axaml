@@ -476,7 +476,7 @@
       </TreeView>
 
     </DockPanel>
-
+    
     <TabControl Name="tc12" DockPanel.Dock="Right" Items="{Binding theTabs}" SelectedIndex="{Binding setViewTab}">
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
