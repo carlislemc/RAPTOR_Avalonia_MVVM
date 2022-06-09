@@ -208,8 +208,8 @@ namespace raptor
 				//	new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
 				//	corner));
 				Geometry testGeometry = Balloon.Make_Path(new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 10, H), corner);
-
-				gr.DrawGeometry(PensBrushes.greenbrush, new Pen(Brushes.Green), testGeometry);
+				
+				gr.DrawGeometry(null, new Pen(Brushes.Green), testGeometry);
 			}
 
 			for (int i = 0; i < this.num_lines; i++)
