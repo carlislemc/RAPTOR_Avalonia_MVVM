@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System.Reflection;
+using Avalonia.Input;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -25,8 +26,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
 
             this.FindControl<TabControl>("tc12").PointerPressed += (s, e) =>
             {
-                MethodInfo mi = typeof(TabControl).GetMethod("UpdateSelectionFromEventSource", BindingFlags.NonPublic | BindingFlags.Instance);
-                mi.Invoke(s, new object[] { e.Source, true, false, false, false });
+                if (e.GetCurrentPoint((TabControl)s).Properties.IsRightButtonPressed && e.Pointer.Type == PointerType.Mouse)
+                {
+                    MethodInfo mi = typeof(TabControl).GetMethod("UpdateSelectionFromEventSource", BindingFlags.NonPublic | BindingFlags.Instance);
+                    mi.Invoke(s, new object[] { e.Source, true, false, false, false });
+                }
             };
         }
 
