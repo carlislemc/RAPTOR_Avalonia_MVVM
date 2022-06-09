@@ -1481,6 +1481,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get{return viewTab; }
             set{this.RaiseAndSetIfChanged(ref viewTab, value); }
         }
+        public void myOnPointerPressed(PointerPressedEventArgs e)
+        {
+
+        }
         public void OnRedoCommand() {
             Undo_Stack.Redo_Action(this.mainSubchart());
         }

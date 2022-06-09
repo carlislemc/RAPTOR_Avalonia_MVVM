@@ -477,7 +477,7 @@
 
     </DockPanel>
 
-    <TabControl DockPanel.Dock="Right" Items="{Binding theTabs}" SelectedIndex="{Binding setViewTab}">
+    <TabControl Name="tc1" DockPanel.Dock="Right" Items="{Binding theTabs}" SelectedIndex="{Binding setViewTab}">
       <TabControl.ItemTemplate>
         <DataTemplate DataType="{x:Type models:Subchart}">
           <TextBlock Text="{Binding Header}">

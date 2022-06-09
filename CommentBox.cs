@@ -5,7 +5,7 @@ using System.Diagnostics;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
 using RAPTOR_Avalonia_MVVM.Views;
-
+using Avalonia.Media;
 
 namespace raptor
 {
@@ -195,24 +195,31 @@ namespace raptor
 			if (this.selected)
 			{
 				gr.DrawRectangle(PensBrushes.red_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W, H));
-				/*gr.DrawPath(PensBrushes.red_pen, Balloon.Make_Path(
-					new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 10, H),
-					corner));*/
+				//gr.DrawPath(new System.Drawing.Pen(System.Drawing.Brushes.Red), Balloon.Make_Path(
+				//	new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 10, H),
+				//	corner));
+
+				
 			}
 			else
 			{
-				gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 5, H));
-				/*gr.DrawPath(PensBrushes.green_pen, Balloon.Make_Path(
-					new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
-					corner));*/
+				//gr.DrawRectangle(PensBrushes.green_pen, new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 5, H));
+				//gr.DrawPath(new System.Drawing.Pen(System.Drawing.Brushes.Green), Balloon.Make_Path(
+				//	new Avalonia.Rect(parent_x+draw_x, parent_y+draw_y, W+10, H),
+				//	corner));
+				Geometry testGeometry = Balloon.Make_Path(new Avalonia.Rect(parent_x + draw_x, parent_y + draw_y, W + 10, H), corner);
+
+				gr.DrawGeometry(PensBrushes.greenbrush, new Pen(Brushes.Green), testGeometry);
 			}
 
 			for (int i = 0; i < this.num_lines; i++)
 			{	rect = new Avalonia.Rect(parent_x+draw_x+6,parent_y+draw_y+this.height_of_text*i,W,this.height_of_text);
 				Avalonia.Media.FormattedText formattedtextDraw = new Avalonia.Media.FormattedText(
 					this.Text_Array[i], new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-					Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity); 
+					Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 				gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtextDraw);
+				//gr.DrawString(this.Text_Array[i], null , System.Drawing.Brushes.Black , new System.Drawing.PointF(10,10));
+
 
 			}
 		}
