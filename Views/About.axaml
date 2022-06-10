@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RAPTOR_Avalonia_MVVM.ViewModels"
+        xmlns:models="clr-namespace:raptor;assembly=raptor"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="335"
+        Width="500" Height="335"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.AboutDialog"
+        Title="About Raptor"
+        x:DataType="vm:AboutViewModel">
+        <!--x:CompileBindings="True"> -->
+
+  <Design.DataContext>
+      <vm:AboutViewModel/>
+  </Design.DataContext>
+
+  <DockPanel LastChildFill="False">
+        <StackPanel DockPanel.Dock="Left" Margin="25,10,0,0" Orientation="Horizontal" Background="White">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontSize="45" FontFamily="Levenim MT">
+                    Raptor
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Rapid Algorithmic Prototyping Tool 
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="52">
+                    for Ordered Reasoning 
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Martin C. Carlise
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Terry A. Wilson
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Jeffrey W. Humphries
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="52">
+                    Jason A. Moore
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Version: 4.1.0001
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="59">
+                    15 November 2019
+                </TextBlock>
+
+                <StackPanel.Styles>
+                <Style Selector="Button.link">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+                </StackPanel.Styles>
+
+                <Button Classes="link" HorizontalAlignment="Center" FontSize="12" Command="{Binding goToLinkCommand}">
+                    http://raptor.martincarlisle.com
+                </Button>
+
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Left" Margin="0,50,0,0" Orientation="Horizontal" Background="White" Spacing="200">
+            <StackPanel>
+                <StackPanel.Styles>
+                    <Style Selector="TextBlock.Velo">
+                        <Setter Property="FontSize" Value="30" />
+                        <Setter Property="Width" Value="250" />
+                        <Setter Property="Height" Value="250" />
+                        <Setter Property="Background">
+                            <Setter.Value>
+                            <ImageBrush Source="avares://raptor/Assets/VELOC.png" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </StackPanel.Styles>
+
+                <TextBlock Classes="Velo"></TextBlock>    
+                <Button Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding OnOkCommand}">Ok</Button>
+            </StackPanel>
+        </StackPanel>
+  </DockPanel>
+</Window>

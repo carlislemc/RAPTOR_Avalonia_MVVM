@@ -1507,7 +1507,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnAboutCommand()
         {
-
+            AboutDialog ad = new AboutDialog();
+            ad.ShowDialog(MainWindow.topWindow);
         }
         public void OnShowLogCommand() { }
         public void OnCountSymbolsCommand() {
