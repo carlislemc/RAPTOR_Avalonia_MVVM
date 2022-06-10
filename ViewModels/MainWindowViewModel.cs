@@ -1527,6 +1527,52 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 while(temp != null)
                 {
                     count++;
+                    if(temp.GetType() == typeof(Loop))
+                    {
+                        Loop tempLoop = (Loop)temp;
+                        Component temp2;
+                        if(tempLoop.before_Child != null)
+                        {
+                            temp2 = tempLoop.before_Child;
+                            while(temp2 != null)
+                            {
+                                count++;
+                                temp2 = temp2.Successor;
+                            }
+                        }
+                        if (tempLoop.after_Child != null)
+                        {
+                            temp2 = tempLoop.after_Child;
+                            while (temp2 != null)
+                            {
+                                count++;
+                                temp2 = temp2.Successor;
+                            }
+                        }
+                    }
+                    if (temp.GetType() == typeof(IF_Control))
+                    {
+                        IF_Control tempIF = (IF_Control)temp;
+                        Component temp2;
+                        if (tempIF.left_Child != null)
+                        {
+                            temp2 = tempIF.left_Child;
+                            while (temp2 != null)
+                            {
+                                count++;
+                                temp2 = temp2.Successor;
+                            }
+                        }
+                        if (tempIF.right_Child != null)
+                        {
+                            temp2 = tempIF.right_Child;
+                            while (temp2 != null)
+                            {
+                                count++;
+                                temp2 = temp2.Successor;
+                            }
+                        }
+                    }
                     temp = temp.Successor;
                 }
             }
