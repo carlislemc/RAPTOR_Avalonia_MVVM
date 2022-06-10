@@ -78,6 +78,11 @@ namespace raptor
                 pen_color = PensBrushes.blue_pen;
             }
 
+			if (this.has_breakpoint)
+			{
+				StopSign.Draw(gr, x - box_width / 2 - W / 6 - 2, y, W / 6);
+			}
+
 			gr.DrawGeometry(Brushes.Transparent, pen_color, new EllipseGeometry(
 				new Avalonia.Rect(X - box_width / 2, Y, box_width, H)));
 
