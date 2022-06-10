@@ -596,7 +596,7 @@ namespace raptor
 				return null;
 			}
 			Component end_selection;
-			if (this.selected)
+			if (this.selected && this.GetType() != typeof(Oval))
 			{
 				end_selection = this.find_selection_end();
 				if (end_selection.Successor != null)

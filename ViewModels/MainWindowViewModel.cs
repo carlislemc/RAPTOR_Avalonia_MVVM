@@ -565,13 +565,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             int x_position = this.theTabs[this.activeTab].positionXTapped;
             int y_position = this.theTabs[this.activeTab].positionYTapped;
 
-            Object thing = await ClipboardMultiplatform.GetDataObjectAsync();
-            if(thing != null){
-                Component obj = ((Clipboard_Data)thing).symbols;
-                Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
-                Component the_clone = obj.Clone();
-                this.theTabs[this.activeTab].Start.insert(the_clone, x_position, y_position, 0);
+            try
+            {
+                Object thing = await ClipboardMultiplatform.GetDataObjectAsync();
+                if (thing != null)
+                {
+                    Component obj = ((Clipboard_Data)thing).symbols;
+                    Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
+                    Component the_clone = obj.Clone();
+                    this.theTabs[this.activeTab].Start.insert(the_clone, x_position, y_position, 0);
+                }
             }
+            catch
+            {
+
+            }
+            
             
         }
         public void OnCopyCommand() {
