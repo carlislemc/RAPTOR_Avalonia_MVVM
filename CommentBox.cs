@@ -166,6 +166,11 @@ namespace raptor
 			{
 				return;
 			}
+			if(this.getText().Length == 1 && this.getText()[0] == "")
+            {
+				resize(gr);
+				return;
+            }
 			if (this.text_change || Component.Inside_Print || Component.Just_After_Print)
 			{
 				this.resize(gr);
@@ -318,14 +323,29 @@ namespace raptor
 		// Get the text from a pop-up dialog and then set it?
 		public void setText(/*Visual_Flow_Form form*/)
 		{
-			CommentDialog CD = new CommentDialog(this);
-			CD.ShowDialog(MainWindow.topWindow);
-			if (this.text_change)
-			{
+			if(this.getText().Length == 1 && this.getText()[0] == "")
+            {
+				CommentDialog CD = new CommentDialog(this, false);
+				CD.ShowDialog(MainWindow.topWindow);
+				if (this.text_change)
+				{
 
-				//this.resize(form.CreateGraphics());
-				this.text_change = false;
+					//this.resize(form.CreateGraphics());
+					this.text_change = false;
+				}
+            }
+            else
+            {
+				CommentDialog CD = new CommentDialog(this, true);
+				CD.ShowDialog(MainWindow.topWindow);
+				if (this.text_change)
+				{
+
+					//this.resize(form.CreateGraphics());
+					this.text_change = false;
+				}
 			}
+			
 		}
 
 		public CommentBox Clone()

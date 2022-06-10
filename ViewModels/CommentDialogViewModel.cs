@@ -27,13 +27,32 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public CommentDialogViewModel() {
             this.text = "";
         }
-        public CommentDialogViewModel(CommentBox c, Window w) {
+        public CommentDialogViewModel(CommentBox c, Window w, bool modding) {
             this.text = "";
             this.c = c;
             this.w = w;
+            this.modding = modding;
+
+            if (modding)
+            {
+                foreach(string s in c.Text_Array)
+                {
+                    if(s == c.Text_Array[c.Text_Array.Length - 1])
+                    {
+                        text += s;
+                    }
+                    else
+                    {
+                        text += s + '\n';
+                    }
+                    
+                }
+                
+            }
         }
         public Window w;
         public CommentBox c;
+        public bool modding;
         public bool modified = false;
         public bool runningState = false;
 
@@ -41,7 +60,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string Text   // property
         {
             get { return text; }   // get method
-            set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
+            set { this.RaiseAndSetIfChanged(ref text, value); }  // set method
         }
 
 
@@ -60,10 +79,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public void OnDoneCommand(DrawingContext d){
             Undo_Stack.Make_Undoable(getSubchart());
-            if(Text != ""){
-                c.Text_Array[c.Text_Array.Length-1] = Text;
-                c.text_change = true;
-            }
+
+            c.Text_Array[c.Text_Array.Length-1] = Text;
+            c.text_change = true;
+            modified = true;
+            
             MainWindowViewModel.GetMainWindowViewModel().modified = true;
             w.Close();            
         }

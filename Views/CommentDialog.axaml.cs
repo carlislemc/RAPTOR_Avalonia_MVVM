@@ -10,13 +10,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public CommentDialog(){
             
         }
-        public CommentDialog(CommentBox c)
+        public CommentDialog(CommentBox c, bool modding)
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CommentDialogViewModel(c, this);
+            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.CommentDialogViewModel(c, this, modding);
 
         }
 
