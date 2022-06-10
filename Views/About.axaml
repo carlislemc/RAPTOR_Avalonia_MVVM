@@ -22,10 +22,13 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="45" FontFamily="Levenim MT">
                     Raptor
                 </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" FontFamily="Levenim MT">
+                    Multi-Platform
+                </TextBlock>
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Rapid Algorithmic Prototyping Tool 
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="52">
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="42">
                     for Ordered Reasoning 
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
@@ -37,13 +40,16 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Jeffrey W. Humphries
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="52">
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Jason A. Moore
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12">
-                    Version: 4.1.0001
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="42">
+                    Aidan M. Heffron
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="59">
+                <TextBlock HorizontalAlignment="Center" FontSize="12">
+                    Version: 1.0.0000
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="49">
                     15 November 2019
                 </TextBlock>
 
