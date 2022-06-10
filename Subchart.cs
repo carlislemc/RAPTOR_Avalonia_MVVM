@@ -57,15 +57,42 @@ namespace raptor
                 }
                 else
                 {
-                    if (this.contextMenuType != 1)
+                    Component t = findSelected(this);
+                    if(t != null)
+                    {
+                        //if (this.contextMenuType != 1)
+                        //{
+                        if(t.GetType() == typeof(Oval)){
+                            this.ObservableMenuItems.Clear();
+                            foreach (MenuItemViewModel j in this.OvalMenuItemsFunction)
+                            {
+                                this.ObservableMenuItems.Add(j);
+                            }
+                            this.contextMenuType = 1;
+
+                        }
+                        else
+                        {
+                            this.ObservableMenuItems.Clear();
+                            foreach (MenuItemViewModel j in this.OverSymbolMenuItemsFunction)
+                            {
+                                this.ObservableMenuItems.Add(j);
+                            }
+                            this.contextMenuType = 1;
+
+                        }
+                        //}
+                    }
+                    else
                     {
                         this.ObservableMenuItems.Clear();
-                        foreach (MenuItemViewModel j in this.OverSymbolMenuItemsFunction)
+                        foreach (MenuItemViewModel j in this.DisabledMenuItemsFunction)
                         {
                             this.ObservableMenuItems.Add(j);
                         }
                         this.contextMenuType = 1;
                     }
+                    
                 }
             }
         }
@@ -95,6 +122,7 @@ namespace raptor
         public ReactiveCommand<Unit, Unit> CutCommand { get; set; }
         public ReactiveCommand<Unit, Unit> CopyCommand { get; set; }
         public ReactiveCommand<Unit, Unit> DeleteCommand { get; set; }
+
         private void initContextMenu()
         {
             PasteCommand = ReactiveCommand.Create(OnPasteCommand);
@@ -113,23 +141,44 @@ namespace raptor
 
             OverArrowMenuItemsFunction = new[]
             {
-                new MenuItemViewModel { Header = "_Paste", Command = PasteCommand },
-                new MenuItemViewModel { Header = "Insert Assignment", Command = InsertAssignmentCommand },
-                new MenuItemViewModel { Header = "Insert Call", Command = InsertCallCommand },
-                new MenuItemViewModel { Header = "Insert Input", Command = InsertInputCommand },
-                new MenuItemViewModel { Header = "Insert Output", Command = InsertOutputCommand },
-                new MenuItemViewModel { Header = "Insert Selection", Command = InsertSelectionCommand },
-                new MenuItemViewModel { Header = "Insert Loop", Command = InsertLoopCommand }
+                new MenuItemViewModel { Header = "_Paste", Command = PasteCommand, IsEnabled=true },
+                new MenuItemViewModel { Header = "Insert Assignment", Command = InsertAssignmentCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Insert Call", Command = InsertCallCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Insert Input", Command = InsertInputCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Insert Output", Command = InsertOutputCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Insert Selection", Command = InsertSelectionCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Insert Loop", Command = InsertLoopCommand, IsEnabled=true  }
             };
 
+
             OverSymbolMenuItemsFunction = new[]
-{
-                new MenuItemViewModel { Header = "_Edit", Command = EditCommand },
-                new MenuItemViewModel { Header = "Comment", Command = CommentCommand },
-                new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand },
-                new MenuItemViewModel { Header = "C_ut", Command = CutCommand },
-                new MenuItemViewModel { Header = "C_opy", Command = CopyCommand },
-                new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand }
+            {
+                new MenuItemViewModel { Header = "_Edit", Command = EditCommand, IsEnabled=true },
+                new MenuItemViewModel { Header = "Comment", Command = CommentCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "C_ut", Command = CutCommand, IsEnabled=true },
+                new MenuItemViewModel { Header = "C_opy", Command = CopyCommand, IsEnabled=true  },
+                new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand, IsEnabled=true  }
+            };
+
+            DisabledMenuItemsFunction = new[]
+            {
+                new MenuItemViewModel { Header = "_Edit", Command = EditCommand},
+                new MenuItemViewModel { Header = "Comment", Command = CommentCommand},
+                new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand},
+                new MenuItemViewModel { Header = "C_ut", Command = CutCommand},
+                new MenuItemViewModel { Header = "C_opy", Command = CopyCommand},
+                new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand}
+            };
+
+            OvalMenuItemsFunction = new[]
+            {
+                new MenuItemViewModel { Header = "_Edit", Command = EditCommand},
+                new MenuItemViewModel { Header = "Comment", Command = CommentCommand, IsEnabled=true},
+                new MenuItemViewModel { Header = "Toggle Breakpoint", Command = ToggleBreakpointCommand, IsEnabled=true},
+                new MenuItemViewModel { Header = "C_ut", Command = CutCommand},
+                new MenuItemViewModel { Header = "C_opy", Command = CopyCommand},
+                new MenuItemViewModel { Header = "_Delete", Command = DeleteCommand}
             };
 
             this.ObservableMenuItems = new ObservableCollection<MenuItemViewModel>();
@@ -228,27 +277,29 @@ namespace raptor
             MainWindowViewModel.GetMainWindowViewModel().OnEditCommand();
         }
 
-        public void OnCommentCommand(){
-            Component ans = Start;
+        public Component findSelected(Subchart s)
+        {
+            Component ans = s.Start;
             ObservableCollection<int> loopPass = new ObservableCollection<int>() { 0 };
             ObservableCollection<int> selectionPass = new ObservableCollection<int>() { 0 };
             ObservableCollection<Component> p = new ObservableCollection<Component>();
-            while(!ans.selected){
+            while (!ans.selected)
+            {
                 if (ans.Successor == null && p.Count == 0)
                 {
-                    return;
+                    return null;
                 }
 
-                else if(ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count-1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
+                else if (ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count - 1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
                 {
                     ans = p[p.Count - 1];
                     p.RemoveAt(p.Count - 1);
                 }
 
-                else if(ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
+                else if (ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
                 {
                     ans = p[p.Count - 1];
-                
+
                 }
 
                 if (ans.GetType() == typeof(Loop))
@@ -260,26 +311,28 @@ namespace raptor
                         p.Add(temp);
                     }
 
-                    if(loopPass[loopPass.Count - 1] == 1)
+                    if (loopPass[loopPass.Count - 1] == 1)
                     {
-                        if(temp.before_Child != null)
+                        if (temp.before_Child != null)
                         {
                             ans = temp.before_Child;
                         }
 
                         loopPass[loopPass.Count - 1]++;
-                    }else if(loopPass[loopPass.Count - 1] == 2)
+                    }
+                    else if (loopPass[loopPass.Count - 1] == 2)
                     {
                         if (temp.after_Child != null)
                         {
                             ans = temp.after_Child;
                         }
                         loopPass[loopPass.Count - 1]++;
-                    }else if(loopPass[loopPass.Count - 1] == 3)
+                    }
+                    else if (loopPass[loopPass.Count - 1] == 3)
                     {
-                        
+
                         p.RemoveAt(p.Count - 1);
-                        if(temp.Successor != null)
+                        if (temp.Successor != null)
                         {
                             ans = temp.Successor;
                         }
@@ -291,7 +344,7 @@ namespace raptor
                     }
                 }
 
-                else if(ans.GetType() == typeof(IF_Control))
+                else if (ans.GetType() == typeof(IF_Control))
                 {
                     IF_Control temp = (IF_Control)ans;
                     if (!p.Contains(temp))
@@ -302,7 +355,7 @@ namespace raptor
 
                     if (selectionPass[selectionPass.Count - 1] == 1)
                     {
-                        if(temp.left_Child != null)
+                        if (temp.left_Child != null)
                         {
                             ans = temp.left_Child;
                         }
@@ -335,119 +388,17 @@ namespace raptor
                 {
                     ans = ans.Successor;
                 }
-                
+
             }
+            return ans;
+        }
+
+        public void OnCommentCommand(){
+            Component ans = findSelected(this);
             ans.addComment();
         }
         public void OnToggleBreakpointCommand() {
-            Component ans = Start;
-            ObservableCollection<int> loopPass = new ObservableCollection<int>() { 0 };
-            ObservableCollection<int> selectionPass = new ObservableCollection<int>() { 0 };
-            ObservableCollection<Component> p = new ObservableCollection<Component>();
-            while(!ans.selected){
-                if (ans.Successor == null && p.Count == 0)
-                {
-                    return;
-                }
-
-                else if(ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count-1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
-                {
-                    ans = p[p.Count - 1];
-                    p.RemoveAt(p.Count - 1);
-                }
-
-                else if(ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
-                {
-                    ans = p[p.Count - 1];
-                
-                }
-
-                if (ans.GetType() == typeof(Loop))
-                {
-                    Loop temp = (Loop)ans;
-                    if (!p.Contains(temp))
-                    {
-                        loopPass.Add(1);
-                        p.Add(temp);
-                    }
-
-                    if(loopPass[loopPass.Count - 1] == 1)
-                    {
-                        if(temp.before_Child != null)
-                        {
-                            ans = temp.before_Child;
-                        }
-
-                        loopPass[loopPass.Count - 1]++;
-                    }else if(loopPass[loopPass.Count - 1] == 2)
-                    {
-                        if (temp.after_Child != null)
-                        {
-                            ans = temp.after_Child;
-                        }
-                        loopPass[loopPass.Count - 1]++;
-                    }else if(loopPass[loopPass.Count - 1] == 3)
-                    {
-                        
-                        p.RemoveAt(p.Count - 1);
-                        if(temp.Successor != null)
-                        {
-                            ans = temp.Successor;
-                        }
-                        else
-                        {
-                            ans = p[p.Count - 1];
-                        }
-                        loopPass.RemoveAt(loopPass.Count - 1);
-                    }
-                }
-
-                else if(ans.GetType() == typeof(IF_Control))
-                {
-                    IF_Control temp = (IF_Control)ans;
-                    if (!p.Contains(temp))
-                    {
-                        selectionPass.Add(1);
-                        p.Add(temp);
-                    }
-
-                    if (selectionPass[selectionPass.Count - 1] == 1)
-                    {
-                        if(temp.left_Child != null)
-                        {
-                            ans = temp.left_Child;
-                        }
-                        selectionPass[selectionPass.Count - 1]++;
-                    }
-                    else if (selectionPass[selectionPass.Count - 1] == 2)
-                    {
-                        if (temp.right_Child != null)
-                        {
-                            ans = temp.right_Child;
-                        }
-                        selectionPass[selectionPass.Count - 1]++;
-                    }
-                    else if (selectionPass[selectionPass.Count - 1] == 3)
-                    {
-                        p.RemoveAt(p.Count - 1);
-                        if (temp.Successor != null)
-                        {
-                            ans = temp.Successor;
-                        }
-                        else
-                        {
-                            ans = p[p.Count - 1];
-                        }
-                        selectionPass.RemoveAt(selectionPass.Count - 1);
-                    }
-                }
-
-                else
-                {
-                    ans = ans.Successor;
-                }
-                
-            }
+            Component ans = findSelected(this);
             ans.Toggle_Breakpoint(ans.X, ans.Y);
         }
         public void OnCutCommand() {
@@ -507,6 +458,8 @@ namespace raptor
 
         private IList<MenuItemViewModel> OverArrowMenuItemsFunction;
         private IList<MenuItemViewModel> OverSymbolMenuItemsFunction;
+        private IList<MenuItemViewModel> DisabledMenuItemsFunction;
+        private IList<MenuItemViewModel> OvalMenuItemsFunction;
 
 
         public ReactiveCommand<Unit, Unit> AddSub { get; set; }

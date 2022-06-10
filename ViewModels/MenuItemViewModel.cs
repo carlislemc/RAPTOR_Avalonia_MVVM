@@ -14,5 +14,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public ICommand? Command { get; set; }
         public object? CommandParameter { get; set; }
         public IList<MenuItemViewModel> Items { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }
