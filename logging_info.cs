@@ -35,6 +35,7 @@ namespace raptor
 
 		public logging_info()
 		{
+			this.Record_Open();
 		}
 
         [DllImport("kernel32.dll")]
@@ -259,18 +260,16 @@ namespace raptor
 			return result;
 		}
 
-		public void Display(/*Visual_Flow_Form form, */bool show_full_log)
+		public string Display(System.Guid file_guid, bool show_full_log)
 		{
 			System.TimeSpan ts;
 			int autosave_count = 0;
 			int total_autosaves = 0;
 			string log_data="";
 
-			//Runtime.consoleWriteln("LOG for: " + form.Text + "(" +
-			//	form.file_guid + ")");
-			//log_data = "LOG for: " + form.Text + "(" +
-			//	form.file_guid + ")" + "\n";
-			for (int i=0; i<this.events.Count; i++)
+            log_data = "LOG for: Raptor(" +
+                file_guid + ")" + "\n";
+            for (int i=0; i<this.events.Count; i++)
 			{
 				event_record e = (event_record) this.events[i];
 				if (e.Kind==event_kind.Autosaved)
@@ -327,7 +326,8 @@ namespace raptor
 			//Runtime.consoleWriteln("Total autosaves: " + total_autosaves);
 			log_data = log_data + "Total autosaves: " +
 				total_autosaves + "\n";
-			Runtime.consoleWriteln(log_data);
+			//Runtime.consoleWriteln(log_data);
+			return log_data;
 		}
 
 		public String Last_Username()

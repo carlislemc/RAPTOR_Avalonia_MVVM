@@ -378,14 +378,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             }
                         }
                     }*/
-                    //if (Component.last_incoming_serialization_version >= 4)
-                    //{
-                    //    this.log = (logging_info)bformatter.Deserialize(stream);
-                    //}
-                    //else
-                    //{
-                    //    this.log.Clear();
-                    //}
+                    if (Component.last_incoming_serialization_version >= 4)
+                    {
+                        this.log = (logging_info)bformatter.Deserialize(stream);
+                    }
+                    else
+                    {
+                        this.log.Clear();
+                    }
                     if (Component.last_incoming_serialization_version >= 6)
                     {
                         Component.compiled_flowchart = (bool)bformatter.Deserialize(stream);
@@ -693,16 +693,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     bformatter.Serialize(stream, output);
                 }
 
-                //if (!is_autosave)
-                //{
-                //    this.log.Record_Save();
-                //}
-                //else
-                //{
-                //    this.log.Record_Autosave();
-                //}
+                if (!is_autosave)
+                {
+                    this.log.Record_Save();
+                }
+                else
+                {
+                    this.log.Record_Autosave();
+                }
 
-                //bformatter.Serialize(stream, this.log);
+                bformatter.Serialize(stream, this.log);
                 bformatter.Serialize(stream, Component.compiled_flowchart);
                 bformatter.Serialize(stream, this.file_guid);
                 stream.Close();
@@ -1491,10 +1491,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get{return viewTab; }
             set{this.RaiseAndSetIfChanged(ref viewTab, value); }
         }
-        public void myOnPointerPressed(PointerPressedEventArgs e)
-        {
-
-        }
         public void OnRedoCommand() {
             Undo_Stack.Redo_Action(this.mainSubchart());
         }
@@ -1511,7 +1507,18 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             AboutDialog ad = new AboutDialog();
             ad.ShowDialog(MainWindow.topWindow);
         }
-        public void OnShowLogCommand() { }
+        public void OnShowLogCommand() {
+            if(log != null)
+            {
+                Dispatcher.UIThread.Post(() => postDialog(log.Display(file_guid, true) +"\n", false), DispatcherPriority.Background);
+                
+            }
+            else
+            {
+                Dispatcher.UIThread.Post(() => postDialog("Log unavailable", false), DispatcherPriority.Background);
+            }
+
+        }
         public void OnCountSymbolsCommand() {
             int count = 0;
             foreach(Subchart s in theTabs)
