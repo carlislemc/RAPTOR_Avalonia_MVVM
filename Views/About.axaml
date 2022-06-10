@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="335"
-        Width="500" Height="335"
+        Width="500" Height="345"
         x:Class="RAPTOR_Avalonia_MVVM.Views.AboutDialog"
         Title="About Raptor"
         x:DataType="vm:AboutViewModel">
@@ -28,7 +28,7 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Rapid Algorithmic Prototyping Tool 
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="42">
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="35">
                     for Ordered Reasoning 
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
@@ -43,13 +43,13 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Jason A. Moore
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="42">
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="40">
                     Aidan M. Heffron
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" FontSize="12">
                     Version: 1.0.0000
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="49">
+                <TextBlock HorizontalAlignment="Center" FontSize="12" Height="45">
                     15 November 2019
                 </TextBlock>
 
@@ -69,7 +69,7 @@
 
         </StackPanel>
         <StackPanel DockPanel.Dock="Left" Margin="0,50,0,0" Orientation="Horizontal" Background="White" Spacing="200">
-            <StackPanel>
+            <StackPanel Spacing="11">
                 <StackPanel.Styles>
                     <Style Selector="TextBlock.Velo">
                         <Setter Property="FontSize" Value="30" />
