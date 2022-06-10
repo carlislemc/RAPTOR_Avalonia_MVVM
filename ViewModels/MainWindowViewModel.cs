@@ -27,6 +27,7 @@ using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using System.Collections;
 using Avalonia.Threading;
+using System.Diagnostics;
 
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
@@ -1525,6 +1526,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Dispatcher.UIThread.Post(() => postDialog("The total number of symbols is: " + count, false), DispatcherPriority.Background);
 
+        }
+
+        public void OnGeneralHelpCommand()
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "http://www.raptor.martincarlisle.com",
+                UseShellExecute = true
+            });
         }
 
     }
