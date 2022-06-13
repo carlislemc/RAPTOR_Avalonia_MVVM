@@ -1,0 +1,384 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>String Variables &amp; Assignment</title>
+
+<!--(Meta)==========================================================-->
+
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=1070>
+<meta name=layout-width content=613>
+<meta name=date content="12 26, 2006 10:28:45 AM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../../IntroducingRaptor/Introducing_Raptor.htm">Introducing Raptor</a>
+			  <a href="../../IntroducingRaptor/Overview_of_Raptor.htm">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../../ProgrammingConcepts/Names_in_Raptor.htm">Names in Raptor</a>
+			  <a href="../../ProgrammingConcepts/Variables_in_Raptor.htm">Variables</a>
+			  <a href="../../ProgrammingConcepts/Procedure_Calls_vs._Functions.htm">Procedure Calls vs. Functions</a>
+			  <a href="../../ProgrammingConcepts/Spacing_for_Readability.htm">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../../UsingRaptor/Raptor_symbols.htm">Raptor Symbols</a>
+			  <a href="../../UsingRaptor/Watch_window.htm">Watch Window</a>
+			  <a href="../../UsingRaptor/Raptor_workspace.htm">Raptor Workspace</a>
+			  <a href="../../UsingRaptor/Using_the_menu.htm">Using the Menu</a>
+			  <a href="../../UsingRaptor/Using_the_MasterConsole.htm">Using the MasterConsole</a>
+			  <a href="../../UsingRaptor/Using_the_toolbar.htm">Using the Toolbar</a>
+			  <a href="../../UsingRaptor/Building_a_flowchart.htm">Building a Flowchart</a>
+			  <a href="../../UsingRaptor/Executing_a_flowchart.htm">Executing a Flowchart</a>
+			  <a href="../../UsingRaptor/Editing_Symbols.htm">Editing Symbols</a>
+			  <a href="../../UsingRaptor/reducing_displayed_chart_size.htm">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../../RaptorTutorial/Tutorial_-_Building_a_Flowchart.htm">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../../MathInRaptor/math-operators.htm">Operators</a>
+			  <a href="../../MathInRaptor/math-functions.htm">Functions</a>
+			  <a href="../../MathInRaptor/trig-functions.htm">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../../ProgramControl/boolean_expressions.htm">Boolean Expressions</a>
+			  <a href="../../ProgramControl/Delay_For.htm">Delay For</a>
+			  <a href="../../ProgramControl/Clear_Console.htm">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../../Graphics/About_Raptorgraph.htm">About Raptorgraph</a>
+			  <a href="../../Graphics/RaptorGraph_Overview.htm">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../../Graphics/Colors/Colors.htm">Colors</a>
+					<a href="../../Graphics/Colors/Closest_Color.htm">Closest Color</a>
+					<a href="../../Graphics/Colors/Generating_Random_Colors.htm">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/DrawingOperations/Clear_Window.htm">Clear Window</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Arc.htm">Draw Arc</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Box.htm">Draw Box</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Circle.htm">Draw Circle</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Ellipse.htm">Draw Ellipse</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Line.htm">Draw Line</a>
+				  <a href="../../Graphics/DrawingOperations/Flood_Fill.htm">Flood Fill</a>
+				  <a href="../../Graphics/DrawingOperations/Get_Pixel.htm">Get Pixel</a>
+				  <a href="../../Graphics/DrawingOperations/Put_Pixel.htm">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/KeyboardOperations/Get_Key.htm">Get Key</a>
+				  <a href="../../Graphics/KeyboardOperations/Get_Key_String.htm">Get Key String</a>
+				  <a href="../../Graphics/KeyboardOperations/Key_Hit.htm">Key Hit</a>
+				  <a href="../../Graphics/KeyboardOperations/Wait_For_Key.htm">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_Button.htm">Get Mouse Button</a>
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_X.htm">Get Mouse X</a>
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_Y.htm">Get Mouse Y</a>
+				  <a href="../../Graphics/MouseOperations/Mouse_Button_Pressed.htm">Mouse Button Pressed</a>
+				  <a href="../../Graphics/MouseOperations/Mouse_Button_Released.htm">Mouse Button Released</a>
+				  <a href="../../Graphics/MouseOperations/Wait_For_Mouse_Button.htm">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/TextOperations/Display_Text.htm">Display Text</a>
+				  <a href="../../Graphics/TextOperations/display_number.htm">Display Number</a>
+				  <a href="../../Graphics/TextOperations/Get_Font_Height.htm">Get Font Height</a>
+				  <a href="../../Graphics/TextOperations/Get_Font_Width.htm">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/WindowOperations/Open_Graph_Window.htm">Open Graph Window</a>
+				  <a href="../../Graphics/WindowOperations/is_open.htm">Is Open</a>
+				  <a href="../../Graphics/WindowOperations/Freeze_Graph_Window.htm">Freeze Graph Window</a>
+				  <a href="../../Graphics/WindowOperations/Set_Window_Title.htm">Set Window Title</a>
+				  <a href="../../Graphics/WindowOperations/Get_Window_Height.htm">Get Window Height</a>
+				  <a href="../../Graphics/WindowOperations/get_window_width.htm">Get Window Width</a>
+				  <a href="../../Graphics/WindowOperations/get_max_height.htm">Get Max Height</a>
+				  <a href="../../Graphics/WindowOperations/get_max_width.htm">Get Max Width</a>
+				  <a href="../../Graphics/WindowOperations/Close_Graph_Window.htm">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../../Arrays/Array_Overview.htm">Overview</a>
+			  <a href="../../Arrays/Creating_Arrays.htm">Creating Arrays</a>
+			  <a href="../../Arrays/Array_Operations.htm">Array Operations</a>
+			  <a href="../../Arrays/Two-Dimensional_Arrays.htm">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Files_Overview.htm">Overview</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.htm">Inputting From a File</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.htm">Input Line by Line</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.htm">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Sound/Sound_Operations.htm">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Strings/Strings.htm">Strings</a>
+					<a href="../../AdvancedTopics/Strings/String_Operations.htm">String Operations</a>
+					<a href="../../AdvancedTopics/Strings/String_Comparisons.htm">String Comparisons</a>
+					<a href="../../AdvancedTopics/Strings/String_Input.htm">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Subcharts/Subchart_Overview.htm">Overview</a>
+					<a href="../../AdvancedTopics/Subcharts/Creating_a_Subchart.htm">Creating a Subchart</a>
+					<a href="../../AdvancedTopics/Subcharts/Calling_Subcharts.htm">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/VariableTypeQueries/Type_Queries.htm">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>String Variables &amp; Assignment</h1>
+
+<p>Strings are sequences of characters. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->A 
+ string variable holds a sequence of characters. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->One 
+ last detail: <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Raptor 
+ doesn't support arrays of strings.</p>
+
+<p>&nbsp;</p>
+
+<p>Many programs use strings, usually to output messages to the user. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->For 
+ example, you might see a string in an Output Symbol:</p>
+
+<p>&nbsp;</p>
+
+<p><img src="../../Assets/strings-put-ex.bmp"
+		x-maintain-ratio=TRUE
+		style="border: none;
+				width: 262px;
+				height: 76px;
+				float: none;"
+		width=262
+		height=76
+		border=0></p>
+
+<p>or as an argument (in the example below, &quot;Score&quot;) in a Call:</p>
+
+<p>&nbsp;</p>
+
+<p style="font-family: 'Courier New', monospace;"><img src="../../Assets/strings-display-text-ex.bmp"
+														x-maintain-ratio=TRUE
+														style="border: none;
+	width: 262px;
+	height: 76px;
+	float: none;"
+														width=262
+														height=76
+														border=0></p>
+
+<p style="font-family: 'Courier New', monospace;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">However, sometimes the programmer 
+ wants to compute or build a string to output, and that's when string variables 
+ are used.</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">A string variable is given a 
+ value in an assignment symbol or in an input symbol. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ section below discusses assigning strings values.</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;
+			font-weight: bold;
+			x-text-underline: normal;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Assigning 
+ values to strings</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">In an assignment symbol, Raptor 
+ can determine that the variable is a string, because the value being assigned 
+ is a <span style="font-style: italic;">string expression</span>. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->A 
+ string expression is either</p>
+
+<ul style="list-style: disc;"
+	type=disc>
+	
+	<li class=kadov-p><p style="font-family: Arial, sans-serif;">a <span 
+ style="font-style: italic;">string literal </span><symbol name="Em Dash"><!--begin!kadov{{-->&#8212<!--}}end!kadov--> 
+ that is, a sequence of characters surrounded by double quotes (e.g., &quot;Hello, 
+ World!&quot;)</p></li>
+	
+	<li class=kadov-p><p style="font-family: Arial, sans-serif;">a string 
+ variable</p></li>
+	
+	<li class=kadov-p><p style="font-family: Arial, sans-serif;">the <span 
+ style="font-style: italic;">concatentation</span> of two or more string 
+ expressions (e.g., &quot;Hello, &quot; + name_string_var + &quot;, it's 
+ nice to meet you&quot;)</p></li>
+</ul>
+
+<p style="font-family: Arial, sans-serif;"><!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p style="font-family: Arial, sans-serif;">Below are several examples (unrelated 
+ to each other) of string variables being assigned values.</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<div style="float: left;
+			background-color: #ffffff;
+			border: solid 1px #ffffff;
+			padding: 5px;
+			height: 94px;
+			width: 232px;">
+<p><img src="../../Assets/strings-assign-ex-1.bmp"
+		x-maintain-ratio=TRUE
+		style="width: 262px;
+				height: 77px;
+				border-left-style: none;
+				border-top-style: none;
+				border-right-style: none;
+				border-bottom-style: none;
+				float: none;"
+		width=262
+		height=77
+		border=0></p>
+</div>
+
+<div style="float: left;
+			background-color: #ffffff;
+			border: solid 1px #ffffff;
+			padding: 5px;
+			width: 247px;
+			height: 95px;">
+<p><img src="../../Assets/strings-assign-ex-2.bmp"
+		x-maintain-ratio=TRUE
+		style="width: 231px;
+				height: 79px;
+				border-left-style: none;
+				border-top-style: none;
+				border-right-style: none;
+				border-bottom-style: none;
+				float: none;"
+		width=231
+		height=79
+		border=0></p>
+</div>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+<p style="font-family: Arial, sans-serif;"><img src="../../Assets/strings-assign-ex-3.bmp"
+												x-maintain-ratio=TRUE
+												style="border: none;
+														width: 472px;
+														height: 181px;
+														float: none;"
+												width=472
+												height=181
+												border=0></p>
+
+<p style="font-family: Arial, sans-serif;">&nbsp;</p>
+
+</body>
+
+</html>
