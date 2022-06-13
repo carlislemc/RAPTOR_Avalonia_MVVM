@@ -1,0 +1,298 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Watch window</title>
+
+<!--(Meta)==========================================================-->
+
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=938>
+<meta name=layout-width content=768>
+<meta name=date content="09 20, 2004 5:02:21 PM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../IntroducingRaptor/Introducing_Raptor.shtml">Introducing Raptor</a>
+			  <a href="../IntroducingRaptor/Overview_of_Raptor.shtml">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../ProgrammingConcepts/Names_in_Raptor.shtml">Names in Raptor</a>
+			  <a href="../ProgrammingConcepts/Variables_in_Raptor.shtml">Variables</a>
+			  <a href="../ProgrammingConcepts/Procedure_Calls_vs._Functions.shtml">Procedure Calls vs. Functions</a>
+			  <a href="../ProgrammingConcepts/Spacing_for_Readability.shtml">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../UsingRaptor/Raptor_symbols.shtml">Raptor Symbols</a>
+			  <a href="../UsingRaptor/Watch_window.shtml">Watch Window</a>
+			  <a href="../UsingRaptor/Raptor_workspace.shtml">Raptor Workspace</a>
+			  <a href="../UsingRaptor/Using_the_menu.shtml">Using the Menu</a>
+			  <a href="../UsingRaptor/Using_the_MasterConsole.shtml">Using the MasterConsole</a>
+			  <a href="../UsingRaptor/Using_the_toolbar.shtml">Using the Toolbar</a>
+			  <a href="../UsingRaptor/Building_a_flowchart.shtml">Building a Flowchart</a>
+			  <a href="../UsingRaptor/Executing_a_flowchart.shtml">Executing a Flowchart</a>
+			  <a href="../UsingRaptor/Editing_Symbols.shtml">Editing Symbols</a>
+			  <a href="../UsingRaptor/reducing_displayed_chart_size.shtml">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../RaptorTutorial/Tutorial_-_Building_a_Flowchart.shtml">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../MathInRaptor/math-operators.shtml">Operators</a>
+			  <a href="../MathInRaptor/math-functions.shtml">Functions</a>
+			  <a href="../MathInRaptor/trig-functions.shtml">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../ProgramControl/boolean_expressions.shtml">Boolean Expressions</a>
+			  <a href="../ProgramControl/Delay_For.shtml">Delay For</a>
+			  <a href="../ProgramControl/Clear_Console.shtml">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../Graphics/About_Raptorgraph.shtml">About Raptorgraph</a>
+			  <a href="../Graphics/RaptorGraph_Overview.shtml">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../Graphics/Colors/Colors.shtml">Colors</a>
+					<a href="../Graphics/Colors/Closest_Color.shtml">Closest Color</a>
+					<a href="../Graphics/Colors/Generating_Random_Colors.shtml">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/DrawingOperations/Clear_Window.shtml">Clear Window</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Arc.shtml">Draw Arc</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Box.shtml">Draw Box</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Circle.shtml">Draw Circle</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Ellipse.shtml">Draw Ellipse</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Line.shtml">Draw Line</a>
+				  <a href="../Graphics/DrawingOperations/Flood_Fill.shtml">Flood Fill</a>
+				  <a href="../Graphics/DrawingOperations/Get_Pixel.shtml">Get Pixel</a>
+				  <a href="../Graphics/DrawingOperations/Put_Pixel.shtml">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/KeyboardOperations/Get_Key.shtml">Get Key</a>
+				  <a href="../Graphics/KeyboardOperations/Get_Key_String.shtml">Get Key String</a>
+				  <a href="../Graphics/KeyboardOperations/Key_Hit.shtml">Key Hit</a>
+				  <a href="../Graphics/KeyboardOperations/Wait_For_Key.shtml">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Button.shtml">Get Mouse Button</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_X.shtml">Get Mouse X</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Y.shtml">Get Mouse Y</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Pressed.shtml">Mouse Button Pressed</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Released.shtml">Mouse Button Released</a>
+				  <a href="../Graphics/MouseOperations/Wait_For_Mouse_Button.shtml">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/TextOperations/Display_Text.shtml">Display Text</a>
+				  <a href="../Graphics/TextOperations/display_number.shtml">Display Number</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Height.shtml">Get Font Height</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Width.shtml">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/WindowOperations/Open_Graph_Window.shtml">Open Graph Window</a>
+				  <a href="../Graphics/WindowOperations/is_open.shtml">Is Open</a>
+				  <a href="../Graphics/WindowOperations/Freeze_Graph_Window.shtml">Freeze Graph Window</a>
+				  <a href="../Graphics/WindowOperations/Set_Window_Title.shtml">Set Window Title</a>
+				  <a href="../Graphics/WindowOperations/Get_Window_Height.shtml">Get Window Height</a>
+				  <a href="../Graphics/WindowOperations/get_window_width.shtml">Get Window Width</a>
+				  <a href="../Graphics/WindowOperations/get_max_height.shtml">Get Max Height</a>
+				  <a href="../Graphics/WindowOperations/get_max_width.shtml">Get Max Width</a>
+				  <a href="../Graphics/WindowOperations/Close_Graph_Window.shtml">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../Arrays/Array_Overview.shtml">Overview</a>
+			  <a href="../Arrays/Creating_Arrays.shtml">Creating Arrays</a>
+			  <a href="../Arrays/Array_Operations.shtml">Array Operations</a>
+			  <a href="../Arrays/Two-Dimensional_Arrays.shtml">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Files_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting From a File</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.shtml">Input Line by Line</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Sound/Sound_Operations.shtml">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Strings/Strings.shtml">Strings</a>
+					<a href="../AdvancedTopics/Strings/String_Operations.shtml">String Operations</a>
+					<a href="../AdvancedTopics/Strings/String_Comparisons.shtml">String Comparisons</a>
+					<a href="../AdvancedTopics/Strings/String_Input.shtml">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Subcharts/Subchart_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/Subcharts/Creating_a_Subchart.shtml">Creating a Subchart</a>
+					<a href="../AdvancedTopics/Subcharts/Calling_Subcharts.shtml">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/VariableTypeQueries/Type_Queries.shtml">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>Watch window</h1>
+
+<p>The Watch Window gives the user feedback on the values of all variables 
+ and arrays as a flowchart executes. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Variables 
+ are arranged in the Watch Window in the order in which they are encountered 
+ as the flowchart executes. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ variable being changed by the statement currently executing in the flowchart 
+ is shown in <span style="color: #ff0000;">red</span>.</p>
+
+<p>&nbsp;</p>
+
+<p>Arrays are initially displayed minimized. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->To 
+ view the value of individual elements of an array, the user should click 
+ on the &quot;+&quot; symbol to the left of the array name. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ values can be later hidden by clicking on the &quot;-&quot; symbol.</p>
+
+<p>&nbsp;</p>
+
+<p><img src="../Assets/watch_window.bmp"
+		x-maintain-ratio=TRUE
+		style="border: none;
+				width: 110px;
+				height: 160px;
+				float: none;"
+		width=110
+		height=160
+		border=0></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-weight: bold;">Note</span>: nothing is displayed in 
+ the Watch Window until a variable or array is encountered during the execution 
+ of a flowchart.</p>
+
+<p>&nbsp;</p>
+
+<p>The image below is an example of how a two-dimensional array will appear 
+ in the Watch Window. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Each 
+ row receives its own &quot;+&quot; sign that can be changed into a &quot;-&quot; 
+ sign (and vice versa) by clicking on the sign. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ row number is indicated in brackets (&quot;&lt;1&gt;&quot;, &quot;&lt;2&gt;&quot;, 
+ etc.).</p>
+
+<p>&nbsp;</p>
+
+<p>When the row has been expanded so that the &quot;-&quot; sign is showing, 
+ the number of columns is indicated next to the word &quot;Size&quot;, 
+ followed by the individual values that have been assigned for that row. 
+ <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The &quot;column&quot; 
+ number precedes the value and is indicated in brackets. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->For 
+ example, the Watch Window displayed below indicates that the value of 
+ Test_Scores[2,4] is 92 (in other words, 92 is the value at row 2 and column 
+ 4 of array Test_Scores). <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Also 
+ note that the array name, row, and column for Test_Scores[2,4] is highlighted 
+ in <span style="color: #ff0000;">red</span>, which indicates that this 
+ value is being changed by the statement currently executing in the flowchart.</p>
+
+<p>&nbsp;</p>
+
+<p><img src="../Assets/Watch_Window with 2D Array.bmp"
+		x-maintain-ratio=TRUE
+		style="border: none;
+				width: 152px;
+				height: 278px;
+				float: none;"
+		width=152
+		height=278
+		border=0></p>
+
+</body>
+
+</html>

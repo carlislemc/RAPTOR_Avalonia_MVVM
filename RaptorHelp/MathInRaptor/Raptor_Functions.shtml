@@ -1,0 +1,583 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Reference</title>
+
+<!--(Meta)==========================================================-->
+
+<meta http-equiv=Content-Type content="text/html">
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=2421>
+<meta name=layout-width content=613>
+<meta name=date content="01 29, 2007 11:22:12 AM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../IntroducingRaptor/Introducing_Raptor.shtml">Introducing Raptor</a>
+			  <a href="../IntroducingRaptor/Overview_of_Raptor.shtml">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../ProgrammingConcepts/Names_in_Raptor.shtml">Names in Raptor</a>
+			  <a href="../ProgrammingConcepts/Variables_in_Raptor.shtml">Variables</a>
+			  <a href="../ProgrammingConcepts/Procedure_Calls_vs._Functions.shtml">Procedure Calls vs. Functions</a>
+			  <a href="../ProgrammingConcepts/Spacing_for_Readability.shtml">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../UsingRaptor/Raptor_symbols.shtml">Raptor Symbols</a>
+			  <a href="../UsingRaptor/Watch_window.shtml">Watch Window</a>
+			  <a href="../UsingRaptor/Raptor_workspace.shtml">Raptor Workspace</a>
+			  <a href="../UsingRaptor/Using_the_menu.shtml">Using the Menu</a>
+			  <a href="../UsingRaptor/Using_the_MasterConsole.shtml">Using the MasterConsole</a>
+			  <a href="../UsingRaptor/Using_the_toolbar.shtml">Using the Toolbar</a>
+			  <a href="../UsingRaptor/Building_a_flowchart.shtml">Building a Flowchart</a>
+			  <a href="../UsingRaptor/Executing_a_flowchart.shtml">Executing a Flowchart</a>
+			  <a href="../UsingRaptor/Editing_Symbols.shtml">Editing Symbols</a>
+			  <a href="../UsingRaptor/reducing_displayed_chart_size.shtml">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../RaptorTutorial/Tutorial_-_Building_a_Flowchart.shtml">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../MathInRaptor/math-operators.shtml">Operators</a>
+			  <a href="../MathInRaptor/math-functions.shtml">Functions</a>
+			  <a href="../MathInRaptor/trig-functions.shtml">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../ProgramControl/boolean_expressions.shtml">Boolean Expressions</a>
+			  <a href="../ProgramControl/Delay_For.shtml">Delay For</a>
+			  <a href="../ProgramControl/Clear_Console.shtml">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../Graphics/About_Raptorgraph.shtml">About Raptorgraph</a>
+			  <a href="../Graphics/RaptorGraph_Overview.shtml">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../Graphics/Colors/Colors.shtml">Colors</a>
+					<a href="../Graphics/Colors/Closest_Color.shtml">Closest Color</a>
+					<a href="../Graphics/Colors/Generating_Random_Colors.shtml">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/DrawingOperations/Clear_Window.shtml">Clear Window</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Arc.shtml">Draw Arc</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Box.shtml">Draw Box</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Circle.shtml">Draw Circle</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Ellipse.shtml">Draw Ellipse</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Line.shtml">Draw Line</a>
+				  <a href="../Graphics/DrawingOperations/Flood_Fill.shtml">Flood Fill</a>
+				  <a href="../Graphics/DrawingOperations/Get_Pixel.shtml">Get Pixel</a>
+				  <a href="../Graphics/DrawingOperations/Put_Pixel.shtml">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/KeyboardOperations/Get_Key.shtml">Get Key</a>
+				  <a href="../Graphics/KeyboardOperations/Get_Key_String.shtml">Get Key String</a>
+				  <a href="../Graphics/KeyboardOperations/Key_Hit.shtml">Key Hit</a>
+				  <a href="../Graphics/KeyboardOperations/Wait_For_Key.shtml">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Button.shtml">Get Mouse Button</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_X.shtml">Get Mouse X</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Y.shtml">Get Mouse Y</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Pressed.shtml">Mouse Button Pressed</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Released.shtml">Mouse Button Released</a>
+				  <a href="../Graphics/MouseOperations/Wait_For_Mouse_Button.shtml">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/TextOperations/Display_Text.shtml">Display Text</a>
+				  <a href="../Graphics/TextOperations/display_number.shtml">Display Number</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Height.shtml">Get Font Height</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Width.shtml">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/WindowOperations/Open_Graph_Window.shtml">Open Graph Window</a>
+				  <a href="../Graphics/WindowOperations/is_open.shtml">Is Open</a>
+				  <a href="../Graphics/WindowOperations/Freeze_Graph_Window.shtml">Freeze Graph Window</a>
+				  <a href="../Graphics/WindowOperations/Set_Window_Title.shtml">Set Window Title</a>
+				  <a href="../Graphics/WindowOperations/Get_Window_Height.shtml">Get Window Height</a>
+				  <a href="../Graphics/WindowOperations/get_window_width.shtml">Get Window Width</a>
+				  <a href="../Graphics/WindowOperations/get_max_height.shtml">Get Max Height</a>
+				  <a href="../Graphics/WindowOperations/get_max_width.shtml">Get Max Width</a>
+				  <a href="../Graphics/WindowOperations/Close_Graph_Window.shtml">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../Arrays/Array_Overview.shtml">Overview</a>
+			  <a href="../Arrays/Creating_Arrays.shtml">Creating Arrays</a>
+			  <a href="../Arrays/Array_Operations.shtml">Array Operations</a>
+			  <a href="../Arrays/Two-Dimensional_Arrays.shtml">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Files_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting From a File</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.shtml">Input Line by Line</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Sound/Sound_Operations.shtml">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Strings/Strings.shtml">Strings</a>
+					<a href="../AdvancedTopics/Strings/String_Operations.shtml">String Operations</a>
+					<a href="../AdvancedTopics/Strings/String_Comparisons.shtml">String Comparisons</a>
+					<a href="../AdvancedTopics/Strings/String_Input.shtml">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Subcharts/Subchart_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/Subcharts/Creating_a_Subchart.shtml">Creating a Subchart</a>
+					<a href="../AdvancedTopics/Subcharts/Calling_Subcharts.shtml">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/VariableTypeQueries/Type_Queries.shtml">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>Raptor Reference</h1>
+
+<p style="x-text-underline: normal;
+			color: #0000ff;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><strong 
+ style="font-weight: bold;">Math</strong></p>
+
+<p style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">&nbsp;</p>
+
+<p style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><strong 
+ style="font-weight: bold;">Math Operators</strong></p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells>
+
+<tr>
+<td>-</td>
+<td>unary minus</td></tr>
+
+<tr>
+<td>^ , **</td>
+<td>exponentiation</td></tr>
+
+<tr>
+<td>*</td>
+<td>multiplication</td></tr>
+
+<tr>
+<td>/</td>
+<td>division</td></tr>
+
+<tr>
+<td><strong style="font-weight: bold;">rem, mod</strong></td>
+<td>remainder</td></tr>
+
+<tr>
+<td>+</td>
+<td>addition</td></tr>
+
+<tr>
+<td>-</td>
+<td>subtraction</td></tr>
+</table>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Basic 
+ Math Functions</p>
+
+<p><span style="font-weight: bold;">abs</span> - absolute value</p>
+
+<p><span style="font-weight: bold;"><span style="font-weight: bold;">c</span>eiling</span> 
+ - ceiling function (round up)</p>
+
+<p><span style="font-weight: bold;">e</span> - returns the value of e (base 
+ for natural logarithms)</p>
+
+<p><span style="font-weight: bold;">floor</span> - floor function (round 
+ down)</p>
+
+<p><span style="font-weight: bold;">log</span> - natural logarithm function</p>
+
+<p><span style="font-weight: 700;">max</span> - maximum of two values</p>
+
+<p><span style="font-weight: 700;">min</span> - minimum of two values</p>
+
+<p><span style="font-weight: bold;">pi</span> - returns the value of pi</p>
+
+<p><span style="font-weight: bold;">powermod</span><span> - used for public 
+ key encryption / decryption</span></p>
+
+<p style="font-weight: bold;">random<span style="font-weight: normal;"> 
+ - returns a random value between [0.0,1.0)</span></p>
+
+<p><span style="font-weight: bold;">sqrt</span> - square root</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Trigonometric 
+ Functions</p>
+
+<p><span style="font-weight: bold;">arccos</span> - arc cosine</p>
+
+<p><span style="font-weight: bold;">arccot</span> - arc cotangent</p>
+
+<p><span style="font-weight: bold;">arcsin</span> - arc sine</p>
+
+<p><span style="font-weight: bold;">arctan</span> - arc tangent</p>
+
+<p><span style="font-weight: bold;">cos</span> - cosine</p>
+
+<p><span style="font-weight: bold;">cot</span> - cotangent</p>
+
+<p><span style="font-weight: bold;">sin</span> - sine</p>
+
+<p><span style="font-weight: bold;">tan</span> - tangent</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml">Program Control</a></span></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;">R</span>elational Operators</span></p>
+
+<p><span style="font-weight: bold;">=</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->equal 
+ to</p>
+
+<p><span style="font-weight: bold;">&gt;</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->greater 
+ than</p>
+
+<p><span style="font-weight: bold;">&lt;</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->less 
+ than</p>
+
+<p><span style="font-weight: bold;">!=</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->not 
+ equal to</p>
+
+<p><span style="font-weight: bold;">/</span><span style="font-weight: bold;">=</span> 
+ <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->not 
+ equal to</p>
+
+<p><span style="font-weight: bold;">&gt;=</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->greater 
+ than or equal to</p>
+
+<p><span style="font-weight: bold;">&lt;=</span> <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->less 
+ than or equal to</p>
+
+<p><!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Boolean 
+ Operators</p>
+
+<p><span style="font-weight: bold;">and</span> - logical 'and' (true if 
+ expressions on both sides true, otherwise false)</p>
+
+<p><span style="font-weight: bold;">not</span> - logical 'not' (makes a 
+ true expression false, false expression true)</p>
+
+<p><span style="font-weight: bold;">or</span> - logical 'or' (true if expressions 
+ on either or both sides true, false if neither true)</p>
+
+<p><span style="font-weight: bold;">xor</span><span> - logical 'xor' (true 
+ if expressions on either side are different)</span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-weight: bold;">clear_console </span>- clears the MasterConsole 
+ window</p>
+
+<p><span style="font-weight: bold;">delay_for</span> - delay for x number 
+ of seconds</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml"
+	style="font-size: 18pt;"><span style="font-size: 18pt;">Raptor Graphics</span></a></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Available 
+ colors</p>
+
+<p>Black, Blue, Green, Cyan, Red, Magenta, Brown,Light_Gray, Dark_Gray, 
+ Light_Blue, Light_Green, Light_Cyan, Light_Red, Light_Magenta, Yellow, 
+ White</p>
+
+<p><!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Available 
+ fill values</p>
+
+<p>Filled, Unfilled</p>
+
+<p>True, False</p>
+
+<p>Yes, No</p>
+
+<p><!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Mouse 
+ button values</p>
+
+<p>Left_Button , Right_Button, <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p><!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p><span style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">RaptorGraph 
+ Functions (return a value)</span></p>
+
+<p>Closest_Color, Get_Font_Height, Get_Font_Width, Get_Key, Get_Key_String, 
+ Get_Max_Height, Get_Max_Width, Get_Mouse_X, Get_Mouse_Y, Get_Pixel, Get_Window_Height, 
+ Get_Window_Width, Is_Open, Key_Down, Key_Hit, Mouse_Button_Down, <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Mouse_Button_Pressed, 
+ Mouse_Button_Released, Random_Color, Random_Extended_Color</p>
+
+<p>&nbsp;</p>
+
+<p><strong style="font-weight: bold;"><span style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">RaptorGraph 
+ Calls </span></strong></p>
+
+<p>Clear_Window, Close_Graph_Window, Display_Text, Display_Number, Draw_Arc, 
+ Draw_Box, Draw_Bitmap, Draw_Circle, Draw_Ellipse, Draw_Ellipse_Rotate, 
+ Draw_Line , Flood_Fill, Freeze_Graph_Window, Load_Bitmap, Open_Graph_Window, 
+ Wait_For_Key, Wait_For_Mouse_Button, Get_Mouse_Button, Put_Pixel, Set_Font_Size, 
+ Set_Window_Title, Unfreeze_Graph_Window, Update_Graph_Window</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml">Arrays</a></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Array 
+ Operations</span></p>
+
+<p style="font-weight: bold;">Length_Of <span style="font-weight: normal;">- 
+ returns length of a one-dimensional array</span></p>
+
+<p style="font-weight: bold;">[ ]<span style="font-weight: normal;"> - 
+ indexing: <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->selects 
+ a single element in an array</span></p>
+
+<p style="font-weight: bold;">To_Character<span style="font-weight: normal;"> 
+ - returns a character given its numeric ASCII value</span></p>
+
+<p style="font-weight: bold;">To_ASCII<span style="font-weight: normal;"> 
+ - returns the numeric ASCII value for a given character</span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml">Strings</a></span></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">String 
+ Operations</p>
+
+<p><span style="font-weight: bold;">+</span> - Concatenation</p>
+
+<p style="font-weight: bold;">Length_Of<span style="font-weight: normal;"> 
+ - returns length of a string expression</span></p>
+
+<p style="font-weight: bold;"><span>[ ]</span><span style="font-weight: normal;"> 
+ - indexing: <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->selects 
+ a single character in a string (references ASCII code)</span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="color: #0000ff;">Variable </span><a href="About_Raptorgraph.shtml">Type 
+ Queries</a></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Boolean 
+ Functions</p>
+
+<p style="font-weight: normal; x-text-underline: off; /*begin!kadov{{*/ text-decoration: none; /*}}end!kadov*/ ">Is_Array, 
+ Is_Number, Is_String, Is_2D_Array</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml">Sound</a></span></span></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Sound 
+ Calls</p>
+
+<p>Play_Sound, Play_Sound_Background, Play_Sound_Background_Loop</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;
+			x-text-underline: normal;
+			font-size: 18pt;
+			/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: bold;
+		x-text-underline: normal;
+		font-size: 18pt;
+		/*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><a 
+ href="About_Raptorgraph.shtml">Files</a></span></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">File 
+ Calls</p>
+
+<p style="font-weight: bold;">Redirect_Input&nbsp;<span style="font-weight: normal;"> 
+ - starts or stops the use of a file as input source</span></p>
+
+<p style="font-weight: bold;"><span>Redirect_Output</span><span style="font-weight: normal;"> 
+ - starts or stops the use of a file as the output source</span></p>
+
+</body>
+
+</html>

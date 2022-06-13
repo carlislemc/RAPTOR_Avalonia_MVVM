@@ -1,0 +1,863 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Get_Key_String</title>
+
+<!--(Meta)==========================================================-->
+
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=926>
+<meta name=layout-width content=678>
+<meta name=date content="01 3, 2004 11:56:59 AM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../../IntroducingRaptor/Introducing_Raptor.shtml">Introducing Raptor</a>
+			  <a href="../../IntroducingRaptor/Overview_of_Raptor.shtml">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../../ProgrammingConcepts/Names_in_Raptor.shtml">Names in Raptor</a>
+			  <a href="../../ProgrammingConcepts/Variables_in_Raptor.shtml">Variables</a>
+			  <a href="../../ProgrammingConcepts/Procedure_Calls_vs._Functions.shtml">Procedure Calls vs. Functions</a>
+			  <a href="../../ProgrammingConcepts/Spacing_for_Readability.shtml">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../../UsingRaptor/Raptor_symbols.shtml">Raptor Symbols</a>
+			  <a href="../../UsingRaptor/Watch_window.shtml">Watch Window</a>
+			  <a href="../../UsingRaptor/Raptor_workspace.shtml">Raptor Workspace</a>
+			  <a href="../../UsingRaptor/Using_the_menu.shtml">Using the Menu</a>
+			  <a href="../../UsingRaptor/Using_the_MasterConsole.shtml">Using the MasterConsole</a>
+			  <a href="../../UsingRaptor/Using_the_toolbar.shtml">Using the Toolbar</a>
+			  <a href="../../UsingRaptor/Building_a_flowchart.shtml">Building a Flowchart</a>
+			  <a href="../../UsingRaptor/Executing_a_flowchart.shtml">Executing a Flowchart</a>
+			  <a href="../../UsingRaptor/Editing_Symbols.shtml">Editing Symbols</a>
+			  <a href="../../UsingRaptor/reducing_displayed_chart_size.shtml">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../../RaptorTutorial/Tutorial_-_Building_a_Flowchart.shtml">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../../MathInRaptor/math-operators.shtml">Operators</a>
+			  <a href="../../MathInRaptor/math-functions.shtml">Functions</a>
+			  <a href="../../MathInRaptor/trig-functions.shtml">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../../ProgramControl/boolean_expressions.shtml">Boolean Expressions</a>
+			  <a href="../../ProgramControl/Delay_For.shtml">Delay For</a>
+			  <a href="../../ProgramControl/Clear_Console.shtml">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../../Graphics/About_Raptorgraph.shtml">About Raptorgraph</a>
+			  <a href="../../Graphics/RaptorGraph_Overview.shtml">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../../Graphics/Colors/Colors.shtml">Colors</a>
+					<a href="../../Graphics/Colors/Closest_Color.shtml">Closest Color</a>
+					<a href="../../Graphics/Colors/Generating_Random_Colors.shtml">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/DrawingOperations/Clear_Window.shtml">Clear Window</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Arc.shtml">Draw Arc</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Box.shtml">Draw Box</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Circle.shtml">Draw Circle</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Ellipse.shtml">Draw Ellipse</a>
+				  <a href="../../Graphics/DrawingOperations/Draw_Line.shtml">Draw Line</a>
+				  <a href="../../Graphics/DrawingOperations/Flood_Fill.shtml">Flood Fill</a>
+				  <a href="../../Graphics/DrawingOperations/Get_Pixel.shtml">Get Pixel</a>
+				  <a href="../../Graphics/DrawingOperations/Put_Pixel.shtml">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/KeyboardOperations/Get_Key.shtml">Get Key</a>
+				  <a href="../../Graphics/KeyboardOperations/Get_Key_String.shtml">Get Key String</a>
+				  <a href="../../Graphics/KeyboardOperations/Key_Hit.shtml">Key Hit</a>
+				  <a href="../../Graphics/KeyboardOperations/Wait_For_Key.shtml">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_Button.shtml">Get Mouse Button</a>
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_X.shtml">Get Mouse X</a>
+				  <a href="../../Graphics/MouseOperations/Get_Mouse_Y.shtml">Get Mouse Y</a>
+				  <a href="../../Graphics/MouseOperations/Mouse_Button_Pressed.shtml">Mouse Button Pressed</a>
+				  <a href="../../Graphics/MouseOperations/Mouse_Button_Released.shtml">Mouse Button Released</a>
+				  <a href="../../Graphics/MouseOperations/Wait_For_Mouse_Button.shtml">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/TextOperations/Display_Text.shtml">Display Text</a>
+				  <a href="../../Graphics/TextOperations/display_number.shtml">Display Number</a>
+				  <a href="../../Graphics/TextOperations/Get_Font_Height.shtml">Get Font Height</a>
+				  <a href="../../Graphics/TextOperations/Get_Font_Width.shtml">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../../Graphics/WindowOperations/Open_Graph_Window.shtml">Open Graph Window</a>
+				  <a href="../../Graphics/WindowOperations/is_open.shtml">Is Open</a>
+				  <a href="../../Graphics/WindowOperations/Freeze_Graph_Window.shtml">Freeze Graph Window</a>
+				  <a href="../../Graphics/WindowOperations/Set_Window_Title.shtml">Set Window Title</a>
+				  <a href="../../Graphics/WindowOperations/Get_Window_Height.shtml">Get Window Height</a>
+				  <a href="../../Graphics/WindowOperations/get_window_width.shtml">Get Window Width</a>
+				  <a href="../../Graphics/WindowOperations/get_max_height.shtml">Get Max Height</a>
+				  <a href="../../Graphics/WindowOperations/get_max_width.shtml">Get Max Width</a>
+				  <a href="../../Graphics/WindowOperations/Close_Graph_Window.shtml">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../../Arrays/Array_Overview.shtml">Overview</a>
+			  <a href="../../Arrays/Creating_Arrays.shtml">Creating Arrays</a>
+			  <a href="../../Arrays/Array_Operations.shtml">Array Operations</a>
+			  <a href="../../Arrays/Two-Dimensional_Arrays.shtml">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Files_Overview.shtml">Overview</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting From a File</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.shtml">Input Line by Line</a>
+					<a href="../../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Sound/Sound_Operations.shtml">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Strings/Strings.shtml">Strings</a>
+					<a href="../../AdvancedTopics/Strings/String_Operations.shtml">String Operations</a>
+					<a href="../../AdvancedTopics/Strings/String_Comparisons.shtml">String Comparisons</a>
+					<a href="../../AdvancedTopics/Strings/String_Input.shtml">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/Subcharts/Subchart_Overview.shtml">Overview</a>
+					<a href="../../AdvancedTopics/Subcharts/Creating_a_Subchart.shtml">Creating a Subchart</a>
+					<a href="../../AdvancedTopics/Subcharts/Calling_Subcharts.shtml">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../../AdvancedTopics/VariableTypeQueries/Type_Queries.shtml">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>Get_Key_String</h1>
+
+<p><span style="font-family: 'Courier New', monospace;">string_variable 
+ &lt;- Get_Key_String</span></p>
+
+<p>&nbsp;</p>
+
+<p>Get_Key_String is a function that returns a string representation of 
+ the last key pressed by the user. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->If 
+ no key has been pressed, it will wait until a key is pressed before returning. 
+ <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p>&nbsp;</p>
+
+<p>For most keys, Get_Key_String returns a string containing a single character 
+ representing that letter or symbol. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ chart below shows such routine inputs as well as some of the special function 
+ keys.</p>
+
+<p>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells
+		style="x-cell-content-align: top;
+				border-spacing: 0;
+				width: 61.816%;"
+		width=61.816%
+		cellspacing=0>
+<col style="width: 36.638%;">
+<col style="width: 63.362%;">
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;
+			border-right-style: none;
+			border-left-style: none;
+			border-top-style: none;
+			border-bottom-width: 1px;"
+	width=36.638%>
+<p style="font-weight: bold; text-align: center;"
+	align=center>Key(s) Pressed</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;
+			border-top-style: none;
+			border-bottom-width: 1px;
+			border-right-style: none;"
+	width=63.362%>
+<p style="font-weight: bold; text-align: center;"
+	align=center>String returned by Get_Key_String</td></tr>
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-left-style: Solid;
+			border-left-color: #000000;
+			border-left-width: 1px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>a</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;a&quot;</td></tr>
+
+<tr valign=top>
+<td style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Shift-a</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;A&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Page Down</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;PageDn&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>F-1</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;F1&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Enter</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Enter&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Esc</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Esc&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Tab</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Tab&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Backspace</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Backspace&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Down Arrow</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Down&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Up Arrow</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Up&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Left Arrow</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Left&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Right Arrow</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Right&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Insert</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Insert&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Delete</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Delete&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>\ (Back Slash) </td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;\&quot;</td></tr>
+
+<tr valign=top>
+<td colspan=1
+	rowspan=1
+	style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Space Bar</td>
+<td colspan=1
+	rowspan=1
+	style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot; &quot;</td></tr>
+
+<tr valign=top>
+<td style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=36.638%>
+<p style="text-align: center;"
+	align=center>Control-A</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=63.362%>
+<p style="text-align: center;"
+	align=center>&quot;Ctrl-A&quot;</td></tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<span style="font-weight: bold;">Notes:</span><span> <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->A 
+ graphics window must be open when Get_Key_String is called or a run-time 
+ error will occur.</span> <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->If 
+ the RaptorGraph window is not on top, the user may have to click on it 
+ once before it will respond to user keystrokes. 
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;"><span>Example:</span></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: normal; font-family: 'Courier New', monospace;"><img 
+ src="../../Assets/GET_KEY_STRING.BMP"
+	x-maintain-ratio=TRUE
+	style="border: none;
+			width: 231px;
+			height: 96px;
+			float: none;"
+	width=231
+	height=96
+	border=0></p>
+
+<p style="font-weight: normal; font-family: 'Courier New', monospace;">&nbsp;</p>
+
+<p style="font-weight: normal; font-family: 'Courier New', monospace;">
+<!--Metadata type="DesignerControl" startspan
+<object classid="clsid:FF80F713-5DC6-11D0-A7B4-00AADC53E937"
+		id=empty>
+<param name=_Version value="65536" >
+<param name=_ExtentX value="2117" >
+<param name=_ExtentY value="556" >
+<param name=_StockProps value="13" >
+<param name=ForeColor value="0" >
+<param name=BackColor value="13160660" >
+<param name=UseButton value="-1" >
+<param name=ControlLabel value="Related Topics" >
+<param name=UseIcon value="0" >
+<param name=Items value="Key_Hit;Key_Hit.shtml$$**$$Wait_For_Key;Wait_For_Key.shtml$$**$$" >
+<param name=Image value="" >
+<param name=FontInfo value="MS Sans Serif,8,0,," >
+<param name=_CURRENTFILEPATH value="C:\docs\prog\raptorhelp\raptorhelp\Get_Key_String.shtml" >
+<param name=_ID value="empty" >
+<param name=UseMenu value="0" >
+<param name=Frame value="" >
+<param name=Window value="" >
+</object>-->
+<OBJECT
+  CLASSID="clsid:ADB880A6-D8FF-11CF-9377-00AA003B7A11"
+  ID="empty"  TYPE="application/x-oleobject" >
+  <PARAM  NAME="Command"  VALUE="Related Topics">
+  <PARAM  NAME="Button"  VALUE="Text:Related Topics">
+  <PARAM  NAME="Font"  VALUE="MS Sans Serif,8,0,,">
+  <PARAM  NAME="Item1"  VALUE="Key_Hit;Key_Hit.shtml">
+  <PARAM  NAME="Item2"  VALUE="Wait_For_Key;Wait_For_Key.shtml">
+</OBJECT>
+
+<!--Metadata type="DesignerControl" endspan-->
+</p>
+
+</body>
+
+</html>

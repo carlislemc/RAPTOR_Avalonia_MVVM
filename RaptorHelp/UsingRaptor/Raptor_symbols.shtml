@@ -1,0 +1,340 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Raptor symbols</title>
+
+<!--(Meta)==========================================================-->
+
+<meta http-equiv=Content-Type content="text/html">
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=1123>
+<meta name=layout-width content=934>
+<meta name=date content="01 5, 2004 7:56:55 AM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../IntroducingRaptor/Introducing_Raptor.shtml">Introducing Raptor</a>
+			  <a href="../IntroducingRaptor/Overview_of_Raptor.shtml">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../ProgrammingConcepts/Names_in_Raptor.shtml">Names in Raptor</a>
+			  <a href="../ProgrammingConcepts/Variables_in_Raptor.shtml">Variables</a>
+			  <a href="../ProgrammingConcepts/Procedure_Calls_vs._Functions.shtml">Procedure Calls vs. Functions</a>
+			  <a href="../ProgrammingConcepts/Spacing_for_Readability.shtml">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../UsingRaptor/Raptor_symbols.shtml">Raptor Symbols</a>
+			  <a href="../UsingRaptor/Watch_window.shtml">Watch Window</a>
+			  <a href="../UsingRaptor/Raptor_workspace.shtml">Raptor Workspace</a>
+			  <a href="../UsingRaptor/Using_the_menu.shtml">Using the Menu</a>
+			  <a href="../UsingRaptor/Using_the_MasterConsole.shtml">Using the MasterConsole</a>
+			  <a href="../UsingRaptor/Using_the_toolbar.shtml">Using the Toolbar</a>
+			  <a href="../UsingRaptor/Building_a_flowchart.shtml">Building a Flowchart</a>
+			  <a href="../UsingRaptor/Executing_a_flowchart.shtml">Executing a Flowchart</a>
+			  <a href="../UsingRaptor/Editing_Symbols.shtml">Editing Symbols</a>
+			  <a href="../UsingRaptor/reducing_displayed_chart_size.shtml">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../RaptorTutorial/Tutorial_-_Building_a_Flowchart.shtml">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../MathInRaptor/math-operators.shtml">Operators</a>
+			  <a href="../MathInRaptor/math-functions.shtml">Functions</a>
+			  <a href="../MathInRaptor/trig-functions.shtml">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../ProgramControl/boolean_expressions.shtml">Boolean Expressions</a>
+			  <a href="../ProgramControl/Delay_For.shtml">Delay For</a>
+			  <a href="../ProgramControl/Clear_Console.shtml">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../Graphics/About_Raptorgraph.shtml">About Raptorgraph</a>
+			  <a href="../Graphics/RaptorGraph_Overview.shtml">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../Graphics/Colors/Colors.shtml">Colors</a>
+					<a href="../Graphics/Colors/Closest_Color.shtml">Closest Color</a>
+					<a href="../Graphics/Colors/Generating_Random_Colors.shtml">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/DrawingOperations/Clear_Window.shtml">Clear Window</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Arc.shtml">Draw Arc</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Box.shtml">Draw Box</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Circle.shtml">Draw Circle</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Ellipse.shtml">Draw Ellipse</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Line.shtml">Draw Line</a>
+				  <a href="../Graphics/DrawingOperations/Flood_Fill.shtml">Flood Fill</a>
+				  <a href="../Graphics/DrawingOperations/Get_Pixel.shtml">Get Pixel</a>
+				  <a href="../Graphics/DrawingOperations/Put_Pixel.shtml">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/KeyboardOperations/Get_Key.shtml">Get Key</a>
+				  <a href="../Graphics/KeyboardOperations/Get_Key_String.shtml">Get Key String</a>
+				  <a href="../Graphics/KeyboardOperations/Key_Hit.shtml">Key Hit</a>
+				  <a href="../Graphics/KeyboardOperations/Wait_For_Key.shtml">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Button.shtml">Get Mouse Button</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_X.shtml">Get Mouse X</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Y.shtml">Get Mouse Y</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Pressed.shtml">Mouse Button Pressed</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Released.shtml">Mouse Button Released</a>
+				  <a href="../Graphics/MouseOperations/Wait_For_Mouse_Button.shtml">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/TextOperations/Display_Text.shtml">Display Text</a>
+				  <a href="../Graphics/TextOperations/display_number.shtml">Display Number</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Height.shtml">Get Font Height</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Width.shtml">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/WindowOperations/Open_Graph_Window.shtml">Open Graph Window</a>
+				  <a href="../Graphics/WindowOperations/is_open.shtml">Is Open</a>
+				  <a href="../Graphics/WindowOperations/Freeze_Graph_Window.shtml">Freeze Graph Window</a>
+				  <a href="../Graphics/WindowOperations/Set_Window_Title.shtml">Set Window Title</a>
+				  <a href="../Graphics/WindowOperations/Get_Window_Height.shtml">Get Window Height</a>
+				  <a href="../Graphics/WindowOperations/get_window_width.shtml">Get Window Width</a>
+				  <a href="../Graphics/WindowOperations/get_max_height.shtml">Get Max Height</a>
+				  <a href="../Graphics/WindowOperations/get_max_width.shtml">Get Max Width</a>
+				  <a href="../Graphics/WindowOperations/Close_Graph_Window.shtml">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../Arrays/Array_Overview.shtml">Overview</a>
+			  <a href="../Arrays/Creating_Arrays.shtml">Creating Arrays</a>
+			  <a href="../Arrays/Array_Operations.shtml">Array Operations</a>
+			  <a href="../Arrays/Two-Dimensional_Arrays.shtml">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Files_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting From a File</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.shtml">Input Line by Line</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Sound/Sound_Operations.shtml">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Strings/Strings.shtml">Strings</a>
+					<a href="../AdvancedTopics/Strings/String_Operations.shtml">String Operations</a>
+					<a href="../AdvancedTopics/Strings/String_Comparisons.shtml">String Comparisons</a>
+					<a href="../AdvancedTopics/Strings/String_Input.shtml">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Subcharts/Subchart_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/Subcharts/Creating_a_Subchart.shtml">Creating a Subchart</a>
+					<a href="../AdvancedTopics/Subcharts/Calling_Subcharts.shtml">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/VariableTypeQueries/Type_Queries.shtml">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>Raptor symbols</h1>
+
+<p><a name=SymbolWindow></a>The six symbols used in Raptor are displayed 
+ in the Symbol Window in the upper left corner of the main window:</p>
+
+<p>&nbsp;</p>
+
+<p><img src="../Assets/symbols.bmp"
+		x-maintain-ratio=TRUE
+		style="border: none;
+				width: 134px;
+				height: 238px;
+				float: none;"
+		width=134
+		height=238
+		border=0></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Assignment</p>
+
+<p>&nbsp;</p>
+
+<p>The assignment symbol is used to change the value of a variable. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ right hand side of the assignment is evaluated, and the resulting value 
+ is placed in the variable on the left hand side. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->For 
+ example, consider the case where the value of x is currently 5, and the 
+ assignment &quot;<span style="font-family: 'Courier New', monospace;">x 
+ &lt;- x + 1</span>&quot; is executed. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->First 
+ &quot;x+1&quot; is evaluated, yielding the result 6. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Then 
+ the value of x is changed to be 6. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Note 
+ that assignment is very different from mathematical equality. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ statement should be read &quot;Set x to x+1&quot; instead of &quot;x equals 
+ x+1&quot;. The assignment symbol can also be used to assign a string expression 
+ to a string variable (see <a href="../AdvancedTopics/Strings/Strings.shtml">String Variables &amp; 
+ Assignment</a>).</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Call</p>
+
+<p>&nbsp;</p>
+
+<p>The call symbol is used to invoke procedures such as graphics routines 
+ and other instructor-provided procedures. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ call symbol is also used to run subcharts included in a Raptor program..</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Input</p>
+
+<p>&nbsp;</p>
+
+<p>The input symbol is used to ask the user for a number or string while 
+ the flowchart is executing. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->When 
+ an input symbol is executed, the user will be prompted with a dialog to 
+ enter a value that can be interpreted as either a number or string, depending 
+ on what the user types <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->(see 
+ <a href="../AdvancedTopics/Strings/String_Input.shtml">String vs. Numeric Input</a>). <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ user can also override the source for input by specifying a text file 
+ to be used in place of the keyboard (see <a href="../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting 
+ from a File</a>)</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Output</span></p>
+
+<p>&nbsp;</p>
+
+<p>The output symbol is used to either write a number or text to the Master 
+ Console window. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ user can also override the destination for output by specifying a text 
+ file to be used instead of the Master Console (see <a href="../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting 
+ to a File</a>).</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Selection</p>
+
+<p>&nbsp;</p>
+
+<p>The selection structure is used for decision making. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ programmer enters in the diamond an expression that evaluates to Yes (True) 
+ or No (False). Such expressions are formally referred to as Boolean expressions. 
+ Based on the result of the expression in the diamond, control of the program 
+ will branch either left (Yes, or True) or right (No, or False). For more 
+ information, see <a href="../ProgramControl/boolean_expressions.shtml">Boolean Expressions.</a></p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold; x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">Loop 
+ Control</p>
+
+<p>&nbsp;</p>
+
+<p>The loop structure is used to repeat a sequence of symbols until a certain 
+ condition is met. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->When 
+ execution reaches the bottom of the loop, it starts over again at the 
+ top. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ loop is exited when the diamond symbol is executed and the Boolean expression 
+ in the diamond evaluates to Yes (True). <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Again, 
+ more information can be found in <a href="../ProgramControl/boolean_expressions.shtml">Boolean 
+ Expressions.</a></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>

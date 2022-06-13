@@ -1,0 +1,684 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Two-Dimensional Arrays</title>
+
+<!--(Meta)==========================================================-->
+
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=1423>
+<meta name=layout-width content=934>
+<meta name=date content="01 3, 2004 3:53:11 PM">
+
+
+<!--(Links)=========================================================-->
+
+<link rel="stylesheet" href="../stylesheet.css">
+<div class="navbar">
+	<nav>
+		<div class="dropdown">
+			<button class="dropbtn">Introduction</button>
+			<div class="dropdown-content">
+			  <a href="../IntroducingRaptor/Introducing_Raptor.shtml">Introducing Raptor</a>
+			  <a href="../IntroducingRaptor/Overview_of_Raptor.shtml">Overview</a>
+			</div>
+		  </div>
+		<div class="dropdown">
+			<button class="dropbtn">Programming Concepts</button>
+			<div class="dropdown-content">
+			  <a href="../ProgrammingConcepts/Names_in_Raptor.shtml">Names in Raptor</a>
+			  <a href="../ProgrammingConcepts/Variables_in_Raptor.shtml">Variables</a>
+			  <a href="../ProgrammingConcepts/Procedure_Calls_vs._Functions.shtml">Procedure Calls vs. Functions</a>
+			  <a href="../ProgrammingConcepts/Spacing_for_Readability.shtml">Spacing</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Using Raptor</button>
+			<div class="dropdown-content">
+			  <a href="../UsingRaptor/Raptor_symbols.shtml">Raptor Symbols</a>
+			  <a href="../UsingRaptor/Watch_window.shtml">Watch Window</a>
+			  <a href="../UsingRaptor/Raptor_workspace.shtml">Raptor Workspace</a>
+			  <a href="../UsingRaptor/Using_the_menu.shtml">Using the Menu</a>
+			  <a href="../UsingRaptor/Using_the_MasterConsole.shtml">Using the MasterConsole</a>
+			  <a href="../UsingRaptor/Using_the_toolbar.shtml">Using the Toolbar</a>
+			  <a href="../UsingRaptor/Building_a_flowchart.shtml">Building a Flowchart</a>
+			  <a href="../UsingRaptor/Executing_a_flowchart.shtml">Executing a Flowchart</a>
+			  <a href="../UsingRaptor/Editing_Symbols.shtml">Editing Symbols</a>
+			  <a href="../UsingRaptor/reducing_displayed_chart_size.shtml">Reducing Chart Size</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Raptor Tutorial</button>
+			<div class="dropdown-content">
+			  <a href="../RaptorTutorial/Tutorial_-_Building_a_Flowchart.shtml">Building a Flowchart</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Math</button>
+			<div class="dropdown-content">
+			  <a href="../MathInRaptor/math-operators.shtml">Operators</a>
+			  <a href="../MathInRaptor/math-functions.shtml">Functions</a>
+			  <a href="../MathInRaptor/trig-functions.shtml">Trigonometry</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Program Control</button>
+			<div class="dropdown-content">
+			  <a href="../ProgramControl/boolean_expressions.shtml">Boolean Expressions</a>
+			  <a href="../ProgramControl/Delay_For.shtml">Delay For</a>
+			  <a href="../ProgramControl/Clear_Console.shtml">Clear Console</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Graphics</button>
+			<div class="dropdown-content">
+			  <a href="../Graphics/About_Raptorgraph.shtml">About Raptorgraph</a>
+			  <a href="../Graphics/RaptorGraph_Overview.shtml">Overview</a>
+			  <div class="dropdown2">
+				  <button class="dropbtn2">Colors</button>
+				  <div class="dropdown-content2">
+					<a href="../Graphics/Colors/Colors.shtml">Colors</a>
+					<a href="../Graphics/Colors/Closest_Color.shtml">Closest Color</a>
+					<a href="../Graphics/Colors/Generating_Random_Colors.shtml">Random Colors</a>
+				  </div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Drawing Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/DrawingOperations/Clear_Window.shtml">Clear Window</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Arc.shtml">Draw Arc</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Box.shtml">Draw Box</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Circle.shtml">Draw Circle</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Ellipse.shtml">Draw Ellipse</a>
+				  <a href="../Graphics/DrawingOperations/Draw_Line.shtml">Draw Line</a>
+				  <a href="../Graphics/DrawingOperations/Flood_Fill.shtml">Flood Fill</a>
+				  <a href="../Graphics/DrawingOperations/Get_Pixel.shtml">Get Pixel</a>
+				  <a href="../Graphics/DrawingOperations/Put_Pixel.shtml">Put Pixel</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Keyboard Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/KeyboardOperations/Get_Key.shtml">Get Key</a>
+				  <a href="../Graphics/KeyboardOperations/Get_Key_String.shtml">Get Key String</a>
+				  <a href="../Graphics/KeyboardOperations/Key_Hit.shtml">Key Hit</a>
+				  <a href="../Graphics/KeyboardOperations/Wait_For_Key.shtml">Wait For Key</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Mouse Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Button.shtml">Get Mouse Button</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_X.shtml">Get Mouse X</a>
+				  <a href="../Graphics/MouseOperations/Get_Mouse_Y.shtml">Get Mouse Y</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Pressed.shtml">Mouse Button Pressed</a>
+				  <a href="../Graphics/MouseOperations/Mouse_Button_Released.shtml">Mouse Button Released</a>
+				  <a href="../Graphics/MouseOperations/Wait_For_Mouse_Button.shtml">Wait For Mouse Button</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Text Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/TextOperations/Display_Text.shtml">Display Text</a>
+				  <a href="../Graphics/TextOperations/display_number.shtml">Display Number</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Height.shtml">Get Font Height</a>
+				  <a href="../Graphics/TextOperations/Get_Font_Width.shtml">Get Font Width</a>
+				</div>
+			  </div>
+			  <div class="dropdown2">
+				<button class="dropbtn2">Window Operations</button>
+				<div class="dropdown-content2">
+				  <a href="../Graphics/WindowOperations/Open_Graph_Window.shtml">Open Graph Window</a>
+				  <a href="../Graphics/WindowOperations/is_open.shtml">Is Open</a>
+				  <a href="../Graphics/WindowOperations/Freeze_Graph_Window.shtml">Freeze Graph Window</a>
+				  <a href="../Graphics/WindowOperations/Set_Window_Title.shtml">Set Window Title</a>
+				  <a href="../Graphics/WindowOperations/Get_Window_Height.shtml">Get Window Height</a>
+				  <a href="../Graphics/WindowOperations/get_window_width.shtml">Get Window Width</a>
+				  <a href="../Graphics/WindowOperations/get_max_height.shtml">Get Max Height</a>
+				  <a href="../Graphics/WindowOperations/get_max_width.shtml">Get Max Width</a>
+				  <a href="../Graphics/WindowOperations/Close_Graph_Window.shtml">Close Graph Window</a>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Arrays</button>
+			<div class="dropdown-content">
+			  <a href="../Arrays/Array_Overview.shtml">Overview</a>
+			  <a href="../Arrays/Creating_Arrays.shtml">Creating Arrays</a>
+			  <a href="../Arrays/Array_Operations.shtml">Array Operations</a>
+			  <a href="../Arrays/Two-Dimensional_Arrays.shtml">Two-Dimensional Arrays</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Reference</button>
+		</div>
+		<div class="dropdown">
+			<button class="dropbtn">Advanced Topics</button>
+				<div class="dropdown-content">
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Files</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Files_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Inputting_from_a_File.shtml">Inputting From a File</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Input_Line_by_Line.shtml">Input Line by Line</a>
+					<a href="../AdvancedTopics/FilesForInputAndOutput/Outputting_to_a_File.shtml">Outputting to a File</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Sound</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Sound/Sound_Operations.shtml">Operations</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Strings</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Strings/Strings.shtml">Strings</a>
+					<a href="../AdvancedTopics/Strings/String_Operations.shtml">String Operations</a>
+					<a href="../AdvancedTopics/Strings/String_Comparisons.shtml">String Comparisons</a>
+					<a href="../AdvancedTopics/Strings/String_Input.shtml">String Input</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Subcharts</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/Subcharts/Subchart_Overview.shtml">Overview</a>
+					<a href="../AdvancedTopics/Subcharts/Creating_a_Subchart.shtml">Creating a Subchart</a>
+					<a href="../AdvancedTopics/Subcharts/Calling_Subcharts.shtml">Calling Subcharts</a>
+					</div>
+				</div>
+				<div class="dropdown2">
+					<button class="dropbtn2">Type Queries</button>
+					<div class="dropdown-content2">
+					<a href="../AdvancedTopics/VariableTypeQueries/Type_Queries.shtml">Type Queries</a>
+					</div>
+				</div>
+
+			  </div>
+			
+		</div>
+	</nav>
+</div>
+
+
+
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body>
+
+<h1>Two-Dimensional Arrays</h1>
+
+<p>Two-dimensional arrays are used when programs model data laid out as 
+ a grid or matrix. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->While 
+ one-dimensional arrays are indexed by a single value, two-dimensional 
+ arrays have two indexes separated by a comma in the square brackets following 
+ the variable name. <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->We 
+ can visualize a two-dimensional array called <span style="font-family: 'Courier New', monospace;">grid</span> 
+ as below, where the <span style="font-style: italic;">names</span> of 
+ the array elements are shown, not their values: <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells
+		style="x-cell-content-align: top;
+				width: 100%;
+				border-spacing: 0;"
+		cellspacing=0
+		width=100%>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+
+<tr valign=top>
+<td style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-top-style: Solid;
+			border-top-color: #000000;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[1,1]</td>
+<td style="border-top-style: Solid;
+			border-top-color: #000000;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[1,2]</td>
+<td style="border-top-style: Solid;
+			border-top-color: #000000;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[1,3]</td>
+<td style="border-top-style: Solid;
+			border-top-color: #000000;
+			border-top-width: 1px;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[1,4]</td></tr>
+
+<tr valign=top>
+<td style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[2,1]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[2,2]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[2,3]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[2,4]</td></tr>
+
+<tr valign=top>
+<td style="border-left-width: 1px;
+			border-left-color: #000000;
+			border-left-style: Solid;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[3,1]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[3,2]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[3,3]</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=25%>
+<p>grid[3,4]</td></tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>The numbers in the square brackets are the row and column <span style="font-style: italic;">indexes</span>. 
+ <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->They distinguish 
+ between the different variables falling under the name <span style="font-family: 'Courier New', monospace;">grid</span>. 
+ <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}--></p>
+
+<p>&nbsp;</p>
+
+<p>Below is a slightly different visualization, this time showing sample 
+ values in the variable memory locations and the indexes above and to the 
+ left of them.</p>
+
+<p>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells
+		style="x-cell-content-align: top;
+				width: 100%;
+				border-spacing: 0;"
+		cellspacing=0
+		width=100%>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-style: none;
+			border-left-style: none;
+			border-top-style: none;
+			border-right-style: none;"
+	width=20%>
+<p style="text-align: center; font-family: 'Courier New', monospace;"
+	align=center>grid</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-right-style: none;
+			border-top-style: none;
+			border-bottom-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>1</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;
+			border-right-style: none;
+			border-top-style: none;
+			border-bottom-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>2</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;
+			border-right-style: none;
+			border-top-style: none;
+			border-bottom-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>3</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;
+			border-top-style: none;
+			border-bottom-width: 1px;
+			border-right-style: none;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>4</td></tr>
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-bottom-style: none;
+			border-left-style: none;
+			border-right-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>1</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>3</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>8</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>6</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>15</td></tr>
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-bottom-style: none;
+			border-left-style: none;
+			border-right-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>2</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>2</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>9</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>12</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>14</td></tr>
+
+<tr valign=top>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-left-style: none;
+			border-bottom-style: none;
+			border-right-width: 1px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>3</td>
+<td style="padding-right: 10px;
+			padding-left: 10px;
+			border-right-style: Solid;
+			border-right-color: #000000;
+			border-right-width: 1px;
+			border-bottom-width: 1px;
+			border-bottom-color: #000000;
+			border-bottom-style: Solid;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>6</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>11</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>18</td>
+<td style="border-right-width: 1px;
+			border-right-color: #000000;
+			border-right-style: Solid;
+			border-bottom-style: Solid;
+			border-bottom-color: #000000;
+			border-bottom-width: 1px;
+			padding-right: 10px;
+			padding-left: 10px;"
+	width=20%>
+<p style="text-align: center;"
+	align=center>13</td></tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>With the example values above, <span style="font-family: 'Courier New', monospace;">grid[3,2]</span> 
+ has the value 11, and <span style="font-family: 'Courier New', monospace;">grid[2,4]</span> 
+ has the value 14.</p>
+
+<p>&nbsp;</p>
+
+<p style="font-weight: bold;">Processing Two-Dimensional Arrays</p>
+
+<p style="font-weight: normal;">&nbsp;</p>
+
+<p style="font-weight: normal;">One-dimensional arrays are often processed 
+ using counting loops. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->To 
+ process all elements of a two-dimensional array, <span style="font-style: italic;">nested 
+ loops, </span>one inside the other, must be used. <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Usually, 
+ the outer loop counts through the rows (in the example above, it would 
+ count from 1 to 3), while the inner loop counts through the columns (from 
+ 1 to 4 in the example). <!--kadov_tag{{<spaces>}}-->&nbsp;&nbsp;<!--kadov_tag{{</spaces>}}-->The 
+ example below determines the sum of all elements in the <span style="font-family: 'Courier New', monospace;">grid</span> 
+ array.</p>
+
+<p style="font-weight: normal;">&nbsp;</p>
+
+<p style="font-weight: normal;"><img src="../Assets/array_2d_sum.bmp"
+									x-maintain-ratio=TRUE
+									style="border: none;
+											float: none;
+											width: 484px;
+											height: 785px;"
+									width=484
+									height=785
+									border=0></p>
+
+</body>
+
+</html>
