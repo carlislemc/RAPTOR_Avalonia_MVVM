@@ -26,7 +26,7 @@
 <!--(Links)=========================================================-->
 
 <link rel="stylesheet" href="../../stylesheet.css">
-<!--#include virtual="../navbars/navbarInner.shtml" -->
+<!--#include virtual="../navbars/navbarInner.html" -->
 
 
 </head>
