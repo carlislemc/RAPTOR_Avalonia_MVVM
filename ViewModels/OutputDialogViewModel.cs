@@ -53,7 +53,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string output = "";
         public string getOutput{
             get { return output; }
-            set { this.RaiseAndSetIfChanged(ref output, value); }
+            set { this.RaiseAndSetIfChanged(ref output, value); Text = getSuggestion(); }
         }
 
         public bool checkBox = true;
@@ -75,6 +75,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 int i = mw.activeTab;
                 return sc[i];
             }
+        }
+
+        public string getSuggestion()
+        {
+            Suggestions s = new Suggestions(p, getOutput, false, getSubchart());
+            return s.getSuggestions();
         }
 
         public void OnDoneCommand(){

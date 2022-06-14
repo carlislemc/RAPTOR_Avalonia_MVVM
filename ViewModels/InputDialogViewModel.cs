@@ -54,14 +54,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string getPrompt{
             get { return prompt; }
-            set { this.RaiseAndSetIfChanged(ref prompt, value); }
+            set { this.RaiseAndSetIfChanged(ref prompt, value);
+                variableName = false;
+                Text = getSuggestion(); }
         }
 
         public string variable = "";
 
         public string getVariable{
             get { return variable; }
-            set { this.RaiseAndSetIfChanged(ref variable, value); }
+            set { this.RaiseAndSetIfChanged(ref variable, value);
+                variableName = true;
+                Text = getSuggestion();
+            }
         }
 
         public Subchart getSubchart(){
@@ -75,6 +80,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 int i = mw.activeTab;
                 return sc[i];
             }
+        }
+
+        public bool variableName;
+        public string getSuggestion()
+        {
+            if (variableName)
+            {
+                Suggestions s = new Suggestions(p, getVariable, variableName, getSubchart());
+                return s.getSuggestions();
+            }
+            else
+            {
+                Suggestions s = new Suggestions(p, getPrompt, variableName, getSubchart());
+                return s.getSuggestions();
+            }
+
         }
 
 

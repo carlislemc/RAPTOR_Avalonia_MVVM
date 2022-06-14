@@ -47,7 +47,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string setProcedure{
             get { return procedure; }
-            set { this.RaiseAndSetIfChanged(ref procedure, value); }
+            set { this.RaiseAndSetIfChanged(ref procedure, value); Text = getSuggestion();  }
         }
         public string text = "";
         public string Text   // property
@@ -67,6 +67,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 int i = mw.activeTab;
                 return sc[i];
             }
+        }
+
+        public string getSuggestion()
+        {
+            Suggestions s = new Suggestions(r, setProcedure, false, getSubchart());
+            return s.getSuggestions();
         }
 
         public void OnDoneCommand(){

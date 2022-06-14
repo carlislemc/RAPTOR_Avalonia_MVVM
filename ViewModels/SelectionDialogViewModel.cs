@@ -47,14 +47,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string Text   // property
         {
             get { return text; }   // get method
-            set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
+            set { this.RaiseAndSetIfChanged(ref text,value);}  // set method
         }
 
         public string selection = "";
 
         public string setSelection{
             get { return selection; }
-            set {this.RaiseAndSetIfChanged(ref selection, value);}
+            set {this.RaiseAndSetIfChanged(ref selection, value); Text = getSuggestion(); }
+        }
+
+        public string getSuggestion()
+        {
+            Suggestions s = new Suggestions(i, setSelection, false, getSubchart());
+            return s.getSuggestions();
         }
 
         public Subchart getSubchart(){

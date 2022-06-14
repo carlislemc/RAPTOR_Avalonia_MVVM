@@ -1585,7 +1585,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo
             {
-                FileName = "http://www.raptor.martincarlisle.com",
+                FileName = "https://raptor.martincarlisle.com/docs",
                 UseShellExecute = true
             });
         }
