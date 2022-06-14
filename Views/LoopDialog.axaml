@@ -27,7 +27,9 @@
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBox Width="200" Height="120" Text="{Binding setLoop}" Watermark="selection condition" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
-    <TextBlock Text="{Binding Text}"></TextBlock>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="180">
+      <TextBlock Text="{Binding Text}"></TextBlock>
+    </ScrollViewer>
     <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
 </Window>

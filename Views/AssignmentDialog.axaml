@@ -35,10 +35,12 @@
       <TextBox Width="200" Watermark="value" Text="{Binding toValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
       </ScrollViewer>
     </StackPanel>
-    <TextBlock Width="200" Height="200">
 
-    </TextBlock>
-    <TextBlock Text="{Binding Text}"></TextBlock>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="200">
+      <TextBlock Text="{Binding Text}"></TextBlock>
+    </ScrollViewer>
+
+    
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
 </Window>

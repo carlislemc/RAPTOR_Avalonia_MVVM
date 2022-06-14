@@ -89,7 +89,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 MainWindowViewModel.GetMainWindowViewModel().modified = true;
                 w.Close();
             } else {
-                Text = res.message;
+                Text = res.message + '\n';
             }
         }
 

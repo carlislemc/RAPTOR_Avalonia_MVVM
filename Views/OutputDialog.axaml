@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
-        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
-        Width="300" Height="450"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="500"
+        Width="300" Height="500"
         x:Class="RAPTOR_Avalonia_MVVM.Views.OutputDialog"
         Title="Enter Statement"
         x:DataType="vm:OutputDialogViewModel">
@@ -27,9 +27,11 @@
         Board[3,3]
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Height="200" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Width="200" Height="140" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
-    <TextBlock Text="{Binding Text}"></TextBlock>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="110">
+      <TextBlock Text="{Binding Text}"></TextBlock>
+    </ScrollViewer>
     <CheckBox HorizontalAlignment="Center" IsChecked="{Binding checkedBox}">End Current Line</CheckBox>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
