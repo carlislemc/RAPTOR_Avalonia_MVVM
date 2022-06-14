@@ -8,7 +8,7 @@
 
 <head>
 
-<title>Watch window</title>
+<title>Watch Window</title>
 
 <!--(Meta)==========================================================-->
 
@@ -55,7 +55,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/watch_window.bmp"
+<p><img src="../Assets/WATCH_WINDOW.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 110px;

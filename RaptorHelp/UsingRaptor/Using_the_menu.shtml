@@ -43,7 +43,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/top_menu_options.bmp"
+<p><img src="../Assets/TOP_MENU_OPTIONS.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 240px;
@@ -86,7 +86,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/file_menu.bmp"
+<p><img src="../Assets/FILE_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 575px;
@@ -161,7 +161,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_menu.bmp"
+<p><img src="../Assets/EDIT_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 164px;
@@ -189,7 +189,7 @@
  after the user has specified an insertion point with a left mouse click. 
  <!--kadov_tag{{<spaces>}}-->&nbsp;<!--kadov_tag{{</spaces>}}-->Note that 
  when the cursor is at an insertion point, the cursor will change to <img 
- src="finger_pointer.bmp"
+ src="FINGER_POINTER.BMP"
 	x-maintain-ratio=TRUE
 	style="border: none;
 			width: 20px;
@@ -233,7 +233,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/view_menu.bmp"
+<p><img src="../Assets/VIEW_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 106px;
@@ -294,7 +294,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/run_menu.bmp"
+<p><img src="../Assets/RUN_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 170px;
@@ -352,7 +352,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/window_menu.bmp"
+<p><img src="../Assets/WINDOW_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 109px;

@@ -45,8 +45,8 @@
  this potential problem is to collapse the view of loops and selections. 
  When the views of these structures are collapsed, the individual steps 
  in the selection or loop are hidden. The view of a loop or selection is 
- collapsed by clicking on the <img alt=not_collapsed.bmp
-									src="../Assets/not_collapsed.bmp"
+ collapsed by clicking on the <img alt=NOT_COLLAPSED.BMP
+									src="../Assets/NOT_COLLAPSED.BMP"
 									style="border-style: none;
 											width: 28px;
 											height: 27px;"
@@ -88,8 +88,8 @@
 			border-bottom-style: none;"
 	width=47.046%>
 <p style="text-align: center;"
-	align=center><img alt=select_before_collapse.bmp
-						src="../Assets/select_before_collapse.bmp"
+	align=center><img alt=SELECT_BEFORE_COLLAPSE.BMP
+						src="../Assets/SELECT_BEFORE_COLLAPSE.BMP"
 						style="border-style: none;
 								width: 407px;
 								height: 245px;"
@@ -111,8 +111,8 @@
 			border-right-style: none;"
 	width=27.899%>
 <p style="text-align: center;"
-	align=center><img alt=select_collapsed.bmp
-						src="../Assets/select_collapsed.bmp"
+	align=center><img alt=SELECT_COLLAPSED.BMP
+						src="../Assets/SELECT_COLLAPSED.BMP"
 						style="border-style: none;
 								width: 190px;
 								height: 191px;"
@@ -128,7 +128,7 @@
 <p>&nbsp;</p>
 
 <p>You can tell the selection is collapsed by the <img alt=collapsed.bmp
-														src="../Assets/collapsed.bmp"
+														src="../Assets/COLLAPSED.BMP"
 														style="border-style: none;
 	width: 25px;
 	height: 26px;"
@@ -137,7 +137,7 @@
 														border=0> symbol 
  next to the diamond. The view can be expanded by clicking on the <img 
  alt=collapsed.bmp
-	src="../Assets/collapsed.bmp"
+	src="../Assets/COLLAPSED.BMP"
 	style="border-style: none;
 			width: 25px;
 			height: 26px;"
@@ -178,8 +178,8 @@
 			border-bottom-style: none;"
 	width=25%>
 <p style="text-align: center;"
-	align=center><img alt=loop_before_collapse.bmp
-						src="../Assets/loop_before_collapse.bmp"
+	align=center><img alt=LOOP_BEFORE_COLLAPSE.BMP
+						src="../Assets/LOOP_BEFORE_COLLAPSE.BMP"
 						style="border-style: none;
 								width: 213px;
 								height: 341px;"
@@ -201,8 +201,8 @@
 			border-right-style: none;"
 	width=33.335%>
 <p style="text-align: center;"
-	align=center><img alt=loop_collapsed.bmp
-						src="../Assets/loop_collapsed.bmp"
+	align=center><img alt=LOOP_COLLAPSED.BMP
+						src="../Assets/LOOP_COLLAPSED.BMP"
 						style="border-style: none;
 								width: 217px;
 								height: 228px;"
@@ -216,7 +216,7 @@
 <p>&nbsp;</p>
 
 <p>Again, the <img alt=collapsed.bmp
-					src="../Assets/collapsed.bmp"
+					src="../Assets/COLLAPSED.BMP"
 					style="border-style: none;
 							width: 25px;
 							height: 26px;"
@@ -224,7 +224,7 @@
 					height=26
 					border=0> symbol next to the diamond shows that the 
  view is collapsed. The view can be expanded by clicking on the <img alt=collapsed.bmp
-	src="../Assets/collapsed.bmp"
+	src="../Assets/COLLAPSED.BMP"
 	style="border-style: none;
 			width: 25px;
 			height: 26px;"

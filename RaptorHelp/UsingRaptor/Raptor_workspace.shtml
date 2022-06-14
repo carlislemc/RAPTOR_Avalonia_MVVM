@@ -48,7 +48,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/start-end.bmp"
+<p><img src="../Assets/START-END.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 127px;
@@ -64,7 +64,7 @@
 
 <p>&nbsp;</p>
 
-<p>An insertion point is indicated when the cursor changes to <img src="../Assets/finger_pointer.bmp"
+<p>An insertion point is indicated when the cursor changes to <img src="../Assets/FINGER_POINTER.BMP"
 	x-maintain-ratio=TRUE
 	style="border: none;
 			width: 20px;
@@ -91,7 +91,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/pop-up_menu.bmp"
+<p><img src="../Assets/POP-UP_MENU.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 186px;
@@ -119,7 +119,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/lasso_select.bmp"
+<p><img src="../Assets/LASSO_SELECT.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 298px;
@@ -136,7 +136,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/execution-in-green.bmp"
+<p><img src="../Assets/EXECUTION-IN-GREEN.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 141px;

@@ -52,7 +52,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_rectangle.bmp"
+<p><img src="../Assets/EDIT_RECTANGLE.BMP"
 		style="border: none;
 				width: 309px;
 				height: 451px;
@@ -80,7 +80,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_input_symbol.bmp"
+<p><img src="../Assets/EDIT_INPUT_SYMBOL.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 303px;
@@ -112,7 +112,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_output.bmp"
+<p><img src="../Assets/EDIT_OUTPUT.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 294px;
@@ -148,7 +148,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_if_control.bmp"
+<p><img src="../Assets/EDIT_IF_CONTROL.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 322px;
@@ -177,7 +177,7 @@
 
 <p>&nbsp;</p>
 
-<p><img src="../Assets/edit_loopl.bmp"
+<p><img src="../Assets/EDIT_LOOPL.BMP"
 		x-maintain-ratio=TRUE
 		style="border: none;
 				width: 321px;
