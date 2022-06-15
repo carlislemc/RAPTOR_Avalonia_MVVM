@@ -30,7 +30,7 @@
       <TextBox Width="200" Height="140" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="110">
-      <TextBlock Text="{Binding Text}"></TextBlock>
+     <TreeView Items="{Binding setSuggestions}"></TreeView>
     </ScrollViewer>
     <CheckBox HorizontalAlignment="Center" IsChecked="{Binding checkedBox}">End Current Line</CheckBox>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>

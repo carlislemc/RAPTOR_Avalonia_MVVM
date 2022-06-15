@@ -37,7 +37,7 @@
     </StackPanel>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="200">
-      <TextBlock Text="{Binding Text}"></TextBlock>
+      <TreeView Items="{Binding setSuggestions}"></TreeView>
     </ScrollViewer>
 
     
