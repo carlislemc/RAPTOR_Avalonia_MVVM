@@ -88,7 +88,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        private bool editingName;
+        public bool editingName;
 
         public ObservableCollection<string> getSuggestions()
         {
