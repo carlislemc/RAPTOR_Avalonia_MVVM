@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using raptor;
+using System;
+using System.Collections.ObjectModel;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -28,12 +30,20 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel)DataContext);
                 if(v.editingName){
                     string currentValue = v.setValue;
-                    for(int i = 0; i < ans.Length; i++){
-                        
-                    }
                     v.setValue = ans;
-                } else{
-                     v.toValue = ans;
+                }
+                else
+                {
+
+                    ObservableCollection<string> parts = Suggestions.parseInput(v.toValue);
+                    parts[parts.Count - 1] = ans;
+
+                    string fullText = "";
+                    foreach (string st in parts)
+                    {
+                        fullText += st;
+                    }
+                    v.toValue = fullText;
                 }
             };
 

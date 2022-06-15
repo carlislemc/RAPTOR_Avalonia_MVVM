@@ -165,7 +165,11 @@ namespace raptor
                         }
                         if (s.Substring(0, strParts[i].Length) == strParts[i].ToLower())
                         {
-                            ans.Add(s);
+                            if (!ans.Contains(s))
+                            {
+                                ans.Add(s);
+                            }
+                            
                         }
 
                     }
@@ -176,7 +180,7 @@ namespace raptor
 
         }
 
-        public ObservableCollection<string> parseInput(string str)
+        public static ObservableCollection<string> parseInput(string str)
         {
             ObservableCollection<string> ans = new ObservableCollection<string>() { "" };
             ObservableCollection<int> spots = new ObservableCollection<int>() { 0 };
