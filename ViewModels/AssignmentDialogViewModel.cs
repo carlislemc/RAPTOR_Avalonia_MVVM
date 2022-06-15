@@ -57,7 +57,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get { return variableName; } 
             set { this.RaiseAndSetIfChanged(ref variableName, value);
                 editingName = true;
-                Text = getSuggestions();  } 
+                setSuggestions = getSuggestions();  } 
         }
 
         public string variableValue = "";
@@ -65,7 +65,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get { return variableValue; }
             set { this.RaiseAndSetIfChanged(ref variableValue, value);
                 editingName = false;
-                Text = getSuggestions(); }
+                setSuggestions = getSuggestions(); }
+        }
+
+        public ObservableCollection<string> suggestions = new ObservableCollection<string>();
+        public ObservableCollection<string> setSuggestions
+        {
+            get { return suggestions; }
+            set { this.RaiseAndSetIfChanged(ref suggestions, value); }
         }
 
         public Subchart getSubchart(){
@@ -83,7 +90,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private bool editingName;
 
-        public string getSuggestions()
+        public ObservableCollection<string> getSuggestions()
         {
             if (editingName)
             {

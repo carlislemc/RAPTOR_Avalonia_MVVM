@@ -54,10 +54,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string setSelection{
             get { return selection; }
-            set {this.RaiseAndSetIfChanged(ref selection, value); Text = getSuggestion(); }
+            set {this.RaiseAndSetIfChanged(ref selection, value); setSuggestions = getSuggestion(); }
         }
 
-        public string getSuggestion()
+        public ObservableCollection<string> suggestions = new ObservableCollection<string>();
+        public ObservableCollection<string> setSuggestions
+        {
+            get { return suggestions; }
+            set { this.RaiseAndSetIfChanged(ref suggestions, value); }
+        }
+
+        public ObservableCollection<string> getSuggestion()
         {
             Suggestions s = new Suggestions(i, setSelection, false, getSubchart());
             return s.getSuggestions();

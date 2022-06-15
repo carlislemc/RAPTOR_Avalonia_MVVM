@@ -45,16 +45,17 @@ namespace raptor
 			this.sub = sub;
 		}
 
-		public string getSuggestions()
+
+		public ObservableCollection<string> getSuggestions()
         {
 
             if (variableName)
             {
-                string ans = "";
+                ObservableCollection<string> ans = new ObservableCollection<string>();
                 ObservableCollection<string> varNames = getVariableNames();
                 if (str == "")
                 {
-                    return "";
+                    return ans;
                 }
                 foreach (string s in varNames)
                 {
@@ -64,7 +65,7 @@ namespace raptor
                     }
                     if (s.Substring(0, str.Length) == str)
                     {
-                        ans += s + '\n';
+                        ans.Add(s);
                     }
 
                 }
@@ -73,24 +74,34 @@ namespace raptor
             else
             {
 
-                string ans = "";
+                ObservableCollection<string> ans = new ObservableCollection<string>();
                 ObservableCollection<string> varNames = getVariableNames();
-                if (str == "")
+                ObservableCollection<string> strParts = parseInput(str);
+                foreach(string st in strParts)
                 {
-                    return "";
-                }
-                foreach (string s in varNames)
-                {
-                    if (str.Length > s.Length)
+                    if (st == "")
                     {
                         continue;
                     }
-                    if (s.Substring(0, str.Length) == str)
+                    foreach (string s in varNames)
                     {
-                        ans += s + '\n';
+                        if (st.Length > s.Length)
+                        {
+                            continue;
+                        }
+                        if (s.Substring(0, st.Length) == st)
+                        {
+                            if (!ans.Contains(s))
+                            {
+                                ans.Add(s);
+                            }
+                            
+                        }
+
                     }
 
                 }
+                
 
                 foreach (string s in specialWords)
                 {
@@ -176,78 +187,80 @@ namespace raptor
                         }
                         stepper--;
                     }
-
-                    if(parenCount != 0)
+                    
+                    for (int i = 0; i < strParts.Count; i++)
                     {
-                        if(commaCount != 0)
-                        {
-                            string[] strParts = str.Split("(");
-                            for (int i = 0; i < strParts.Length; i++)
-                            {
-                                if (i != strParts.Length - 1)
-                                {
-                                    strParts[i] += "(";
-                                }
-                                if (strParts[i] == "")
-                                {
-                                    continue;
-                                }
-                                if (strParts[i].Length > s.Length)
-                                {
-                                    continue;
-                                }
-                                if (s.Substring(0, strParts[i].Length) == strParts[i].ToLower())
-                                {
-
-                                    ans += s + '\n';
-                                }
-                            }
-                        }
-                        else
-                        {
-                            string[] strParts = str.Split("(");
-                            for (int i = 0; i < strParts.Length; i++)
-                            {
-                                if (i != strParts.Length - 1)
-                                {
-                                    strParts[i] += "(";
-                                }
-                                if (strParts[i] == "")
-                                {
-                                    continue;
-                                }
-                                if (strParts[i].Length > s.Length)
-                                {
-                                    continue;
-                                }
-                                if (s.Substring(0, strParts[i].Length) == strParts[i].ToLower())
-                                {
-
-                                    ans += s + '\n';
-                                }
-                            }
-                        }
-                        
-
-                    }
-                    else
-                    {
-                        if (str.Length > s.Length)
+                        if (strParts[i] == "")
                         {
                             continue;
                         }
-                        if (s.Substring(0, str.Length) == str.ToLower())
+                        if (strParts[i].Length > s.Length)
                         {
-
-                            ans += s + '\n';
+                            continue;
                         }
-                    }
-                    
+                        if (s.Substring(0, strParts[i].Length) == strParts[i].ToLower())
+                        {
+                            ans.Add(s);
+                        }
 
+                    }
 
                 }
                 return ans;
             }
+
+        }
+
+        public ObservableCollection<string> parseInput(string str)
+        {
+            ObservableCollection<string> ans = new ObservableCollection<string>() { "" };
+            ObservableCollection<int> spots = new ObservableCollection<int>() { 0 };
+            int quoteCount = 0;
+            string temp = "";
+            for(int i = 0; i < str.Length; i++)
+            {
+                char letter = str[i];
+                if(letter == '"')
+                {
+                    quoteCount = (quoteCount + 1) % 2;
+                }
+
+                if(quoteCount != 0)
+                {
+                    continue;
+                }
+
+                if(letter == '(' || letter == ',')
+                {
+                    temp += letter;
+                    ans[ans.Count - 1] = temp;
+                    spots.Add(ans.Count - 1);
+                    temp = "";
+                    ans.Add(temp);
+
+                }
+                else if(letter == ')')
+                {
+                    
+                    ans[spots[spots.Count-1]] = temp;
+                    ans.RemoveAt(ans.Count - 1);
+                    spots.RemoveAt(spots.Count - 1);
+                }
+                else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=')
+                {
+                    ans[ans.Count - 1] = temp;
+                    temp = "";
+                    ans.Add(temp);
+                }
+                else
+                {
+                    temp += letter;
+                    ans[ans.Count - 1] = temp;
+                }
+
+            }
+
+            return ans;
 
         }
 

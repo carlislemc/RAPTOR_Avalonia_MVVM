@@ -53,7 +53,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string output = "";
         public string getOutput{
             get { return output; }
-            set { this.RaiseAndSetIfChanged(ref output, value); Text = getSuggestion(); }
+            set { this.RaiseAndSetIfChanged(ref output, value); setSuggestions = getSuggestion(); }
+        }
+
+        public ObservableCollection<string> suggestions = new ObservableCollection<string>();
+        public ObservableCollection<string> setSuggestions
+        {
+            get { return suggestions; }
+            set { this.RaiseAndSetIfChanged(ref suggestions, value); }
         }
 
         public bool checkBox = true;
@@ -77,7 +84,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        public string getSuggestion()
+        public ObservableCollection<string> getSuggestion()
         {
             Suggestions s = new Suggestions(p, getOutput, false, getSubchart());
             return s.getSuggestions();

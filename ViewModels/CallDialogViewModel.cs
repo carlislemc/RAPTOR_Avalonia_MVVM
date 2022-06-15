@@ -47,13 +47,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string setProcedure{
             get { return procedure; }
-            set { this.RaiseAndSetIfChanged(ref procedure, value); Text = getSuggestion();  }
+            set { this.RaiseAndSetIfChanged(ref procedure, value); setSuggestions = getSuggestion();  }
         }
         public string text = "";
         public string Text   // property
         {
             get { return text; }   // get method
             set { this.RaiseAndSetIfChanged(ref text,value); }  // set method
+        }
+
+        public ObservableCollection<string> suggestions = new ObservableCollection<string>();
+        public ObservableCollection<string> setSuggestions
+        {
+            get { return suggestions; }
+            set { this.RaiseAndSetIfChanged(ref suggestions, value); }
         }
 
         public Subchart getSubchart(){
@@ -69,7 +76,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        public string getSuggestion()
+        public ObservableCollection<string> getSuggestion()
         {
             Suggestions s = new Suggestions(r, setProcedure, false, getSubchart());
             return s.getSuggestions();
