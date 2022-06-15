@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
-        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
-        Width="300" Height="450"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="475"
+        Width="300" Height="475"
         x:Class="RAPTOR_Avalonia_MVVM.Views.InputDialog"
         Title="Enter Statement"
         x:DataType="vm:InputDialogViewModel">
@@ -33,6 +33,9 @@
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBox Width="200" Watermark="variable" Text="{Binding getVariable}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
+      <TextBlock Text="{Binding Text}"/>
+    </ScrollViewer>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="100">
       <TreeView Items="{Binding setSuggestions}"></TreeView>
     </ScrollViewer>
