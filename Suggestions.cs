@@ -152,41 +152,6 @@ namespace raptor
                             }
                         }
                     }
-
-                    int quoteCount = 0;
-                    int commaCount = 0;
-                    int bracketCount = 0;
-                    int parenCount = 0;
-
-                    int stepper = str.Length - 1;
-                    while(stepper > -1)
-                    {
-                        if (str[stepper] == ',' && parenCount == 0 && quoteCount == 0 && bracketCount == 0)
-                        {
-                            commaCount++;
-                        }
-                        else if(str[stepper] == '[' && quoteCount == 0)
-                        {
-                            bracketCount++;
-                        }
-                        else if(str[stepper] == ']' && quoteCount == 0)
-                        {
-                            bracketCount--;
-                        }
-                        else if(str[stepper] == '(' && quoteCount == 0)
-                        {
-                            parenCount--;
-                        }
-                        else if(str[stepper] == ')' && quoteCount == 0)
-                        {
-                            parenCount++;
-                        }
-                        else if(str[stepper] == '"')
-                        {
-                            quoteCount = (quoteCount + 1) % 2;
-                        }
-                        stepper--;
-                    }
                     
                     for (int i = 0; i < strParts.Count; i++)
                     {
@@ -230,7 +195,7 @@ namespace raptor
                     continue;
                 }
 
-                if(letter == '(' || letter == ',')
+                if(letter == '(')
                 {
                     temp += letter;
                     ans[ans.Count - 1] = temp;
@@ -241,14 +206,14 @@ namespace raptor
                 }
                 else if(letter == ')')
                 {
-                    
+                    temp += letter;
                     ans[spots[spots.Count-1]] = temp;
                     ans.RemoveAt(ans.Count - 1);
                     spots.RemoveAt(spots.Count - 1);
                 }
-                else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=')
+                else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=' || letter == ',')
                 {
-                    ans[ans.Count - 1] = temp;
+                    ans[ans.Count - 1] = temp + letter;
                     temp = "";
                     ans.Add(temp);
                 }
