@@ -31,7 +31,7 @@
       <TextBlock Text="{Binding Text}"/>
     </ScrollViewer>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="120">
-      <TreeView Items="{Binding setSuggestions}"></TreeView>
+      <TreeView Name="treeview" Items="{Binding setSuggestions}"></TreeView>
     </ScrollViewer>
   <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
