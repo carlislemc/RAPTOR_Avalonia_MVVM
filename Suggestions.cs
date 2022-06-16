@@ -162,9 +162,10 @@ namespace raptor
                         {
                             continue;
                         }
-
+                        
                         if (s.Substring(0, strParts[i].Length) == strParts[i].ToLower())
                         {
+                           
                             if (!ans.Contains(s))
                             {
                                 ans.Add(s);
@@ -186,7 +187,7 @@ namespace raptor
         {
             str = str.Replace(" ", "");
             ObservableCollection<string> ans = new ObservableCollection<string>() { "" };
-            ObservableCollection<int> spots = new ObservableCollection<int>() { 0 };
+            
             int quoteCount = 0;
             int parenCount = 0;
             string temp = "";
@@ -207,16 +208,12 @@ namespace raptor
                 {
                     ans.Add("");
                 }
-                if(spots.Count == 0)
-                {
-                    spots.Add(0);
-                }
+
 
                 if (letter == '(')
                 {
                     temp += letter;
                     ans[ans.Count - 1] = temp;
-                    spots.Add(ans.Count - 1);
                     temp = "";
                     ans.Add(temp);
                     parenCount++;
@@ -224,22 +221,43 @@ namespace raptor
                 }
                 else if(letter == ')')
                 {
+                    bool collapse = false;
                     temp += letter;
-                    ans[spots[spots.Count - 1]] += temp;
-                    ans.RemoveAt(ans.Count - 1);
+                    if (temp == ")")
+                    {
+                        collapse = true;
+                    }
+
+                    ans[ans.Count - 1] = temp;
+                    //ans.RemoveAt(ans.Count - 1);
                     temp = "";
                     ans.Add(temp);
-                    if(parenCount == 1)
-                    {
-                        spots.RemoveAt(spots.Count - 1);
-                    }
+
                     parenCount--;
-                    
+                    if (ans.Count >= 3)
+                    {
+                        ans[ans.Count - 3] += ans[ans.Count - 2];
+                        ans.RemoveAt(ans.Count - 2);
+                    }
+                    if (collapse)
+                    {
+                        ans[ans.Count - 3] += ans[ans.Count - 2];
+                        ans.RemoveAt(ans.Count - 2);
+                    }
                 }
-                else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=' || letter == ',')
+                else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=' || letter == ',' || letter == '<' || letter == '>' || letter == '!')
                 {
+                    if(parenCount > 0 && ans.Count >= 3)
+                    {
+                        temp += letter;
+                        ans[ans.Count - 1] = temp;
+                        //ans.RemoveAt(ans.Count - 1);
+                    }
+                    else
+                    {
+                        ans[ans.Count - 1] += letter;
+                    }
                     
-                    ans[ans.Count - 1] += temp + letter;
                     temp = "";
                     ans.Add(temp);
                 }

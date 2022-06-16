@@ -493,23 +493,23 @@ namespace raptor
 					if (this.Is_Wide_Diamond())
 					{
 						gr.DrawText(PensBrushes.blackbrush, 
-							new Point(x + this.drawing_text_width / 2 + W / 4 + length_of_noStr / 2, y+H/2-5), 
+							new Point(x + this.drawing_text_width / 2 + W / 4 + length_of_noStr / 2, y+H/2), 
 							formattedtextNo);
 
 						gr.DrawText(PensBrushes.blackbrush,
 							new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_yesStr / 2,
-							y + H / 2 - 5),
+							y + H / 2),
 							formattedtextYes);
 
 					}
 					else
 					{
 						gr.DrawText(PensBrushes.blackbrush,
-							new Point(x + W / 2 + length_of_noStr, y + H / 2 - 5),
+							new Point(x + W / 2 + length_of_noStr, y + H / 2),
 							formattedtextNo);
 
 						gr.DrawText(PensBrushes.blackbrush,
-							new Point(x - W / 2 - length_of_yesStr, y + H / 2 - 5),
+							new Point(x - W / 2 - length_of_yesStr, y + H / 2),
 							formattedtextYes);
 
 					}

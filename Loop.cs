@@ -520,12 +520,12 @@ namespace raptor
 					if (this.Is_Wide_Diamond())
 					{
 						gr.DrawText(PensBrushes.blackbrush, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_yesStr / 2,
-							diamond_top + H / 2 - 4), formattedtextYes);
+							diamond_top + H / 2 + 5), formattedtextYes);
 					}
 					else
 					{
 						gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 - length_of_yesStr,
-							diamond_top + H / 2 - 4), formattedtextYes);
+							diamond_top + H / 2 + 5), formattedtextYes);
 
 					}
 					gr.DrawText(PensBrushes.blackbrush, new Point(x + length_of_noStr,
@@ -537,12 +537,12 @@ namespace raptor
 					if (this.Is_Wide_Diamond())
 					{
 						gr.DrawText(PensBrushes.blackbrush, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_noStr / 2,
-							diamond_top + H / 2 - 4), formattedtextNo);
+							diamond_top + H / 2 + 5), formattedtextNo);
 					}
 					else
 					{
 						gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 - length_of_noStr,
-							diamond_top + H / 2 - 4), formattedtextNo);
+							diamond_top + H / 2 + 5), formattedtextNo);
 					}
 					gr.DrawText(PensBrushes.blackbrush, new Point(x + length_of_yesStr,
 						diamond_top + H + 5), formattedtextYes);
@@ -554,7 +554,7 @@ namespace raptor
 					Avalonia.Media.FormattedText formattedtextLP = new Avalonia.Media.FormattedText(
 						LP, new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-					gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2, Y + (H * 6) / 16), formattedtextLP);
+					gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 + 30, Y + (H * 6) / 16), formattedtextLP);
 				}
 			}
 			if (draw_text) 

@@ -100,7 +100,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string param1 = "";
         public string setParam1 {
             get { return param1; }
-            set { this.RaiseAndSetIfChanged(ref param1, value); }
+            set {this.RaiseAndSetIfChanged(ref param1, value); }
         }
 
         public string param2 = "";
@@ -284,6 +284,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //Syntax_Result res = interpreter_pkg.assignment_syntax(setValue, toValue);
 
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
+
+            string[] ps = getParams();
+            foreach(string s in ps)
+            {
+                if(s[0] < 65 || s[0] > 122 || (s[0] > 90 && s[0] < 97))
+                {
+                    Text = "Cannot name variabe: " + s;
+                    return;
+                }
+            }
 
             Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
             addMe.kind=Subchart_Kinds.Procedure;
