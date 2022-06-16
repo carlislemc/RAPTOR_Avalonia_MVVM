@@ -27,7 +27,16 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel)DataContext);
 
                 string temp = v.getOutput;
-                int spot = temp.LastIndexOf(ans[0]);
+                int spot = -1;
+                for (int k = 0; k < ans.Length; k++)
+                {
+                    string searchWord = ans.Substring(0, ans.Length - k);
+                    spot = temp.LastIndexOf(searchWord);
+                    if (spot != -1)
+                    {
+                        break;
+                    }
+                }
                 temp = temp.Substring(0, spot);
                 temp += ans;
                 v.getOutput = temp;

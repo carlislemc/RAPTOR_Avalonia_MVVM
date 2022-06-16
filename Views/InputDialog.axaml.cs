@@ -32,7 +32,16 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 else
                 {
                     string temp = v.getPrompt;
-                    int spot = temp.LastIndexOf(ans[0]);
+                    int spot = -1;
+                    for (int k = 0; k < ans.Length; k++)
+                    {
+                        string searchWord = ans.Substring(0, ans.Length - k);
+                        spot = temp.LastIndexOf(searchWord);
+                        if (spot != -1)
+                        {
+                            break;
+                        }
+                    }
                     temp = temp.Substring(0, spot);
                     temp += ans;
                     v.getPrompt = temp;
