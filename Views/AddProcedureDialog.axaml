@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="750"
-        Width="400" Height="750"
+        Width="400" Height="770"
         x:Class="RAPTOR_Avalonia_MVVM.Views.AddProcedureDialog"
         Title="Enter Statement"
         x:DataType="vm:AddProcedureDialogViewModel">
@@ -87,8 +87,9 @@
         <TextBox Width="200" Watermark="Parameter 6" Text="{Binding setParam6}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
-
-        <TextBlock Text="{Binding Text}"></TextBlock>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
+      <TextBlock Text="{Binding Text}"/>
+    </ScrollViewer>
     <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
     </StackPanel>
   </ScrollViewer>
