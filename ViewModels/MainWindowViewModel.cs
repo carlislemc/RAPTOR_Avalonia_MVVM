@@ -804,124 +804,153 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private bool getParent = false;
         private void goToNextComponent(){
-            symbolCount++;
-            if(parentCount.Count != 0 && parentComponent == null){
-                parentComponent = parentCount[parentCount.Count-1];
-                parentCount.RemoveAt(parentCount.Count-1);
-            }
-            if(activeComponent.Successor == null && parentComponent != null) {
-                bool removeMe = true;
-                if(inSelection != 0 || inLoop != 0){
-                    activeComponent.running = false;
-                    if(activeComponent.Successor == null){
-                        while(activeComponent.parent.GetType() != typeof(Loop) && activeComponent.parent.Successor == null){
-                            activeComponent = activeComponent.parent;
-                            inSelection--;
-                        }
-                        if(activeComponent.parent.GetType() == typeof(Loop)){
-                            Loop tempLoop = (Loop)activeComponent.parent;
-                            if(!activeComponent.is_beforeChild && tempLoop.before_Child != null)
+            try
+            {
+                symbolCount++;
+                if (parentCount.Count != 0 && parentComponent == null)
+                {
+                    parentComponent = parentCount[parentCount.Count - 1];
+                    parentCount.RemoveAt(parentCount.Count - 1);
+                }
+                if (activeComponent.Successor == null && parentComponent != null)
+                {
+                    bool removeMe = true;
+                    if (inSelection != 0 || inLoop != 0)
+                    {
+                        activeComponent.running = false;
+                        if (activeComponent.Successor == null)
+                        {
+                            while (activeComponent.parent.GetType() != typeof(Loop) && activeComponent.parent.Successor == null)
                             {
-                                activeComponent = tempLoop.before_Child;
-                                parentComponent = tempLoop;
-                                //parentCount.Add(tempLoop);
-                                removeMe = true;
-                                //inLoop++;
+                                activeComponent = activeComponent.parent;
+                                inSelection--;
+                            }
+                            if (activeComponent.parent.GetType() == typeof(Loop))
+                            {
+                                Loop tempLoop = (Loop)activeComponent.parent;
+                                if (!activeComponent.is_beforeChild && tempLoop.before_Child != null)
+                                {
+                                    activeComponent = tempLoop.before_Child;
+                                    parentComponent = tempLoop;
+                                    //parentCount.Add(tempLoop);
+                                    removeMe = true;
+                                    //inLoop++;
+                                }
+                                else
+                                {
+                                    activeComponent = activeComponent.parent;
+                                    if (!parentCount.Contains(activeComponent))
+                                    {
+                                        parentCount.Add(activeComponent);
+                                    }
+                                    inLoop--;
+
+                                }
+
+                            }
+                            else if (activeComponent.parent.GetType() == typeof(IF_Control))
+                            {
+                                activeComponent = activeComponent.parent.Successor;
+                                inSelection--;
+                            }
+                        }
+                        activeComponent.running = true;
+                        if (removeMe)
+                        {
+                            parentCount.RemoveAt(parentCount.Count - 1);
+                        }
+
+                    }
+                    else
+                    {
+                        if (isSub)
+                        {
+                            decreaseSub--;
+                            if (activeTabs.Count > 1)
+                            {
+                                activeTab = activeTabs[activeTabs.Count - 2];
+                                activeTabs.RemoveAt(activeTabs.Count - 1);
                             }
                             else
                             {
-                                activeComponent = activeComponent.parent;
-                                if (!parentCount.Contains(activeComponent))
-                                {
-                                    parentCount.Add(activeComponent);
-                                }
-                                inLoop--;
-                       
+                                activeTab = 0;
                             }
-                            
-                        } else if(activeComponent.parent.GetType() == typeof(IF_Control)){
-                            activeComponent = activeComponent.parent.Successor;
-                            inSelection--;
+                            isSub = false;
                         }
-                    }
-                    activeComponent.running = true;
-                    if (removeMe)
-                    {
-                        parentCount.RemoveAt(parentCount.Count - 1);
-                    }
-                    
-                } else {
-                    if (isSub)
-                    {
-                        decreaseSub--;
-                        if (activeTabs.Count > 1)
+                        else if (decreaseScope != 0)
                         {
-                            activeTab = activeTabs[activeTabs.Count - 2];
-                            activeTabs.RemoveAt(activeTabs.Count - 1);
+                            Runtime.Decrease_Scope();
+                            decreaseScope--;
+                            if (activeTabs.Count > 1)
+                            {
+                                activeTab = activeTabs[activeTabs.Count - 2];
+                                activeTabs.RemoveAt(activeTabs.Count - 1);
+                            }
+                            else
+                            {
+                                activeTab = 0;
+                            }
+                            activeScopes.RemoveAt(activeScopes.Count - 1);
+                        }
+                        parentComponent.running = false;
+                        activeComponent.running = false;
+                        if (parentCount.Count != 0)
+                        {
+                            parentComponent = parentCount[parentCount.Count - 1];
+                            parentCount.RemoveAt(parentCount.Count - 1);
+                        }
+                        parentComponent.running = false;
+                        activeComponent = parentComponent.Successor;
+                        activeComponent.running = true;
+
+                    }
+
+                }
+                else
+                {
+                    activeComponent.running = false;
+
+                    if (activeComponent.Successor != null && activeComponent.Successor.GetType() == typeof(Loop))
+                    {
+                        Loop tempComponent = (Loop)activeComponent.Successor;
+                        if (tempComponent.before_Child != null)
+                        {
+                            parentComponent = activeComponent;
+                            parentCount.Add(parentComponent);
+                            activeComponent = tempComponent.before_Child;
+                            inLoop++;
                         }
                         else
                         {
-                            activeTab = 0;
+                            activeComponent = activeComponent.Successor;
                         }
-                        isSub = false;
-                    }
-                    else if (decreaseScope != 0){
-                        Runtime.Decrease_Scope();
-                        decreaseScope--;
-                        if(activeTabs.Count > 1){
-                            activeTab = activeTabs[activeTabs.Count-2];
-                            activeTabs.RemoveAt(activeTabs.Count-1);
-                        }else{
-                            activeTab = 0;
-                        }
-                        activeScopes.RemoveAt(activeScopes.Count-1);
-                    }
-                    parentComponent.running = false;
-                    activeComponent.running = false;
-                    if(parentCount.Count != 0){
-                        parentComponent = parentCount[parentCount.Count-1];
-                        parentCount.RemoveAt(parentCount.Count-1);
-                    }
-                    parentComponent.running = false;
-                    activeComponent = parentComponent.Successor;
-                    activeComponent.running = true;
-                    
-                }
-
-            } else {
-                activeComponent.running = false;
-                
-                if(activeComponent.Successor != null && activeComponent.Successor.GetType() == typeof(Loop))
-                {
-                    Loop tempComponent = (Loop)activeComponent.Successor;
-                    if(tempComponent.before_Child != null) {
-                        parentComponent = activeComponent;
-                        parentCount.Add(parentComponent);
-                        activeComponent = tempComponent.before_Child;
-                        inLoop++;
                     }
                     else
                     {
                         activeComponent = activeComponent.Successor;
                     }
+                    activeComponent.running = true;
                 }
-                else
-                {
-                    activeComponent = activeComponent.Successor;
-                }
-                activeComponent.running = true;
-            }
 
-            if (activeComponent.break_now())
-            {
-                if (myTimer != null)
+                if (activeComponent.break_now())
                 {
-                    OnPauseCommand();
+                    if (myTimer != null)
+                    {
+                        OnPauseCommand();
+                    }
+                }
+                if (activeComponent.selected)
+                {
+                    activeComponent.selected = false;
                 }
             }
-            if (activeComponent.selected)
+            catch(Exception e)
             {
-                activeComponent.selected = false;
+                if(myTimer != null)
+                {
+                    myTimer.Stop();
+                }
+                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
             }
         }
 

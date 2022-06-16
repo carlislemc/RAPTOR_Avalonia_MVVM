@@ -59,6 +59,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public void OnDoneCommand(){
             //Syntax_Result res = interpreter_pkg.assignment_syntax(setValue, toValue);
+
+            if (setSubchartName[0] < 65 || setSubchartName[0] > 122 || (setSubchartName[0] > 90 && setSubchartName[0] < 97 && setSubchartName[0] != 95))
+            {
+                Text = "Cannot name Subchart: " + setSubchartName;
+                return;
+            }
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
             Subchart addMe = new Subchart(setSubchartName);
 

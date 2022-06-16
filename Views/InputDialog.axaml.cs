@@ -31,16 +31,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 }
                 else
                 {
-
-                    ObservableCollection<string> parts = Suggestions.parseInput(v.getPrompt);
-                    parts[parts.Count - 1] = ans;
-
-                    string fullText = "";
-                    foreach (string st in parts)
-                    {
-                        fullText += st;
-                    }
-                    v.getPrompt = fullText;
+                    string temp = v.getPrompt;
+                    int spot = temp.LastIndexOf(ans[0]);
+                    temp = temp.Substring(0, spot);
+                    temp += ans;
+                    v.getPrompt = temp;
                 }
             };
 

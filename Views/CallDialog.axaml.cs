@@ -25,17 +25,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     ans = ans.Substring(0, ans.IndexOf("("));
                 }
                 RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.CallDialogViewModel)DataContext);
-                
 
-                ObservableCollection<string> parts = Suggestions.parseInput(v.setProcedure);
-                parts[parts.Count - 1] = ans;
 
-                string fullText = "";
-                foreach (string st in parts)
-                {
-                    fullText += st;
-                }
-                v.setProcedure = fullText;
+                string temp = v.setProcedure;
+                int spot = temp.LastIndexOf(ans[0]);
+                temp = temp.Substring(0, spot);
+                temp += ans;
+                v.setProcedure = temp;
             };
 
         }

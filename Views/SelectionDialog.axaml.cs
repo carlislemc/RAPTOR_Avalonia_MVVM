@@ -25,18 +25,14 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     ans = ans.Substring(0, ans.IndexOf("("));
                 }
                 RAPTOR_Avalonia_MVVM.ViewModels.SelectionDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.SelectionDialogViewModel)DataContext);
-               
 
-                ObservableCollection<string> parts = Suggestions.parseInput(v.setSelection);
-                parts[parts.Count - 1] = ans;
 
-                string fullText = "";
-                foreach (string st in parts)
-                {
-                    fullText += st;
-                }
-                v.setSelection = fullText;
-                
+                string temp = v.selection;
+                int spot = temp.LastIndexOf(ans[0]);
+                temp = temp.Substring(0, spot);
+                temp += ans;
+                v.selection = temp;
+
             };
 
         }

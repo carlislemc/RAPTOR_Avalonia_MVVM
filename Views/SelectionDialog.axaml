@@ -28,7 +28,7 @@
       <TextBox Width="200" Height="120" Text="{Binding setSelection}" Watermark="selection condition" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
-      <TextBlock Text="{Binding Text}"/>
+      <TextBlock Foreground="Red" Text="{Binding Text}"/>
     </ScrollViewer>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="180">
       <TreeView Name="treeview" Items="{Binding setSuggestions}"></TreeView>

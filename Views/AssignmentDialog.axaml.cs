@@ -35,15 +35,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 else
                 {
 
-                    ObservableCollection<string> parts = Suggestions.parseInput(v.toValue);
-                    parts[parts.Count - 1] = ans;
-
-                    string fullText = "";
-                    foreach (string st in parts)
-                    {
-                        fullText += st;
-                    }
-                    v.toValue = fullText;
+                    string temp = v.toValue;
+                    int spot = temp.LastIndexOf(ans[0]);
+                    temp = temp.Substring(0, spot);
+                    temp += ans;
+                    v.toValue = temp;
                 }
             };
 

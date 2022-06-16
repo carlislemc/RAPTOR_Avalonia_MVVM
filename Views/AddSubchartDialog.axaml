@@ -34,7 +34,9 @@
         <StackPanel>
         <TextBox Width="200" Watermark="Name" Text="{Binding setSubchartName}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
-        <TextBlock Text="{Binding Text}"></TextBlock>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="35" Width="200">
+          <TextBlock Foreground="Red" Text="{Binding Text}"/>
+        </ScrollViewer> 
     <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
     </StackPanel>
   </ScrollViewer>

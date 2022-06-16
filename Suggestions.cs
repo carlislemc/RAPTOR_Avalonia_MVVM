@@ -183,7 +183,7 @@ namespace raptor
 
         }
 
-        public static ObservableCollection<string> parseInput(string str)
+        /*public static ObservableCollection<string> parseInput(string str)
         {
             str = str.Replace(" ", "");
             ObservableCollection<string> ans = new ObservableCollection<string>() { "" };
@@ -221,45 +221,107 @@ namespace raptor
                 }
                 else if(letter == ')')
                 {
-                    bool collapse = false;
+                    //bool collapse = false;
                     temp += letter;
-                    if (temp == ")")
-                    {
-                        collapse = true;
-                    }
+                    //if (temp == ")")
+                    //{
+                    //    collapse = true;
+                    //}
 
-                    ans[ans.Count - 1] = temp;
-                    //ans.RemoveAt(ans.Count - 1);
+                    ans[ans.Count - 2] = temp;
+                    ans.RemoveAt(ans.Count - 1);
                     temp = "";
                     ans.Add(temp);
 
                     parenCount--;
-                    if (ans.Count >= 3)
-                    {
-                        ans[ans.Count - 3] += ans[ans.Count - 2];
-                        ans.RemoveAt(ans.Count - 2);
-                    }
-                    if (collapse)
-                    {
-                        ans[ans.Count - 3] += ans[ans.Count - 2];
-                        ans.RemoveAt(ans.Count - 2);
-                    }
+                    //if (ans.Count >= 3)
+                    //{
+                    //    ans[ans.Count - 3] += ans[ans.Count - 2];
+                    //    ans.RemoveAt(ans.Count - 2);
+                    //}
+                    //for(int k = 0; k < ans.Count; k++)
+                    //{
+                    //    if (ans[k].Contains(")") && !ans[k].Contains("("))
+                    //    {
+                    //        collapse = true;
+                    //    }
+                    //}
+                    //if (collapse)
+                    //{
+                    //    ans[ans.Count - 3] += ans[ans.Count - 2];
+                    //    ans.RemoveAt(ans.Count - 2);
+                    //}
                 }
                 else if(letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == '=' || letter == ',' || letter == '<' || letter == '>' || letter == '!')
                 {
-                    if(parenCount > 0 && ans.Count >= 3)
-                    {
-                        temp += letter;
-                        ans[ans.Count - 1] = temp;
-                        //ans.RemoveAt(ans.Count - 1);
-                    }
-                    else
-                    {
-                        ans[ans.Count - 1] += letter;
-                    }
-                    
+
+                    //if (parenCount > 0 && ans.Count >= 3)
+                    //{
+                    //    temp += letter;
+                    //    ans[ans.Count - 1] = temp;
+                    //    //ans.RemoveAt(ans.Count - 1);
+                    //}
+                    //else
+                    //{
+                    //    ans[ans.Count - 1] += letter;
+                    //}
+                    ans[ans.Count - 1] += letter;
                     temp = "";
                     ans.Add(temp);
+
+                }
+                else
+                {
+                    temp += letter;
+                    ans[ans.Count - 1] = temp;
+                }
+
+            }
+
+            return ans;
+
+        }*/
+
+        public static ObservableCollection<string> parseInput(string str)
+        {
+            ObservableCollection<string> ans = new ObservableCollection<string>() { "" };
+            ObservableCollection<int> spots = new ObservableCollection<int>() { 0 };
+            int quoteCount = 0;
+            string temp = "";
+            for (int i = 0; i < str.Length; i++)
+            {
+                char letter = str[i];
+                if (letter == '"')
+                {
+                    quoteCount = (quoteCount + 1) % 2;
+                }
+
+                if (quoteCount != 0)
+                {
+                    continue;
+                }
+
+                if (letter == '(' || letter == ',')
+                {
+                    temp += letter;
+                    ans[ans.Count - 1] = temp;
+                    spots.Add(ans.Count - 1);
+                    temp = "";
+                    ans.Add(temp);
+
+                }
+                else if (letter == ')')
+                {
+
+                    ans[spots[spots.Count - 1]] = temp;
+                    //ans.RemoveAt(ans.Count - 1);
+                    spots.RemoveAt(spots.Count - 1);
+                }
+                else if (letter == '+' || letter == '-' || letter == '*' || letter == '/' || letter == ',' || letter == '=' || letter == '<' || letter == '>' || letter == '!')
+                {
+                    ans[ans.Count - 1] = temp + letter;
+                    temp = "";
+                    //ans.Add(temp);
                 }
                 else
                 {
