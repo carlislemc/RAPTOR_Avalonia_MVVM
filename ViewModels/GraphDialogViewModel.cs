@@ -59,6 +59,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
+
+
+
         public void OnDoneCommand(){
             w.Close();
         }

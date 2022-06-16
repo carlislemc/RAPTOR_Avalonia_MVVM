@@ -167,23 +167,27 @@ namespace parse_tree
                 return;
 
 
-            }else if(sub.Start.GetType() == typeof(Oval)){
-                mw.parentComponent = mw.activeComponent;
-                mw.parentCount.Add(mw.activeComponent);
-                mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
-                mw.activeComponent.running = true;
-                mw.activeTab = mw.theTabs.IndexOf(sub);
-                mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
-                mw.setViewTab = mw.theTabs.IndexOf(sub);
-                mw.decreaseSub++;
+            }
+            //else if(sub.Start.GetType() == typeof(Oval)){
+            //    mw.parentComponent = mw.activeComponent;
+            //    mw.parentCount.Add(mw.activeComponent);
+            //    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+            //    mw.activeComponent.running = true;
+            //    mw.activeTab = mw.theTabs.IndexOf(sub);
+            //    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
+            //    mw.setViewTab = mw.theTabs.IndexOf(sub);
+            //    mw.decreaseSub++;
 
-            } else {
+            //}
+            else {
 
                 string str = l.Get_Text(id.start, id.finish);
                 Runtime.processing_parameter_list = true;
                 numbers.value[] ps = param_list.Execute(l);
+                
 
                 if (str.ToLower() == "open_graph_window"){
+                   
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
                     GraphDialog gd = new GraphDialog(w, h);
