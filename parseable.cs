@@ -10,6 +10,7 @@ using RAPTOR_Avalonia_MVVM.ViewModels;
 using RAPTOR_Avalonia_MVVM.Views;
 using System.Collections.ObjectModel;
 using RAPTOR_Avalonia_MVVM.Controls;
+using Avalonia.Threading;
 
 namespace parse_tree
 {
@@ -116,7 +117,6 @@ namespace parse_tree
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
                     DotnetGraph gd = new DotnetGraph(w, h);
-                    //gd.ShowDialog(MainWindow.topWindow);
                     gd.Show();
                 }
                 else if (str.ToLower() == "draw_line")
