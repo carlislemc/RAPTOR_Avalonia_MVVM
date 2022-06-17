@@ -958,21 +958,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return Runtime.getAnyVariable(s, activeScopes[activeScopes.Count-1]);
         }
 
-        public ObservableCollection<string> getParamNames(string s){
-            
-            // string of the form func_name(param1, param2, param3)
-            ;
-            ObservableCollection<string> ans = new ObservableCollection<string>();
-            s = s.Replace(" ", "");
-            string[] temp = s.Split("(")[1].Split(",");
-            for(int i = 0; i < temp.Length; i++){
-                ans.Add(temp[i].Replace(")", ""));
-            }
-
-            return ans;
-
-        }
-
         public async void postDialog(string text, bool isEnd)
         {
             MasterConsoleViewModel mc = MasterConsoleViewModel.MC;

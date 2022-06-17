@@ -72,7 +72,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return sc[0];
             }
             else{
-                int i = mw.activeTab;
+                int i = mw.viewTab;
                 return sc[i];
             }
         }

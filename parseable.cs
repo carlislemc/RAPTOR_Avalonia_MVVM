@@ -93,9 +93,7 @@ namespace parse_tree
     public class Proc_Call : Procedure_Call
     {
         public override void Execute(Lexer l)
-        {
-            
-            
+        {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
             Subchart sub = mw.mainSubchart();

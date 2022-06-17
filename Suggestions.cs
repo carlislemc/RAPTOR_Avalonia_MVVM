@@ -450,8 +450,16 @@ namespace raptor
 			ObservableCollection<string> answer = new ObservableCollection<string>();
 			if(sub.Start.GetType() == typeof(Oval_Procedure))
             {
-
-            } else
+                Oval_Procedure op = (Oval_Procedure)sub.Start;
+                string[] names = op.param_names;
+                foreach(string s in names)
+                {
+                    answer.Add(s);
+                }
+                answer = fillAnswer(answer, sub);
+                return answer;
+            }
+            else
             {
                 foreach (Subchart s in mw.theTabs)
                 {
@@ -459,157 +467,161 @@ namespace raptor
                     {
 						continue;
                     }
-
-                    Component ans = s.Start;
-                    ObservableCollection<int> loopPass = new ObservableCollection<int>() { 0 };
-                    ObservableCollection<int> selectionPass = new ObservableCollection<int>() { 0 };
-                    ObservableCollection<Component> p = new ObservableCollection<Component>();
-                    while (ans.Successor != null || p.Count != 0)
-                    {
-                        if(ans.GetType() == typeof(Rectangle) && ans.text_str != "")
-                        {
-                            
-                            Rectangle tempRec = (Rectangle)ans;
-                            
-                            if(tempRec.kind == Rectangle.Kind_Of.Assignment)
-                            {
-                                string stringy = tempRec.text_str.Substring(0, tempRec.text_str.IndexOf(":="));
-                                if (stringy.Contains("["))
-                                {
-                                    stringy = stringy.Substring(0, stringy.IndexOf("["));
-                                }
-                                if (!answer.Contains(stringy))
-                                {
-                                    answer.Add(stringy);
-                                }
-                                
-                            }
-                        } else if(ans.GetType() == typeof(Parallelogram) && ans.text_str != "")
-                        {
-                            Parallelogram tempRec = (Parallelogram)ans;
-
-                            if (tempRec.is_input)
-                            {
-                                string stringy = tempRec.text_str;
-                                if (stringy.Contains("["))
-                                {
-                                    stringy = stringy.Substring(0, stringy.IndexOf("["));
-                                }
-                                if (!answer.Contains(stringy))
-                                {
-                                    answer.Add(stringy);
-                                }
-
-                            }
-                        }
-
-                        if (ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count - 1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
-                        {
-                            ans = p[p.Count - 1];
-                            p.RemoveAt(p.Count - 1);
-                        }
-
-                        else if (ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
-                        {
-                            ans = p[p.Count - 1];
-                        }
-
-                        if (ans.GetType() == typeof(Loop))
-                        {
-                            Loop temp = (Loop)ans;
-                            if (!p.Contains(temp))
-                            {
-                                loopPass.Add(1);
-                                p.Add(temp);
-                            }
-
-                            if (loopPass[loopPass.Count - 1] == 1)
-                            {
-                                if (temp.before_Child != null)
-                                {
-                                    ans = temp.before_Child;
-                                }
-
-                                loopPass[loopPass.Count - 1]++;
-                            }
-                            else if (loopPass[loopPass.Count - 1] == 2)
-                            {
-                                if (temp.after_Child != null)
-                                {
-                                    ans = temp.after_Child;
-                                }
-                                loopPass[loopPass.Count - 1]++;
-                            }
-                            else if (loopPass[loopPass.Count - 1] == 3)
-                            {
-
-                                p.RemoveAt(p.Count - 1);
-                                if (temp.Successor != null)
-                                {
-                                    ans = temp.Successor;
-                                }
-                                else
-                                {
-                                    ans = p[p.Count - 1];
-                                }
-                                loopPass.RemoveAt(loopPass.Count - 1);
-                            }
-                        }
-
-                        else if (ans.GetType() == typeof(IF_Control))
-                        {
-                            IF_Control temp = (IF_Control)ans;
-                            if (!p.Contains(temp))
-                            {
-                                selectionPass.Add(1);
-                                p.Add(temp);
-                            }
-
-                            if (selectionPass[selectionPass.Count - 1] == 1)
-                            {
-                                if (temp.left_Child != null)
-                                {
-                                    ans = temp.left_Child;
-                                }
-                                selectionPass[selectionPass.Count - 1]++;
-                            }
-                            else if (selectionPass[selectionPass.Count - 1] == 2)
-                            {
-                                if (temp.right_Child != null)
-                                {
-                                    ans = temp.right_Child;
-                                }
-                                selectionPass[selectionPass.Count - 1]++;
-                            }
-                            else if (selectionPass[selectionPass.Count - 1] == 3)
-                            {
-                                p.RemoveAt(p.Count - 1);
-                                if (temp.Successor != null)
-                                {
-                                    ans = temp.Successor;
-                                }
-                                else
-                                {
-                                    ans = p[p.Count - 1];
-                                }
-                                selectionPass.RemoveAt(selectionPass.Count - 1);
-                            }
-                        }
-
-                        else
-                        {
-                            ans = ans.Successor;
-                        }
-
-                    }
-
-
+                    answer = fillAnswer(answer, s);
 
                 }
             }
 
 
 			return answer;
+        }
+
+        private ObservableCollection<string> fillAnswer(ObservableCollection<string> answer, Subchart s)
+        {
+            Component ans = s.Start;
+            ObservableCollection<int> loopPass = new ObservableCollection<int>() { 0 };
+            ObservableCollection<int> selectionPass = new ObservableCollection<int>() { 0 };
+            ObservableCollection<Component> p = new ObservableCollection<Component>();
+            while (ans.Successor != null || p.Count != 0)
+            {
+                if (ans.GetType() == typeof(Rectangle) && ans.text_str != "")
+                {
+
+                    Rectangle tempRec = (Rectangle)ans;
+
+                    if (tempRec.kind == Rectangle.Kind_Of.Assignment)
+                    {
+                        string stringy = tempRec.text_str.Substring(0, tempRec.text_str.IndexOf(":="));
+                        if (stringy.Contains("["))
+                        {
+                            stringy = stringy.Substring(0, stringy.IndexOf("["));
+                        }
+                        if (!answer.Contains(stringy))
+                        {
+                            answer.Add(stringy);
+                        }
+
+                    }
+                }
+                else if (ans.GetType() == typeof(Parallelogram) && ans.text_str != "")
+                {
+                    Parallelogram tempRec = (Parallelogram)ans;
+
+                    if (tempRec.is_input)
+                    {
+                        string stringy = tempRec.text_str;
+                        if (stringy.Contains("["))
+                        {
+                            stringy = stringy.Substring(0, stringy.IndexOf("["));
+                        }
+                        if (!answer.Contains(stringy))
+                        {
+                            answer.Add(stringy);
+                        }
+
+                    }
+                }
+
+                if (ans.Successor == null && p.Count != 0 && loopPass[loopPass.Count - 1] == 0 && selectionPass[selectionPass.Count - 1] == 0)
+                {
+                    ans = p[p.Count - 1];
+                    p.RemoveAt(p.Count - 1);
+                }
+
+                else if (ans.Successor == null && p.Count != 0 && ans.GetType() != typeof(Loop) && ans.GetType() != typeof(IF_Control))
+                {
+                    ans = p[p.Count - 1];
+                }
+
+                if (ans.GetType() == typeof(Loop))
+                {
+                    Loop temp = (Loop)ans;
+                    if (!p.Contains(temp))
+                    {
+                        loopPass.Add(1);
+                        p.Add(temp);
+                    }
+
+                    if (loopPass[loopPass.Count - 1] == 1)
+                    {
+                        if (temp.before_Child != null)
+                        {
+                            ans = temp.before_Child;
+                        }
+
+                        loopPass[loopPass.Count - 1]++;
+                    }
+                    else if (loopPass[loopPass.Count - 1] == 2)
+                    {
+                        if (temp.after_Child != null)
+                        {
+                            ans = temp.after_Child;
+                        }
+                        loopPass[loopPass.Count - 1]++;
+                    }
+                    else if (loopPass[loopPass.Count - 1] == 3)
+                    {
+
+                        p.RemoveAt(p.Count - 1);
+                        if (temp.Successor != null)
+                        {
+                            ans = temp.Successor;
+                        }
+                        else
+                        {
+                            ans = p[p.Count - 1];
+                        }
+                        loopPass.RemoveAt(loopPass.Count - 1);
+                    }
+                }
+
+                else if (ans.GetType() == typeof(IF_Control))
+                {
+                    IF_Control temp = (IF_Control)ans;
+                    if (!p.Contains(temp))
+                    {
+                        selectionPass.Add(1);
+                        p.Add(temp);
+                    }
+
+                    if (selectionPass[selectionPass.Count - 1] == 1)
+                    {
+                        if (temp.left_Child != null)
+                        {
+                            ans = temp.left_Child;
+                        }
+                        selectionPass[selectionPass.Count - 1]++;
+                    }
+                    else if (selectionPass[selectionPass.Count - 1] == 2)
+                    {
+                        if (temp.right_Child != null)
+                        {
+                            ans = temp.right_Child;
+                        }
+                        selectionPass[selectionPass.Count - 1]++;
+                    }
+                    else if (selectionPass[selectionPass.Count - 1] == 3)
+                    {
+                        p.RemoveAt(p.Count - 1);
+                        if (temp.Successor != null)
+                        {
+                            ans = temp.Successor;
+                        }
+                        else
+                        {
+                            ans = p[p.Count - 1];
+                        }
+                        selectionPass.RemoveAt(selectionPass.Count - 1);
+                    }
+                }
+
+                else
+                {
+                    ans = ans.Successor;
+                }
+
+            }
+            return answer;
         }
 
 	}
