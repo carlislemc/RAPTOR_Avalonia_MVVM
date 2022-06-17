@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -586,7 +587,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.Height = this.Parent.Parent.Height;
             SKBrush.Color = new SKColor(0, 0, 0);
             SKBrush.Shader = SKShader.CreateColor(SKBrush.Color);
-            RenderTarget = new RenderTargetBitmap(new PixelSize((int)1, (int)1), new Vector(96, 96));
+            RenderTarget = new RenderTargetBitmap(new PixelSize((int)Width, (int)Height), new Vector(96, 96));
 
             var context = RenderTarget.CreateDrawingContext(null);
             SkiaContext = (context as ISkiaDrawingContextImpl);
