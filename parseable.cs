@@ -99,89 +99,14 @@ namespace parse_tree
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
             Subchart sub = mw.mainSubchart();
+            bool changedSub = false;
             foreach(Subchart s in mw.theTabs){
                 if(s.Header == head){
                     sub = s;
+                    changedSub = true;
                 }
             }
-            if(sub.Start.GetType() == typeof(Oval_Procedure)){ //if its a user procedure
-                Runtime.processing_parameter_list = true;
-                numbers.value[] ps = param_list.Execute(l);
-
-                Oval_Procedure st = ((Oval_Procedure)sub.Start);
-                string[] paramNames = st.param_names;
-                Runtime.Increase_Scope(head);
-                mw.decreaseScope++;
-                mw.activeScopes.Add(head);
-                mw.parentComponent = mw.activeComponent;
-                mw.parentCount.Add(mw.activeComponent);
-                mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
-                mw.activeComponent.running = true;
-                mw.activeTab = mw.theTabs.IndexOf(sub);
-                mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
-                for(int i = 0; i < ps.Length; i++){
-                    if(!st.is_input_parameter(i)){
-                        break;
-                    }
-                    numbers.value num = ps[i];
-                    if(num.Kind == numbers.Value_Kind.Ref_1D){
-
-                        Variable oneD = (Variable)num.Object;
-                        ObservableCollection<Arr> a = oneD.values;
-                        int size = numbers.Numbers.integer_of(oneD.values[0].value);
-                        Variable v2 = new Variable(paramNames[i], size, new numbers.value());
-                        Variable temp = v2;
-                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                        mw.theVariables.Insert(1, temp);
-                        for(int j = 1; j < a.Count; j++){
-                            Runtime.setArrayElement(v2.Var_Name, j, a[j].value);
-                        }
-
-                    } else if(num.Kind == numbers.Value_Kind.Ref_2D){
-
-                        Variable twoD = (Variable)num.Object;
-                        ObservableCollection<Arr> a = twoD.values;
-                        int rows = numbers.Numbers.integer_of(a[0].value);
-                        int cols = numbers.Numbers.integer_of(a[1].values[0].value);
-
-                        Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
-                        Variable temp = v2;
-                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                        mw.theVariables.Insert(1, temp);
-
-                        for(int r = 1; r < rows+1; r++){
-                            ObservableCollection<Arr2> a2 = a[r].values;
-                            for(int c = 1; c < cols+1; c++){
-                                Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
-                            }
-                        }
-
-                    }else{
-                        Variable v2 = new Variable(paramNames[i], num);
-                        Variable temp = v2;
-                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                        mw.theVariables.Insert(1, temp);
-                    }
-                }
-                Runtime.processing_parameter_list = false;
-                mw.setViewTab = mw.theTabs.IndexOf(sub);
-                return;
-
-
-            }
-            //else if(sub.Start.GetType() == typeof(Oval)){
-            //    mw.parentComponent = mw.activeComponent;
-            //    mw.parentCount.Add(mw.activeComponent);
-            //    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
-            //    mw.activeComponent.running = true;
-            //    mw.activeTab = mw.theTabs.IndexOf(sub);
-            //    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
-            //    mw.setViewTab = mw.theTabs.IndexOf(sub);
-            //    mw.decreaseSub++;
-
-            //}
-            else {
-
+            if(!changedSub){
                 string str = l.Get_Text(id.start, id.finish);
                 Runtime.processing_parameter_list = true;
                 numbers.value[] ps = param_list.Execute(l);
@@ -192,7 +117,6 @@ namespace parse_tree
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
                     DotnetGraph gd = new DotnetGraph(w, h);
-                    //gd.ShowDialog(MainWindow.topWindow);
                     gd.Show();
                 }
                 else if (str.ToLower() == "draw_line"){
@@ -214,7 +138,84 @@ namespace parse_tree
                     bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
                     GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
                 }
+                Runtime.processing_parameter_list = false;
                 return;
+            } else {
+                if(sub.Start.GetType() == typeof(Oval_Procedure)){ //if its a user procedure
+                    Runtime.processing_parameter_list = true;
+                    numbers.value[] ps = param_list.Execute(l);
+
+                    Oval_Procedure st = ((Oval_Procedure)sub.Start);
+                    string[] paramNames = st.param_names;
+                    Runtime.Increase_Scope(head);
+                    mw.decreaseScope++;
+                    mw.activeScopes.Add(head);
+                    mw.parentComponent = mw.activeComponent;
+                    mw.parentCount.Add(mw.activeComponent);
+                    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+                    mw.activeComponent.running = true;
+                    mw.activeTab = mw.theTabs.IndexOf(sub);
+                    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
+                    for(int i = 0; i < ps.Length; i++){
+                        if(!st.is_input_parameter(i)){
+                            break;
+                        }
+                        numbers.value num = ps[i];
+                        if(num.Kind == numbers.Value_Kind.Ref_1D){
+
+                            Variable oneD = (Variable)num.Object;
+                            ObservableCollection<Arr> a = oneD.values;
+                            int size = numbers.Numbers.integer_of(oneD.values[0].value);
+                            Variable v2 = new Variable(paramNames[i], size, new numbers.value());
+                            Variable temp = v2;
+                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                            mw.theVariables.Insert(1, temp);
+                            for(int j = 1; j < a.Count; j++){
+                                Runtime.setArrayElement(v2.Var_Name, j, a[j].value);
+                            }
+
+                        } else if(num.Kind == numbers.Value_Kind.Ref_2D){
+
+                            Variable twoD = (Variable)num.Object;
+                            ObservableCollection<Arr> a = twoD.values;
+                            int rows = numbers.Numbers.integer_of(a[0].value);
+                            int cols = numbers.Numbers.integer_of(a[1].values[0].value);
+
+                            Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
+                            Variable temp = v2;
+                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                            mw.theVariables.Insert(1, temp);
+
+                            for(int r = 1; r < rows+1; r++){
+                                ObservableCollection<Arr2> a2 = a[r].values;
+                                for(int c = 1; c < cols+1; c++){
+                                    Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
+                                }
+                            }
+
+                        }else{
+                            Variable v2 = new Variable(paramNames[i], num);
+                            Variable temp = v2;
+                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                            mw.theVariables.Insert(1, temp);
+                        }
+                    }
+                    Runtime.processing_parameter_list = false;
+                    mw.setViewTab = mw.theTabs.IndexOf(sub);
+                    return;
+
+
+                } else if(sub.Start.GetType() == typeof(Oval)){
+                    mw.parentComponent = mw.activeComponent;
+                    mw.parentCount.Add(mw.activeComponent);
+                    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+                    mw.activeComponent.running = true;
+                    mw.activeTab = mw.theTabs.IndexOf(sub);
+                    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
+                    mw.setViewTab = mw.theTabs.IndexOf(sub);
+                    mw.decreaseSub++;
+
+                }
             }
         }
 
