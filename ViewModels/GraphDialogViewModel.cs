@@ -17,6 +17,7 @@ using Avalonia.Input;
 using ReactiveUI;
 using System.Reactive;
 using interpreter;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -45,6 +46,34 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public bool modified = false;
         public bool runningState = false;
+
+        public void DrawLine()
+        {
+            DotnetGraphControl.dngw.DrawLine(40, 40, 100, 100, Color_Type.Cyan);
+        }
+
+        public void DrawBox()
+        {
+            DotnetGraphControl.dngw.DrawBox(500, 500, 700, 700, Color_Type.Cyan, false);
+
+        }
+
+        public void DrawCircle()
+        {
+            DotnetGraphControl.dngw.DrawCircle(300, 300, 100, Color_Type.Cyan, true);
+
+        }
+
+        public void DrawEllipse()
+        {
+            DotnetGraphControl.dngw.DrawEllipse(100, 100, 200, 250, Color_Type.Cyan, true);
+
+        }
+        public void DrawArc()
+        {
+            DotnetGraphControl.dngw.DrawArc(100,100,200,0,100,200,300,250,Color_Type.Black);
+
+        }
 
         public Subchart getSubchart(){
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
