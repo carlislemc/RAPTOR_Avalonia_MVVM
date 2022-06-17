@@ -9,6 +9,7 @@ using System.Collections;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using RAPTOR_Avalonia_MVVM.Views;
 using System.Collections.ObjectModel;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace parse_tree
 {
@@ -190,8 +191,28 @@ namespace parse_tree
                    
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
-                    GraphDialog gd = new GraphDialog(w, h);
-                    gd.ShowDialog(MainWindow.topWindow);
+                    DotnetGraph gd = new DotnetGraph(w, h);
+                    //gd.ShowDialog(MainWindow.topWindow);
+                    gd.Show();
+                }
+                else if (str.ToLower() == "draw_line"){
+                   
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                }
+                else if (str.ToLower() == "draw_box"){
+                   
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                    GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
                 }
                 return;
             }

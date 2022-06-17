@@ -23,76 +23,35 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
     public class GraphDialogViewModel : ViewModelBase
     {
-        public GraphDialogViewModel() {
-            this.width = 300;
-            this.height = 300;
-        }
-        public GraphDialogViewModel(int width, int h, Window w) {
-            this.w = w;
-            this.width = width;
-            this.height = h;
-        }
+        // public GraphDialogViewModel() {
 
-        public Window w;
-        public int height;
-        public int getHeight{
-            get{return height;}
-            set{height = value;}
-        }
-        public int width;
-        public int getWidth{
-            get{return width;}
-            set{width = value;}
-        }
-        public bool modified = false;
-        public bool runningState = false;
-
-        public void DrawLine()
+        // }
+        public static void DrawLine(int x1, int y1, int x2, int y2,Color_Type c)
         {
-            DotnetGraphControl.dngw.DrawLine(40, 40, 100, 100, Color_Type.Cyan);
+            DotnetGraphControl.dngw.DrawLine(x1, y1, x2, y2, c);
         }
 
-        public void DrawBox()
+        public static void DrawBox(int x1, int y1, int x2, int y2, Color_Type hue, bool filled)
         {
-            DotnetGraphControl.dngw.DrawBox(500, 500, 700, 700, Color_Type.Cyan, false);
+            DotnetGraphControl.dngw.DrawBox(x1, y1, x2, y2, hue, filled);
 
         }
 
-        public void DrawCircle()
+        public static void DrawCircle(int x1, int y1, int rad, Color_Type hue, bool filled)
         {
-            DotnetGraphControl.dngw.DrawCircle(300, 300, 100, Color_Type.Cyan, true);
+            DotnetGraphControl.dngw.DrawCircle(x1, y1, rad, hue, filled);
 
         }
 
-        public void DrawEllipse()
+        public static void DrawEllipse(int x1, int y1, int x2, int y2, Color_Type hue, bool filled)
         {
-            DotnetGraphControl.dngw.DrawEllipse(100, 100, 200, 250, Color_Type.Cyan, true);
+            DotnetGraphControl.dngw.DrawEllipse(x1, y1, x2, y2, hue, filled);
 
         }
-        public void DrawArc()
+        public static void DrawArc(int x1, int y1, int x2, int y2, int startx, int starty, int endx, int endy, Color_Type hue)
         {
-            DotnetGraphControl.dngw.DrawArc(100,100,200,0,100,200,300,250,Color_Type.Black);
+            DotnetGraphControl.dngw.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, hue);
 
-        }
-
-        public Subchart getSubchart(){
-            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            ObservableCollection<Variable> vars = mw.theVariables;
-            ObservableCollection<Subchart> sc = mw.theTabs;
-            if(sc.Count == 1){
-                return sc[0];
-            }
-            else{
-                int i = mw.activeTab;
-                return sc[i];
-            }
-        }
-
-
-
-
-        public void OnDoneCommand(){
-            w.Close();
         }
 
     }

@@ -5,24 +5,30 @@ using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
-    public partial class GraphDialog : Window
+    public partial class DotnetGraph : Window
     {
-        public GraphDialog(){
-            
-        }
-        public GraphDialog(int w, int h)
+        public DotnetGraph()
         {
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
 #endif
-            DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel(w, h, this);
-
         }
-
+        public DotnetGraph(int width, int height)
+        {
+            this.Width = width;
+            this.Height = height;
+            this.CanResize = false;
+            InitializeComponent();
+            
+#if DEBUG
+            this.AttachDevTools();
+#endif
+        }
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
     }
 }
+
