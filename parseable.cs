@@ -110,17 +110,20 @@ namespace parse_tree
                 string str = l.Get_Text(id.start, id.finish);
                 Runtime.processing_parameter_list = true;
                 numbers.value[] ps = param_list.Execute(l);
-                
 
-                if (str.ToLower() == "open_graph_window"){
-                   
+
+                if (str.ToLower() == "open_graph_window")
+                {
+
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
                     DotnetGraph gd = new DotnetGraph(w, h);
+                    //gd.ShowDialog(MainWindow.topWindow);
                     gd.Show();
                 }
-                else if (str.ToLower() == "draw_line"){
-                   
+                else if (str.ToLower() == "draw_line")
+                {
+
                     int x1 = numbers.Numbers.integer_of(ps[0]);
                     int y1 = numbers.Numbers.integer_of(ps[1]);
                     int x2 = numbers.Numbers.integer_of(ps[2]);
@@ -128,8 +131,9 @@ namespace parse_tree
                     int c = numbers.Numbers.integer_of(ps[4]);
                     GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
                 }
-                else if (str.ToLower() == "draw_box"){
-                   
+                else if (str.ToLower() == "draw_box")
+                {
+
                     int x1 = numbers.Numbers.integer_of(ps[0]);
                     int y1 = numbers.Numbers.integer_of(ps[1]);
                     int x2 = numbers.Numbers.integer_of(ps[2]);
@@ -138,7 +142,41 @@ namespace parse_tree
                     bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
                     GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
                 }
-                Runtime.processing_parameter_list = false;
+                else if (str.ToLower() == "draw_circle")
+                {
+
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int rad = numbers.Numbers.integer_of(ps[2]);
+                    int c = numbers.Numbers.integer_of(ps[3]);
+                    bool fill = numbers.Numbers.integer_of(ps[4]) == 1;
+                    GraphDialogViewModel.DrawCircle(x1, y1, rad, (Color_Type)c, fill);
+                }
+                else if (str.ToLower() == "draw_ellipse")
+                {
+
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                    GraphDialogViewModel.DrawEllipse(x1, y1, x2, y2, (Color_Type)c, fill);
+                }
+                else if (str.ToLower() == "draw_arc")
+                {
+
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int startx = numbers.Numbers.integer_of(ps[4]);
+                    int starty = numbers.Numbers.integer_of(ps[5]);
+                    int endx = numbers.Numbers.integer_of(ps[6]);
+                    int endy = numbers.Numbers.integer_of(ps[7]);
+                    int c = numbers.Numbers.integer_of(ps[8]);
+                    GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
+                }
                 return;
             } else {
                 if(sub.Start.GetType() == typeof(Oval_Procedure)){ //if its a user procedure
