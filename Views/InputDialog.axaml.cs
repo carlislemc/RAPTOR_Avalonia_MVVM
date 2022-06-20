@@ -52,8 +52,9 @@ namespace RAPTOR_Avalonia_MVVM.Views
                             spot = first;
                             break;
                         }
+                    }
 
-                        temp = temp.Substring(0, spot);
+                    temp = temp.Substring(0, spot);
                     temp += ans;
                     v.getPrompt = temp;
                 }
