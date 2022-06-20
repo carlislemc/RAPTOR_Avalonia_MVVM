@@ -327,6 +327,20 @@ namespace numbers
             return ans;
         }
 
+        public static numbers.value exponValues(numbers.value first, numbers.value second)
+        {
+            numbers.value ans = new numbers.value();
+            if (first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = Math.Pow(first.V, second.V) };
+            }
+            else
+            {
+                throw new Exception("Cannot multiply type: [" + first.Kind + "] with type: [" + second.Kind + "]");
+            }
+            return ans;
+        }
+
         public static numbers.value divValues(numbers.value first, numbers.value second){
             numbers.value ans = new numbers.value();
             if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){

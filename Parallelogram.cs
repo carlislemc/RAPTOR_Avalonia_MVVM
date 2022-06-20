@@ -249,7 +249,7 @@ namespace raptor
 				{
 					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
 						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-						Avalonia.Media.TextWrapping.WrapWithOverflow, new Size(rect.Width,rect.Height));
+						Avalonia.Media.TextWrapping.Wrap, new Avalonia.Size(drawing_text_width,height_of_text));
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtext);
 				}
 			}

@@ -791,7 +791,7 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
-            return numbers.Numbers.multValues(first, second);
+            return numbers.Numbers.exponValues(first, second);
 
         }
     }
