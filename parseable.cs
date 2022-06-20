@@ -113,67 +113,80 @@ namespace parse_tree
 
                 if (str.ToLower() == "open_graph_window")
                 {
-
-                    int w = numbers.Numbers.integer_of(ps[0]);
-                    int h = numbers.Numbers.integer_of(ps[1]);
-                    DotnetGraph gd = new DotnetGraph(w, h);
-                    gd.Show();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int w = numbers.Numbers.integer_of(ps[0]);
+                        int h = numbers.Numbers.integer_of(ps[1]);
+                        DotnetGraph gd = new DotnetGraph(w, h);
+                        gd.Show();
+                    }, DispatcherPriority.Background);
+                    
                 }
                 else if (str.ToLower() == "draw_line")
                 {
-
-                    int x1 = numbers.Numbers.integer_of(ps[0]);
-                    int y1 = numbers.Numbers.integer_of(ps[1]);
-                    int x2 = numbers.Numbers.integer_of(ps[2]);
-                    int y2 = numbers.Numbers.integer_of(ps[3]);
-                    int c = numbers.Numbers.integer_of(ps[4]);
-                    GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int x2 = numbers.Numbers.integer_of(ps[2]);
+                        int y2 = numbers.Numbers.integer_of(ps[3]);
+                        int c = numbers.Numbers.integer_of(ps[4]);
+                        GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                    }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_box")
                 {
-
-                    int x1 = numbers.Numbers.integer_of(ps[0]);
-                    int y1 = numbers.Numbers.integer_of(ps[1]);
-                    int x2 = numbers.Numbers.integer_of(ps[2]);
-                    int y2 = numbers.Numbers.integer_of(ps[3]);
-                    int c = numbers.Numbers.integer_of(ps[4]);
-                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
-                    GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int x2 = numbers.Numbers.integer_of(ps[2]);
+                        int y2 = numbers.Numbers.integer_of(ps[3]);
+                        int c = numbers.Numbers.integer_of(ps[4]);
+                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                        GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
+                    }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_circle")
                 {
-
-                    int x1 = numbers.Numbers.integer_of(ps[0]);
-                    int y1 = numbers.Numbers.integer_of(ps[1]);
-                    int rad = numbers.Numbers.integer_of(ps[2]);
-                    int c = numbers.Numbers.integer_of(ps[3]);
-                    bool fill = numbers.Numbers.integer_of(ps[4]) == 1;
-                    GraphDialogViewModel.DrawCircle(x1, y1, rad, (Color_Type)c, fill);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int rad = numbers.Numbers.integer_of(ps[2]);
+                        int c = numbers.Numbers.integer_of(ps[3]);
+                        bool fill = numbers.Numbers.integer_of(ps[4]) == 1;
+                        GraphDialogViewModel.DrawCircle(x1, y1, rad, (Color_Type)c, fill);
+                    }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_ellipse")
                 {
-
-                    int x1 = numbers.Numbers.integer_of(ps[0]);
-                    int y1 = numbers.Numbers.integer_of(ps[1]);
-                    int x2 = numbers.Numbers.integer_of(ps[2]);
-                    int y2 = numbers.Numbers.integer_of(ps[3]);
-                    int c = numbers.Numbers.integer_of(ps[4]);
-                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
-                    GraphDialogViewModel.DrawEllipse(x1, y1, x2, y2, (Color_Type)c, fill);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int x2 = numbers.Numbers.integer_of(ps[2]);
+                        int y2 = numbers.Numbers.integer_of(ps[3]);
+                        int c = numbers.Numbers.integer_of(ps[4]);
+                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                        GraphDialogViewModel.DrawEllipse(x1, y1, x2, y2, (Color_Type)c, fill);
+                    }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_arc")
                 {
-
-                    int x1 = numbers.Numbers.integer_of(ps[0]);
-                    int y1 = numbers.Numbers.integer_of(ps[1]);
-                    int x2 = numbers.Numbers.integer_of(ps[2]);
-                    int y2 = numbers.Numbers.integer_of(ps[3]);
-                    int startx = numbers.Numbers.integer_of(ps[4]);
-                    int starty = numbers.Numbers.integer_of(ps[5]);
-                    int endx = numbers.Numbers.integer_of(ps[6]);
-                    int endy = numbers.Numbers.integer_of(ps[7]);
-                    int c = numbers.Numbers.integer_of(ps[8]);
-                    GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int x2 = numbers.Numbers.integer_of(ps[2]);
+                        int y2 = numbers.Numbers.integer_of(ps[3]);
+                        int startx = numbers.Numbers.integer_of(ps[4]);
+                        int starty = numbers.Numbers.integer_of(ps[5]);
+                        int endx = numbers.Numbers.integer_of(ps[6]);
+                        int endy = numbers.Numbers.integer_of(ps[7]);
+                        int c = numbers.Numbers.integer_of(ps[8]);
+                        GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
+                    }, DispatcherPriority.Background);
                 }
                 return;
             } else {
