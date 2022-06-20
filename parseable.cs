@@ -685,8 +685,10 @@ namespace parse_tree
 
         public override numbers.value Execute(Lexer l){
             string s = l.Get_Text(id.start, id.finish);
+            Runtime.processing_parameter_list = true;
             numbers.value[] ps = parameters.Execute(l);
-            switch(s.ToLower()){
+            Runtime.processing_parameter_list = false;
+            switch (s.ToLower()){
                 case "sin":
                     return new numbers.value(){V=Math.Sin(ps[0].V)};
                 case "cos":
@@ -732,13 +734,13 @@ namespace parse_tree
                 case "ceiling":
                     return new numbers.value(){V=Math.Ceiling(ps[0].V)};
                 case "to_ascii":
-                    throw new NotImplementedException();
+                    return new numbers.value() { V = ps[0].C };
                 case "to_character":
-                    throw new NotImplementedException();
+                    return new numbers.value() {Kind=numbers.Value_Kind.Character_Kind ,C = (char)ps[0].V };
                 case "length_of":
-                    throw new NotImplementedException();
+                    return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
-                    throw new NotImplementedException();
+                    return new numbers.value() { V = Math.Abs(ps[0].V) };
             }
             throw new NotImplementedException();
         }
