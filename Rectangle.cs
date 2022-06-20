@@ -434,7 +434,7 @@ namespace raptor
 		public override void wide_footprint(Avalonia.Media.DrawingContext gr)
 		{
 			int height_of_text, width_of_text=2*W;
-			int szHeight, szWidth;
+			int szHeight, szWidth=0;
 
 
 			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
@@ -649,9 +649,10 @@ namespace raptor
 				}
 				else
 				{
+					Avalonia.Size sz = new Avalonia.Size(drawing_text_width, height_of_text);
 					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
 						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
+						Avalonia.Media.TextWrapping.Wrap, sz);
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtext);
 				}
 			}
