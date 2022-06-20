@@ -31,13 +31,24 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 for (int k = 0; k < ans.Length; k++)
                 {
                     string searchWord = ans.Substring(0, ans.Length - k);
-                    spot = temp.LastIndexOf(searchWord);
-                    if (spot != -1)
+                    if (searchWord.Length > temp.Length)
                     {
+                        continue;
+                    }
+                    if (temp == null || searchWord == null || temp == "" || searchWord == "")
+                    {
+                        continue;
+                    }
+                    int first = temp.Length - searchWord.Length;
+                    int second = temp.Length;
+                    string tryThis = temp.Substring(first).Trim();
+                    if (tryThis.Equals(searchWord))
+                    {
+                        spot = first;
                         break;
                     }
-                }
-                temp = temp.Substring(0, spot);
+
+                    temp = temp.Substring(0, spot);
                 temp += ans;
                 v.getOutput = temp;
 
