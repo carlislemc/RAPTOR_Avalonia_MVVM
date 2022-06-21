@@ -25,11 +25,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public UserInputDialogViewModel() {
             this.text = "";
         }
-        public UserInputDialogViewModel(Parallelogram p, Window w) {
-            this.text = p.prompt;
+        public UserInputDialogViewModel(Parallelogram p, numbers.value v, Window w) {
+            this.text = numbers.Numbers.msstring_view_image(v);
             this.p = p;
             this.w = w;
         }
+
         public Parallelogram p;
         public Window w;
 

@@ -1200,13 +1200,27 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 if(myTimer != null){
                                     myTimer.Stop();
                                 }
-                                UserInputDialog uid = new UserInputDialog(temp);
-                                await uid.ShowDialog(MainWindow.topWindow);
-                                Lexer l = new Lexer(temp.assign);
-                                Syntax_Result r = temp.result;
-                                Expr_Assignment ex = (Expr_Assignment)r.tree;
+                                //UserInputDialog uid = new UserInputDialog(temp);
+                                //await uid.ShowDialog(MainWindow.topWindow);
+                                //Lexer l = new Lexer(temp.assign);
+                                //Syntax_Result r = temp.result;
+                                //Expr_Assignment ex = (Expr_Assignment)r.tree;
+                                //numbers.value v = ex.Execute(l);
+                                //inp.Execute(l2, v);
+
+                                Lexer l = new Lexer(temp.prompt);
+                                temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
+                                temp.prompt_tree = temp.prompt_result.tree;
+                                Expr_Output ex = (Expr_Output)temp.prompt_tree;
                                 numbers.value v = ex.Execute(l);
-                                inp.Execute(l, v);
+
+                                UserInputDialog uid = new UserInputDialog(temp, v);
+                                await uid.ShowDialog(MainWindow.topWindow);
+
+                                Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
+                                Lexer l2 = new Lexer(temp.assign);
+                                numbers.value v2 = ex2.Execute(l2);
+
                                  if(myTimer != null){
                                     myTimer.Start();
                                 }
