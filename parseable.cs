@@ -88,12 +88,12 @@ namespace parse_tree
         public Parameter_List? param_list;
         public bool is_tab_call() { return false; }
 
-        public abstract void Execute(Lexer l);
+        public abstract Task Execute(Lexer l);
     }
 
     public class Proc_Call : Procedure_Call
     {
-        public override async void Execute(Lexer l)
+        public override async Task Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
@@ -193,14 +193,12 @@ namespace parse_tree
                 }
                 else if(str.ToLower() == "wait_for_key")
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    mw.waitingForKey = true;
+                    if(mw.myTimer != null)
                     {
-                        mw.waitingForKey = true;
-                        if(mw.myTimer != null)
-                        {
-                            mw.myTimer.Stop();
-                        }
-                    });
+                        mw.myTimer.Stop();
+                    }
+      
                 }
                 return;
             } else {
@@ -283,34 +281,34 @@ namespace parse_tree
         }
 
     }
-    public class Plugin_Proc_Call : Procedure_Call {
-        public override void Execute(Lexer l)
-        {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=2});
-            return;
-        }
-     }
+    //public class Plugin_Proc_Call : Procedure_Call {
+    //    public override Task Execute(Lexer l)
+    //    {
+    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=2});
+    //        return;
+    //    }
+    // }
 
-    public class Tabid_Proc_Call : Procedure_Call {
-        public override void Execute(Lexer l)
-        {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=3});
-            return;
-        }
-     }
+    //public class Tabid_Proc_Call : Procedure_Call {
+    //    public override Task Execute(Lexer l)
+    //    {
+    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=3});
+    //        return;
+    //    }
+    // }
 
-    public class Method_Proc_Call : Procedure_Call
-    {
-        Lhs? lhs;
-        Msuffix? msuffix;
+    //public class Method_Proc_Call : Procedure_Call
+    //{
+    //    Lhs? lhs;
+    //    Msuffix? msuffix;
 
-        public override void Execute(Lexer l)
-        {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=4});
-            return;
-        }
+    //    public override Task Execute(Lexer l)
+    //    {
+    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=4});
+    //        return;
+    //    }
 
-    }
+    //}
 
     public abstract class Assignment : Statement {
         public Lhs? lhs;

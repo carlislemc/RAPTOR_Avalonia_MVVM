@@ -31,11 +31,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
             //this.FindControl<UserControl>("dng")
             this.KeyDown += (s, e) =>
             {
-
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
                 if (mw.waitingForKey == true)
                 {
                     mw.waitingForKey = false;
+                    mw.goToNextComponent();
                     if (mw.myTimer != null)
                     {
                         mw.myTimer.Start();

@@ -804,7 +804,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private bool getParent = false;
         public bool waitingForKey = false;
-        private void goToNextComponent(){
+        public void goToNextComponent(){
             if (waitingForKey)
             {
                 return;
@@ -1106,7 +1106,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Lexer l = new Lexer(str);
                         if(temp.parse_tree != null){
                             Procedure_Call ea = (Procedure_Call)temp.parse_tree;
-                            ea.Execute(l);
+                            await ea.Execute(l);
+                            Variable ksdujhk = new Variable("hi", new numbers.value());
                         }
                     }
                     goToNextComponent();
