@@ -53,6 +53,25 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             DotnetGraphControl.dngw.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, hue);
 
         }
+        public static void DrawEllipseRotate(int x1, int y1, int x2, int y2, double angle, Color_Type hue, bool filled)
+        {
+            DotnetGraphControl.dngw.DrawEllipseRotate(x1, y1, x2, y2, angle, hue, filled);
+        }
+
+        public static void DisplayText(int x1, int y1, string text, Color_Type hue)
+        {
+            DotnetGraphControl.dngw.DisplayText(x1, y1, text, hue);
+        }
+
+        public static void DisplayNumber(int x1, int y1, double number, Color_Type hue)
+        {
+            DotnetGraphControl.dngw.DisplayNumber(x1, y1, number, hue);
+        }
+
+        public static void FontSize(int size)
+        {
+            DotnetGraphControl.dngw.SetFontSize(size);
+        }
 
     }
 

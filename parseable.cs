@@ -191,6 +191,50 @@ namespace parse_tree
                         GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
                     }, DispatcherPriority.Background);
                 }
+                else if (str.ToLower() == "draw_ellipse_rotate")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        int x2 = numbers.Numbers.integer_of(ps[2]);
+                        int y2 = numbers.Numbers.integer_of(ps[3]);
+                        double angle = numbers.Numbers.long_float_of(ps[4]);
+                        int c = numbers.Numbers.integer_of(ps[5]);
+                        bool fill = numbers.Numbers.integer_of(ps[6]) == 1;
+                        GraphDialogViewModel.DrawEllipseRotate(x1, y1, x2, y2, angle, (Color_Type)c, fill);
+                    }, DispatcherPriority.Background);
+                }
+                else if (str.ToLower() == "display_text")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        string t = ps[2].S.Replace("\"","");
+                        int c = numbers.Numbers.integer_of(ps[3]);
+                        GraphDialogViewModel.DisplayText(x1, y1, t, (Color_Type)c);
+                    }, DispatcherPriority.Background);
+                }
+                else if (str.ToLower() == "display_number")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x1 = numbers.Numbers.integer_of(ps[0]);
+                        int y1 = numbers.Numbers.integer_of(ps[1]);
+                        double n = numbers.Numbers.long_float_of(ps[2]);
+                        int c = numbers.Numbers.integer_of(ps[3]);
+                        GraphDialogViewModel.DisplayNumber(x1, y1, n, (Color_Type)c);
+                    }, DispatcherPriority.Background);
+                }
+                else if (str.ToLower() == "font_size")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int size = numbers.Numbers.integer_of(ps[0]);
+                        GraphDialogViewModel.FontSize(size);
+                    }, DispatcherPriority.Background);
+                }
                 else if(str.ToLower() == "wait_for_key")
                 {
                     mw.waitingForKey = true;

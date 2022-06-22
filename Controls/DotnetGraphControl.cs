@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -300,7 +299,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         //private static Font[] fonts;
         private static SKPaint[] paints;
         public static bool start_topmost = false;
-        private const int default_font_size = 10;
+        private const int default_font_size = 14;
         private int current_font_size = default_font_size;
         private bool left_is_down = false;
         private bool right_is_down = false;
@@ -984,7 +983,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 paint.Style = filled ? SKPaintStyle.Fill : SKPaintStyle.Stroke;
 
                 SkiaContext.SkCanvas.DrawRect(x_coord1, y_coord1,
-                    Math.Abs(x_coord2 - x_coord1), -1*Math.Abs(y_coord2 - y_coord1),
+                    Math.Abs(x_coord2 - x_coord1), -1 * Math.Abs(y_coord2 - y_coord1),
                     paint);
             }
             catch (Exception error)
@@ -1049,6 +1048,42 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
+        public void DrawEllipseRotate(
+            int x1,
+            int y1,
+            int x2,
+            int y2,
+            double angle,
+            Color_Type hue,
+            bool filled
+        )
+        {
+            int x_coord1, y_coord1;
+            x_coord1 = Make_0_Based(x1);
+            y_coord1 = Make_0_Based_And_Unflip(y1);
+            int x_coord2, y_coord2;
+            x_coord2 = Make_0_Based(x2);
+            y_coord2 = Make_0_Based_And_Unflip(y2);
+            try
+            {
+                var paint = paints[(int)hue];
+                paint.Style = filled ? SKPaintStyle.Fill : SKPaintStyle.Stroke;
+                var cx = (x_coord1 + x_coord2) / 2;
+                var cy = (y_coord1 + y_coord2) / 2;
+                var rx = (x_coord2 - x_coord1) / 2;
+                var ry = (y_coord2 - y_coord1) / 2;
+                angle = 2 * Math.PI - angle;
+                SkiaContext.SkCanvas.RotateRadians((float)angle, cx, cy);
+                SkiaContext.SkCanvas.DrawOval(cx, cy, rx, ry, paint);
+                SkiaContext.SkCanvas.RotateRadians(-1 * (float)angle, cx, cy);
+            }
+            catch (Exception error)
+            {
+            }
+
+            this.UpdateWindowUnlessFrozen();
+        }
         public void DrawArc(
             int x1,
             int y1,
@@ -1060,36 +1095,96 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             int endy,
             Color_Type hue
         )
-            {
+        {
             int x_coord1, y_coord1;
             x_coord1 = Make_0_Based(x1);
             y_coord1 = Make_0_Based_And_Unflip(y1);
             int x_coord2, y_coord2;
             x_coord2 = Make_0_Based(x2);
             y_coord2 = Make_0_Based_And_Unflip(y2);
-            
+
             try
             {
                 var paint = paints[(int)hue];
                 paint.Style = SKPaintStyle.Stroke;
                 // SKRect oval = new SKRect(cx, cy, rx, ry);
                 SKRect oval = new SKRect(x_coord1, y_coord1, x_coord2, y_coord2);
-                var mid_x = ((double)x1+x2) / 2.0;
-                var mid_y = ((double)y1+y2) / 2.0;
+                var mid_x = ((double)x1 + x2) / 2.0;
+                var mid_y = ((double)y1 + y2) / 2.0;
                 var end_theta = Math.Atan2(starty - mid_y, startx - mid_x);
                 var start_theta = Math.Atan2(endy - mid_y, endx - mid_x);
                 if (end_theta < 0.0) { end_theta += 2.0 * Math.PI; }
                 if (start_theta < 0.0) { start_theta += 2.0 * Math.PI; }
-                var range = start_theta-end_theta;
-                if (range <= 0.0) { range += 2.0 * Math.PI;  }
-                SkiaContext.SkCanvas.DrawArc(oval,(float)((2.0*Math.PI-start_theta)*180.0/Math.PI),(float) (range*180.0/Math.PI),false,paint);
-            
+                var range = start_theta - end_theta;
+                if (range <= 0.0) { range += 2.0 * Math.PI; }
+                SkiaContext.SkCanvas.DrawArc(oval, (float)((2.0 * Math.PI - start_theta) * 180.0 / Math.PI), (float)(range * 180.0 / Math.PI), false, paint);
+
             }
             catch (Exception error)
             {
             }
 
             this.UpdateWindowUnlessFrozen();
+        }
+        public void DisplayText(
+            int x1,
+            int y1,
+            String text,
+            Color_Type hue
+        )
+        {
+            try
+            {
+                var paint = paints[(int)hue];
+                paint.IsAntialias = true;
+                int x_coord1, y_coord1;
+                x_coord1 = Make_0_Based(x1);
+                y_coord1 = Make_0_Based_And_Unflip(y1 - current_font_size);
+                paint.TextAlign = SKTextAlign.Left;
+                SkiaContext.SkCanvas.DrawText(text, x_coord1, y_coord1, new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
+            }
+            catch (Exception error)
+            {
+            }
+            this.UpdateWindowUnlessFrozen();
+        }
+        public void DisplayNumber(
+            int x1,
+            int y1,
+            double number,
+            Color_Type hue
+        )
+        {
+            try
+            {
+                var paint = paints[(int)hue];
+                int x_coord1, y_coord1;
+                x_coord1 = Make_0_Based(x1);
+                y_coord1 = Make_0_Based_And_Unflip(y1 - current_font_size);
+                SkiaContext.SkCanvas.DrawText(number.ToString(), x_coord1, y_coord1, new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
+            }
+            catch (Exception error)
+            {
+            }
+
+            this.UpdateWindowUnlessFrozen();
+        }
+        public void SetFontSize(
+            int size
+        )
+        {
+            if (size == 0)
+            {
+                this.current_font_size = default_font_size;
+            }
+            else if (size > 0 && size <= 100)
+            {
+                this.current_font_size = (int)(size * 1.4);
+            }
+            else
+            {
+                throw new System.Exception("Error in Set_Font_Size: size must be in [0,100]");
+            }
         }
         public void UpdateWindowUnlessFrozen()
         {
