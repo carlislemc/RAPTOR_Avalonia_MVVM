@@ -93,7 +93,7 @@ namespace parse_tree
 
     public class Proc_Call : Procedure_Call
     {
-        public override void Execute(Lexer l)
+        public override async void Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
@@ -107,9 +107,12 @@ namespace parse_tree
             }
             if(!changedSub){
                 string str = l.Get_Text(id.start, id.finish);
-                Runtime.processing_parameter_list = true;
-                numbers.value[] ps = param_list.Execute(l);
-
+                numbers.value[] ps = new numbers.value[0];
+                if (param_list != null)
+                {
+                    Runtime.processing_parameter_list = true;
+                    ps = param_list.Execute(l);
+                }
 
                 if (str.ToLower() == "open_graph_window")
                 {
@@ -187,6 +190,17 @@ namespace parse_tree
                         int c = numbers.Numbers.integer_of(ps[8]);
                         GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
                     }, DispatcherPriority.Background);
+                }
+                else if(str.ToLower() == "wait_for_key")
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        mw.waitingForKey = true;
+                        if(mw.myTimer != null)
+                        {
+                            mw.myTimer.Stop();
+                        }
+                    });
                 }
                 return;
             } else {

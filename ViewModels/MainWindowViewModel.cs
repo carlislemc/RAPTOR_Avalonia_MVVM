@@ -803,7 +803,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public ObservableCollection<string> activeScopes = new ObservableCollection<string>() {"main"};
 
         private bool getParent = false;
+        public bool waitingForKey = false;
         private void goToNextComponent(){
+            if (waitingForKey)
+            {
+                return;
+            }
             try
             {
                 symbolCount++;
@@ -1414,7 +1419,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
         }
 
-        private System.Timers.Timer myTimer;
+        public System.Timers.Timer myTimer;
         public void OnExecuteCommand() {
             if(myTimer == null){
                 

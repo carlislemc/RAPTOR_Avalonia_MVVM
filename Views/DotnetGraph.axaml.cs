@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Input;
 using raptor;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -24,7 +26,42 @@ namespace RAPTOR_Avalonia_MVVM.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+
+
+            //this.FindControl<UserControl>("dng")
+            this.KeyDown += (s, e) =>
+            {
+
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                if (mw.waitingForKey == true)
+                {
+                    mw.waitingForKey = false;
+                    if (mw.myTimer != null)
+                    {
+                        mw.myTimer.Start();
+                    }
+                }
+
+            };
+
+
         }
+
+        //protected override void OnKeyDown(Avalonia.Input.KeyEventArgs e)
+        //{
+        //    MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+        //    if (mw.waitingForKey == true)
+        //    {
+        //        mw.waitingForKey = false;
+        //        if (mw.myTimer != null)
+        //        {
+        //            mw.myTimer.Start();
+        //        }
+        //    }
+        //}
+
+
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
