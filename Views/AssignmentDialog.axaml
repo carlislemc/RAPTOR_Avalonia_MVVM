@@ -41,7 +41,13 @@
     </ScrollViewer>
     
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="200">
-      <TreeView Name="treeview" Items="{Binding setSuggestions}" SelectedItem="{Binding setIndex}"></TreeView>
+      <TreeView Name="treeview" Items="{Binding setSuggestions}" SelectedItem="{Binding setIndex}">
+        <TreeView.Styles>
+          <Style Selector="TreeViewItem">
+           <Setter Property="IsTabStop" Value="False"/>
+         </Style>
+        </TreeView.Styles>
+      </TreeView>
     </ScrollViewer>
 
     

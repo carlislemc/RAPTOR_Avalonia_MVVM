@@ -22,6 +22,8 @@ namespace RAPTOR_Avalonia_MVVM.Views
             DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel(r, this, modding);
 
             this.IsTabStop = true;
+            
+            RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel v2 = ((RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel)DataContext);
 
             this.FindControl<TextBox>("typingVal").IsTabStop = false;
             this.FindControl<TextBox>("typingName").IsTabStop = false;
@@ -34,6 +36,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     if(v.setSuggestions.Count > 0){
                         string ans = v.setIndex;
                         fillSuggestion(s, ans);
+                        this.FindControl<TextBox>("typingName").CaretIndex =  this.FindControl<TextBox>("typingName").Text.Length;
                     }
                 }
                 else if(e.Key == Avalonia.Input.Key.Down){
@@ -54,6 +57,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     if(v.setSuggestions.Count > 0){
                         string ans = v.setIndex;
                         fillSuggestion(s, ans);
+                        this.FindControl<TextBox>("typingVal").CaretIndex =  this.FindControl<TextBox>("typingVal").Text.Length;
                     }
                 }
                 else if(e.Key == Avalonia.Input.Key.Down){
