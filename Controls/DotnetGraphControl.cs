@@ -306,6 +306,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool[] key_is_down = new bool[255];
         private char pressed_key;
         private Point mouse;
+        private int left_click = 0;
         private int click_x, click_y;
         private int left_click_x, left_click_y;
         private int right_click_x, right_click_y;
@@ -576,9 +577,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         //Reference to the currently active drawing tool
         //Should have a OnToolChange Event
         private SKPaint SKBrush;
-
+        private bool waitForMouse;
+        private bool waitForKey;
+        private MouseButton mb;
+        private System.Threading.EventWaitHandle waitHandle = new System.Threading.AutoResetEvent(false);
         public override void EndInit()
         {
+            waitForMouse = false;
+            waitForKey = false;
             dngw = this;
             SKBrush = new SKPaint();
             SKBrush.IsAntialias = true;
@@ -592,12 +598,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             SkiaContext = (context as ISkiaDrawingContextImpl);
             SkiaContext.SkCanvas.Clear(new SKColor(255, 255, 255));
 
-
             PointerPressed += DrawingCanvas_PointerPressed;
             PointerMoved += DrawingCanvas_PointerMoved;
             PointerLeave += DrawingCanvas_PointerLeave;
             PointerReleased += DrawingCanvas_PointerReleased;
             PointerEnter += DrawingCanvas_PointerEnter;
+            KeyDown += DrawingCanvas_KeyDown;
             base.EndInit();
 
             paints = new SKPaint[standard_color.Length];
@@ -608,7 +614,20 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             }
         }
 
-
+        public void WaitForKey()
+        {
+            waitForKey = true;
+            Focus();
+        }
+        private void DrawingCanvas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (SkiaContext != null && waitForKey)
+            {
+                SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
+                waitForKey = false;
+                InvalidateVisual();
+            }
+        }
         private void DrawingCanvas_PointerEnter(object sender, PointerEventArgs e)
         {
             if (SkiaContext != null)
@@ -616,10 +635,20 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             }
         }
 
+        public void WaitForMouseButton(MouseButton button)
+        {
+            waitForMouse = true;
+            mb = button;
+        }
+
         private void DrawingCanvas_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            if (SkiaContext != null)
+            if (SkiaContext != null && e.MouseButton == mb && waitForMouse)
             {
+                Point p = e.GetPosition(this);
+                SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
+                InvalidateVisual();
+                waitForMouse = false;
             }
         }
 
@@ -639,6 +668,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         private void DrawingCanvas_PointerPressed(object sender, PointerPressedEventArgs e)
         {
+            Console.WriteLine("sadsad");
             if (SkiaContext != null)
             {
                 Point p = e.GetPosition(this);

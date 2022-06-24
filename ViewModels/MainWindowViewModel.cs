@@ -521,7 +521,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 string[] result = await dialog.ShowAsync(desktop.MainWindow);
                 if (result != null)
                 {
-                    Load_File(result[0]);
+                    if (result.Length > 0)
+                    {
+                        Load_File(result[0]);
+                    }
                     /*var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                         .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                         {
@@ -804,8 +807,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private bool getParent = false;
         public bool waitingForKey = false;
+        public bool waitingForMouse = false;
+        public Avalonia.Input.MouseButton mouseWait;
         public void goToNextComponent(){
-            if (waitingForKey)
+            if (waitingForKey || waitingForMouse)
             {
                 return;
             }
@@ -1106,7 +1111,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Lexer l = new Lexer(str);
                         if(temp.parse_tree != null){
                             Procedure_Call ea = (Procedure_Call)temp.parse_tree;
-                            await ea.Execute(l);
+                             await ea.Execute(l);
                         }
                     }
                     goToNextComponent();

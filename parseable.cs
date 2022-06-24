@@ -238,11 +238,30 @@ namespace parse_tree
                 else if(str.ToLower() == "wait_for_key")
                 {
                     mw.waitingForKey = true;
-                    if(mw.myTimer != null)
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        mw.myTimer.Stop();
-                    }
-      
+                        GraphDialogViewModel.WaitForKey();
+                        if(mw.myTimer != null)
+                        {
+                            mw.myTimer.Stop();
+                        }
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "wait_for_mouse_button")
+                {
+                    mw.waitingForMouse = true;
+                    mw.mouseWait = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Avalonia.Input.MouseButton b = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                        GraphDialogViewModel.WaitForMouseButton(b);
+                        if (mw.myTimer != null)
+                        {
+                            mw.myTimer.Stop();
+                        }
+                    }, DispatcherPriority.Background);
+
                 }
                 return;
             } else {
@@ -651,6 +670,7 @@ namespace parse_tree
         }
 
         public override numbers.value Execute(Lexer l){
+            //return new numbers.value() { V = 666 };
             throw new NotImplementedException();
         }
 
@@ -718,7 +738,12 @@ namespace parse_tree
                     return new numbers.value(){V=1};
                 case "no":
                     return new numbers.value(){V=0};
-           }
+                case "left_button":
+                    return new numbers.value() { V = 86 };
+                case "right_button":
+                    return new numbers.value() { V = 87 };
+            }
+            //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
         }
     }
@@ -798,6 +823,7 @@ namespace parse_tree
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
             }
+            //return new numbers.value() { V = 333 };
             throw new NotImplementedException();
         }
     }

@@ -73,6 +73,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             DotnetGraphControl.dngw.SetFontSize(size);
         }
 
+        public static void WaitForMouseButton(MouseButton b)
+        {
+            DotnetGraphControl.dngw.WaitForMouseButton(b);
+        }
+        public static void WaitForKey()
+        {
+            DotnetGraphControl.dngw.WaitForKey();
+        }
+
     }
 
 }
