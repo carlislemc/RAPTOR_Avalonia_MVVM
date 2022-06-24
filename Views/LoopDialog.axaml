@@ -25,14 +25,20 @@
       Count != 5
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Width="200" Height="120" Text="{Binding setLoop}" Watermark="selection condition" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox Name="cond" Width="200" Height="120" Text="{Binding setLoop}" Watermark="selection condition" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
-      <TextBlock Foreground="Red" Text="{Binding Text}"/>
+      <TextBlock IsTabStop="False" Foreground="Red" Text="{Binding Text}"/>
     </ScrollViewer>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="180">
-      <TreeView Name="treeview" Items="{Binding setSuggestions}"></TreeView>
+      <TreeView Name="treeview" Items="{Binding setSuggestions}" SelectedItem="{Binding setIndex}">
+        <TreeView.Styles>
+          <Style Selector="TreeViewItem">
+           <Setter Property="IsTabStop" Value="False"/>
+         </Style>
+        </TreeView.Styles>
+      </TreeView>
     </ScrollViewer>
-    <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
+    <Button Name="done" HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
 </Window>

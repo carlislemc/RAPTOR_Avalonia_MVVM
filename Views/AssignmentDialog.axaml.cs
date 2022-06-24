@@ -35,7 +35,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 if(e.Key == Avalonia.Input.Key.Tab){
                     if(v.setSuggestions.Count > 0){
                         string ans = v.setIndex;
-                        fillSuggestion(s, ans);
+                        fillSuggestion(ans);
                         this.FindControl<TextBox>("typingName").CaretIndex =  this.FindControl<TextBox>("typingName").Text.Length;
                     }
                 }
@@ -56,7 +56,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 if(e.Key == Avalonia.Input.Key.Tab){
                     if(v.setSuggestions.Count > 0){
                         string ans = v.setIndex;
-                        fillSuggestion(s, ans);
+                        fillSuggestion( ans);
                         this.FindControl<TextBox>("typingVal").CaretIndex =  this.FindControl<TextBox>("typingVal").Text.Length;
                     }
                 }
@@ -76,12 +76,12 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.FindControl<TreeView>("treeview").DoubleTapped += (s, e) =>
             {
                 string ans = ((string)((TreeView)s).SelectedItem);
-                fillSuggestion(s, ans);
+                fillSuggestion(ans);
                 
             };
         }
 
-        private void fillSuggestion(Object s, string ans){
+        private void fillSuggestion(string ans){
             if(ans.Contains("(")){
                     ans = ans.Substring(0, ans.IndexOf("("));
                 }

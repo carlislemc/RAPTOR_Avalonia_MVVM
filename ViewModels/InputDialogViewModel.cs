@@ -56,7 +56,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get { return prompt; }
             set { this.RaiseAndSetIfChanged(ref prompt, value);
                 variableName = false;
-                setSuggestions = getSuggestion(); }
+                setSuggestions = getSuggestion(); 
+                if(setSuggestions.Count > 0){
+                    setIndex = setSuggestions[0];
+                }
+                }
         }
 
         public string variable = "";
@@ -66,6 +70,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             set { this.RaiseAndSetIfChanged(ref variable, value);
                 variableName = true;
                 setSuggestions = getSuggestion();
+                if(setSuggestions.Count > 0){
+                    setIndex = setSuggestions[0];
+                }
             }
         }
 
@@ -103,6 +110,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return s.getSuggestions();
             }
 
+        }
+
+        public string suggestionIndex = "";
+        public string setIndex
+        {
+            get { return suggestionIndex; }
+            set { this.RaiseAndSetIfChanged(ref suggestionIndex, value); }
         }
 
 

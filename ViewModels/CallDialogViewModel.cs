@@ -47,7 +47,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string setProcedure{
             get { return procedure; }
-            set { this.RaiseAndSetIfChanged(ref procedure, value); setSuggestions = getSuggestion();  }
+            set {   this.RaiseAndSetIfChanged(ref procedure, value);
+                    setSuggestions = getSuggestion();
+                    if(setSuggestions.Count > 0){
+                        setIndex = setSuggestions[0];
+                    }
+                }
         }
         public string text = "";
         public string Text   // property
@@ -74,6 +79,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 int i = mw.viewTab;
                 return sc[i];
             }
+        }
+
+        public string suggestionIndex = "";
+        public string setIndex
+        {
+            get { return suggestionIndex; }
+            set { this.RaiseAndSetIfChanged(ref suggestionIndex, value); }
         }
 
         public ObservableCollection<string> getSuggestion()

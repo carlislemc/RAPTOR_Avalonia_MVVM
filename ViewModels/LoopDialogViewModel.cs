@@ -54,7 +54,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public string setLoop{
             get { return loopCondition; }
-            set {this.RaiseAndSetIfChanged(ref loopCondition, value); setSuggestions = getSuggestion(); }
+            set {   this.RaiseAndSetIfChanged(ref loopCondition, value);
+                    setSuggestions = getSuggestion();
+                    if(setSuggestions.Count > 0){
+                        setIndex = setSuggestions[0];
+                    }
+                }
+        }
+
+        public string suggestionIndex = "";
+        public string setIndex
+        {
+            get { return suggestionIndex; }
+            set { this.RaiseAndSetIfChanged(ref suggestionIndex, value); }
         }
 
         public ObservableCollection<string> suggestions = new ObservableCollection<string>();

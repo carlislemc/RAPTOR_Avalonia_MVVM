@@ -18,10 +18,42 @@ namespace RAPTOR_Avalonia_MVVM.Views
 #endif
             DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel(l, this, modding);
 
+            this.FindControl<TextBox>("cond").IsTabStop = false;
+            this.FindControl<TreeView>("treeview").IsTabStop = false;
+            this.FindControl<Button>("done").IsTabStop = false;
+
+            this.FindControl<TextBox>("cond").KeyDown += (s, e) => {
+                RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel)DataContext);
+                if(e.Key == Avalonia.Input.Key.Tab){
+                    if(v.setSuggestions.Count > 0){
+                        string ans = v.setIndex;
+                        fillSuggestion(ans);
+                        this.FindControl<TextBox>("cond").CaretIndex =  this.FindControl<TextBox>("cond").Text.Length;
+                    }
+                }
+                else if(e.Key == Avalonia.Input.Key.Down){
+                    if(v.setSuggestions.Count > 0 && v.setIndex != v.setSuggestions[v.setSuggestions.Count-1]){
+                        v.setIndex = v.setSuggestions[v.setSuggestions.IndexOf(v.setIndex)+1];
+                    }
+                }
+                else if(e.Key == Avalonia.Input.Key.Up){
+                    if(v.setSuggestions.Count > 0 && v.setIndex != v.setSuggestions[0]){
+                        v.setIndex = v.setSuggestions[v.setSuggestions.IndexOf(v.setIndex)-1];
+                    }
+                }
+            };
+
             this.FindControl<TreeView>("treeview").DoubleTapped += (s, e) =>
             {
                 string ans = ((string)((TreeView)s).SelectedItem);
-                if(ans.Contains("(")){
+                fillSuggestion(ans);
+
+            };
+
+        }
+
+        private void fillSuggestion(string ans){
+            if(ans.Contains("(")){
                     ans = ans.Substring(0, ans.IndexOf("("));
                 }
                 RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.LoopDialogViewModel)DataContext);
@@ -49,13 +81,12 @@ namespace RAPTOR_Avalonia_MVVM.Views
                         break;
                     }
                 }
-
+                if(spot < 0){
+                    return;
+                }
                 temp = temp.Substring(0, spot);
                 temp += ans;
                 v.setLoop = temp;
-
-            };
-
         }
 
         private void InitializeComponent()
