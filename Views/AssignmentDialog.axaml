@@ -45,6 +45,6 @@
     </ScrollViewer>
 
     
-  <Button HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
+  <Button Name="done" HorizontalAlignment="Center" Command="{Binding OnDoneCommand}">Done</Button>
   </StackPanel>
 </Window>

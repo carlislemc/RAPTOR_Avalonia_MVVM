@@ -21,6 +21,13 @@ namespace RAPTOR_Avalonia_MVVM.Views
 #endif
             DataContext = new RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel(r, this, modding);
 
+            this.IsTabStop = true;
+
+            this.FindControl<TextBox>("typingVal").IsTabStop = false;
+            this.FindControl<TextBox>("typingName").IsTabStop = false;
+            this.FindControl<TreeView>("treeview").IsTabStop = false;
+            this.FindControl<Button>("done").IsTabStop = false;
+
             this.FindControl<TextBox>("typingName").KeyDown += (s, e) => {
                 RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel)DataContext);
                 if(e.Key == Avalonia.Input.Key.Tab){
