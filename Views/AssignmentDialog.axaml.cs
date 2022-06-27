@@ -33,7 +33,18 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.FindControl<TextBox>("typingName").KeyDown += (s, e) => {
                 RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel)DataContext);
                 if(e.Key == Avalonia.Input.Key.Tab){
+                    if(v.setSuggestions.Count == 0)
+                    {
+                        this.FindControl<TextBox>("typingVal").IsTabStop = true;
+                        this.FindControl<TextBox>("typingName").IsTabStop = true;
+                        this.FindControl<TreeView>("treeview").IsTabStop = true;
+                        this.FindControl<Button>("done").IsTabStop = true;
+                    }
                     if(v.setSuggestions.Count > 0){
+                        this.FindControl<TextBox>("typingVal").IsTabStop = false;
+                        this.FindControl<TextBox>("typingName").IsTabStop = false;
+                        this.FindControl<TreeView>("treeview").IsTabStop = false;
+                        this.FindControl<Button>("done").IsTabStop = false;
                         string ans = v.setIndex;
                         fillSuggestion(ans);
                         this.FindControl<TextBox>("typingName").CaretIndex =  this.FindControl<TextBox>("typingName").Text.Length;
@@ -54,9 +65,21 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.FindControl<TextBox>("typingVal").KeyDown += (s, e) => {
                 RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.AssignmentDialogViewModel)DataContext);
                 if(e.Key == Avalonia.Input.Key.Tab){
-                    if(v.setSuggestions.Count > 0){
+                    if (v.setSuggestions.Count == 0)
+                    {
+                        this.FindControl<TextBox>("typingVal").IsTabStop = true;
+                        this.FindControl<TextBox>("typingName").IsTabStop = true;
+                        this.FindControl<TreeView>("treeview").IsTabStop = true;
+                        this.FindControl<Button>("done").IsTabStop = true;
+                    }
+                    if (v.setSuggestions.Count > 0)
+                    {
+                        this.FindControl<TextBox>("typingVal").IsTabStop = false;
+                        this.FindControl<TextBox>("typingName").IsTabStop = false;
+                        this.FindControl<TreeView>("treeview").IsTabStop = false;
+                        this.FindControl<Button>("done").IsTabStop = false;
                         string ans = v.setIndex;
-                        fillSuggestion( ans);
+                        fillSuggestion(ans);
                         this.FindControl<TextBox>("typingVal").CaretIndex =  this.FindControl<TextBox>("typingVal").Text.Length;
                     }
                 }

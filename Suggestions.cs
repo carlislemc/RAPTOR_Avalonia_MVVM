@@ -169,7 +169,7 @@ namespace raptor
                            
                             if (!ans.Contains(s))
                             {
-                                ans.Add(s);
+                                ans.Insert(0, s);
                             }
 
                         }

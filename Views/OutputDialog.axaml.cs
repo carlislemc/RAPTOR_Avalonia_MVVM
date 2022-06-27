@@ -25,7 +25,16 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.FindControl<TextBox>("output").KeyDown += (s, e) => {
                 RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel v = ((RAPTOR_Avalonia_MVVM.ViewModels.OutputDialogViewModel)DataContext);
                 if(e.Key == Avalonia.Input.Key.Tab){
+                    if(v.setSuggestions.Count == 0)
+                    {
+                        this.FindControl<TextBox>("output").IsTabStop = true;
+                        this.FindControl<TreeView>("treeview").IsTabStop = true;
+                        this.FindControl<Button>("done").IsTabStop = true;
+                    }
                     if(v.setSuggestions.Count > 0){
+                        this.FindControl<TextBox>("output").IsTabStop = false;
+                        this.FindControl<TreeView>("treeview").IsTabStop = false;
+                        this.FindControl<Button>("done").IsTabStop = false;
                         string ans = v.setIndex;
                         fillSuggestion(ans);
                         this.FindControl<TextBox>("output").CaretIndex =  this.FindControl<TextBox>("output").Text.Length;
