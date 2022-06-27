@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -580,7 +581,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool waitForMouse;
         private bool waitForKey;
         private MouseButton mb;
-        private System.Threading.EventWaitHandle waitHandle = new System.Threading.AutoResetEvent(false);
         public override void EndInit()
         {
             waitForMouse = false;
@@ -619,6 +619,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             waitForKey = true;
             Focus();
         }
+
         private void DrawingCanvas_KeyDown(object sender, KeyEventArgs e)
         {
             if (SkiaContext != null && waitForKey)
@@ -628,6 +629,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 InvalidateVisual();
             }
         }
+
         private void DrawingCanvas_PointerEnter(object sender, PointerEventArgs e)
         {
             if (SkiaContext != null)
@@ -1022,6 +1024,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
         public void DrawCircle(
             int x1,
             int y1,
@@ -1047,6 +1050,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
         public void DrawEllipse(
             int x1,
             int y1,
@@ -1114,6 +1118,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
         public void DrawArc(
             int x1,
             int y1,
@@ -1143,12 +1148,24 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 var mid_y = ((double)y1 + y2) / 2.0;
                 var end_theta = Math.Atan2(starty - mid_y, startx - mid_x);
                 var start_theta = Math.Atan2(endy - mid_y, endx - mid_x);
-                if (end_theta < 0.0) { end_theta += 2.0 * Math.PI; }
-                if (start_theta < 0.0) { start_theta += 2.0 * Math.PI; }
-                var range = start_theta - end_theta;
-                if (range <= 0.0) { range += 2.0 * Math.PI; }
-                SkiaContext.SkCanvas.DrawArc(oval, (float)((2.0 * Math.PI - start_theta) * 180.0 / Math.PI), (float)(range * 180.0 / Math.PI), false, paint);
+                if (end_theta < 0.0)
+                {
+                    end_theta += 2.0 * Math.PI;
+                }
 
+                if (start_theta < 0.0)
+                {
+                    start_theta += 2.0 * Math.PI;
+                }
+
+                var range = start_theta - end_theta;
+                if (range <= 0.0)
+                {
+                    range += 2.0 * Math.PI;
+                }
+
+                SkiaContext.SkCanvas.DrawArc(oval, (float)((2.0 * Math.PI - start_theta) * 180.0 / Math.PI),
+                    (float)(range * 180.0 / Math.PI), false, paint);
             }
             catch (Exception error)
             {
@@ -1156,6 +1173,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
         public void DisplayText(
             int x1,
             int y1,
@@ -1166,18 +1184,22 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             try
             {
                 var paint = paints[(int)hue];
+                paint.Style = SKPaintStyle.Fill;
                 paint.IsAntialias = true;
                 int x_coord1, y_coord1;
                 x_coord1 = Make_0_Based(x1);
                 y_coord1 = Make_0_Based_And_Unflip(y1 - current_font_size);
                 paint.TextAlign = SKTextAlign.Left;
-                SkiaContext.SkCanvas.DrawText(text, x_coord1, y_coord1, new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
+                SkiaContext.SkCanvas.DrawText(text, x_coord1, y_coord1,
+                    new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
             }
             catch (Exception error)
             {
             }
+
             this.UpdateWindowUnlessFrozen();
         }
+
         public void DisplayNumber(
             int x1,
             int y1,
@@ -1191,7 +1213,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 int x_coord1, y_coord1;
                 x_coord1 = Make_0_Based(x1);
                 y_coord1 = Make_0_Based_And_Unflip(y1 - current_font_size);
-                SkiaContext.SkCanvas.DrawText(number.ToString(), x_coord1, y_coord1, new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
+                SkiaContext.SkCanvas.DrawText(number.ToString(), x_coord1, y_coord1,
+                    new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
             }
             catch (Exception error)
             {
@@ -1199,6 +1222,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
             this.UpdateWindowUnlessFrozen();
         }
+
         public void SetFontSize(
             int size
         )
@@ -1216,6 +1240,41 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 throw new System.Exception("Error in Set_Font_Size: size must be in [0,100]");
             }
         }
+
+        public void ClearWindow(
+            Color_Type hue
+        )
+        {
+            try
+            {
+                var paint = paints[(int)hue];
+                paint.Style = SKPaintStyle.Fill;
+                SkiaContext.SkCanvas.DrawRect(0, 0, (float)Width, (float)Height, paint);
+            }
+            catch (Exception error)
+            {
+            }
+
+            this.UpdateWindowUnlessFrozen();
+        }
+
+
+        public void SetWindowTitle(string title)
+        {
+            DotnetGraph.SetTitle(title);
+            this.UpdateWindowUnlessFrozen();
+        }
+
+        public void FreezeGraphWindow()
+        {
+            frozen = true;
+        }
+
+        public void UnfreezeGraphWindow()
+        {
+            frozen = false;
+        }
+
         public void UpdateWindowUnlessFrozen()
         {
             if (!this.frozen)

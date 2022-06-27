@@ -82,6 +82,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             DotnetGraphControl.dngw.WaitForKey();
         }
 
+        public static void SetWindowTitle(string title)
+        {
+            DotnetGraphControl.dngw.SetWindowTitle(title);
+        }
+
+        public static void ClearWindow(Color_Type hue)
+        {
+            DotnetGraphControl.dngw.ClearWindow(hue);
+        }
+
     }
 
 }

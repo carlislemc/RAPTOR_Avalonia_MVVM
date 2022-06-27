@@ -263,6 +263,30 @@ namespace parse_tree
                     }, DispatcherPriority.Background);
 
                 }
+                else if (str.ToLower() == "set_window_title")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
+                            GraphDialogViewModel.SetWindowTitle(t);
+                        }, DispatcherPriority.Background);
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "clear_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            int c = numbers.Numbers.integer_of(ps[0]);
+                            GraphDialogViewModel.ClearWindow((Color_Type)c);
+                        }, DispatcherPriority.Background);
+                    }, DispatcherPriority.Background);
+
+                }
                 return;
             } else {
                 if(sub.Start.GetType() == typeof(Oval_Procedure)){ //if its a user procedure

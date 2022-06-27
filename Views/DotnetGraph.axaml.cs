@@ -16,8 +16,10 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.AttachDevTools();
 #endif
         }
+        public static DotnetGraph dotnetgraph;
         public DotnetGraph(int width, int height)
         {
+            dotnetgraph = this;
             this.Width = width;
             this.Height = height;
             this.CanResize = false;
@@ -65,19 +67,10 @@ namespace RAPTOR_Avalonia_MVVM.Views
 
         }
 
-        //protected override void OnKeyDown(Avalonia.Input.KeyEventArgs e)
-        //{
-        //    MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-        //    if (mw.waitingForKey == true)
-        //    {
-        //        mw.waitingForKey = false;
-        //        if (mw.myTimer != null)
-        //        {
-        //            mw.myTimer.Start();
-        //        }
-        //    }
-        //}
-
+        public static void SetTitle(string title)
+        {
+            dotnetgraph.Title = title;
+        }
 
 
         private void InitializeComponent()
