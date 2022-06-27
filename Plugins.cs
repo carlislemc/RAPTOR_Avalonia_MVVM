@@ -657,6 +657,21 @@ namespace RAPTOR_Avalonia_MVVM
 						if (Is_Pluginable_Method(part_methods[j]))
 						{
 							method_list.Add(part_methods[j]);
+							string addMe = part_methods[j].Name.ToLower();
+                            if (part_methods[j].GetParameters().Length != 0)
+                            {
+								addMe += "(";
+								for(int n = 0; n < part_methods[j].GetParameters().Length; n++)
+                                {
+									addMe += part_methods[j].GetParameters()[n].Name;
+									if(n != part_methods[j].GetParameters().Length - 1)
+                                    {
+										addMe += ", ";
+                                    }
+                                }
+								addMe += ")";
+                            }
+							raptor.Suggestions.specialWords.Add(addMe);
 						}
 					}
 				}

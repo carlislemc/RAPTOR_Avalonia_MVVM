@@ -43,6 +43,7 @@ namespace raptor
 			str = s.Replace(" ","");
 			variableName = varName;
 			this.sub = sub;
+            
 		}
 
 
@@ -328,7 +329,7 @@ namespace raptor
 
         }
 
-        public ObservableCollection<string> specialWords = new ObservableCollection<string>()
+        public static ObservableCollection<string> specialWords = new ObservableCollection<string>()
         {
             "sin(x)",
             "cos(x)",

@@ -69,7 +69,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             get { return variableValue; }
             set { this.RaiseAndSetIfChanged(ref variableValue, value);
                     editingName = false;
-                    setSuggestions = getSuggestions(); 
+                    setSuggestions = getSuggestions();
                     if(setSuggestions.Count > 0){
                         setIndex = setSuggestions[0];
                     }
