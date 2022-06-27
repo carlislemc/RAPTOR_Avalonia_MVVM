@@ -27,7 +27,7 @@
         Board[3,3]
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Name="output" Width="200" Height="140" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox TextWrapping="Wrap" Name="output" Width="200" Height="140" Text="{Binding getOutput}" Watermark="Output" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
       <TextBlock IsTabStop="False" Foreground="Red" Text="{Binding Text}"/>

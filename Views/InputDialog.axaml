@@ -21,7 +21,7 @@
       Enter prompt here:
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Name="prompt" Width="200" Height="120" Text="{Binding getPrompt}" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox TextWrapping="Wrap" Name="prompt" Width="200" Height="120" Text="{Binding getPrompt}" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock HorizontalAlignment="Center">
       Enter variable here:
