@@ -1450,6 +1450,33 @@ namespace raptor
 			throw new Exception(s + " not found.");
 		}
 
+		public static double[] getArrayDouble(string s)
+		{
+			//return null;
+			Variable temp = Runtime.Lookup_Variable(s);
+			ObservableCollection<Variable> vars = MainWindowViewModel.GetMainWindowViewModel().theVariables;
+
+			if (temp != null)
+			{
+				if (temp.Kind == Variable_Kind.One_D_Array)
+				{
+					int count = numbers.Numbers.integer_of(temp.values[0].value);
+					double[] result = new double[count];
+					for (int i = 0; i < count; i++)
+					{
+						result[i] = (double)temp.getArrayElement(i + 1).V;
+					}
+					return result;
+				}
+				else
+				{
+					throw new Exception(s +
+						" is not a one-dimensional array");
+				}
+			}
+			throw new Exception(s + " not found.");
+		}
+
 		public static int[] getIntArray(string s)
 		{
 			/*Variable temp=Runtime.Lookup_Variable(s);

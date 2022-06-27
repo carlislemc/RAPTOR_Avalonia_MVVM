@@ -267,11 +267,8 @@ namespace parse_tree
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
-                            GraphDialogViewModel.SetWindowTitle(t);
-                        }, DispatcherPriority.Background);
+                        string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
+                        GraphDialogViewModel.SetWindowTitle(t);
                     }, DispatcherPriority.Background);
 
                 }
@@ -368,34 +365,42 @@ namespace parse_tree
         }
 
     }
-    //public class Plugin_Proc_Call : Procedure_Call {
-    //    public override Task Execute(Lexer l)
-    //    {
-    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=2});
-    //        return;
-    //    }
-    // }
+    public class Plugin_Proc_Call : Procedure_Call
+    {
+        public override async Task Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 22222 });
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            Dispatcher.UIThread.Post(() =>
+            {
 
-    //public class Tabid_Proc_Call : Procedure_Call {
-    //    public override Task Execute(Lexer l)
-    //    {
-    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=3});
-    //        return;
-    //    }
-    // }
 
-    //public class Method_Proc_Call : Procedure_Call
-    //{
-    //    Lhs? lhs;
-    //    Msuffix? msuffix;
+            }, DispatcherPriority.Background);
+            return;
+        }
+    }
 
-    //    public override Task Execute(Lexer l)
-    //    {
-    //        Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value(){V=4});
-    //        return;
-    //    }
+    public class Tabid_Proc_Call : Procedure_Call
+    {
+        public override async Task Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 33333 });
+            return;
+        }
+    }
 
-    //}
+    public class Method_Proc_Call : Procedure_Call
+    {
+        Lhs? lhs;
+        Msuffix? msuffix;
+
+        public override async Task Execute(Lexer l)
+        {
+            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 44444 });
+            return;
+        }
+
+    }
 
     public abstract class Assignment : Statement {
         public Lhs? lhs;
@@ -856,7 +861,18 @@ namespace parse_tree
         public Parameter_List? parameters;
 
         public override numbers.value Execute(Lexer l){
-            throw new NotImplementedException();
+            if(parameters == null)
+            {
+                Variable kasdfb = new Variable("hi", new numbers.value());
+                return Plugins.Invoke_Function(l.Get_Text().Substring(l.Get_Text().IndexOf(":=") + 2).Trim(), parameters);
+            }
+            else
+            {
+                string text = l.Get_Text();
+                string t = text.Substring(text.IndexOf(":=")+2).Trim();
+                return Plugins.Invoke_Function(text, parameters);
+            }
+            
         }
     }
 

@@ -155,6 +155,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             theVariables = new ObservableCollection<Variable>(FillWatch());
             //Subchart main_subchart = new Subchart("main");
             theTabs = new ObservableCollection<Subchart>(FillTabs());
+            Plugins.Load_Plugins("");
 
             /*
             GetWindow().Closing += (s, e) =>
@@ -261,7 +262,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             // I moved these down lower in case the mode was changed by
                             // reading in this flowchart (which calls new and clears filename)
                             this.fileName = dialog_fileName;
-                            //Plugins.Load_Plugins(this.fileName);
+                            Plugins.Load_Plugins(this.fileName);
 
                             if (i > mainIndex)
                             {
@@ -337,7 +338,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         // previous to version 11, there is just one tab page
                         // moved this way down here for very old files (previous to version 11)
                         this.fileName = dialog_fileName;
-                        //Plugins.Load_Plugins(this.fileName);
+                        Plugins.Load_Plugins(this.fileName);
                         stream.Seek(0, SeekOrigin.Begin);
                         this.mainSubchart().Start = (Oval)bformatter.Deserialize(stream);
                         Component.last_incoming_serialization_version =
@@ -612,6 +613,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             else
             {
                 this.Perform_Save(this.fileName, false);
+                Plugins.Load_Plugins(this.fileName);
             }
         }
 
@@ -766,6 +768,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
 
                 this.fileName = ans;
+                Plugins.Load_Plugins(this.fileName);
                 this.FileSave_Click();
 
             }
