@@ -873,7 +873,40 @@ namespace RAPTOR_Avalonia_MVVM
             }
             return result;
         }
+        
+        public Plugin_Proc_Call Parse_Plugin_Proc_Call()
+        {
+            Plugin_Proc_Call result = new Plugin_Proc_Call();
+            Token t = lexer.Get_Token();
 
+            result.id = t;
+            t = lexer.Get_Token();
+            
+            if(t.kind == Token_Type.Left_Paren)
+            {
+                result.param_list = Parse_Parameter_List("", true);
+                t = lexer.Get_Token();
+                if(t.kind != Token_Type.Right_Paren)
+                {
+                    Raise_Exception(t, "missing )");
+                }
+            }
+            else
+            {
+                result.param_list = null;
+                lexer.Unget_Token(t);
+            }
+
+            int c = Plugins.Parameter_Count(lexer.Get_Text(result.id.start, result.id.finish));
+
+            if (c != Count_Parameters(result.param_list))
+            {
+                Raise_Exception(t, lexer.Get_Text(result.id.start, result.id.finish) + " needs " + c + " parameters, not " +
+                    Count_Parameters(result.param_list));
+            }
+
+            return result;
+        }
 
         // Call_Statement => Proc_Call[;] End_Input
         public Statement Parse_Call_Statement() {
@@ -899,7 +932,10 @@ namespace RAPTOR_Avalonia_MVVM
                 if(Lexer.Is_Valid_Procedure(lexer.Get_Text(t.start, t.finish))){
                     //Variable v = new Variable(lexer.Get_Text(t.start, t.finish), new numbers.value(){V=3});
                     result = Parse_Proc_Call();
-                } else{
+                } else if(Plugins.Is_Procedure(lexer.Get_Text(t.start, t.finish))){
+                    result = Parse_Plugin_Proc_Call();
+                }
+                else{
                     Raise_Exception(t, lexer.Get_Text(t.start, t.finish) +
                         " is not a valid procedure name");
                 }
@@ -909,7 +945,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 t = lexer.Get_Token();
             }
-            if (t.kind!=Token_Type.End_Input)
+            if (t.kind != Token_Type.End_Input)
             {
                 Raise_Exception(t, t.kind.ToString() + " is unexpected");
             }
