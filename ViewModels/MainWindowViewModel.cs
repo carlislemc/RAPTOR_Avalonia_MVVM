@@ -1631,5 +1631,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             });
         }
 
+        public void OnRunCompiledCommand(){
+            
+        }
+
     }
 }

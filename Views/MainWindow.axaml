@@ -37,6 +37,7 @@
         <MenuItem Header="_Execute to Completion" Command="{Binding OnExecuteCommand}"/>
         <MenuItem Header="_Reset" Command="{Binding OnResetCommand}" HotKey="F10"/>
         <MenuItem Header="Reset/Execute   F5" Command="{Binding OnResetExecuteCommand}" HotKey="F5"/>
+        <MenuItem Header="Run Compiled" Command="{Binding OnRunCompiledCommand}"/>
         <Separator/>
         <MenuItem Header="_Clear all breakpoints" Command="{Binding OnClearBreakpointsCommand}" HotKey="F10"/>
       </MenuItem>
