@@ -17,6 +17,7 @@ namespace raptor
     {
         public Oval Start, End;
         public string Text = "Main";
+        public bool am_compiling = false;
         public Subchart_Kinds kind = Subchart_Kinds.Subchart;
         public int positionX {
             get; set; 

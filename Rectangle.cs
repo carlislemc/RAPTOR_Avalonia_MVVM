@@ -386,12 +386,13 @@ namespace raptor
 				this.Successor.Emit_Code(gen);
 			}
 		}
-		public override void compile_pass1(generate_interface.typ gen)
+		
+		public override void compile_pass1(Generate_interface gen)
 		{	
 			if (this.kind==Kind_Of.Call &&
-				((parse_tree.procedure_call) this.parse_tree).is_tab_call())
+				((parse_tree.Procedure_Call) this.parse_tree).is_tab_call())
 			{
-                string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.procedure_call,
+                string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
                     this.Text);
                 Subchart sub = Find_Start(call_name);
                 if (!(sub is Procedure_Chart))
@@ -409,7 +410,7 @@ namespace raptor
                 else
                 {
                     Procedure_Chart pc = sub as Procedure_Chart;
-                    parse_tree.parameter_list walk = ((parse_tree.procedure_call)this.parse_tree).param_list;
+                    parse_tree.Parameter_List walk = ((parse_tree.Procedure_Call)this.parse_tree).param_list;
                     for (int i = 0; i < pc.num_params; i++)
                     {
                         // it seems like we would want to call pass1 on our parameters

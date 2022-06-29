@@ -226,7 +226,7 @@ namespace RAPTOR_Avalonia_MVVM
             Current_Location = p.finish + 1;
             Ungotten_Token = null;
         }
-        public string get_image(Token_Type token)
+        public static string get_image(Token_Type token)
         {
             if(token==Token_Type.Get_Mouse_Button)
             {

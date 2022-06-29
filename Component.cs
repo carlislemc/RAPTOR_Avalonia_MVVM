@@ -17,6 +17,7 @@ namespace raptor
 	public abstract class Component : ISerializable //Set this attribute to all the classes that want to serialize
 
 	{
+		public static Lexer the_lexer = null; // used in Emit_Code
 		[Serializable()]
 			public class FootPrint
 		{
@@ -1049,28 +1050,30 @@ namespace raptor
 				this.Successor.Rename_Tab(from,to);
 			}
 		}
-		/*public virtual void Emit_Code(generate_interface.typ gen)
-		{	
-			if (this.parse_tree!=null)
-			{
-				interpreter_pkg.emit_code(this.parse_tree,this.Text,gen);
-			}
-			if (this.Successor!=null)
-			{
-				this.Successor.Emit_Code(gen);
-			}
-		}
-		public virtual void compile_pass1(generate_interface.typ gen)
-		{	
-			if (this.parse_tree!=null)
-			{
-				interpreter_pkg.compile_pass1(this.parse_tree,this.Text,gen);
-			}
-			if (this.Successor!=null)
-			{
-				this.Successor.compile_pass1(gen);
-			}
-		}*/
+        public virtual void Emit_Code(Generate_Interface gen)
+        {
+            if (this.parse_tree != null)
+            {
+				Component.the_lexer = new Lexer(this.Text);
+				this.parse_tree.Emit_Code(gen);
+            }
+            if (this.Successor != null)
+            {
+                this.Successor.Emit_Code(gen);
+            }
+        }
+        public virtual void compile_pass1(Generate_Interface gen)
+        {
+            if (this.parse_tree != null)
+            {
+				Component.the_lexer = new Lexer(this.Text);
+                this.parse_tree.compile_pass1(gen);
+            }
+            if (this.Successor != null)
+            {
+                this.Successor.compile_pass1(gen);
+            }
+        }
         public virtual void collect_variable_names(System.Collections.Generic.IList<string> l,
             System.Collections.Generic.IDictionary<string,string> types)
         {

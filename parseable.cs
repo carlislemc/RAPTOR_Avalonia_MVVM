@@ -14,8 +14,21 @@ using Avalonia.Threading;
 
 namespace parse_tree
 {
+    public class Emit_Functions
+    {
+        public static void Emit_Conversion(int o, Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+        public static void emit_method_call_il(int n, int i, Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public abstract class Parseable
     {
+        public abstract void Emit_Code(Generate_Interface gen);
+        public abstract void compile_pass1(Generate_Interface gen);
     }
     public abstract class Value_Parseable : Parseable
     {
@@ -49,6 +62,16 @@ namespace parse_tree
             return left.Execute(l);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public abstract class Binary_Expression : Expression
     {
@@ -66,6 +89,12 @@ namespace parse_tree
             numbers.value second = right.Execute(l);
             return numbers.Numbers.addValues(first, second);
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Minus_Expression : Binary_Expression
     {
@@ -76,6 +105,12 @@ namespace parse_tree
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
             return numbers.Numbers.subValues(first, second);
+        }
+
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -89,6 +124,7 @@ namespace parse_tree
         public bool is_tab_call() { return false; }
 
         public abstract Task Execute(Lexer l);
+
     }
 
     public class Proc_Call : Procedure_Call
@@ -364,6 +400,16 @@ namespace parse_tree
             }
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Plugin_Proc_Call : Procedure_Call
     {
@@ -378,6 +424,17 @@ namespace parse_tree
             }, DispatcherPriority.Background);
             return;
         }
+
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Tabid_Proc_Call : Procedure_Call
@@ -386,6 +443,16 @@ namespace parse_tree
         {
             Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 33333 });
             return;
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -400,6 +467,16 @@ namespace parse_tree
             return;
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
     public abstract class Assignment : Statement {
@@ -408,7 +485,6 @@ namespace parse_tree
 
         // execute the lhs of an assignment, takes in a value v --> what the rhs produced
         public abstract numbers.value Execute(Lexer l);
-
 
     }
     public class Expr_Assignment : Assignment
@@ -422,6 +498,16 @@ namespace parse_tree
             return val;
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
     // Statement => (Procedure_Call | Assignment) [;] End_Input
@@ -429,7 +515,13 @@ namespace parse_tree
 
     // Lhs => id[\[Expression[, Expression]\]]
     public abstract class Lhs {
+
         public abstract void Execute(Lexer l, numbers.value v);
+
+        public abstract void Emit_Code(Generate_Interface gen);
+
+        public abstract void compile_pass1(Generate_Interface gen);
+
     }
     public class Id_Lhs : Lhs
     {
@@ -442,6 +534,16 @@ namespace parse_tree
         public override void Execute(Lexer l, numbers.value v){
            string varname = l.Get_Text(id.start, id.finish);
            Runtime.setVariable(varname, v);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -463,6 +565,16 @@ namespace parse_tree
             }
             int i = numbers.Numbers.integer_of(ref_val);
             Runtime.setArrayElement(varname, i, v);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -491,6 +603,16 @@ namespace parse_tree
             int i1 = numbers.Numbers.integer_of(ref_val1);
             int i2 = numbers.Numbers.integer_of(ref_val2);
             Runtime.set2DArrayElement(varname, i1, i2, v);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -523,6 +645,10 @@ namespace parse_tree
 
     public abstract class Rhs { 
         public abstract numbers.value Execute(Lexer l);
+
+        public abstract void Emit_Code(Generate_Interface gen);
+
+        public abstract void compile_pass1(Generate_Interface gen);
     }
     public class Id_Rhs : Rhs
     {
@@ -538,6 +664,16 @@ namespace parse_tree
             return Runtime.getVariable(varname);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Array_Ref_Rhs : Id_Rhs
     {
@@ -555,6 +691,16 @@ namespace parse_tree
             return Runtime.getArrayElement(varname, i);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Array_Ref_2D_Rhs : Array_Ref_Rhs
     {
@@ -579,6 +725,16 @@ namespace parse_tree
             return Runtime.get2DArrayElement(varname, i, i2);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
     public class Rhs_Method_Call : Id_Rhs
@@ -599,7 +755,8 @@ namespace parse_tree
     }
     public class Empty_Rsuffix : Rsuffix { }
 
-    public abstract class Expon : Value_Parseable { 
+    public abstract class Expon : Value_Parseable {
+
         public override abstract numbers.value Execute(Lexer l);
 
     }
@@ -612,6 +769,16 @@ namespace parse_tree
 
         public override numbers.value Execute(Lexer l){
             return new numbers.value(){V=666};
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -633,6 +800,16 @@ namespace parse_tree
             return rhs.Execute(l);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Number_Expon : Expon
     {
@@ -645,6 +822,16 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             string s = l.Get_Text(number.start, number.finish);
             return numbers.Numbers.make_value__5(s);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
 
     }
@@ -663,6 +850,16 @@ namespace parse_tree
             return temp;
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class String_Expon : Expon
     {
@@ -676,6 +873,16 @@ namespace parse_tree
             return new numbers.value(){Kind=numbers.Value_Kind.String_Kind, S=l.Get_Text(s.start, s.finish)};
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Paren_Expon : Expon
     {
@@ -687,6 +894,16 @@ namespace parse_tree
 
         public override numbers.value Execute(Lexer l){
             return expr_part.Execute(l);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public class Id_Expon : Expon
@@ -703,6 +920,16 @@ namespace parse_tree
             throw new NotImplementedException();
         }
 
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
 
     }
     public class Func0_Expon : Id_Expon
@@ -775,6 +1002,17 @@ namespace parse_tree
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Character_Expon : Expon
     {
@@ -787,6 +1025,16 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             char ans = l.Get_Text(s.start, s.finish)[1];
             return new numbers.value(){C=ans, Kind=numbers.Value_Kind.Character_Kind};
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -855,6 +1103,17 @@ namespace parse_tree
             //return new numbers.value() { V = 333 };
             throw new NotImplementedException();
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Plugin_Func_Expon : Id_Expon
     {
@@ -863,7 +1122,6 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             if(parameters == null)
             {
-                Variable kasdfb = new Variable("hi", new numbers.value());
                 return Plugins.Invoke_Function(l.Get_Text().Substring(l.Get_Text().IndexOf(":=") + 2).Trim(), parameters);
             }
             else
@@ -873,6 +1131,16 @@ namespace parse_tree
                 return Plugins.Invoke_Function(text, parameters);
             }
             
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -903,6 +1171,16 @@ namespace parse_tree
             return left.Execute(l);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Expon_Mult : Mult
     {
@@ -917,6 +1195,16 @@ namespace parse_tree
             numbers.value second = right.Execute(l);
             return numbers.Numbers.exponValues(first, second);
 
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public class Add : Value_Parseable
@@ -946,6 +1234,16 @@ namespace parse_tree
             return left.Execute(l);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Binary_Add : Add
     {
@@ -960,6 +1258,16 @@ namespace parse_tree
             numbers.value second = right.Execute(l);
             return numbers.Numbers.addValues(first, second);
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Div_Add : Binary_Add
     {
@@ -973,6 +1281,16 @@ namespace parse_tree
             return numbers.Numbers.divValues(first, second);
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Mult_Add : Binary_Add
     {
@@ -983,6 +1301,16 @@ namespace parse_tree
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
             return numbers.Numbers.multValues(first, second);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public class Mod_Add : Binary_Add
@@ -996,6 +1324,16 @@ namespace parse_tree
             numbers.value second = right.Execute(l);
             return numbers.Numbers.modValues(first, second);
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Rem_Add : Binary_Add
     {
@@ -1007,6 +1345,16 @@ namespace parse_tree
             numbers.value first = left.Execute(l);
             numbers.value second = right.Execute(l);
             return numbers.Numbers.remValues(first, second);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public abstract class Boolean_Parseable : Parseable
@@ -1039,6 +1387,16 @@ namespace parse_tree
             return false;
         }
 
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
     }
     public class Boolean0 : Boolean_Parseable
     {
@@ -1049,6 +1407,16 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
             throw new NotImplementedException();
         }
 
@@ -1064,6 +1432,16 @@ namespace parse_tree
         public override bool Execute(Lexer l){
             return value;
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Boolean1 : Boolean_Parseable
     {
@@ -1076,6 +1454,16 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
             throw new NotImplementedException();
         }
     }
@@ -1092,6 +1480,16 @@ namespace parse_tree
         public override bool Execute(Lexer l){
             throw new NotImplementedException();
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Boolean_Plugin : Boolean_Parseable
     {
@@ -1099,6 +1497,16 @@ namespace parse_tree
         public Parameter_List? parameters;
 
         public override bool Execute(Lexer l){
+            throw new NotImplementedException();
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
             throw new NotImplementedException();
         }
     }
@@ -1119,6 +1527,16 @@ namespace parse_tree
                 return left.Execute(l);
             }
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class And_Boolean2 : Boolean2
     {
@@ -1130,6 +1548,16 @@ namespace parse_tree
 
         public override bool Execute(Lexer l){
             return left.Execute(l) && right.Execute(l);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public class Boolean_Expression : Boolean_Parseable
@@ -1143,6 +1571,16 @@ namespace parse_tree
         public override bool Execute(Lexer l){
             return left.Execute(l);
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Xor_Boolean : Boolean_Expression
     {
@@ -1155,6 +1593,16 @@ namespace parse_tree
         public override bool Execute(Lexer l){
             return left.Execute(l) ^ right.Execute(l);
         }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Or_Boolean : Boolean_Expression
     {
@@ -1166,6 +1614,16 @@ namespace parse_tree
 
         public override bool Execute(Lexer l){
             return left.Execute(l) || right.Execute(l);
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     public class Input : Parseable
@@ -1180,6 +1638,16 @@ namespace parse_tree
         public void Execute(Lexer l, numbers.value v){
             lhs.Execute(l, v);
         }
+
+        public override void Emit_Code(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     abstract public class Output : Parseable
@@ -1187,6 +1655,7 @@ namespace parse_tree
         public bool new_line;
 
         public abstract numbers.value Execute(Lexer l);
+        
     }
     public class Expr_Output : Output
     {
@@ -1200,6 +1669,16 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             numbers.value v =  expr.Execute(l);
             return v;
+        }
+
+        public override void Emit_Code(Generate_Interface gen)  
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
@@ -1239,6 +1718,16 @@ namespace parse_tree
             }
 
             return ans;
+        }
+
+        public void Emit_Code(Generate_Interface gen) 
+        {
+            throw new NotImplementedException();
+        }
+
+        public void compile_pass1(Generate_Interface gen)
+        {
+            throw new NotImplementedException();
         }
 
     }

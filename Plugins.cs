@@ -678,6 +678,263 @@ namespace RAPTOR_Avalonia_MVVM
 			}
 		}
 
+
+		internal static void Emit_Invoke_Function(string name,
+			parse_tree.Parameter_List parameters,
+			Generate_IL gil)
+		{
+			numbers.value dummyValue = new numbers.value();
+			Type numbersValueType = dummyValue.GetType();
+			ILGenerator gen = gil.gen;
+			parse_tree.Parameter_List walk;
+			int num_parameters;
+			MethodInfo method = GetMethod(name);
+			ParameterInfo[] parameter_info = method.GetParameters();
+			num_parameters = parameter_info.Length;
+			LocalBuilder[] local_parameters = new LocalBuilder[num_parameters];
+			walk = parameters;
+			for (int i = 0; i < num_parameters; i++)
+			{
+
+				if (parameter_info[i].ParameterType.Name == "Int32")
+				{
+					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
+					gil.Emit_Method("numbers_pkg", "integer_of");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single")
+				{
+					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
+					gil.Emit_Method("numbers_pkg", "long_float_of");
+					gen.Emit(OpCodes.Conv_R4);
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double")
+				{
+					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
+					gil.Emit_Method("numbers_pkg", "long_float_of");
+				}
+				else if (parameter_info[i].ParameterType.Name == "String")
+				{
+					try
+					{
+						//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+						FieldInfo field = numbersValueType.GetField("s");
+						// mcc: moved this emit load after the GetType, because we don't
+						// want this instruction emitted if the GetType throws an exception
+						gil.Emit_Load(name);
+						gen.Emit(OpCodes.Ldfld, field);
+					}
+					catch
+					{
+						((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
+						gil.Emit_Method("numbers_pkg", "string_of");
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Int32&")
+				{
+					throw new System.Exception("parameter type \"ref int\" of method " + method.Name + " not supported.");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single&")
+				{
+					throw new System.Exception("parameter type \"ref float\" of method " + method.Name + " not supported.");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+
+					FieldInfo field = numbersValueType.GetField("v");
+					gen.Emit(OpCodes.Ldflda, field);
+				}
+				else if (parameter_info[i].ParameterType.Name == "Int32[]" ||
+					parameter_info[i].ParameterType.Name == "Int32[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_Array", "get_Int32a");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Int32[]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Int32[]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single[]" ||
+					parameter_info[i].ParameterType.Name == "Single[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_Array", "get_Singlea");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Single[]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Single[]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double[]" ||
+					parameter_info[i].ParameterType.Name == "Double[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_Array", "get_Doublea");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Double[]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Double[]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Int32[][]" ||
+					parameter_info[i].ParameterType.Name == "Int32[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "get_Int32aa");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Int32[][]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Int32[][]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single[][]" ||
+					parameter_info[i].ParameterType.Name == "Single[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "get_Singleaa");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Single[][]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Single[][]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double[][]" ||
+					parameter_info[i].ParameterType.Name == "Double[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "get_Doubleaa");
+					local_parameters[i] = gen.DeclareLocal(System.Type.GetType("System.Double[][]"));
+					gen.Emit(OpCodes.Stloc, local_parameters[i]);
+					if (parameter_info[i].ParameterType.Name == "Double[][]&")
+					{
+						gen.Emit(OpCodes.Ldloca, local_parameters[i]);
+					}
+					else
+					{
+						gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					}
+				}
+				walk = walk.next;
+			}
+			Set_Is_Used(method.DeclaringType.Assembly.GetName().Name);
+			gen.Emit(OpCodes.Call, method);
+			walk = parameters;
+
+			for (int i = 0; i < num_parameters; i++)
+			{
+				if (parameter_info[i].ParameterType.Name == "Int32&")
+				{
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single&")
+				{
+				}
+				else if (parameter_info[i].ParameterType.Name == "Int32[]" ||
+					parameter_info[i].ParameterType.Name == "Int32[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_Array", "set_Int32a");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single[]" ||
+					parameter_info[i].ParameterType.Name == "Single[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_Array", "set_Singlea");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double[]" ||
+					parameter_info[i].ParameterType.Name == "Double[]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_Array", "set_Doublea");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Int32[][]" ||
+					parameter_info[i].ParameterType.Name == "Int32[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "set_Int32aa");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Single[][]" ||
+					parameter_info[i].ParameterType.Name == "Single[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "set_Singleaa");
+				}
+				else if (parameter_info[i].ParameterType.Name == "Double[][]" ||
+					parameter_info[i].ParameterType.Name == "Double[][]&")
+				{
+					//string var_name = ((parse_tree.Expr_Output)walk.parameter).get_string();
+					gil.Emit_Load(name);
+					gen.Emit(OpCodes.Ldloc, local_parameters[i]);
+					gil.Emit_Method_Virt("raptor.Value_2D_Array", "set_Doubleaa");
+				}
+				walk = walk.next;
+			}
+
+			if (method.ReturnType.Name == "Single")
+			{
+				gen.Emit(OpCodes.Conv_R8);
+				gil.Emit_Method("numbers_pkg", "make_value__2");
+			}
+			else if (method.ReturnType.Name == "Double")
+			{
+				gil.Emit_Method("numbers_pkg", "make_value__2");
+			}
+			else if (method.ReturnType.Name == "Int32")
+			{
+				gil.Emit_Method("numbers_pkg", "make_value__3");
+			}
+			else if (method.ReturnType.Name == "String")
+			{
+				gil.Emit_Method("numbers_pkg", "make_string_value");
+			}
+			else if (method.ReturnType.Name == "Boolean")
+			{
+				// don't need to do anything on a Boolean result
+			}
+		}
+
 		private static System.Collections.Generic.List<string> plugins =
 			new System.Collections.Generic.List<string>();
 		private static System.Collections.Generic.List<string> assemblies =
