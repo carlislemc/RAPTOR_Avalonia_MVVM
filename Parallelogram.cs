@@ -505,7 +505,7 @@ namespace raptor
 				return Component.unbreakString(result);
 			}
 		}
-		/*public override void compile_pass1(generate_interface.typ gen)
+		public override void compile_pass1(Generate_Interface gen)
 		{
 			if (this.parse_tree!=null & this.is_input && this.input_is_expression)
 			{
@@ -516,7 +516,7 @@ namespace raptor
                 }
 			}
 			base.compile_pass1(gen);
-		}*/
+		}
 
 		/*public override void Emit_Code(generate_interface.typ gen)
 		{	

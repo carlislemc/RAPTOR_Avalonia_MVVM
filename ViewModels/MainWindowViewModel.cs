@@ -29,7 +29,6 @@ using System.Collections;
 using Avalonia.Threading;
 using System.Diagnostics;
 
-
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
 
@@ -1631,8 +1630,35 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             });
         }
 
-        public void OnRunCompiledCommand(){
-            
+        public async void OnRunCompiledCommand(){
+
+            //this.FileSave_Click();
+            //this.OnResetCommand();
+
+            Component.run_compiled_flowchart = true;
+            Compile_Helpers.Compile_Flowchart(theTabs);
+            //try
+            //{
+            //    Compile_Helpers.Compile_Flowchart(theTabs);
+            //    try
+            //    {
+            //        Compile_Helpers.Run_Compiled(false);
+            //    }
+            //    catch (System.Exception exc)
+            //    {
+            //        MessageBoxClass.Show("Flowchart terminated abnormally\n" +
+            //            exc.ToString());
+            //    }
+            //}
+            //catch (System.Exception exc)
+            //{
+            //    await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+
+
+            Component.run_compiled_flowchart = false;
+            //this.rescale_all(this.scale);
+
         }
 
     }

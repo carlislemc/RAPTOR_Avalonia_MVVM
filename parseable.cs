@@ -69,7 +69,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
         }
 
     }
@@ -95,6 +95,12 @@ namespace parse_tree
             throw new NotImplementedException();
         }
 
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
+        }
+
     }
     public class Minus_Expression : Binary_Expression
     {
@@ -111,6 +117,12 @@ namespace parse_tree
         public override void Emit_Code(Generate_Interface gen)  
         {
             throw new NotImplementedException();
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
+        {
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
 
     }
@@ -407,7 +419,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            // NEED TO DO
+            //throw new NotImplementedException();
         }
 
     }
@@ -433,7 +446,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 
@@ -452,7 +465,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 
@@ -474,7 +487,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -505,7 +518,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            expr_part.compile_pass1(gen);
         }
 
     }
@@ -543,7 +556,10 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            if(!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_Variable(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
 
     }
@@ -574,7 +590,11 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            reference.compile_pass1(gen);
+            if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_1D_Array(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
 
     }
@@ -612,7 +632,12 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            reference.compile_pass1(gen);
+            reference2.compile_pass1(gen);
+            if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_2D_Array(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
 
     }
@@ -672,7 +697,10 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_Variable(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
     }
     public class Array_Ref_Rhs : Id_Rhs
@@ -699,7 +727,11 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            reference.compile_pass1(gen);
+            if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_1D_Array(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
     }
     public class Array_Ref_2D_Rhs : Array_Ref_Rhs
@@ -732,7 +764,12 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            reference.compile_pass1(gen);
+            reference2.compile_pass1(gen);
+            if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
+            {
+                gen.Declare_As_2D_Array(Component.the_lexer.Get_Text(id.start, id.finish));
+            }
         }
 
     }
@@ -778,7 +815,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            expon_parse_tree.compile_pass1(gen);
         }
     }
 
@@ -807,7 +844,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -831,7 +868,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -857,7 +894,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            e.compile_pass1(gen);
+            //throw new NotImplementedException();
         }
 
     }
@@ -880,7 +918,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -903,7 +941,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            expr_part.compile_pass1(gen);
         }
     }
     public class Id_Expon : Expon
@@ -928,7 +966,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -1010,7 +1048,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -1034,7 +1072,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 
@@ -1111,7 +1149,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            // NEED TO DO
+            //throw new NotImplementedException();
         }
 
     }
@@ -1140,7 +1179,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 
@@ -1178,7 +1217,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
         }
 
     }
@@ -1204,7 +1243,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Add : Value_Parseable
@@ -1241,7 +1281,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
         }
 
     }
@@ -1266,7 +1306,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Div_Add : Binary_Add
@@ -1288,7 +1329,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
 
     }
@@ -1310,7 +1352,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Mod_Add : Binary_Add
@@ -1332,7 +1375,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Rem_Add : Binary_Add
@@ -1354,7 +1398,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public abstract class Boolean_Parseable : Parseable
@@ -1394,7 +1439,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
 
     }
@@ -1417,7 +1463,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
@@ -1440,7 +1486,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
     public class Boolean1 : Boolean_Parseable
@@ -1464,7 +1510,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            parameter.compile_pass1(gen);
         }
     }
     public class Boolean_Reflection : Boolean_Parseable
@@ -1488,7 +1534,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
     public class Boolean_Plugin : Boolean_Parseable
@@ -1507,7 +1553,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
     public class Boolean2 : Boolean_Parseable
@@ -1535,7 +1581,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
         }
     }
     public class And_Boolean2 : Boolean2
@@ -1557,7 +1603,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Boolean_Expression : Boolean_Parseable
@@ -1579,7 +1626,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
         }
     }
     public class Xor_Boolean : Boolean_Expression
@@ -1601,7 +1648,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Or_Boolean : Boolean_Expression
@@ -1623,7 +1671,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            left.compile_pass1(gen);
+            right.compile_pass1(gen);
         }
     }
     public class Input : Parseable
@@ -1646,7 +1695,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            lhs.compile_pass1(gen);
         }
     }
 
@@ -1678,7 +1727,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            expr.compile_pass1(gen);
         }
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
@@ -1727,7 +1776,7 @@ namespace parse_tree
 
         public void compile_pass1(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }
