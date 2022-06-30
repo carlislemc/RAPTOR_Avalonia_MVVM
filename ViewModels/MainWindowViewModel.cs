@@ -1635,36 +1635,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //this.FileSave_Click();
             //this.OnResetCommand();
 
-            Component.run_compiled_flowchart = true;
-            Compile_Helpers.Compile_Flowchart(theTabs);
             try
             {
-                Compile_Helpers.Run_Compiled_NoThread(false);
+                Compile_Helpers.Compile_Flowchart(theTabs);
+                try
+                {
+                    Compile_Helpers.Run_Compiled_NoThread(false);
+                }
+                catch (System.Exception exc)
+                {
+                    MessageBoxClass.Show("Flowchart terminated abnormally\n" +
+                        exc.ToString());
+                }
             }
             catch (System.Exception exc)
             {
-                MessageBoxClass.Show("Flowchart terminated abnormally\n" +
-                    exc.ToString());
+                await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-            //try
-            //{
-            //    Compile_Helpers.Compile_Flowchart(theTabs);
-            //    try
-            //    {
-            //        Compile_Helpers.Run_Compiled_NoThread(false);
-            //    }
-            //    catch (System.Exception exc)
-            //    {
-            //        MessageBoxClass.Show("Flowchart terminated abnormally\n" +
-            //            exc.ToString());
-            //    }
-            //}
-            //catch (System.Exception exc)
-            //{
-            //    await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
 
 
             Component.run_compiled_flowchart = false;

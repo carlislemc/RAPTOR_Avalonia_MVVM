@@ -38,6 +38,28 @@ namespace RAPTOR_Avalonia_MVVM
 			return myRaptor_files.Input_Is_Redirected;
 		}
 
+		public void Stop_Redirect_Input()
+        {
+            if (Input_Is_Redirected)
+            {
+				Input_Is_Redirected = false;
+            }
+        }
+
+		public void Stop_Redirect_Output()
+		{
+			if (Output_Is_Redirected)
+			{
+				Output_Is_Redirected = false;
+			}
+		}
+
+		public static void close_files()
+        {
+			myRaptor_files.Stop_Redirect_Input();
+			myRaptor_files.Stop_Redirect_Output();
+		}
+
 	}
 }
 

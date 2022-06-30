@@ -90,7 +90,7 @@ namespace raptor
         public void Finish()
         {
             gen = myILGenerator;
-            Emit_Method("raptor_files_pkg", "close_files");
+            Emit_Method("RAPTOR_Avalonia_MVVM.raptor_files", "close_files");
             // Generate the 'ret' IL instruction.
             myILGenerator.Emit(OpCodes.Ret);
 
