@@ -105,6 +105,7 @@ namespace raptor
         void Emit_Load_Number(double val);
         void Emit_Load_String(string val);
         void Emit_Load_String_Const(string val);
+        void Emit_Load_Character(char val);
 
         // Conversions (numbered in parse_tree.adb)
         void Emit_Conversion(int o);

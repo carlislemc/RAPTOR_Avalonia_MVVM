@@ -18,6 +18,7 @@ namespace raptor
 
 	{
 		public static Lexer the_lexer = null; // used in Emit_Code
+		public static Component currentTempComponent = null; // used in Emit_Code
 		[Serializable()]
 			public class FootPrint
 		{
@@ -1055,6 +1056,7 @@ namespace raptor
             if (this.parse_tree != null)
             {
 				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
 				this.parse_tree.Emit_Code(gen);
             }
             if (this.Successor != null)

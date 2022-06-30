@@ -73,7 +73,7 @@ namespace raptor
             }
             try
             {
-                //values[index - 1] = v._deep_clone();
+                values[index - 1] = v._deep_clone();
                 values[index - 1] = Runtime.getValueArray((Variable)v.Object);
 
             }
@@ -204,7 +204,7 @@ namespace raptor
             }
             try
             {
-                //((System.Collections.ArrayList)values[index1 - 1])[index2 - 1] = v._deep_clone();
+                ((System.Collections.ArrayList)values[index1 - 1])[index2 - 1] = v._deep_clone();
                 ((System.Collections.ArrayList)values[index1 - 1])[index2 - 1] = Runtime.getValueArray((Variable)v.Object);
             }
             catch

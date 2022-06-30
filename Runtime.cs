@@ -8,7 +8,9 @@ using System.Data;
 //using dotnetgraphlibrary;
 //using PlaySound;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using RAPTOR_Avalonia_MVVM.Views;
 using ReactiveUI;
+using Avalonia.Threading;
 
 namespace raptor
 {
@@ -1072,10 +1074,16 @@ namespace raptor
 
 		
 
-        internal static void consoleWriteln(string v)
+        public static void consoleWriteln(string v)
         {
-            throw new NotImplementedException();
-        }
+			//throw new NotImplementedException();
+			Dispatcher.UIThread.Post(() =>
+			{
+				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+				mc.Text += v + "\n";
+				MainWindow.masterConsole.Activate();
+			}, DispatcherPriority.Background);
+		}
 
         // Container holding all variables and their values
         public static Avalonia.Controls.Window parent;

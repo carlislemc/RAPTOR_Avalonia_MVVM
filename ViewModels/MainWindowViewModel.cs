@@ -1637,12 +1637,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Component.run_compiled_flowchart = true;
             Compile_Helpers.Compile_Flowchart(theTabs);
+            try
+            {
+                Compile_Helpers.Run_Compiled_NoThread(false);
+            }
+            catch (System.Exception exc)
+            {
+                MessageBoxClass.Show("Flowchart terminated abnormally\n" +
+                    exc.ToString());
+            }
+
+
             //try
             //{
             //    Compile_Helpers.Compile_Flowchart(theTabs);
             //    try
             //    {
-            //        Compile_Helpers.Run_Compiled(false);
+            //        Compile_Helpers.Run_Compiled_NoThread(false);
             //    }
             //    catch (System.Exception exc)
             //    {

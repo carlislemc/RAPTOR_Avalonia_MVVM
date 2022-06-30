@@ -29,6 +29,15 @@ namespace parse_tree
     {
         public abstract void Emit_Code(Generate_Interface gen);
         public abstract void compile_pass1(Generate_Interface gen);
+        public enum Variable_Kind { Value, Array_1D, Array_2D };
+        public enum Conversions { To_Integer, To_Float, To_String, Number_To_String, To_Bool, To_Color, Char_To_Int, Int_To_Char };
+        public enum Context_Type { Assign_Context, Call_Context, Input_Context };
+        public Variable_Kind Emit_Kind = Variable_Kind.Value;
+
+        public void emit_parameter_number(Output p, Generate_Interface gen, int o)
+        {
+            ((Expr_Output)p).expr.Emit_Code(gen);
+        }
     }
     public abstract class Value_Parseable : Parseable
     {
@@ -64,7 +73,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -92,7 +101,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Plus();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Plus();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -116,7 +136,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Minus();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Minus();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -482,7 +513,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -513,11 +544,26 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            lhs.Emit_Code(gen);
+            expr_part.Emit_Code(gen);
+
+            switch (Emit_Kind)
+            {
+                case Variable_Kind.Value:
+                    gen.Variable_Assignment_PastRHS();
+                    return;
+                case Variable_Kind.Array_1D:
+                    gen.Array_1D_Assignment_PastRHS();
+                    return;
+                case Variable_Kind.Array_2D:
+                    gen.Array_2D_Assignment_PastRHS();
+                    return;
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
         {
+            lhs.compile_pass1(gen);
             expr_part.compile_pass1(gen);
         }
 
@@ -551,7 +597,8 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string t = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load(t);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -583,9 +630,21 @@ namespace parse_tree
             Runtime.setArrayElement(varname, i, v);
         }
 
+        private void Emit_Method(Generate_Interface gen)
+        {
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_After_Index(s);
+
+        }
+
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_After_Index(s);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -625,9 +684,24 @@ namespace parse_tree
             Runtime.set2DArrayElement(varname, i1, i2, v);
         }
 
+        private void Emit_Method(Generate_Interface gen)
+        {
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_2D_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_Between_Indices();
+            reference2.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_After_Indices(s);
+
+        }
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_2D_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_Between_Indices();
+            reference2.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_After_Indices(s);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -691,7 +765,8 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Load(Component.the_lexer.Get_Text(id.start, id.finish));
+
         }
 
 
@@ -721,7 +796,10 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_After_Index(s);
         }
 
 
@@ -759,7 +837,12 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Load_Array_2D_Start(s);
+            reference.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_Between_Indices();
+            reference2.Emit_Code(gen);
+            gen.Emit_Load_Array_2D_After_Indices(s);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -810,7 +893,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            expon_parse_tree.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -839,7 +922,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            rhs.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -863,7 +946,9 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(number.start, number.finish);
+            double val = (double)(numbers.Numbers.make_value__5(s).V);
+            gen.Emit_Load_Number(val);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -889,7 +974,16 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                e.Emit_Code(gen);
+                gen.Emit_Unary_Minus();
+            }
+            else
+            {
+                gen.Emit_Unary_Minus();
+                e.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -913,7 +1007,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Load_String(Component.the_lexer.Get_Text(s.start, s.finish).Replace("\"", ""));
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -936,7 +1030,10 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Left_Paren();
+            expr_part.Emit_Code(gen);
+            gen.Emit_Right_Paren();
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1043,7 +1140,28 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if(id.kind == Token_Type.Random)
+            {
+                gen.Emit_Random();
+                return;
+            }
+            else if(id.kind == Token_Type.Random_Color)
+            {
+                gen.Emit_Random(0.0, 16.0);
+                return;
+            }
+            else if(id.kind == Token_Type.Random_Extended_Color)
+            {
+                gen.Emit_Random(0.0, 242.0);
+                return;
+            }
+            else
+            {
+                int t = (int)id.kind;
+                object o = gen.Emit_Call_Method(t);
+                gen.Emit_No_Parameters(o); 
+            }
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1067,7 +1185,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Load_Character(Component.the_lexer.Get_Text(s.start, s.finish)[1]);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1144,7 +1262,13 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            // NEED TO DO
+            int functionName = (int)id.kind;
+            if(functionName != (int)Token_Type.Length_Of && functionName != (int)Token_Type.to_ascii && functionName != (int)Token_Type.to_character)
+            {
+                Object o = gen.Emit_Call_Method(functionName);
+            }
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1174,7 +1298,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Plugin_Call(Component.the_lexer.Get_Text(id.start, id.finish), parameters);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1212,7 +1336,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1238,7 +1362,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Exponentiation();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Exponentiation();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1276,7 +1411,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1324,7 +1459,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Divide();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Divide();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1347,7 +1493,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Times();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Times();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1370,7 +1527,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Mod();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Mod();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1393,7 +1561,18 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                right.Emit_Code(gen);
+                gen.Emit_Rem();
+            }
+            else
+            {
+                left.Emit_Code(gen);
+                gen.Emit_Rem();
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1434,7 +1613,36 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
+            if (gen.Is_Postfix())
+            {
+                right.Emit_Code(gen);
+            }
+            switch (kind)
+            {
+                case Token_Type.Equal:
+                    gen.Emit_Relation(5);
+                    break;
+                case Token_Type.Not_Equal:
+                    gen.Emit_Relation(6);
+                    break;
+                case Token_Type.Greater:
+                    gen.Emit_Relation(1);
+                    break;
+                case Token_Type.Greater_Equal:
+                    gen.Emit_Relation(2);
+                    break;
+                case Token_Type.Less:
+                    gen.Emit_Relation(3);
+                    break;
+                case Token_Type.Less_Equal:
+                    gen.Emit_Relation(4);
+                    break;
+            }
+            if (!gen.Is_Postfix())
+            {
+                right.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1458,7 +1666,9 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            int t = (int)kind;
+            Object o = gen.Emit_Call_Method(t);
+            gen.Emit_No_Parameters(o);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1481,7 +1691,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Load_Boolean(value);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1505,7 +1715,33 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            int t = (int)kind;
+            Object o = gen.Emit_Call_Method(t);
+            switch (kind)
+            {
+                case Token_Type.Key_Down:
+                    gen.Emit_Conversion((int)Conversions.To_String);
+                    parameter.Emit_Code(gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_String);
+                    break;
+                case Token_Type.Mouse_Button_Down:
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    parameter.Emit_Code(gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    break;
+                case Token_Type.Mouse_Button_Pressed:
+                    gen.Emit_Conversion((int)Conversions.To_String);
+                    parameter.Emit_Code(gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_String);
+                    break;
+                case Token_Type.Mouse_Button_Released:
+                    gen.Emit_Conversion((int)Conversions.To_String);
+                    parameter.Emit_Code(gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_String);
+                    break;
+            }
+            gen.Emit_Last_Parameter(o);
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1576,7 +1812,22 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            if (gen.Is_Postfix())
+            {
+                left.Emit_Code(gen);
+                if (negated)
+                {
+                    gen.Emit_Not();
+                }
+            }
+            else
+            {
+                if (negated)
+                {
+                    gen.Emit_Not();
+                }
+                left.Emit_Code(gen);
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1598,7 +1849,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_And_Shortcut(left, right, negated);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1621,7 +1872,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1643,7 +1894,9 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            left.Emit_Code(gen);
+            right.Emit_Code(gen);
+            gen.Emit_Xor();
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1666,7 +1919,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            gen.Emit_Or_Shortcut(left, right);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1688,9 +1941,24 @@ namespace parse_tree
             lhs.Execute(l, v);
         }
 
+        private void Emit_Load_Prompt(Generate_Interface gen)
+        {
+            string prompt = ((Parallelogram)Component.currentTempComponent).prompt;
+            if(prompt != null)
+            {
+                gen.Emit_Load_String_Const(prompt);
+            }
+            else {
+                gen.Emit_Load("raptor_prompt_variable_zzyz");
+            }
+        }
+
         public override void Emit_Code(Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            Context_Type Emit_Context = Context_Type.Input_Context;
+            lhs.Emit_Code(gen);
+            Emit_Load_Prompt(gen);
+            gen.Input_Past_Prompt();
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1722,7 +1990,10 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            bool nl = ((Parallelogram)Component.currentTempComponent).new_line;
+            gen.Output_Start(nl, false);
+            expr.Emit_Code(gen);
+            gen.Output_Past_Expr(nl, false);
         }
 
         public override void compile_pass1(Generate_Interface gen)

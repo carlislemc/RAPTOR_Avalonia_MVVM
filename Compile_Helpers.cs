@@ -367,7 +367,7 @@ namespace raptor
             if (run_compiled_thread != null && run_compiled_thread.ThreadState == ThreadState.Running)
             {
                 run_compiled_thread.Abort();
-            }
+            } 
             run_compiled_thread = new Thread(new ThreadStart(runCompiledHelper));
             run_compiled_thread.Start();
         }

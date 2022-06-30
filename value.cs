@@ -109,6 +109,25 @@ namespace numbers
             return false;
         }
 
+
+        public numbers.value _deep_clone()
+        {
+            switch (Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return new numbers.value() {Kind = Value_Kind.Number_Kind, V = this.V };
+                case Value_Kind.String_Kind:
+                    return new numbers.value() { Kind = Value_Kind.String_Kind, S = this.S };
+                case Value_Kind.Character_Kind:
+                    return new numbers.value() { Kind = Value_Kind.Character_Kind, C = this.C };
+                case Value_Kind.Ref_1D:
+                    throw new NotImplementedException();
+                case Value_Kind.Ref_2D:
+                    throw new NotImplementedException();
+            }
+            throw new NotImplementedException();
+        }
+
     }
     public class Numbers
     {
@@ -140,6 +159,10 @@ namespace numbers
         public static int  integer_of(value v)
         {
             return (int) (v.V);
+        }
+        public static string string_of(value v)
+        {
+            return (v.S);
         }
         public static double long_float_of(value v)
         {
@@ -207,7 +230,7 @@ namespace numbers
             }
         }
 
-        internal static value make_value__5(string s)
+        public static value make_value__5(string s)
         {
             if(s.Contains(".")){
                 numbers.value ans = new numbers.value();
@@ -221,7 +244,7 @@ namespace numbers
                 return ans;
             }
         }
-        internal static value make_value__4(bool b)
+        public static value make_value__4(bool b)
         {
             if(b){
                 return new value { V = 1.0, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
@@ -230,38 +253,38 @@ namespace numbers
             }
             
         }
-        internal static value make_value__3(int index)
+        public static value make_value__3(int index)
         {
             return new value { V = index, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
         }
 
-        internal static value make_value__2(double v)
+        public static value make_value__2(double v)
         {
             return new value { V = v, C = ' ', S = null, Kind = Value_Kind.Number_Kind, Object = null };
         }
 
-        internal static value? make_object_value(object v)
+        public static value? make_object_value(object v)
         {
             return new value { V = 0.0, C = ' ', S = null, Kind = Value_Kind.Object_Kind, Object = v };
         }
 
-        internal static bool Oeq(value variable_Value1, value variable_Value2)
+        public static bool Oeq(value variable_Value1, value variable_Value2)
         {
             throw new NotImplementedException();
         }
 
-        internal static int length_of(value variable_Value)
+        public static int length_of(value variable_Value)
         {
             throw new NotImplementedException();
         }
 
-        internal static value make_string_value(string new_string)
+        public static value make_string_value(string new_string)
         {
             return new value { V = 0.0, C = ' ', S = new_string, Kind = Value_Kind.String_Kind, Object = null };
             //throw new NotImplementedException();
         }
 
-        internal static value make_character_value(char new_char)
+        public static value make_character_value(char new_char)
         {
             return new value { V = 0.0, C = new_char, S = "", Kind = Value_Kind.Character_Kind, Object = null };
             //throw new NotImplementedException();

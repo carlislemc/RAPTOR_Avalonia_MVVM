@@ -349,46 +349,48 @@ namespace raptor
 			return null;
 		}
 
-		//public override void Emit_Code(Generate_Interface gen)
-		//{
-  //          if (this.kind == Kind_Of.Call &&
-		//		((parse_tree.procedure_call) this.parse_tree).is_tab_call())
-		//	{
-  //              string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.procedure_call,
-  //                  this.Text);
-  //              Subchart called_chart = Find_Start(call_name);
-  //              if (!(called_chart is Procedure_Chart))
-  //              {
-  //                  called_chart.Start.Emit_Code(gen);
-  //              }
-  //              else
-  //              {
-  //                  Procedure_Chart pc = called_chart as Procedure_Chart;
-  //                  parse_tree.parameter_list walk = ((parse_tree.procedure_call)this.parse_tree).param_list;
-  //                  object o = gen.Emit_Call_Subchart(pc.Text);
-  //                  for (int i = 0; i < pc.num_params; i++)
-  //                  {
-  //                      parse_tree_pkg.emit_parameter_number(walk.parameter, gen,0);
-  //                      walk = walk.next;
-  //                      if (walk != null)
-  //                      {
-  //                          gen.Emit_Next_Parameter(o);
-  //                      }
-  //                  }
-  //                  gen.Emit_Last_Parameter(o);
-  //              }
-		//	}
-		//	else if (this.parse_tree!=null)
-		//	{
-		//		interpreter_pkg.emit_code(this.parse_tree,this.Text,gen);
-		//	}
-		//	if (this.Successor!=null)
-		//	{
-		//		this.Successor.Emit_Code(gen);
-		//	}
-		//}
-		
-		public override void compile_pass1(Generate_Interface gen)
+        public override void Emit_Code(Generate_Interface gen)
+        {
+            if (this.kind == Kind_Of.Call &&
+                ((parse_tree.Procedure_Call)this.parse_tree).is_tab_call())
+            {
+                string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
+                    this.Text);
+                Subchart called_chart = Find_Start(call_name);
+                if (!(called_chart is Procedure_Chart))
+                {
+                    called_chart.Start.Emit_Code(gen);
+                }
+                else
+                {
+                    Procedure_Chart pc = called_chart as Procedure_Chart;
+                    parse_tree.Parameter_List walk = ((parse_tree.Procedure_Call)this.parse_tree).param_list;
+                    object o = gen.Emit_Call_Subchart(pc.Text);
+                    for (int i = 0; i < pc.num_params; i++)
+                    {
+						parse_tree.emit_parameter_number(walk.parameter, gen, 0);
+                        walk = walk.next;
+                        if (walk != null)
+                        {
+                            gen.Emit_Next_Parameter(o);
+                        }
+                    }
+                    gen.Emit_Last_Parameter(o);
+                }
+            }
+            else if (this.parse_tree != null)
+            {
+
+				Component.the_lexer = new Lexer(this.Text);
+				this.parse_tree.Emit_Code(gen);
+			}
+            if (this.Successor != null)
+            {
+                this.Successor.Emit_Code(gen);
+            }
+        }
+
+        public override void compile_pass1(Generate_Interface gen)
 		{	
 			if (this.kind==Kind_Of.Call &&
 				((parse_tree.Procedure_Call) this.parse_tree).is_tab_call())

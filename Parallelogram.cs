@@ -518,7 +518,7 @@ namespace raptor
 			base.compile_pass1(gen);
 		}
 
-		/*public override void Emit_Code(generate_interface.typ gen)
+		public override void Emit_Code(Generate_Interface gen)
 		{	
 			if (this.parse_tree!=null)
 			{
@@ -526,26 +526,28 @@ namespace raptor
 				{
 					if (!this.input_is_expression)
 					{
-						parse_tree_pkg.set_prompt(this.prompt);
+						//parse_tree.set_prompt(this.prompt);
 					}
 					else
 					{
-						parse_tree_pkg.set_prompt(null);
+						//parse_tree.set_prompt(null);
                         // maintain with parse_tree.adb
                         gen.Variable_Assignment_Start("raptor_prompt_variable_zzyz");
-                        interpreter_pkg.emit_code(
-							((parse_tree.expr_output) this.prompt_tree).expr,
-							this.prompt,gen);
+						Component.the_lexer = new Lexer(this.prompt);
+						Component.currentTempComponent = this;
+                        base.Emit_Code(gen);
                         gen.Variable_Assignment_PastRHS();
 					}
 				}
-				interpreter_pkg.emit_code(this.parse_tree,this.Text,gen);
+				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
+				base.Emit_Code(gen);
 			}
 			if (this.Successor!=null)
 			{
 				this.Successor.Emit_Code(gen);
 			}
-		}*/
+		}
         public override void collect_variable_names(System.Collections.Generic.IList<string> l,
             System.Collections.Generic.IDictionary<string, string> types)
         {

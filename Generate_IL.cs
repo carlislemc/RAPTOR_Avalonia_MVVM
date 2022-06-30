@@ -172,7 +172,7 @@ namespace raptor
                 this.Emit_Method("dotnetgraphlibrary.dotnetgraph",
                     "Get_Click_Y");
             }
-            this.Emit_Method("numbers_pkg",
+            this.Emit_Method("numbers.Numbers",
                 "make_value__3");
         }
         public void Emit_Array_Size(string name)
@@ -188,19 +188,19 @@ namespace raptor
             {
                 local = ((LocalBuilder)variables[name.ToLower()]);
                 gen.Emit(OpCodes.Ldloc, local);
-                Emit_Method("numbers_pkg", "string_of");
+                Emit_Method("numbers.Numbers", "string_of");
                 Emit_Method_Virt("System.String", "get_Length");
             }
             else
             {
                 throw new System.Exception("can only take length_of 1D array or string");
             }
-            Emit_Method("numbers_pkg", "make_value__3");
+            Emit_Method("numbers.Numbers", "make_value__3");
         }
         public void Emit_String_Length()
         {
             this.Emit_Method_Virt("System.String", "get_Length");
-            this.Emit_Method("numbers_pkg",
+            this.Emit_Method("numbers.Numbers",
                "make_value__3");
         }
         public void Emit_Assign_To(string name)
@@ -252,6 +252,7 @@ namespace raptor
             LocalBuilder local;
             if (variables.ContainsKey(name.ToLower()))
             {
+                name_variable = name;
                 local = ((LocalBuilder)variables[name.ToLower()]);
             }
             else if (arrays.ContainsKey(name.ToLower()))
@@ -356,22 +357,22 @@ namespace raptor
             switch (relation)
             {
                 case 1: //gt
-                    Emit_Method("numbers_pkg", "Ogt");
+                    Emit_Method("numbers.Numbers", "Ogt");
                     break;
                 case 2: //ge
-                    Emit_Method("numbers_pkg", "Oge");
+                    Emit_Method("numbers.Numbers", "Oge");
                     break;
                 case 3: //lt
-                    Emit_Method("numbers_pkg", "Olt");
+                    Emit_Method("numbers.Numbers", "Olt");
                     break;
                 case 4: //le
-                    Emit_Method("numbers_pkg", "Ole");
+                    Emit_Method("numbers.Numbers", "Ole");
                     break;
                 case 5: //eq
-                    Emit_Method("numbers_pkg", "Oeq");
+                    Emit_Method("numbers.Numbers", "Oeq");
                     break;
                 case 6: //ne
-                    Emit_Method("numbers_pkg", "Oeq");
+                    Emit_Method("numbers.Numbers", "Oeq");
                     gen.Emit(OpCodes.Ldc_I4_1);
                     gen.Emit(OpCodes.Xor);
                     break;
@@ -396,7 +397,7 @@ namespace raptor
             Assembly[] myAssemblies = Thread.GetDomain().GetAssemblies();
             System.Type t1 = null;
 
-            Emit_Method("numbers_pkg", "long_float_of");
+            Emit_Method("numbers.Numbers", "long_float_of");
             for (int i = 0; i < myAssemblies.Length; i++)
             {
                 t1 = myAssemblies[i].GetType("System.Threading.Thread");
@@ -438,17 +439,17 @@ namespace raptor
         public void Emit_Load_Number(double val)
         {
             gen.Emit(OpCodes.Ldc_R8, val);
-            Emit_Method("numbers_pkg", "make_value__2");
+            Emit_Method("numbers.Numbers", "make_value__2");
         }
         public void Emit_Load_Character(char val)
         {
             gen.Emit(OpCodes.Ldc_I4, val);
-            Emit_Method("numbers_pkg", "make_value__4");
+            Emit_Method("numbers.Numbers", "make_value__4");
         }
         public void Emit_Load_String(string val)
         {
             gen.Emit(OpCodes.Ldstr, val);
-            Emit_Method("numbers_pkg", "make_string_value");
+            Emit_Method("numbers.Numbers", "make_string_value");
         }
         public void Emit_Load_String_Const(string val)
         {
@@ -478,18 +479,18 @@ namespace raptor
 
         public void Emit_Value_To_Color_Type()
         {
-            Emit_Method("numbers_pkg", "integer_of");
+            Emit_Method("numbers.Numbers", "integer_of");
         }
         public void Emit_Value_To_Bool()
         {
-            Emit_Method("numbers_pkg", "integer_of");
+            Emit_Method("numbers.Numbers", "integer_of");
         }
         public void Emit_Random()
         {
             gen.Emit(OpCodes.Ldsfld, random_generator);
             gen.EmitCall(OpCodes.Callvirt,
                 Get_Method("System.Random", "NextDouble"), null);
-            Emit_Method("numbers_pkg", "make_value__2");
+            Emit_Method("numbers.Numbers", "make_value__2");
         }
         public void Emit_Random(double first, double last)
         {
@@ -514,7 +515,7 @@ namespace raptor
             One_Double[0] = System.Type.GetType("System.Double");
             mi = t1.GetMethod("Floor", One_Double);
             gen.EmitCall(OpCodes.Call, mi, null);
-            Emit_Method("numbers_pkg", "make_value__2");
+            Emit_Method("numbers.Numbers", "make_value__2");
         }
 
         public void Emit_And_Shortcut(parse_tree.Boolean_Parseable left,
@@ -550,7 +551,7 @@ namespace raptor
             {
                 local = ((LocalBuilder)variables[name.ToLower()]);
                 gen.Emit(OpCodes.Ldloc, local);
-                Emit_Method("numbers_pkg", "is_number");
+                Emit_Method("numbers.Numbers", "is_number");
             }
             else if (arrays.ContainsKey(name.ToLower()))
             {
@@ -572,7 +573,7 @@ namespace raptor
             {
                 local = ((LocalBuilder)variables[name.ToLower()]);
                 gen.Emit(OpCodes.Ldloc, local);
-                Emit_Method("numbers_pkg", "is_character");
+                Emit_Method("numbers.Numbers", "is_character");
             }
             else if (arrays.ContainsKey(name.ToLower()))
             {
@@ -594,7 +595,7 @@ namespace raptor
             {
                 local = ((LocalBuilder)variables[name.ToLower()]);
                 gen.Emit(OpCodes.Ldloc, local);
-                Emit_Method("numbers_pkg", "is_string");
+                Emit_Method("numbers.Numbers", "is_string");
             }
             else if (arrays.ContainsKey(name.ToLower()))
             {
@@ -654,35 +655,35 @@ namespace raptor
         }
         public void Emit_Times()
         {
-            this.Emit_Method("numbers_pkg", "Omultiply");
+            this.Emit_Method("numbers.Numbers", "multValues");
         }
         public void Emit_Divide()
         {
-            this.Emit_Method("numbers_pkg", "Odivide");
+            this.Emit_Method("numbers.Numbers", "divValues");
         }
         public void Emit_Plus()
         {
-            this.Emit_Method("numbers_pkg", "Oadd");
+            this.Emit_Method("numbers.Numbers", "addValues");
         }
         public void Emit_Unary_Minus()
         {
-            this.Emit_Method("numbers_pkg", "Osubtract");
+            this.Emit_Method("numbers.Numbers", "subValues");
         }
         public void Emit_Minus()
         {
-            this.Emit_Method("numbers_pkg", "Osubtract__2");
+            this.Emit_Method("numbers.Numbers", "subValues");
         }
         public void Emit_Mod()
         {
-            this.Emit_Method("numbers_pkg", "Omod");
+            this.Emit_Method("numbers.Numbers", "modValues");
         }
         public void Emit_Rem()
         {
-            this.Emit_Method("numbers_pkg", "Orem");
+            this.Emit_Method("numbers.Numbers", "remValues");
         }
         public void Emit_Exponentiation()
         {
-            this.Emit_Method("numbers_pkg", "Oexpon");
+            this.Emit_Method("numbers.Numbers", "exponValues");
         }
         public void Start_Method(string name)
         {
@@ -736,7 +737,7 @@ namespace raptor
                         subILGenerator.Emit(OpCodes.Castclass, typeof(numbers.value));
                         subILGenerator.Emit(OpCodes.Ldloc, local);
                         subILGenerator.Emit(OpCodes.Castclass, typeof(numbers.value));
-                        Emit_Method("numbers_pkg", "copy");
+                        Emit_Method("numbers.Numbers", "copy");
                     }
                 }
                 else
@@ -767,7 +768,7 @@ namespace raptor
                             subILGenerator.Emit(OpCodes.Ldloc, local);
                             subILGenerator.Emit(OpCodes.Ldarg, k);
                             subILGenerator.Emit(OpCodes.Castclass, typeof(numbers.value));
-                            Emit_Method("numbers_pkg", "copy");
+                            Emit_Method("numbers.Numbers", "copy");
                         }
                     }
                 }
@@ -935,7 +936,7 @@ namespace raptor
             // keep with parallelogram.cs, parse_tree.adb
             if (name_variable == "raptor_prompt_variable_zzyz")
             {
-                this.Emit_Method("numbers_pkg", "string_of");
+                this.Emit_Method("numbers.Numbers", "string_of");
                 LocalBuilder local;
                 local = ((LocalBuilder)variables[name_variable.ToLower()]);
                 gen.Emit(OpCodes.Stloc, local);
@@ -997,8 +998,8 @@ namespace raptor
         {
             if (!is_string)
             {
-                this.Emit_Method("numbers_pkg",
-                    "msstring_image");
+                this.Emit_Method("numbers.Numbers",
+                    "msstring_view_image");
             }
             if (has_newline)
             {
