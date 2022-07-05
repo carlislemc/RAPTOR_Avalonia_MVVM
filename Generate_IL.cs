@@ -1004,6 +1004,7 @@ namespace raptor
             if (has_newline)
             {
                 this.Emit_Method("raptor.Runtime", "consoleWriteln");
+                
             }
             else
             {

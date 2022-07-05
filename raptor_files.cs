@@ -17,11 +17,11 @@ namespace RAPTOR_Avalonia_MVVM
 {
 	public class raptor_files
 	{
-		public static raptor_files myRaptor_files = new raptor_files();
+		public static raptor_files myRaptor_files;
 
 		public raptor_files()
 		{
-
+			myRaptor_files = this;
 		}
 
 		public bool Input_Is_Redirected = false;

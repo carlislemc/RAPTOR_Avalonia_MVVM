@@ -1298,45 +1298,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         private async Task Save_Before_Losing()
         {
-            //DialogResult dr = DialogResult.No;
-            //if (this.modified)
-            //{
-            //    string msg = "Choosing this option will delete the current flow chart!" + '\n' + "Do you want to save first?";
-            //    dr = MessageBox.Show(msg,
-            //        "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-            //}
-
-            //if (dr == DialogResult.Cancel)
-            //{
-            //    return false;
-            //}
-            //if (dr == DialogResult.Yes)
-            //{
-            //    this.FileSave_Click(sender, e);
-
-            //    while (this.Save_Error)
-            //    {
-            //        dr = MessageBox.Show("Save failed-- try again?",
-            //            "Open New Chart",
-            //            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-            //        if (dr == DialogResult.Yes)
-            //        {
-            //            this.SaveAs_Click(sender, e);
-            //        }
-            //        else if (dr == DialogResult.Cancel)
-            //        {
-            //            return false;
-            //        }
-            //        else
-            //        {
-            //            this.Save_Error = false;
-            //        }
-            //    }
-            //}
-            //return true;
-
-            
-
             if (this.modified)
             {
                
@@ -1640,7 +1601,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 Compile_Helpers.Compile_Flowchart(theTabs);
                 try
                 {
-                    Compile_Helpers.Run_Compiled_NoThread(false);
+                    Compile_Helpers.Run_Compiled(false);
                 }
                 catch (System.Exception exc)
                 {

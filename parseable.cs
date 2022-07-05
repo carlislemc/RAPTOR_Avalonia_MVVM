@@ -953,6 +953,8 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
+            //string num = Component.the_lexer.Get_Text(number.start, number.finish);
+            //double val = (double)(numbers.Numbers.make_value__5(num).V);
             //throw new NotImplementedException();
         }
 

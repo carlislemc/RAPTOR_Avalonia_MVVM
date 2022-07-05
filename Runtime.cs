@@ -1084,9 +1084,19 @@ namespace raptor
 				MainWindow.masterConsole.Activate();
 			}, DispatcherPriority.Background);
 		}
+		public static void consoleWrite(string v)
+		{
+			//throw new NotImplementedException();
+			Dispatcher.UIThread.Post(() =>
+			{
+				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+				mc.Text += v;
+				MainWindow.masterConsole.Activate();
+			}, DispatcherPriority.Background);
+		}
 
-        // Container holding all variables and their values
-        public static Avalonia.Controls.Window parent;
+		// Container holding all variables and their values
+		public static Avalonia.Controls.Window parent;
 		private static RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel console;
 		private static Avalonia.Controls.TreeView watchBox;
 		public Runtime()
