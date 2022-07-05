@@ -326,7 +326,12 @@ namespace raptor
             {
                 try
                 {
+                    //SDILReader.Globals.LoadOpCodes();
+                    //SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
+                    //string msil = mr.GetBodyCode();
+                    //Runtime.consoleWriteln(msil);
                     mi.Invoke(null, null);
+
                 }
                 catch (System.Threading.ThreadAbortException f)
                 {
@@ -334,6 +339,15 @@ namespace raptor
                 }
                 catch (System.Exception e)
                 {
+                    if (e.InnerException != null)
+                    {
+                        Runtime.consoleWriteln("Exception! " + e.InnerException.Message + e.InnerException.StackTrace);
+                    }
+                    else
+                    {
+                        Runtime.consoleWriteln("Exception! " + e.Message + e.StackTrace);
+                    }
+
                     // added 3/2/05 by mcc
                     //if (raptor_files.output_redirected() && from_commandline)
                     //{

@@ -560,6 +560,7 @@ namespace raptor
 		{
 			bool bounded_y = Math.Abs(y-(Y+H/8)) <= H/8;
 			bool bounded_x;
+			
 			if (this.Is_Wide_Diamond())
 			{
 				bounded_x = Math.Abs(x-(this.X-W/4-this.drawing_text_width/2+H/8)) <= H/8;

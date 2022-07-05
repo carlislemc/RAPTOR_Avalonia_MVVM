@@ -382,6 +382,7 @@ namespace raptor
             {
 
 				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
 				this.parse_tree.Emit_Code(gen);
 			}
             if (this.Successor != null)

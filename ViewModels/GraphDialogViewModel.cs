@@ -18,6 +18,7 @@ using ReactiveUI;
 using System.Reactive;
 using interpreter;
 using RAPTOR_Avalonia_MVVM.Controls;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -94,15 +95,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static void PlaySound(string s)
         {
+            DotnetGraph gd = new DotnetGraph(1, 1);
             DotnetGraphControl.dngw.PlaySound("../sounds/sound.wav");
         }
         public static void PlaySoundBackground(string s)
         {
-            DotnetGraphControl.dngw.PlaySoundBackground("../sounds/sound.wav");
+            DotnetGraphControl.dngw.PlaySoundBackground(s);
         }
         public static void PlaySoundBackgroundLoop(string s)
         {
-            DotnetGraphControl.dngw.PlaySoundBackgroundLoop("../sounds/sound.wav");
+            DotnetGraphControl.dngw.PlaySoundBackgroundLoop(s);
         }
 
     }

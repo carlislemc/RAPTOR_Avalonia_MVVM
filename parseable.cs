@@ -32,7 +32,8 @@ namespace parse_tree
         public enum Variable_Kind { Value, Array_1D, Array_2D };
         public enum Conversions { To_Integer, To_Float, To_String, Number_To_String, To_Bool, To_Color, Char_To_Int, Int_To_Char };
         public enum Context_Type { Assign_Context, Call_Context, Input_Context };
-        public Variable_Kind Emit_Kind = Variable_Kind.Value;
+        public static Variable_Kind Emit_Kind = Variable_Kind.Value;
+        public static Context_Type Emit_Context = Context_Type.Assign_Context;
 
         public void emit_parameter_number(Output p, Generate_Interface gen, int o)
         {
@@ -456,7 +457,7 @@ namespace parse_tree
     {
         public override async Task Execute(Lexer l)
         {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 22222 });
+            //Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 22222 });
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             numbers.value[] ps = new numbers.value[0];
             if (param_list != null)
@@ -472,17 +473,21 @@ namespace parse_tree
                 {
                     mw.myTimer.Stop();
                 }
-                if(proc.ToLower() == "play_sound")
+                if (proc.ToLower() == "play_sound")
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        string soundFile =ps[0].S;
+                        string soundFile = ps[0].S;
                         GraphDialogViewModel.PlaySound(soundFile);
                     }, DispatcherPriority.Background);
 
                 }
-
-            });
+                Runtime.processing_parameter_list = false;
+                if (mw.myTimer != null)
+                {
+                    mw.myTimer.Start();
+                }
+            }, DispatcherPriority.Background);
             return;
         }
 
@@ -561,6 +566,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
+            Emit_Context = Context_Type.Assign_Context;
             lhs.Emit_Code(gen);
             expr_part.Emit_Code(gen);
 
@@ -568,13 +574,13 @@ namespace parse_tree
             {
                 case Variable_Kind.Value:
                     gen.Variable_Assignment_PastRHS();
-                    return;
+                    break;
                 case Variable_Kind.Array_1D:
                     gen.Array_1D_Assignment_PastRHS();
-                    return;
+                    break;
                 case Variable_Kind.Array_2D:
                     gen.Array_2D_Assignment_PastRHS();
-                    return;
+                    break;
             }
         }
 
@@ -590,13 +596,13 @@ namespace parse_tree
     public abstract class Statement : Parseable { }
 
     // Lhs => id[\[Expression[, Expression]\]]
-    public abstract class Lhs {
+    public abstract class Lhs : Parseable {
 
         public abstract void Execute(Lexer l, numbers.value v);
 
-        public abstract void Emit_Code(Generate_Interface gen);
+        public override abstract void Emit_Code(Generate_Interface gen);
 
-        public abstract void compile_pass1(Generate_Interface gen);
+        public override abstract void compile_pass1(Generate_Interface gen);
 
     }
     public class Id_Lhs : Lhs
@@ -615,7 +621,21 @@ namespace parse_tree
         public override void Emit_Code(Generate_Interface gen)  
         {
             string t = Component.the_lexer.Get_Text(id.start, id.finish);
-            gen.Emit_Load(t);
+
+            switch (Emit_Context)
+            {
+                case Context_Type.Assign_Context:
+                    gen.Variable_Assignment_Start(t);
+                    Emit_Kind = Variable_Kind.Value;
+                    break;
+                case Context_Type.Input_Context:
+                    gen.Input_Start_Variable(t);
+                    break;
+                case Context_Type.Call_Context:
+                    Object o = numbers.Numbers.make_object_value(t);
+                    gen.Emit_No_Parameters(o);
+                    break;
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -658,10 +678,27 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            string s = Component.the_lexer.Get_Text(id.start, id.finish);
-            gen.Emit_Load_Array_Start(s);
-            reference.Emit_Code(gen);
-            gen.Emit_Load_Array_After_Index(s);
+            string t = Component.the_lexer.Get_Text(id.start, id.finish);
+            //gen.Emit_Load_Array_Start(s);
+            //reference.Emit_Code(gen);
+            //gen.Emit_Load_Array_After_Index(s);
+
+            switch (Emit_Context)
+            {
+                case Context_Type.Assign_Context:
+                    gen.Array_1D_Assignment_Start(t);
+                    reference.Emit_Code(gen);
+                    gen.Array_1D_Assignment_After_Index();
+                    Emit_Kind = Variable_Kind.Array_1D;
+                    break;
+                case Context_Type.Input_Context:
+                    gen.Input_Start_Array_1D(t, reference);
+                    break;
+                case Context_Type.Call_Context:
+                    throw new Exception("Bad Call!");
+                    break;
+            }
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -713,12 +750,24 @@ namespace parse_tree
         }
         public override void Emit_Code(Generate_Interface gen)  
         {
-            string s = Component.the_lexer.Get_Text(id.start, id.finish);
-            gen.Emit_Load_Array_2D_Start(s);
-            reference.Emit_Code(gen);
-            gen.Emit_Load_Array_2D_Between_Indices();
-            reference2.Emit_Code(gen);
-            gen.Emit_Load_Array_2D_After_Indices(s);
+            string t = Component.the_lexer.Get_Text(id.start, id.finish);
+            switch (Emit_Context)
+            {
+                case Context_Type.Assign_Context:
+                    gen.Array_2D_Assignment_Start(t);
+                    reference.Emit_Code(gen);
+                    gen.Array_2D_Assignment_Between_Indices();
+                    reference2.Emit_Code(gen);
+                    gen.Array_2D_Assignment_After_Indices();
+                    Emit_Kind = Variable_Kind.Array_2D;
+                    break;
+                case Context_Type.Input_Context:
+                    gen.Input_Start_Array_2D(t, reference, reference2);
+                    break;
+                case Context_Type.Call_Context:
+                    throw new Exception("Bad Call!");
+                    break;
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -789,6 +838,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
+            //string asdfasdfnas = Component.the_lexer.Get_Text();
             if (!Compile_Helpers.Start_New_Declaration(Component.the_lexer.Get_Text(id.start, id.finish)))
             {
                 gen.Declare_As_Variable(Component.the_lexer.Get_Text(id.start, id.finish));
@@ -1974,7 +2024,7 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)
         {
-            Context_Type Emit_Context = Context_Type.Input_Context;
+            Emit_Context = Context_Type.Input_Context;
             lhs.Emit_Code(gen);
             Emit_Load_Prompt(gen);
             gen.Input_Past_Prompt();
