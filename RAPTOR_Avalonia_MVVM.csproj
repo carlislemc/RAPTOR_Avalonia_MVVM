@@ -18,5 +18,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
     <PackageReference Include="Avalonia.Skia" Version="0.10.13" />
     <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
+    <PackageReference Include="NetCoreAudio" Version="1.7.0" />
   </ItemGroup>
 </Project>

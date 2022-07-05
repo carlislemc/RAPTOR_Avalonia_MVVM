@@ -355,11 +355,8 @@ namespace parse_tree
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            int c = numbers.Numbers.integer_of(ps[0]);
-                            GraphDialogViewModel.ClearWindow((Color_Type)c);
-                        }, DispatcherPriority.Background);
+                        int c = numbers.Numbers.integer_of(ps[0]);
+                        GraphDialogViewModel.ClearWindow((Color_Type)c);
                     }, DispatcherPriority.Background);
 
                 }
@@ -461,11 +458,31 @@ namespace parse_tree
         {
             Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 22222 });
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            Dispatcher.UIThread.Post(() =>
+            numbers.value[] ps = new numbers.value[0];
+            if (param_list != null)
             {
+                Runtime.processing_parameter_list = true;
+                ps = param_list.Execute(l);
+            }
 
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                string proc = l.Get_Text(id.start, id.finish);
+                if (mw.myTimer != null)
+                {
+                    mw.myTimer.Stop();
+                }
+                if(proc.ToLower() == "play_sound")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        string soundFile =ps[0].S;
+                        GraphDialogViewModel.PlaySound(soundFile);
+                    }, DispatcherPriority.Background);
 
-            }, DispatcherPriority.Background);
+                }
+
+            });
             return;
         }
 

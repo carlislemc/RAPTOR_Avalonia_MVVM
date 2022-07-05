@@ -1305,7 +1305,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public void SetWindowTitle(string title)
         {
-            MainWindow.SetTitle(title);
+            DotnetGraph.SetTitle(title);
             this.UpdateWindowUnlessFrozen();
         }
 
