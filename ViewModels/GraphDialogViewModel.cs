@@ -92,6 +92,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             DotnetGraphControl.dngw.ClearWindow(hue);
         }
 
+        public void PlaySound()
+        {
+            DotnetGraphControl.dngw.PlaySound("../sounds/sound.wav");
+        }
+        public void PlaySoundBackground()
+        {
+            DotnetGraphControl.dngw.PlaySoundBackground("../sounds/sound.wav");
+        }
+        public void PlaySoundBackgroundLoop()
+        {
+            DotnetGraphControl.dngw.PlaySoundBackgroundLoop("../sounds/sound.wav");
+        }
+
     }
 
 }

@@ -11,8 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using RAPTOR_Avalonia_MVVM.Views;
-
+using NetCoreAudio;
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
     public enum Color_Type
@@ -299,13 +300,17 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         //private static SKPen[] pens;
         //private static Font[] fonts;
         private static SKPaint[] paints;
+        private Player player = new Player();
         public static bool start_topmost = false;
         private const int default_font_size = 14;
         private int current_font_size = default_font_size;
         private bool left_is_down = false;
         private bool right_is_down = false;
         private bool[] key_is_down = new bool[255];
+        private bool playInBackground = false;
+        private bool looping = false;
         private char pressed_key;
+        private string soundFilePath;
         private Point mouse;
         private int left_click = 0;
         private int click_x, click_y;
@@ -581,6 +586,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool waitForMouse;
         private bool waitForKey;
         private MouseButton mb;
+
         public override void EndInit()
         {
             waitForMouse = false;
@@ -604,6 +610,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             PointerReleased += DrawingCanvas_PointerReleased;
             PointerEnter += DrawingCanvas_PointerEnter;
             KeyDown += DrawingCanvas_KeyDown;
+            player.PlaybackFinished += OnPlaybackFinished;
             base.EndInit();
 
             paints = new SKPaint[standard_color.Length];
@@ -1240,7 +1247,44 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 throw new System.Exception("Error in Set_Font_Size: size must be in [0,100]");
             }
         }
+        private void OnPlaybackFinished(object sender, EventArgs e)
+        {
+            if (!playInBackground)
+            {
+                SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
+                InvalidateVisual();
+            }
 
+            if (looping)
+            {
+                player.Play(soundFilePath);
+            }
+        }
+        public void PlaySound(
+            string soundFile
+        )
+        {
+            looping = false;
+            playInBackground = false;
+            player.Play(soundFile);
+        }
+        public void PlaySoundBackground(
+            string soundFile
+        )
+        {
+            looping = false;
+            playInBackground = true;
+            player.Play(soundFile);
+        }
+        public void PlaySoundBackgroundLoop(
+            string soundFile
+        )
+        {
+            soundFilePath = soundFile;
+            playInBackground = true;
+            looping = true;
+            player.Play(soundFile);
+        }
         public void ClearWindow(
             Color_Type hue
         )
@@ -1261,7 +1305,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public void SetWindowTitle(string title)
         {
-            DotnetGraph.SetTitle(title);
+            MainWindow.SetTitle(title);
             this.UpdateWindowUnlessFrozen();
         }
 
