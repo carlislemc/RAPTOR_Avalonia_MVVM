@@ -22,7 +22,8 @@ namespace parse_tree
         }
         public static void emit_method_call_il(int n, int i, Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            Runtime.consoleWriteln((Token_Type)n + "");
+            //throw new NotImplementedException();
         }
     }
     public abstract class Parseable
