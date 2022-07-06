@@ -545,6 +545,7 @@ namespace raptor
 			}
 			if (this.Successor!=null)
 			{
+
 				this.Successor.Emit_Code(gen);
 			}
 		}

@@ -1254,17 +1254,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
                 InvalidateVisual();
             }
-
-            if (looping)
-            {
-                player.Play(soundFilePath);
-            }
         }
         public void PlaySound(
             string soundFile
         )
         {
-            looping = false;
             playInBackground = false;
             player.Play(soundFile);
         }
@@ -1272,7 +1266,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             string soundFile
         )
         {
-            looping = false;
             playInBackground = true;
             player.Play(soundFile);
         }
@@ -1281,9 +1274,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         )
         {
             soundFilePath = soundFile;
-            playInBackground = true;
-            looping = true;
-            player.Play(soundFile);
+            Player loopPlayer = new Player();
+            loopPlayer.Play(soundFile);
+            loopPlayer.PlaybackFinished += (sender, e) =>
+            {
+                PlaySoundBackgroundLoop(soundFile);
+            };
         }
         public void ClearWindow(
             Color_Type hue

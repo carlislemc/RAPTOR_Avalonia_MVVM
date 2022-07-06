@@ -35,7 +35,7 @@ namespace parse_tree
         public static Variable_Kind Emit_Kind = Variable_Kind.Value;
         public static Context_Type Emit_Context = Context_Type.Assign_Context;
 
-        public void emit_parameter_number(Output p, Generate_Interface gen, int o)
+        public void emit_parameter_number(Output p, Generate_Interface gen, int o = 0)
         {
             ((Expr_Output)p).expr.Emit_Code(gen);
         }
@@ -307,7 +307,7 @@ namespace parse_tree
                         GraphDialogViewModel.DisplayNumber(x1, y1, n, (Color_Type)c);
                     }, DispatcherPriority.Background);
                 }
-                else if (str.ToLower() == "font_size")
+                else if (str.ToLower() == "set_font_size")
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -443,13 +443,479 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish).ToLower();
+            int functionName = (int)id.kind;
+            Object o = new Object();
+            if(s != "delay_for")
+            {
+                o = gen.Emit_Call_Method(functionName);
+            }
+
+            switch (s)
+            {
+                case "delay_for":
+                    gen.Emit_Sleep();
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_Past_Sleep();
+                    break;
+                case "redirect_output":
+                case "redirect_output_append":
+                case "redirect_input":
+                    // NEED TO DO
+                    break;
+                case "set_precision":
+                case "wait_for_mouse_button":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "clear_console":
+                case "close_graph_window":
+                case "freeze_graph_window":
+                case "unfreeze_graph_window":
+                case "wait_for_key":
+                case "update_graph_window":
+                    gen.Emit_No_Parameters(o);
+                    break;
+                case "clear_window":
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "set_font_size":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "display_text":
+                case "display_number":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.Number_To_String);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.Number_To_String);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_bitmap":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_arc":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_box":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Bool);
+                    emit_parameter_number(param_list.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Bool);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_circle":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Bool);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Bool);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_ellipse":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Bool);
+                    emit_parameter_number(param_list.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Bool);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_ellipse_rotate":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Float);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Float);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Bool);
+                    emit_parameter_number(param_list.next.next.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Bool);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "draw_line":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "flood_fill":
+                case "put_pixel":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Color);
+                    emit_parameter_number(param_list.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Color);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "open_graph_window":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "set_window_title":
+                case "save_graph_window":
+                    gen.Emit_Conversion((int)Conversions.To_String);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_String);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "get_mouse_button":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Get_Mouse_Button();
+                    // weird
+                    // NEED TO DO
+                    break;
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            // NEED TO DO
-            //throw new NotImplementedException();
+            string str = Component.the_lexer.Get_Text(id.start, id.finish);
+            if(str.ToLower() == "delay_for")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "set_precision")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "redirect_input")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "redirect_output" || str.ToLower() == "redirect_output_append")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "clear_window")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "set_font_size")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "display_number")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_bitmap")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "display_text")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_arc")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_box")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_circle")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_ellipse")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_ellipse_rotate")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "draw_line")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.parameter.compile_pass1(gen);
+                param_list.next.next.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "flood_fill")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "open_graph_window")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "wait_for_mouse_button")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "put_pixel")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "set_window_title" || str.ToLower() == "save_graph_window")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
+            else if (str.ToLower() == "get_mouse_button")
+            {
+                param_list.parameter.compile_pass1(gen);
+                param_list.next.parameter.compile_pass1(gen);
+                param_list.next.next.parameter.compile_pass1(gen);
+            }
         }
 
     }
@@ -1331,19 +1797,200 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            // NEED TO DO
             int functionName = (int)id.kind;
-            if(functionName != (int)Token_Type.Length_Of && functionName != (int)Token_Type.to_ascii && functionName != (int)Token_Type.to_character)
+            string s = Component.the_lexer.Get_Text(id.start, id.finish).ToLower();
+            Object o = new Object();
+            if (s != "length_of" && s != "to_ascii" && s != "to_character")
             {
-                Object o = gen.Emit_Call_Method(functionName);
+                o = gen.Emit_Call_Method(functionName);
+            }
+
+            switch (s)
+            {
+                case "to_ascii":
+                    gen.Emit_Conversion((int)Conversions.Char_To_Int);
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.Char_To_Int);
+                    break;
+                case "to_character":
+                    gen.Emit_Conversion((int)Conversions.Int_To_Char);
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
+                    break;
+                case "length_of":
+                    // weird
+                    break;
+                case "get_pixel":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(parameters.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "load_bitmap":
+                    gen.Emit_Conversion((int)Conversions.To_String);
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_String);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "closest_color":
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(parameters.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Next_Parameter(o);
+                    gen.Emit_Conversion((int)Conversions.To_Integer);
+                    emit_parameter_number(parameters.next.next.parameter, gen);
+                    gen.Emit_End_Conversion((int)Conversions.To_Integer);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "sinh":
+                case "cosh":
+                case "tanh":
+                case "arccosh":
+                case "arcsinh":
+                case "arctanh":
+                case "coth":
+                case "arccoth":
+                case "sqrt":
+                case "floor":
+                case "ceiling:":
+                case "abs":
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "min":
+                case "max":
+                    emit_parameter_number(parameters.parameter, gen);
+                    gen.Emit_Next_Parameter(o);
+                    emit_parameter_number(parameters.next.parameter, gen);
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "log":
+                case "sin":
+                case "cos":
+                case "tan":
+                case "cot":
+                case "arcsin":
+                case "arccos":
+                    if(parameters.getLen() == 1)
+                    {
+                        emit_parameter_number(parameters.parameter, gen);
+                    }
+                    else if (parameters.getLen() == 2)
+                    {
+                        emit_parameter_number(parameters.parameter, gen);
+                        gen.Emit_Next_Parameter(o);
+                        emit_parameter_number(parameters.next.parameter, gen);
+                    }
+                    gen.Emit_Last_Parameter(o);
+                    break;
+                case "arctan":
+                case "arccot":
+                    if (parameters.getLen() == 1)
+                    {
+                        emit_parameter_number(parameters.parameter, gen);
+                    }
+                    else if (parameters.getLen() == 2)
+                    {
+                        emit_parameter_number(parameters.parameter, gen);
+                        gen.Emit_Next_Parameter(o);
+                        emit_parameter_number(parameters.next.parameter, gen);
+                    }
+                    else if (parameters.getLen() == 3)
+                    {
+                        emit_parameter_number(parameters.parameter, gen);
+                        gen.Emit_Next_Parameter(o);
+                        emit_parameter_number(parameters.next.parameter, gen);
+                        gen.Emit_Next_Parameter(o);
+                        emit_parameter_number(parameters.next.next.parameter, gen);
+                    }
+                    gen.Emit_Last_Parameter(o);
+                    break;
             }
 
         }
 
         public override void compile_pass1(Generate_Interface gen)
         {
-            // NEED TO DO
-            //throw new NotImplementedException();
+            string s = Component.the_lexer.Get_Text(id.start, id.finish);
+            switch(s.ToLower()){
+                case "to_ascii":
+                case "to_character":
+                case "load_bitmap":
+                    parameters.parameter.compile_pass1(gen);
+                    break;
+                case "get_pixel":
+                    parameters.parameter.compile_pass1(gen);
+                    parameters.next.parameter.compile_pass1(gen);
+                    break;
+                case "closest_color":
+                    parameters.parameter.compile_pass1(gen);
+                    parameters.next.parameter.compile_pass1(gen);
+                    parameters.next.next.parameter.compile_pass1(gen);
+                    break;
+                case "sinh":
+                case "tanh":
+                case "cosh":
+                case "arccosh":
+                case "arcsinh":
+                case "arctanh":
+                case "coth":
+                case "arccoth":
+                case "sqrt":
+                case "floor":
+                case "ceiling":
+                case "abs":
+                    parameters.parameter.compile_pass1(gen);
+                    break;
+                case "min":
+                case "max":
+                    parameters.parameter.compile_pass1(gen);
+                    parameters.next.parameter.compile_pass1(gen);
+                    break;
+                case "sin":
+                case "cos":
+                case "tan":
+                case "cot":
+                case "arcsin":
+                case "arccos":
+                case "log":
+                    if(parameters.getLen() == 1)
+                    {
+                        parameters.parameter.compile_pass1(gen);
+                    }
+                    else if (parameters.getLen() == 2)
+                    {
+                        parameters.parameter.compile_pass1(gen);
+                        parameters.next.parameter.compile_pass1(gen);
+                    }
+                    break;
+                case "arccot":
+                case "arctan":
+                    if (parameters.getLen() == 1)
+                    {
+                        parameters.parameter.compile_pass1(gen);
+                    }
+                    else if (parameters.getLen() == 2)
+                    {
+                        parameters.parameter.compile_pass1(gen);
+                        parameters.next.parameter.compile_pass1(gen);
+                    }
+                    else if (parameters.getLen() == 3)
+                    {
+                        parameters.parameter.compile_pass1(gen);
+                        parameters.next.parameter.compile_pass1(gen);
+                        parameters.next.next.parameter.compile_pass1(gen);
+                    }
+                    break;
+
+            }
         }
 
     }
@@ -2081,7 +2728,7 @@ namespace parse_tree
             this.next = n;
         }
 
-        private int getLen(){
+        public int getLen(){
             if(parameter == null){
                 return 0;
             } else if(next == null){
