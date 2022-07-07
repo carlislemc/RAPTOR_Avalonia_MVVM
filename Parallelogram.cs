@@ -21,6 +21,7 @@ namespace raptor
 		public parse_tree.Parseable prompt_tree;
 		public interpreter.Syntax_Result prompt_result;
 		public string assign = "";
+		public numbers.value pans = new numbers.value();
 
 		public Parallelogram(int height, int width, String str_name, bool input)
 			: base(height, width, str_name)

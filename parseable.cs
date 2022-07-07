@@ -1894,6 +1894,7 @@ namespace parse_tree
 
         public override void compile_pass1(Generate_Interface gen)
         {
+            this.rhs.compile_pass1(gen);
             //throw new NotImplementedException();
         }
 
@@ -3114,7 +3115,7 @@ namespace parse_tree
             lhs.Execute(l, v);
         }
 
-        private async void Emit_Load_Prompt(Generate_Interface gen)
+        private async Task Emit_Load_Prompt(Generate_Interface gen)
         {
             string prompt = ((Parallelogram)Component.currentTempComponent).prompt;
             if(prompt != null)
@@ -3125,24 +3126,13 @@ namespace parse_tree
                 gen.Emit_Load("raptor_prompt_variable_zzyz");
             }
 
-            if(prompt == null)
-            {
-                prompt = "raptor_prompt_variable_zzyz";
-            }
-
-            //System.Timers.Timer mt = MainWindowViewModel.GetMainWindowViewModel().myTimer;
-            //await Dispatcher.UIThread.InvokeAsync(async () =>
-            //{
-            //    UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind});
-            //    await uid.ShowDialog(MainWindow.topWindow);
-            //});
         }
 
-        public override void Emit_Code(Generate_Interface gen)
+        public override async void Emit_Code(Generate_Interface gen)
         {
             Emit_Context = Context_Type.Input_Context;
             lhs.Emit_Code(gen);
-            Emit_Load_Prompt(gen);
+            await Emit_Load_Prompt(gen); 
             gen.Input_Past_Prompt();
         }
 

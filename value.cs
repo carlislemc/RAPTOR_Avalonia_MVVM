@@ -244,7 +244,14 @@ namespace numbers
 
         public static value make_value__5(string s)
         {
-            if(s.Contains(".")){
+            if (s.Contains("\""))
+            {
+                numbers.value ans = new numbers.value();
+                ans.S = s;
+                ans.Kind = Value_Kind.String_Kind;
+                return ans;
+            }
+            else if(s.Contains(".")){
                 numbers.value ans = new numbers.value();
                 ans.V = Convert.ToDouble(s);
                 ans.Kind = Value_Kind.Number_Kind;

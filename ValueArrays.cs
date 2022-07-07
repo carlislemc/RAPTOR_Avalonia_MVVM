@@ -15,7 +15,7 @@ namespace raptor
                     " is not a valid string index.");
             }
             int index = numbers.Numbers.integer_of(value_index);
-            char c = s.S[index - 1];
+            char c = s.S[index -1];
             return numbers.Numbers.make_character_value(c);
         }
         public static void Set_Value_String(

@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using Avalonia.Input;
+using Avalonia.Threading;
+using RAPTOR_Avalonia_MVVM.Views;
 
 namespace raptor
 {
@@ -974,12 +976,12 @@ namespace raptor
             this.Array_2D_Assignment_After_Indices();
             kind_of_input = input_kind.array2d;
         }
-        public void Input_Past_Prompt()
+        public async void Input_Past_Prompt()
         {
             this.Emit_Load_Boolean(dest_is_array);
             this.Emit_Method(
-               "ada_runtime_pkg",
-               "prompt_dialog");
+               "raptor.Runtime",
+               "getUserIn");
             switch (kind_of_input)
             {
                 case input_kind.variable:

@@ -11,6 +11,8 @@ using RAPTOR_Avalonia_MVVM.ViewModels;
 using RAPTOR_Avalonia_MVVM.Views;
 using ReactiveUI;
 using Avalonia.Threading;
+using RAPTOR_Avalonia_MVVM;
+using System.Threading.Tasks;
 
 namespace raptor
 {
@@ -1104,6 +1106,20 @@ namespace raptor
 			}, DispatcherPriority.Background);
 		}
 
+		public static numbers.value getUserIn(string prompt, bool force_number)
+        {
+
+            Parallelogram temp = (Parallelogram)Component.currentTempComponent;
+
+            Dispatcher.UIThread.InvokeAsync(async () =>
+            {
+                UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, true);
+                await uid.ShowDialog(MainWindow.topWindow);
+            }).Wait(-1);
+
+            return temp.pans;
+        }
+
 		// Container holding all variables and their values
 		public static Avalonia.Controls.Window parent;
 		private static RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel console;
@@ -2011,7 +2027,7 @@ namespace raptor
 			{
 				return "0.0";
 			}
-			if (!raptor_files_pkg.input_redirected())
+			if (!raptor_files.input_redirected())
 			{
 				string val;
 				PromptForm pd = new PromptForm(s,parent);
@@ -2020,10 +2036,10 @@ namespace raptor
 			}
 			else
 			{
-				return raptor_files_pkg.get_line();
+				return raptor_files.get_line();
 			}
 		}
-
+	
 		public static void consoleMessage(string s)
 		{
 			console.set_text(s+"\n");

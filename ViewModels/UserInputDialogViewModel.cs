@@ -25,17 +25,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public UserInputDialogViewModel() {
             this.text = "";
         }
-        public UserInputDialogViewModel(Parallelogram p, numbers.value v, Window w) {
+        public UserInputDialogViewModel(Parallelogram p, numbers.value v, Window w, bool compileMode = false) {
             this.text = numbers.Numbers.msstring_view_image(v);
             this.p = p;
             this.w = w;
+            this.compileMode = compileMode;
         }
 
         public Parallelogram p;
         public Window w;
+        public bool compileMode;
 
         public bool modified = false;
         public bool runningState = false;
+
 
         public string text = "";
         public string Text   // property
@@ -68,7 +71,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnDoneCommand(){
             p.result = interpreter_pkg.assignment_syntax(p.text_str, getVariable);
             p.assign = p.text_str + ":=" + getVariable;
-            
+
+            if (compileMode)
+            {
+                p.pans = numbers.Numbers.make_value__5(getVariable);
+            }
+
             w.Close();
         }
 
