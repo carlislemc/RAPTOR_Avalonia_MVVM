@@ -1275,13 +1275,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     {
                                         myTimer.Stop();
                                     }
-                                    //UserInputDialog uid = new UserInputDialog(temp);
-                                    //await uid.ShowDialog(MainWindow.topWindow);
-                                    //Lexer l = new Lexer(temp.assign);
-                                    //Syntax_Result r = temp.result;
-                                    //Expr_Assignment ex = (Expr_Assignment)r.tree;
-                                    //numbers.value v = ex.Execute(l);
-                                    //inp.Execute(l2, v);
 
                                     Lexer l = new Lexer(temp.prompt);
                                     temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
@@ -1674,24 +1667,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             //this.FileSave_Click();
             //this.OnResetCommand();
-            Compile_Helpers.Compile_Flowchart(theTabs);
-            //try
-            //{
-            //    Compile_Helpers.Compile_Flowchart(theTabs);
-            //    try
-            //    {
-            //        Compile_Helpers.Run_Compiled(false);
-            //    }
-            //    catch (System.Exception exc)
-            //    {
-            //        MessageBoxClass.Show("Flowchart terminated abnormally\n" +
-            //            exc.ToString());
-            //    }
-            //}
-            //catch (System.Exception exc)
-            //{
-            //    await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            try
+            {
+                Compile_Helpers.Compile_Flowchart(theTabs);
+                try
+                {
+                    Compile_Helpers.Run_Compiled(false);
+                }
+                catch (System.Exception exc)
+                {
+                    MessageBoxClass.Show("Flowchart terminated abnormally\n" +
+                        exc.ToString());
+                }
+            }
+            catch (System.Exception exc)
+            {
+                await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
 
             Component.run_compiled_flowchart = false;

@@ -908,6 +908,32 @@ namespace RAPTOR_Avalonia_MVVM
             return result;
         }
 
+        public Tabid_Proc_Call Parse_Tab_Proc_Call()
+        {
+            Tabid_Proc_Call result = new Tabid_Proc_Call();
+            Token t = lexer.Get_Token();
+
+            result.id = t;
+            t = lexer.Get_Token();
+
+            if (t.kind == Token_Type.Left_Paren)
+            {
+                result.param_list = Parse_Parameter_List("", true);
+                t = lexer.Get_Token();
+                if (t.kind != Token_Type.Right_Paren)
+                {
+                    Raise_Exception(t, "missing )");
+                }
+            }
+            else
+            {
+                result.param_list = null;
+                lexer.Unget_Token(t);
+            }
+
+            return result;
+        }
+
         // Call_Statement => Proc_Call[;] End_Input
         public Statement Parse_Call_Statement() {
             Statement result = null;
@@ -931,7 +957,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
                 if(Lexer.Is_Valid_Procedure(lexer.Get_Text(t.start, t.finish))){
                     //Variable v = new Variable(lexer.Get_Text(t.start, t.finish), new numbers.value(){V=3});
-                    result = Parse_Proc_Call();
+                    result = Parse_Tab_Proc_Call();
                 } else if(Plugins.Is_Procedure(lexer.Get_Text(t.start, t.finish))){
                     result = Parse_Plugin_Proc_Call();
                 }
@@ -951,6 +977,8 @@ namespace RAPTOR_Avalonia_MVVM
             }
             return result;
         }
+
+        
         /* elsif T.Kind = Id then
          if raptor.Plugins.Is_Procedure(
                  +Lexer.Get_Text(T.Start..T.Finish)) then

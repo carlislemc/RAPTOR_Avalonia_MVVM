@@ -1072,9 +1072,18 @@ namespace raptor
 		public static Delete_Scope_Delegate delete_scope =
 			new Delete_Scope_Delegate(Delete_Scope_From_WatchBox);
 
-		
 
-        public static void consoleWriteln(string v)
+		public static void clearConsole()
+		{
+			//throw new NotImplementedException();
+			Dispatcher.UIThread.Post(() =>
+			{
+				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+				mc.Text = "Cleared!\n";
+				MainWindow.masterConsole.Activate();
+			}, DispatcherPriority.Background);
+		}
+		public static void consoleWriteln(string v)
         {
 			//throw new NotImplementedException();
 			Dispatcher.UIThread.Post(() =>

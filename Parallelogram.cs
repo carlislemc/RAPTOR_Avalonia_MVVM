@@ -507,7 +507,7 @@ namespace raptor
 		}
 		public override void compile_pass1(Generate_Interface gen)
 		{
-			if (this.parse_tree!=null & this.is_input && this.input_is_expression)
+			if (this.parse_tree!=null && this.is_input && this.input_is_expression)
 			{
                 // maintain with parse_tree.adb
                 if (!Compile_Helpers.Start_New_Declaration("raptor_prompt_variable_zzyz"))
@@ -543,12 +543,12 @@ namespace raptor
 				Component.currentTempComponent = this;
 				base.Emit_Code(gen);
 			}
-			if (this.Successor!=null)
-			{
+            else if (this.Successor != null)
+            {
 
-				this.Successor.Emit_Code(gen);
-			}
-		}
+                this.Successor.Emit_Code(gen);
+            }
+        }
         public override void collect_variable_names(System.Collections.Generic.IList<string> l,
             System.Collections.Generic.IDictionary<string, string> types)
         {

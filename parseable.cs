@@ -18,12 +18,369 @@ namespace parse_tree
     {
         public static void Emit_Conversion(int o, Generate_Interface gen)
         {
-            throw new NotImplementedException();
+            Generate_IL gil = (Generate_IL)gen;
+            switch (o)
+            {
+                case 0:
+                    gil.Emit_Method("numbers.Numbers", "integer_of");
+                    break;
+                case 1:
+                    gil.Emit_Method("numbers.Numbers", "long_float_of");
+                    break;
+                case 2:
+                    gil.Emit_Method("numbers.Numbers", "string_of");
+                    break;
+                case 3:
+                    gil.Emit_Method("numbers.Numbers", "msstring_view_image");
+                    break;
+                case 4:
+                    gil.Emit_Method("numbers.Numbers", "integer_of");
+                    break;
+                case 5:
+                    gil.Emit_Method("numbers.Numbers", "integer_of");
+                    break;
+                case 6:
+                    gil.Emit_Method("numbers.Numbers", "character_of");
+                    break;
+                case 7:
+                    gil.Emit_Method("numbers.Numbers", "integer_of");
+                    break;
+
+            }
         }
         public static void emit_method_call_il(int n, int i, Generate_Interface gen)
         {
-            Runtime.consoleWriteln((Token_Type)n + "");
-            //throw new NotImplementedException();
+            Generate_IL gil = (Generate_IL)gen;
+            string s = (Token_Type)n + "";
+            s = s.ToLower();
+            switch (s)
+            {
+                case "random":
+                    gen.Emit_Random();
+                    break;
+                case "random_color":
+                    gen.Emit_Random(0.0, 16.0);
+                    break;
+                case "random_extended_color":
+                    gen.Emit_Random(0.0, 242.0);
+                    break;
+                case "redirect_output_append":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "set_precision":
+                    gil.Emit_Method("numbers.Numbers", "Set_Precision");
+                    break;
+                case "redirect_input":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "redirect_output":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "clear_console":
+                    gil.Emit_Method("raptor.Runtime", "clearConsole");
+                    break;
+                case "clear_window":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "ClearWindow");
+                    break;
+                case "close_graph_window":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "freeze_graph_window":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "unfreeze_graph_window":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "update_graph_window":
+                    // NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "set_font_size":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FontSize");
+                    break;
+                case "display_number":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DisplayNumber");
+                    break;
+                case "display_text":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DisplayText");
+                    break;
+                case "draw_bitmap":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "draw_arc":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawArc");
+                    break;
+                case "draw_box":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawBox");
+                    break;
+                case "draw_circle":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawCircle");
+                    break;
+                case "draw_ellipse":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawEllipse");
+                    break;
+                case "draw_ellipse_rotate":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawEllipseRotate");
+                    break;
+                case "draw_line":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawLine");
+                    break;
+                case "flood_fill":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "open_graph_window":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "OpenGraphWindow");
+                    break;
+                case "wait_for_key":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "WaitForKey");
+                    break;
+                case "wait_for_mouse_button":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "WaitForMouseButton");
+                    break;
+                case "put_pixel":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "set_window_title":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SetWindowTitle");
+                    break;
+                case "save_graph_window":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "pi":
+                    gil.Emit_Load_Static("numbers.Numbers", "Pi");
+                    break;
+                case "e":
+                    gil.Emit_Load_Static("numbers.Numbers", "E");
+                    break;
+                case "black":
+                case "blue":
+                case "green":
+                case "cyan":
+                case "red":
+                case "magenta":
+                case "brown":
+                case "light_gray":
+                case "dark_gray":
+                case "light_blue":
+                case "light_green":
+                case "light_cyan":
+                case "light_red":
+                case "light_magenta":
+                case "yellow":
+                case "pink":
+                case "purple":
+                case "white":
+                    gil.Emit_Load_Number(n);
+                    break;
+                case "left_button":
+                case "unfilled":
+                case "no":
+                case "false":
+                    gil.Emit_Load_Number(0.0);
+                    break;
+                case "right_button":
+                case "filled":
+                case "yes":
+                case "true":
+                    gil.Emit_Load_Number(1.0);
+                    break;
+                case "get_window_height":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetWindowHeight");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
+                    break;
+                case "get_window_width":
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetWindowWidth");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
+                    break;
+                case "get_font_height":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_font_width":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_max_width":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_max_height":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_mouse_x":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_mouse_y":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_key":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_key_string":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "get_pixel":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "load_bitmap":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "closest_color":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "sinh":
+                    gil.Emit_Method("numbers.Numbers", "Sinh");
+                    break;
+                case "tanh":
+                    gil.Emit_Method("numbers.Numbers", "Tanh");
+                    break;
+                case "cosh":
+                    gil.Emit_Method("numbers.Numbers", "Cosh");
+                    break;
+                case "arcsinh":
+                    gil.Emit_Method("numbers.Numbers", "ArcSinh");
+                    break;
+                case "arctanh":
+                    gil.Emit_Method("numbers.Numbers", "ArcTanh");
+                    break;
+                case "arccosh":
+                    gil.Emit_Method("numbers.Numbers", "ArcCosh");
+                    break;
+                case "coth":
+                    gil.Emit_Method("numbers.Numbers", "Coth");
+                    break;
+                case "arccoth":
+                    gil.Emit_Method("numbers.Numbers", "ArcCoth");
+                    break;
+                case "sqrt":
+                    gil.Emit_Method("numbers.Numbers", "Sqrt");
+                    break;
+                case "floor":
+                    gil.Emit_Method("numbers.Numbers", "Floor");
+                    break;
+                case "ceiling":
+                    gil.Emit_Method("numbers.Numbers", "Ceiling");
+                    break;
+                case "abs":
+                    gil.Emit_Method("numbers.Numbers", "Abs");
+                    break;
+                case "log":
+                    if(i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "E");
+                    }
+                    gil.Emit_Method("numbers.Numbers", "Log");
+                    break;
+                case "min":
+                    gil.Emit_Method("numbers.Numbers", "findMin");
+                    break;
+                case "max":
+                    gil.Emit_Method("numbers.Numbers", "findMax");
+                    break;
+                case "sin":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "Sin");
+                    break;
+                case "cos":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "Cos");
+                    break;
+                case "tan":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "Tan");
+                    break;
+                case "cot":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "Cot");
+                    break;
+                case "arcsin":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "ArcSin");
+                    break;
+                case "arccos":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "ArcCos");
+                    break;
+                case "arctan":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "ArcTan");
+                    break;
+                case "arccot":
+                    if (i == 2)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    gil.Emit_Method("numbers.Numbers", "ArcCot");
+                    break;
+                case "is_open":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "key_hit":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "key_down":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "end_of_input":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "mouse_button_down":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "mouse_button_pressed":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+                case "mouse_button_released":
+                    //NEED TO DO
+                    throw new NotImplementedException();
+                    break;
+            }
+            
         }
     }
     public abstract class Parseable
@@ -166,7 +523,8 @@ namespace parse_tree
     {
         public Token? id;
         public Parameter_List? param_list;
-        public bool is_tab_call() { return false; }
+
+        public abstract bool is_tab_call();
 
         public abstract Task Execute(Lexer l);
 
@@ -174,19 +532,21 @@ namespace parse_tree
 
     public class Proc_Call : Procedure_Call
     {
+
+        public override bool is_tab_call()
+        {
+            return false;
+        }
         public override async Task Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
             Subchart sub = mw.mainSubchart();
-            bool changedSub = false;
             foreach(Subchart s in mw.theTabs){
                 if(s.Header == head){
                     sub = s;
-                    changedSub = true;
                 }
             }
-            if(!changedSub){
                 string str = l.Get_Text(id.start, id.finish);
                 numbers.value[] ps = new numbers.value[0];
                 if (param_list != null)
@@ -363,83 +723,7 @@ namespace parse_tree
 
                 }
                 return;
-            } else {
-                if(sub.Start.GetType() == typeof(Oval_Procedure)){ //if its a user procedure
-                    Runtime.processing_parameter_list = true;
-                    numbers.value[] ps = param_list.Execute(l);
-
-                    Oval_Procedure st = ((Oval_Procedure)sub.Start);
-                    string[] paramNames = st.param_names;
-                    Runtime.Increase_Scope(head);
-                    mw.decreaseScope++;
-                    mw.activeScopes.Add(head);
-                    mw.parentComponent = mw.activeComponent;
-                    mw.parentCount.Add(mw.activeComponent);
-                    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
-                    mw.activeComponent.running = true;
-                    mw.activeTab = mw.theTabs.IndexOf(sub);
-                    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
-                    for(int i = 0; i < ps.Length; i++){
-                        if(!st.is_input_parameter(i)){
-                            break;
-                        }
-                        numbers.value num = ps[i];
-                        if(num.Kind == numbers.Value_Kind.Ref_1D){
-
-                            Variable oneD = (Variable)num.Object;
-                            ObservableCollection<Arr> a = oneD.values;
-                            int size = numbers.Numbers.integer_of(oneD.values[0].value);
-                            Variable v2 = new Variable(paramNames[i], size, new numbers.value());
-                            Variable temp = v2;
-                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                            mw.theVariables.Insert(1, temp);
-                            for(int j = 1; j < a.Count; j++){
-                                Runtime.setArrayElement(v2.Var_Name, j, a[j].value);
-                            }
-
-                        } else if(num.Kind == numbers.Value_Kind.Ref_2D){
-
-                            Variable twoD = (Variable)num.Object;
-                            ObservableCollection<Arr> a = twoD.values;
-                            int rows = numbers.Numbers.integer_of(a[0].value);
-                            int cols = numbers.Numbers.integer_of(a[1].values[0].value);
-
-                            Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
-                            Variable temp = v2;
-                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                            mw.theVariables.Insert(1, temp);
-
-                            for(int r = 1; r < rows+1; r++){
-                                ObservableCollection<Arr2> a2 = a[r].values;
-                                for(int c = 1; c < cols+1; c++){
-                                    Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
-                                }
-                            }
-
-                        }else{
-                            Variable v2 = new Variable(paramNames[i], num);
-                            Variable temp = v2;
-                            mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
-                            mw.theVariables.Insert(1, temp);
-                        }
-                    }
-                    Runtime.processing_parameter_list = false;
-                    mw.setViewTab = mw.theTabs.IndexOf(sub);
-                    return;
-
-
-                } else if(sub.Start.GetType() == typeof(Oval)){
-                    mw.parentComponent = mw.activeComponent;
-                    mw.parentCount.Add(mw.activeComponent);
-                    mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
-                    mw.activeComponent.running = true;
-                    mw.activeTab = mw.theTabs.IndexOf(sub);
-                    mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
-                    mw.setViewTab = mw.theTabs.IndexOf(sub);
-                    mw.decreaseSub++;
-
-                }
-            }
+            
         }
 
         public override void Emit_Code(Generate_Interface gen)  
@@ -968,24 +1252,168 @@ namespace parse_tree
         {
             //throw new NotImplementedException();
         }
+
+        public override bool is_tab_call()
+        {
+            return false;
+        }
     }
 
     public class Tabid_Proc_Call : Procedure_Call
     {
+
+        public override bool is_tab_call()
+        {
+            return true;
+        }
+
         public override async Task Execute(Lexer l)
         {
-            Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 33333 });
-            return;
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            string head = l.Get_Text(id.start, id.finish);
+            Subchart sub = mw.mainSubchart();
+            foreach (Subchart s in mw.theTabs)
+            {
+                if (s.Header == head)
+                {
+                    sub = s;
+                }
+            }
+
+            if (sub.Start.GetType() == typeof(Oval_Procedure))
+            { //if its a user procedure
+                Runtime.processing_parameter_list = true;
+                numbers.value[] ps = param_list.Execute(l);
+
+                Oval_Procedure st = ((Oval_Procedure)sub.Start);
+                string[] paramNames = st.param_names;
+                Runtime.Increase_Scope(head);
+                mw.decreaseScope++;
+                mw.activeScopes.Add(head);
+                mw.parentComponent = mw.activeComponent;
+                mw.parentCount.Add(mw.activeComponent);
+                mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+                mw.activeComponent.running = true;
+                mw.activeTab = mw.theTabs.IndexOf(sub);
+                mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
+                for (int i = 0; i < ps.Length; i++)
+                {
+                    if (!st.is_input_parameter(i))
+                    {
+                        break;
+                    }
+                    numbers.value num = ps[i];
+                    if (num.Kind == numbers.Value_Kind.Ref_1D)
+                    {
+
+                        Variable oneD = (Variable)num.Object;
+                        ObservableCollection<Arr> a = oneD.values;
+                        int size = numbers.Numbers.integer_of(oneD.values[0].value);
+                        Variable v2 = new Variable(paramNames[i], size, new numbers.value());
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+                        for (int j = 1; j < a.Count; j++)
+                        {
+                            Runtime.setArrayElement(v2.Var_Name, j, a[j].value);
+                        }
+
+                    }
+                    else if (num.Kind == numbers.Value_Kind.Ref_2D)
+                    {
+
+                        Variable twoD = (Variable)num.Object;
+                        ObservableCollection<Arr> a = twoD.values;
+                        int rows = numbers.Numbers.integer_of(a[0].value);
+                        int cols = numbers.Numbers.integer_of(a[1].values[0].value);
+
+                        Variable v2 = new Variable(paramNames[i], rows, cols, new numbers.value());
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+
+                        for (int r = 1; r < rows + 1; r++)
+                        {
+                            ObservableCollection<Arr2> a2 = a[r].values;
+                            for (int c = 1; c < cols + 1; c++)
+                            {
+                                Runtime.set2DArrayElement(v2.Var_Name, r, c, a2[c].value);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Variable v2 = new Variable(paramNames[i], num);
+                        Variable temp = v2;
+                        mw.theVariables.RemoveAt(mw.theVariables.IndexOf(temp));
+                        mw.theVariables.Insert(1, temp);
+                    }
+                }
+                Runtime.processing_parameter_list = false;
+                mw.setViewTab = mw.theTabs.IndexOf(sub);
+                return;
+
+
+            }
+            else if (sub.Start.GetType() == typeof(Oval))
+            { // if its a user subchart
+                mw.parentComponent = mw.activeComponent;
+                mw.parentCount.Add(mw.activeComponent);
+                mw.activeComponent = mw.theTabs[mw.theTabs.IndexOf(sub)].Start;
+                mw.activeComponent.running = true;
+                mw.activeTab = mw.theTabs.IndexOf(sub);
+                mw.activeTabs.Add(mw.theTabs.IndexOf(sub));
+                mw.setViewTab = mw.theTabs.IndexOf(sub);
+                mw.decreaseSub++;
+
+            }
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            string head = Component.the_lexer.Get_Text(id.start, id.finish);
+            Subchart sub = mw.mainSubchart();
+            foreach (Subchart s in mw.theTabs)
+            {
+                if (s.Header == head)
+                {
+                    sub = s;
+                }
+            }
+            mw.theTabs[mw.theTabs.IndexOf(sub)].Start.Emit_Code(gen);
         }
 
         public override void compile_pass1(Generate_Interface gen)
         {
             //throw new NotImplementedException();
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            string head = Component.the_lexer.Get_Text(id.start, id.finish);
+            Subchart sub = mw.mainSubchart();
+            foreach (Subchart s in mw.theTabs)
+            {
+                if (s.Header == head)
+                {
+                    sub = s;
+                }
+            }
+
+            if (sub.Start.GetType() == typeof(Oval_Procedure))
+            {
+                Oval_Procedure tempStart = (Oval_Procedure)sub.Start;
+                for(int k = 0; k < tempStart.param_names.Length; k++)
+                {
+                    if (tempStart.is_input_parameter(k))
+                    {
+                        string tempName = tempStart.param_names[k];
+                        gen.Declare_As_Variable(tempName);
+                    }
+                }
+            }
+            mw.theTabs[mw.theTabs.IndexOf(sub)].Start.compile_pass1(gen);
+
         }
     }
 
@@ -1008,6 +1436,11 @@ namespace parse_tree
         public override void compile_pass1(Generate_Interface gen)
         {
             //throw new NotImplementedException();
+        }
+
+        public override bool is_tab_call()
+        {
+            return false;
         }
 
     }
@@ -2551,6 +2984,16 @@ namespace parse_tree
         {
             left.compile_pass1(gen);
         }
+
+        public Boolean2 remove_negation()
+        {
+            return new Boolean2(false, this.left);
+        }
+
+        public bool top_level_negated()
+        {
+            return negated;
+        }
     }
     public class And_Boolean2 : Boolean2
     {
@@ -2596,6 +3039,18 @@ namespace parse_tree
         {
             left.compile_pass1(gen);
         }
+
+        public bool top_level_negated()
+        {
+            return this.left.top_level_negated();
+        }
+
+        public Boolean_Expression remove_negation()
+        {
+            return new Boolean_Expression(left.remove_negation());
+        }
+
+        
     }
     public class Xor_Boolean : Boolean_Expression
     {
@@ -2621,6 +3076,7 @@ namespace parse_tree
             left.compile_pass1(gen);
             right.compile_pass1(gen);
         }
+
     }
     public class Or_Boolean : Boolean_Expression
     {
@@ -2658,7 +3114,7 @@ namespace parse_tree
             lhs.Execute(l, v);
         }
 
-        private void Emit_Load_Prompt(Generate_Interface gen)
+        private async void Emit_Load_Prompt(Generate_Interface gen)
         {
             string prompt = ((Parallelogram)Component.currentTempComponent).prompt;
             if(prompt != null)
@@ -2668,6 +3124,18 @@ namespace parse_tree
             else {
                 gen.Emit_Load("raptor_prompt_variable_zzyz");
             }
+
+            if(prompt == null)
+            {
+                prompt = "raptor_prompt_variable_zzyz";
+            }
+
+            //System.Timers.Timer mt = MainWindowViewModel.GetMainWindowViewModel().myTimer;
+            //await Dispatcher.UIThread.InvokeAsync(async () =>
+            //{
+            //    UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind});
+            //    await uid.ShowDialog(MainWindow.topWindow);
+            //});
         }
 
         public override void Emit_Code(Generate_Interface gen)

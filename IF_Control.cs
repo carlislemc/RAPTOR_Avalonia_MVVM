@@ -1259,12 +1259,14 @@ namespace raptor
 				}
 			}
 		}
-		/*public override void Emit_Code(generate_interface.typ gen)
+		public override void Emit_Code(Generate_Interface gen)
 		{
             object o=gen.If_Start();
             if (this.parse_tree!=null)
 			{
-				interpreter_pkg.Emit_Code(this.parse_tree,this.Text,gen);
+				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
+				base.Emit_Code(gen);
 			}
             gen.If_Then_Part(o);
 			if (this.yes_child!=null)
@@ -1281,7 +1283,7 @@ namespace raptor
 			{
 				this.Successor.Emit_Code(gen);
 			}
-		}*/
+		}
 
 	}
 

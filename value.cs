@@ -156,9 +156,21 @@ namespace numbers
         {
             return v.Object;
         }
-        public static int  integer_of(value v)
+        public static int integer_of(value v)
         {
-            return (int) (v.V);
+            if(v.Kind == Value_Kind.Number_Kind)
+            {
+                return (int)(v.V);
+            }
+            else
+            {
+                return (int)(v.C);
+            }
+            
+        }
+        public static int character_of(value v)
+        {
+            return (char)(v.C);
         }
         public static string string_of(value v)
         {
@@ -268,9 +280,22 @@ namespace numbers
             return new value { V = 0.0, C = ' ', S = null, Kind = Value_Kind.Object_Kind, Object = v };
         }
 
-        public static bool Oeq(value variable_Value1, value variable_Value2)
+        public static bool Oeq(value first, value second)
         {
-            throw new NotImplementedException();
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V == second.V;
+                case Value_Kind.String_Kind:
+                    return first.S == second.S;
+                case Value_Kind.Character_Kind:
+                    return first.C == second.C;
+            }
+            return false;
         }
 
         public static int length_of(value variable_Value)
@@ -417,6 +442,193 @@ namespace numbers
                 throw new Exception("Cannot find max of type: [" + first.Kind + "] with type: [" + second.Kind + "]");
             }
             return ans;
+        }
+
+        public static numbers.value Sinh(numbers.value first) {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find sinh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sinh(first.V)};
+        }
+
+        public static numbers.value Tanh(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find tanh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Tanh(first.V) };
+        }
+
+        public static numbers.value Cosh(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find cosh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Cosh(first.V) };
+        }
+
+        public static numbers.value ArcSinh(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arcsinh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asinh(first.V) };
+        }
+
+        public static numbers.value ArcTanh(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arctanh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Atanh(first.V) };
+        }
+
+        public static numbers.value ArcCosh(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arccosh of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Acosh(first.V) };
+        }
+
+        public static numbers.value Coth(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find coth of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1/Math.Tanh(first.V) };
+        }
+
+        public static numbers.value ArcCoth(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arccoth of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Atanh(first.V) };
+        }
+
+        public static numbers.value Sqrt(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find sqrt of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sqrt(first.V) };
+        }
+
+        public static numbers.value Floor(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find floor of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Floor(first.V) };
+        }
+
+        public static numbers.value Ceiling(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find ceiling of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Ceiling(first.V) };
+        }
+
+        public static numbers.value Abs(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find abs of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Abs(first.V) };
+        }
+
+        public static numbers.value Log(numbers.value first, numbers.value second)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find log of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Log(first.V, second.V) };
+        }
+
+        public static numbers.value Sin(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find sin of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+        }
+
+        public static numbers.value Cos(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find cos of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Cos(first.V) };
+        }
+
+        public static numbers.value Tan(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find tan of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Tan(first.V) };
+        }
+        public static numbers.value Cot(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find cot of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Tan(first.V) };
+        }
+
+        public static numbers.value ArcSin(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arcsin of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asin(first.V) };
+        }
+
+        public static numbers.value ArcCos(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arccos of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Acos(first.V) };
+        }
+
+        public static numbers.value ArcTan(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arctan of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Atan(first.V) };
+        }
+
+        public static numbers.value ArcCot(numbers.value first)
+        {
+            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            {
+                throw new Exception("Cannot find arccot of type: [" + first.Kind + "]");
+            }
+            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Atan(first.V) };
         }
 
     }

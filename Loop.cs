@@ -1206,16 +1206,17 @@ namespace raptor
 			//	return this;
 			//}
 		}
-		/*public override void Emit_Code(generate_interface.typ gen)
+		public override void Emit_Code(Generate_Interface gen)
 		{	
             object o;
-            parse_tree.boolean_expression be = this.parse_tree as parse_tree.boolean_expression;
+            parse_tree.Boolean_Expression be = this.parse_tree as parse_tree.Boolean_Expression;
             if (Component.reverse_loop_logic)
             {
                 o = gen.Loop_Start(this.before_Child == null, true);
             }
             else
             {
+
                 bool negated = be.top_level_negated();
                 o = gen.Loop_Start(this.before_Child == null, 
                     negated);
@@ -1232,7 +1233,9 @@ namespace raptor
 
 			if (this.parse_tree!=null)
 			{
-				interpreter_pkg.emit_code(be,this.Text,gen);
+				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
+				be.Emit_Code(gen);
 			}
             gen.Loop_End_Condition(o);
 			if (this.after_Child!=null)
@@ -1245,7 +1248,7 @@ namespace raptor
 			{
 				this.Successor.Emit_Code(gen);
 			}
-		}*/
+		}
 
 	}
 }

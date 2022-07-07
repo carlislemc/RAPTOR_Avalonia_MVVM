@@ -19,6 +19,7 @@ using System.Reactive;
 using interpreter;
 using RAPTOR_Avalonia_MVVM.Controls;
 using RAPTOR_Avalonia_MVVM.Views;
+using Avalonia.Threading;
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -27,6 +28,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         // public GraphDialogViewModel() {
 
         // }
+
+        public static void OpenGraphWindow(int w, int h)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                DotnetGraph gd = new DotnetGraph(w, h);
+                SetWindowTitle("RAPTORGraph");
+                gd.Show();
+
+            }, DispatcherPriority.Background);
+            
+        }
+
         public static void DrawLine(int x1, int y1, int x2, int y2,Color_Type c)
         {
             DotnetGraphControl.dngw.DrawLine(x1, y1, x2, y2, c);
@@ -107,6 +121,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             DotnetGraphControl.dngw.PlaySoundBackgroundLoop(s);
         }
 
+        public static double GetWindowHeight()
+        {
+            return DotnetGraphControl.dngw.Height;
+        }
+
+        public static double GetWindowWidth()
+        {
+            return DotnetGraphControl.dngw.Width;
+        }
     }
 
 }

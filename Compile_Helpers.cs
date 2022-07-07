@@ -326,10 +326,10 @@ namespace raptor
             {
                 try
                 {
-                    SDILReader.Globals.LoadOpCodes();
-                    SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
-                    string msil = mr.GetBodyCode();
-                    Runtime.consoleWriteln(msil);
+                    //SDILReader.Globals.LoadOpCodes();
+                    //SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
+                    //string msil = mr.GetBodyCode();
+                    //Runtime.consoleWriteln(msil);
                     mi.Invoke(null, null);
 
                 }

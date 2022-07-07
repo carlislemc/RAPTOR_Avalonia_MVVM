@@ -5,6 +5,7 @@ using System.Diagnostics;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
 using RAPTOR_Avalonia_MVVM.Views;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace raptor
 {
@@ -336,17 +337,22 @@ namespace raptor
             }*/
             return answer;
         }
-		private Subchart Find_Start(string s)
+		private Subchart Find_Start(string str)
 		{
-            /*TabControl.TabPageCollection tpc = Compile_Helpers.get_tpc();
-			for (int i=0; i<tpc.Count; i++)
+			MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            if (str.Contains("("))
+            {
+				str = str.Substring(0, str.IndexOf("("));
+			}
+			Subchart sub = mw.mainSubchart();
+			foreach (Subchart s in mw.theTabs)
 			{
-				if (tpc[i].Text.ToLower()==s.ToLower())
+				if (s.Header == str)
 				{
-					return (Subchart) tpc[i];
+					sub = s;
 				}
-			}*/
-			return null;
+			}
+			return sub;
 		}
 
         public override void Emit_Code(Generate_Interface gen)
@@ -354,7 +360,9 @@ namespace raptor
             if (this.kind == Kind_Of.Call &&
                 ((parse_tree.Procedure_Call)this.parse_tree).is_tab_call())
             {
-                string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
+				Component.the_lexer = new Lexer(this.Text);
+				Component.currentTempComponent = this;
+				string call_name = interpreter_pkg.get_name_call(this.parse_tree as parse_tree.Procedure_Call,
                     this.Text);
                 Subchart called_chart = Find_Start(call_name);
                 if (!(called_chart is Procedure_Chart))
@@ -366,7 +374,7 @@ namespace raptor
                     Procedure_Chart pc = called_chart as Procedure_Chart;
                     parse_tree.Parameter_List walk = ((parse_tree.Procedure_Call)this.parse_tree).param_list;
                     object o = gen.Emit_Call_Subchart(pc.Text);
-                    for (int i = 0; i < pc.num_params; i++)
+                    for (int i = 0; i < pc.Num_Params; i++)
                     {
 						parse_tree.emit_parameter_number(walk.parameter, gen, 0);
                         walk = walk.next;
@@ -415,7 +423,7 @@ namespace raptor
                 {
                     Procedure_Chart pc = sub as Procedure_Chart;
                     parse_tree.Parameter_List walk = ((parse_tree.Procedure_Call)this.parse_tree).param_list;
-                    for (int i = 0; i < pc.num_params; i++)
+                    for (int i = 0; i < pc.Num_Params; i++)
                     {
                         // it seems like we would want to call pass1 on our parameters
                         // but this may give us the mistaken impression that an array is a variable
