@@ -1151,7 +1151,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             if (temp.parse_tree != null)
                             {
                                 Procedure_Call ea = (Procedure_Call)temp.parse_tree;
-                                await ea.Execute(l);
+                                ea.Execute(l);
                             }
                         }
                         goToNextComponent();

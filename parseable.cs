@@ -526,7 +526,7 @@ namespace parse_tree
 
         public abstract bool is_tab_call();
 
-        public abstract Task Execute(Lexer l);
+        public abstract void Execute(Lexer l);
 
     }
 
@@ -537,7 +537,7 @@ namespace parse_tree
         {
             return false;
         }
-        public override async Task Execute(Lexer l)
+        public override void Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
@@ -1206,7 +1206,7 @@ namespace parse_tree
     }
     public class Plugin_Proc_Call : Procedure_Call
     {
-        public override async Task Execute(Lexer l)
+        public override void Execute(Lexer l)
         {
             //Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 22222 });
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
@@ -1217,28 +1217,43 @@ namespace parse_tree
                 ps = param_list.Execute(l);
             }
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            string proc = l.Get_Text(id.start, id.finish);
+            if (mw.myTimer != null)
             {
-                string proc = l.Get_Text(id.start, id.finish);
-                if (mw.myTimer != null)
+                mw.myTimer.Stop();
+            }
+            if (proc.ToLower() == "play_sound")
+            {
+                Dispatcher.UIThread.Post(() =>
                 {
-                    mw.myTimer.Stop();
-                }
-                if (proc.ToLower() == "play_sound")
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        string soundFile = ps[0].S;
-                        GraphDialogViewModel.PlaySound(soundFile);
-                    }, DispatcherPriority.Background);
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySound(soundFile);
+                }, DispatcherPriority.Background);
 
-                }
-                Runtime.processing_parameter_list = false;
-                if (mw.myTimer != null)
+            }
+            if (proc.ToLower() == "play_sound_background")
+            {
+                Dispatcher.UIThread.Post(() =>
                 {
-                    mw.myTimer.Start();
-                }
-            }, DispatcherPriority.Background);
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySoundBackground(soundFile);
+                }, DispatcherPriority.Background);
+
+            }
+            if (proc.ToLower() == "play_sound_background_loop")
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySoundBackgroundLoop(soundFile);
+                }, DispatcherPriority.Background);
+
+            }
+            Runtime.processing_parameter_list = false;
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Start();
+            }
             return;
         }
 
@@ -1267,7 +1282,7 @@ namespace parse_tree
             return true;
         }
 
-        public override async Task Execute(Lexer l)
+        public override void Execute(Lexer l)
         {
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             string head = l.Get_Text(id.start, id.finish);
@@ -1422,7 +1437,7 @@ namespace parse_tree
         Lhs? lhs;
         Msuffix? msuffix;
 
-        public override async Task Execute(Lexer l)
+        public override void Execute(Lexer l)
         {
             Variable v = new Variable(l.Get_Text(id.start, id.finish), new numbers.value() { V = 44444 });
             return;
@@ -1972,12 +1987,12 @@ namespace parse_tree
         }
 
         public override numbers.value Execute(Lexer l){
-            return new numbers.value(){Kind=numbers.Value_Kind.String_Kind, S=l.Get_Text(s.start, s.finish)};
+            return new numbers.value(){Kind=numbers.Value_Kind.String_Kind, S=l.Get_Text(s.start+1, s.finish-1)};
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            gen.Emit_Load_String(Component.the_lexer.Get_Text(s.start, s.finish).Replace("\"", ""));
+            gen.Emit_Load_String(Component.the_lexer.Get_Text(s.start+1, s.finish-1).Replace("\"", "\\\""));
         }
 
         public override void compile_pass1(Generate_Interface gen)
