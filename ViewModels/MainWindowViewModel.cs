@@ -1691,5 +1691,67 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
+        public float currentScale = 100;
+
+        public float setCurrentScale{
+            get{ return currentScale; }
+            set{ 
+                this.RaiseAndSetIfChanged(ref currentScale, ((float)value)/100);
+                setAllScales(currentScale);
+                setCurrentScaleFormatted = value + "%";
+            }
+        }
+
+        public string currentScaleFormatted = "100%";
+
+        public string setCurrentScaleFormatted{
+            get{ return currentScaleFormatted; }
+            set{ this.RaiseAndSetIfChanged(ref currentScaleFormatted, value); }
+        }
+
+        private void setAllScales(float f){
+            this.scale = f;
+            foreach(Subchart s in theTabs){
+                s.Start.scale = f;
+                s.Start.Scale(f);
+            }
+        }
+
+        public void setZoom40(){
+            setCurrentScale = 40;
+        }
+        public void setZoom60(){
+            setCurrentScale = 60;
+        }
+        public void setZoom80(){
+            setCurrentScale = 80;
+        }
+        public void setZoom100(){
+            setCurrentScale = 100;
+        }
+        public void setZoom125(){
+            setCurrentScale = 125;
+        }
+        public void setZoom150(){
+            setCurrentScale = 150;
+        }
+        public void setZoom175(){
+            setCurrentScale = 175;
+        }
+        public void setZoom200(){
+            setCurrentScale = 200;
+        }
+
+        public ObservableCollection<int> ZoomScales = new ObservableCollection<int>(){
+            40,
+            60,
+            80,
+            100,
+            125,
+            150,
+            175,
+            200
+        };
+
     }
 }

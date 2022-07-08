@@ -441,6 +441,29 @@
       </StackPanel>
       <TextBlock Text="{Binding setSpeed}" Height="15"/>
 
+      <!--
+      <Button Command="{Binding changeZoom}">Click this</Button>
+      -->
+
+      <!--
+      <DropDown Name="combobox" SelectedItem="{Binding setCurrentScale}" Items="{Binding ZoomScales}" Margin="50,10,0,0"></DropDown>
+      -->
+      <TextBlock Margin="50,0,0,0"/>
+      <Border Height="34" BorderBrush="#222222" BorderThickness="1" CornerRadius="2">
+      <Menu>
+      <MenuItem Header="{Binding setCurrentScaleFormatted}">
+        <MenuItem Header="40" Command="{Binding setZoom40}"/>
+        <MenuItem Header="60" Command="{Binding setZoom60}"/>
+        <MenuItem Header="80" Command="{Binding setZoom80}"/>
+        <MenuItem Header="100" Command="{Binding setZoom100}"/>
+        <MenuItem Header="125" Command="{Binding setZoom125}"/>
+        <MenuItem Header="150" Command="{Binding setZoom150}"/>
+        <MenuItem Header="175" Command="{Binding setZoom175}"/>
+        <MenuItem Header="200" Command="{Binding setZoom200}"/>
+      </MenuItem>
+      </Menu>
+      </Border>
+
     </StackPanel>
     
     <DockPanel Width="129" DockPanel.Dock="Left">
