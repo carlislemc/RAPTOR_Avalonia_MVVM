@@ -43,6 +43,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 return;
             }
             this.sc.Start.select(this.sc.positionX,this.sc.positionY);
+
+            if(this.sc.Start.check_expansion_click(this.sc.positionX, this.sc.positionY))
+            {
+                return;
+            }
+            
+
             if (SymbolsControl.control_figure_selected==SymbolsControl.assignment_fig)
             {
                 this.sc.OnInsertAssignmentCommand();
