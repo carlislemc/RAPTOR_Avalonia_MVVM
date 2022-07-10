@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -22,6 +23,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             AffectsRender<FlowchartControl>(AngleProperty);
         }
+        
+
         private Subchart sc;
 
         // This code seems to only run when the mouse is over the flowchart itself
@@ -31,51 +34,46 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int) e.GetPosition(this).Y;
         }
 
-        private void onClick(object? sender, RoutedEventArgs e)
+        private void Drop(object? sender, DragEventArgs e)
         {
-            PointerPressedEventArgs f = (PointerPressedEventArgs)e;
-            this.sc.positionX = (int)f.GetPosition(this).X;
-            this.sc.positionY = (int)f.GetPosition(this).Y;
-            this.sc.positionXTapped = (int)f.GetPosition(this).X;
-            this.sc.positionYTapped = (int)f.GetPosition(this).Y;
-            if (f.MouseButton!=MouseButton.Left)
+
+            this.sc.positionX = (int)e.GetPosition(this).X;
+            this.sc.positionY = (int)e.GetPosition(this).Y;
+            this.sc.positionXTapped = (int)e.GetPosition(this).X;
+            this.sc.positionYTapped = (int)e.GetPosition(this).Y;
+            /*if (f.MouseButton != MouseButton.Left)
             {
                 return;
-            }
-            this.sc.Start.select(this.sc.positionX,this.sc.positionY);
-
-            if(this.sc.Start.check_expansion_click(this.sc.positionX, this.sc.positionY))
-            {
-                return;
-            }
-            
-
-            if (SymbolsControl.control_figure_selected==SymbolsControl.assignment_fig)
+            }*/
+            this.sc.Start.select(this.sc.positionX, this.sc.positionY);
+            if (e.Data.GetText() == SymbolsControl.assignment_fig)
             {
                 this.sc.OnInsertAssignmentCommand();
+                //Debug.WriteLine("Dropped");
             }
-            else if (SymbolsControl.control_figure_selected == SymbolsControl.call_fig)
+            else if (e.Data.GetText() == SymbolsControl.call_fig)
             {
                 this.sc.OnInsertCallCommand();
             }
-            else if (SymbolsControl.control_figure_selected == SymbolsControl.input_fig)
+            else if (e.Data.GetText() == SymbolsControl.input_fig)
             {
                 this.sc.OnInsertInputCommand();
             }
-            else if (SymbolsControl.control_figure_selected == SymbolsControl.output_fig)
+            else if (e.Data.GetText() == SymbolsControl.output_fig)
             {
                 this.sc.OnInsertOutputCommand();
             }
-            else if (SymbolsControl.control_figure_selected == SymbolsControl.if_control_fig)
+            else if (e.Data.GetText() == SymbolsControl.if_control_fig)
             {
                 this.sc.OnInsertSelectionCommand();
             }
-            else if (SymbolsControl.control_figure_selected == SymbolsControl.loop_fig)
+            else if (e.Data.GetText() == SymbolsControl.loop_fig)
             {
                 this.sc.OnInsertLoopCommand();
             }
-
         }
+
+        
         private void doubleClick(object? sender, RoutedEventArgs e)
         {
             TappedEventArgs f = (TappedEventArgs)e;
@@ -92,7 +90,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             timer.Start();
             this.PointerMoved += this.onMouseMove;
             //this.Tapped += this.onClick;
-            this.PointerPressed += this.onClick;
+            
+            AddHandler(DragDrop.DropEvent, Drop);
             this.DoubleTapped += this.doubleClick;
         }
 
