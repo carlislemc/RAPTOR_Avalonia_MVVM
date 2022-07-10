@@ -1,0 +1,539 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RAPTOR_Avalonia_MVVM.ViewModels"
+        xmlns:models="clr-namespace:raptor;assembly=raptor"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:RAPTOR_Avalonia_MVVM.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="RAPTOR">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Header="_New   Ctrl+N" Command="{Binding OnNewCommand}" HotKey="Ctrl+N"/>
+        <MenuItem Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}" HotKey="Ctrl+O"/>
+        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand}" HotKey="Ctrl+S"/>
+        <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand}"/>
+        <Separator/>
+        <MenuItem Header="_Exit" Command="{Binding OnExitCommand}"/>
+      </MenuItem>
+      <MenuItem Header="_Edit">
+        <MenuItem Header="_Undo   Ctrl+Z" Command="{Binding OnUndoCommand}" HotKey="Ctrl+Z"/>
+        <MenuItem Header="_Redo   Ctrl+Y" Command="{Binding OnRedoCommand}" HotKey="Ctrl+Y"/>
+        <Separator/>
+        <MenuItem Header="C_ut   Ctrl+X" Command="{Binding OnCutCommand}" HotKey="Ctrl+X"/>
+        <MenuItem Header="Co_py   Ctrl+C" Command="{Binding OnCopyCommand}" HotKey="Ctrl+C"/>
+        <MenuItem Header="_Paste   Ctrl+V" Command="{Binding OnPasteCommand}" HotKey="Ctrl+V"/>
+        <MenuItem Header="_Delete   Del" Command="{Binding OnDeleteCommand}" HotKey="Delete"/>
+      </MenuItem>
+      <MenuItem Header="_Run">
+        <MenuItem Header="_Step   F10" Command="{Binding OnStepCommand}" HotKey="F10"/>
+        <MenuItem Header="_Execute to Completion" Command="{Binding OnExecuteCommand}"/>
+        <MenuItem Header="_Reset" Command="{Binding OnResetCommand}" HotKey="F10"/>
+        <MenuItem Header="Reset/Execute   F5" Command="{Binding OnResetExecuteCommand}" HotKey="F5"/>
+        <MenuItem Header="Run Compiled" Command="{Binding OnRunCompiledCommand}"/>
+        <Separator/>
+        <MenuItem Header="_Clear all breakpoints" Command="{Binding OnClearBreakpointsCommand}" HotKey="F10"/>
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem Header="_About" Command="{Binding OnAboutCommand}"/>
+        <MenuItem Header="_General Help   F11" Command="{Binding OnGeneralHelpCommand}" HotKey="F11"/>
+        <Separator/>
+        <MenuItem Header="_Show Log" Command="{Binding OnShowLogCommand}"/>
+        <MenuItem Header="_Count Symbols" Command="{Binding OnCountSymbolsCommand}"/>
+      </MenuItem>
+    </Menu>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+      <StackPanel.Styles>
+
+        <Style Selector="Button.NewButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/NEW.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.NewButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/NEW.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+        <Style Selector="Button.NewButton">
+          <Setter Property="FontSize" Value="30" />
+          <Setter Property="Width" Value="24" />
+          <Setter Property="Height" Value="24" />
+          <Setter Property="Background">
+            <Setter.Value>
+              <ImageBrush Source="avares://raptor/Assets/NEW.png" />
+            </Setter.Value>
+          </Setter>
+        </Style>
+
+      <Style Selector="Button.OpenButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/OPEN.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.OpenButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/OPEN.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+
+      <Style Selector="Button.OpenButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/OPEN.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.SaveButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/SAVE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.SaveButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/SAVE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.SaveButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/SAVE.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.CutButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/CUT.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.CutButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/CUT.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.CutButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/CUT.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.CopyButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/COPY.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.CopyButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/COPY.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.CopyButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/COPY.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.PasteButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/PASTE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PasteButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/PASTE.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.PasteButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/PASTE.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.UndoButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.UndoButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.UndoButton:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.1"/>
+      </Style>
+
+      <Style Selector="Button.UndoButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/UNDO.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.RedoButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.RedoButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.RedoButton:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.1"/>
+      </Style>
+
+      <Style Selector="Button.RedoButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/REDO.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.PlayButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Play.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PlayButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Play.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+
+      <Style Selector="Button.PlayButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Play.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.PauseButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Pause.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.PauseButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Pause.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+      
+      <Style Selector="Button.PauseButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Pause.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+      
+       <Style Selector="Button.StopButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Stop.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.StopButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Stop.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.StopButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Stop.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style Selector="Button.NextButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Next.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.5"/>
+      </Style>
+
+      <Style Selector="Button.NextButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Next.png" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.25"/>
+      </Style>
+
+      <Style Selector="Button.NextButton">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background">
+          <Setter.Value>
+            <ImageBrush Source="avares://raptor/Assets/Playback_Status_Next.png" />
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      </StackPanel.Styles>
+      <Button Classes="NewButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
+      <Button Classes="OpenButton" ToolTip.Tip="Open" Command="{Binding OnOpenCommand}"></Button>
+      <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand}"></Button>
+      <Button Classes="CutButton" ToolTip.Tip="Cut" Command="{Binding OnCutCommand}"></Button>
+      <Button Classes="CopyButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
+      <Button Classes="PasteButton" ToolTip.Tip="Paste" Command="{Binding OnPasteCommand}"></Button>
+      <Button Classes="UndoButton" IsEnabled="{Binding toggleUndoCommand}" ToolTip.Tip="Undo" Command="{Binding OnUndoCommand}"></Button>
+      <Button Classes="RedoButton" IsEnabled="{Binding toggleRedoCommand}" ToolTip.Tip="Redo" Command="{Binding OnRedoCommand}"></Button>
+      <Button Classes="PlayButton" ToolTip.Tip="Play" Command="{Binding OnExecuteCommand}"></Button>
+      <Button Classes="PauseButton" ToolTip.Tip="Pause" Command="{Binding OnPauseCommand}"></Button>
+      <Button Classes="StopButton" ToolTip.Tip="Reset" Command="{Binding OnResetCommand}"></Button>
+      <Button Classes="NextButton" ToolTip.Tip="Next" Command="{Binding OnNextCommand}"></Button>
+
+      <StackPanel Margin="50,0,0,0">
+        <Slider Name="speedSlider" Width="100"  
+          Background="Gray" Maximum="100" Minimum="1" Value="{Binding setSpeed}">  
+        </Slider>
+      </StackPanel>
+      <TextBlock Text="{Binding setSpeed}" Height="15"/>
+
+    </StackPanel>
+    
+    <DockPanel Width="129" DockPanel.Dock="Left">
+      <UserControl Background="White" Height="239" DockPanel.Dock="Top">
+        <controls:SymbolsControl Height="239" DragDrop.AllowDrop="True">
+        </controls:SymbolsControl>
+      </UserControl>
+      <!--
+      <TreeView DockPanel.Dock="Bottom" Items="{Binding theVariables}">
+        <TreeView.DataTemplates>
+          <TreeDataTemplate DataType="models:Variables" ItemsSource="{Binding values}">
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
+          </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr" ItemsSource="{Binding values}">
+                <TextBlock Text="{Binding name}"/>
+          </TreeDataTemplate>  
+          <DataTemplate DataType="models:Arr2">
+                <TextBlock Text="{Binding name}"/>
+          </DataTemplate>  
+        </TreeView.DataTemplates>
+      </TreeView>
+      -->
+      <TreeView DockPanel.Dock="Bottom" Items="{Binding theVariables}">
+        <TreeView.DataTemplates>
+          <TreeDataTemplate DataType="models:Variable" ItemsSource="{Binding values}">
+            <TextBlock Foreground="{Binding color}" Text="{Binding text}"/>
+          </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr" ItemsSource="{Binding values}">
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
+          </TreeDataTemplate>
+          <TreeDataTemplate DataType="models:Arr2">
+            <TextBlock Foreground="{Binding color}" Text="{Binding displayStr}"/>
+          </TreeDataTemplate>
+        </TreeView.DataTemplates>
+      </TreeView>
+
+    </DockPanel>
+    
+    <TabControl Name="tc12" DockPanel.Dock="Right" Items="{Binding theTabs}" SelectedIndex="{Binding setViewTab}">
+      <TabControl.ItemTemplate>
+        <DataTemplate DataType="{x:Type models:Subchart}">
+          <TextBlock Text="{Binding Header}">
+          <TextBlock.ContextMenu>
+            <ContextMenu Items="{Binding TabContextMenuItems}">
+
+              <ContextMenu.Styles>
+                      <Style Selector="MenuItem">
+                        <Setter Property="Header" Value="{Binding Header}"/>
+                        <Setter Property="Items" Value="{Binding Items}"/>
+                        <Setter Property="Command" Value="{Binding Command}"/>
+                        <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                      </Style>
+              </ContextMenu.Styles>
+            <!--
+                <ContextMenu>
+                    <MenuItem Header="Add Subchart" Command="{Binding onAddSubchartCommand}"/>
+                    <MenuItem Header="Add Procedure" Command="{Binding onAddProcedureCommand}"/>
+                </ContextMenu>
+            -->
+
+            </ContextMenu>
+          </TextBlock.ContextMenu>
+          </TextBlock>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate>
+          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <!-- we need to set the background of the UserControl so that it gets the mouse clicks outside
+            of the flowchart symbols -->
+            <UserControl Width="200" Height="250" Background="Black" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
+
+              <controls:FlowchartControl DragDrop.AllowDrop="True" Tag="{Binding Content}" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
+                <controls:FlowchartControl.ContextMenu>
+                  <!-- This binding goes to the Subchart class because reasons -->
+                  <ContextMenu Items="{Binding ContextMenuItemsFunction}">
+                    <ContextMenu.Styles>
+                      <Style Selector="MenuItem">
+                        <Setter Property="Header" Value="{Binding Header}"/>
+                        <Setter Property="Items" Value="{Binding Items}"/>
+                        <Setter Property="Command" Value="{Binding Command}"/>
+                        <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                        <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+                      </Style>
+                    </ContextMenu.Styles>
+              </ContextMenu>
+                </controls:FlowchartControl.ContextMenu>
+              </controls:FlowchartControl>
+            </UserControl>
+          </ScrollViewer>
+
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+  </DockPanel>
+</Window>
