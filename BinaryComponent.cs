@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Avalonia;
-
+using RAPTOR_Avalonia_MVVM.Controls;
 namespace raptor
 {
 	/// <summary>
@@ -138,7 +138,7 @@ namespace raptor
 		}
 
 		// If (x, y) is over the object color it red?
-		public override Component select(int x, int y)
+		public override Component select(int x, int y, bool ctrl)
 		{
 			Component succ_selected = null; 
 			Component first_selected = null;
@@ -148,17 +148,17 @@ namespace raptor
 			
 			if (this.first_child != null && !this.is_compressed)
 			{
-				first_selected = this.first_child.select(x,y);
+				first_selected = this.first_child.select(x,y, FlowchartControl.ctrl);
 			}
 
             if (this.second_child != null && !this.is_compressed)
 			{
-				second_selected = this.second_child.select(x,y);
+				second_selected = this.second_child.select(x,y, FlowchartControl.ctrl);
 			}
 
 			if (this.Successor != null)
 			{
-				succ_selected = this.Successor.select(x,y);
+				succ_selected = this.Successor.select(x,y, FlowchartControl.ctrl);
 			}
 
 			if (this.contains(x,y))

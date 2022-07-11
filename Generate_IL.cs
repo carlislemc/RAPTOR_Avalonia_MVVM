@@ -305,6 +305,7 @@ namespace raptor
             }
             Emit_Method_Virt("raptor.Value_2D_Array", "Get_Value");
         }
+
         public bool Previously_Declared(string name)
         {
             return (variables.ContainsKey(name.ToLower()) ||
@@ -957,6 +958,7 @@ namespace raptor
             this.Variable_Assignment_Start(name);
             kind_of_input = input_kind.variable;
         }
+
         public void Input_Start_Array_1D(string name, parse_tree.Expression reference)
         {
             dest_is_array = true;

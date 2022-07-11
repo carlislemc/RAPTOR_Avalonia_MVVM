@@ -74,7 +74,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             if (compileMode)
             {
-                p.pans = numbers.Numbers.make_value__5(getVariable);
+                p.pans = numbers.Numbers.make_value__6(getVariable);
             }
 
             w.Close();

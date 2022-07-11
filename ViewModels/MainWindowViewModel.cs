@@ -22,6 +22,7 @@ using parse_tree;
 using System.Timers;
 using System.Threading;
 using RAPTOR_Avalonia_MVVM.Views;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
@@ -61,6 +62,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string Text = "sdfasdf";
         private System.Guid file_guid_back = System.Guid.NewGuid();
         public Component? Current_Selection = null;
+        public System.DateTime last_autosave = System.DateTime.Now;
         public System.Guid file_guid
         {
             get
@@ -76,7 +78,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }*/
             }
         }
-        private string? fileName;
+        public string? fileName;
 
         private ObservableCollection<Subchart>? privateTheTabs;
         public ObservableCollection<Subchart>? theTabs {
@@ -148,6 +150,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             return theMainWindowViewModel;
         }
+
         public MainWindowViewModel()
         {
             theMainWindowViewModel = this;
@@ -328,7 +331,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     ((Subchart)this.theTabs[i]).scale_ink(this.scale);
                                 }*/
                             }
-                            this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000);
+                            this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000, FlowchartControl.ctrl);
                         }
                         //this.carlisle.SelectedTab = this.mainSubchart();
                     }
@@ -479,7 +482,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 this.mainSubchart().Start.scale = this.scale;
                 this.mainSubchart().Start.Scale(this.scale);
-                this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000);
+                this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000, FlowchartControl.ctrl);
                 this.Clear_Undo();
 
 
@@ -597,6 +600,47 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 ClipboardMultiplatform.SetDataObject(cd, true);
             }
         }
+
+        public string Get_Autosave_Name()
+        {
+            char c;
+            System.DateTime oldest_time = System.DateTime.MaxValue;
+            System.DateTime this_time;
+            string oldest = this.fileName + ".backup0";
+
+            try
+            {
+                for (c = '0'; c <= '3'; c++)
+                {
+                    string this_name = this.fileName + ".backup" + c;
+
+                    if (System.IO.File.Exists(this_name))
+                    {
+                        this_time = System.IO.File.GetLastWriteTime(this_name);
+                        if (this_time < oldest_time)
+                        {
+                            oldest_time = this_time;
+                            oldest = this_name;
+                        }
+                    }
+                    else
+                    {
+                        return this_name;
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return oldest;
+        }
+
+        public void Perform_Autosave()
+        {
+            string name = this.Get_Autosave_Name();
+            this.Perform_Save(name, true);
+        }
+
         public void OnSaveCommand() {
 
             FileSave_Click();
@@ -617,10 +661,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         private bool Save_Error = false;
-        private void Perform_Save(string name, bool is_autosave)
+        private async void Perform_Save(string name, bool is_autosave)
         {
             Stream stream;
             string prefix;
+            this.last_autosave = System.DateTime.Now;
 
             if (is_autosave)
             {
@@ -640,7 +685,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if (File.Exists(name) &&
                     (File.GetAttributes(name) & FileAttributes.ReadOnly) > 0)
                 {
-                    MessageBoxClass.Show(
+                    await MessageBoxClass.Show(
                         prefix + '\n' +
                         name + " is a read-only file",
                         "Error",
@@ -648,7 +693,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
                 else
                 {
-                    MessageBoxClass.Show(
+                    await MessageBoxClass.Show(
                         prefix + '\n' +
                         "Unable to create file: " +
                         name, "Error",
@@ -1151,7 +1196,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             if (temp.parse_tree != null)
                             {
                                 Procedure_Call ea = (Procedure_Call)temp.parse_tree;
-                                await ea.Execute(l);
+                                ea.Execute(l);
                             }
                         }
                         goToNextComponent();
@@ -1690,6 +1735,68 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //this.rescale_all(this.scale);
 
         }
+
+        public float currentScale = 100;
+
+        public float setCurrentScale{
+            get{ return currentScale; }
+            set{ 
+                this.RaiseAndSetIfChanged(ref currentScale, ((float)value)/100);
+                setAllScales(currentScale);
+                setCurrentScaleFormatted = value + "%";
+            }
+        }
+
+        public string currentScaleFormatted = "100%";
+
+        public string setCurrentScaleFormatted{
+            get{ return currentScaleFormatted; }
+            set{ this.RaiseAndSetIfChanged(ref currentScaleFormatted, value); }
+        }
+
+        private void setAllScales(float f){
+            this.scale = f;
+            foreach(Subchart s in theTabs){
+                s.Start.scale = f;
+                s.Start.Scale(f);
+            }
+        }
+
+        public void setZoom40(){
+            setCurrentScale = 40;
+        }
+        public void setZoom60(){
+            setCurrentScale = 60;
+        }
+        public void setZoom80(){
+            setCurrentScale = 80;
+        }
+        public void setZoom100(){
+            setCurrentScale = 100;
+        }
+        public void setZoom125(){
+            setCurrentScale = 125;
+        }
+        public void setZoom150(){
+            setCurrentScale = 150;
+        }
+        public void setZoom175(){
+            setCurrentScale = 175;
+        }
+        public void setZoom200(){
+            setCurrentScale = 200;
+        }
+
+        public ObservableCollection<int> ZoomScales = new ObservableCollection<int>(){
+            40,
+            60,
+            80,
+            100,
+            125,
+            150,
+            175,
+            200
+        };
 
     }
 }

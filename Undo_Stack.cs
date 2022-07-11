@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using System.Collections.ObjectModel;
+using RAPTOR_Avalonia_MVVM;
 
 namespace raptor
 {
@@ -150,7 +151,7 @@ namespace raptor
 			Clear_Redo(/*form*/);
 		}
 
-		public static void Make_Undoable(Subchart current/*Visual_Flow_Form form*/)
+		public async static void Make_Undoable(Subchart current/*Visual_Flow_Form form*/)
 		{
 			//Subchart current = form.selectedTabMaybeNull();
 			//Subchart current = null;
@@ -171,6 +172,29 @@ namespace raptor
 
             Add_Undo_Action(new_action/*, form*/);
 			Clear_Redo(/*form*/);
+
+			MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
+			System.TimeSpan ts = System.DateTime.Now.Subtract(mw.last_autosave);
+			if (ts.Minutes >= 3.0)
+			{
+				if (mw.fileName != null &&
+					mw.fileName != "")
+				{
+					mw.Perform_Autosave();
+				}
+				else
+				{
+					Subchart stmn = mw.viewTab != 0 ? mw.theTabs[mw.viewTab] : null;
+
+					if (stmn == null)
+					{
+						await MessageBoxClass.Show("Please save now.", "Save Work", 0, 0);
+						mw.OnSaveAsCommand();
+					}
+				}
+			}
+
 		}
 
 		public static void Undo_Action(Subchart current /*Visual_Flow_Form form*/)

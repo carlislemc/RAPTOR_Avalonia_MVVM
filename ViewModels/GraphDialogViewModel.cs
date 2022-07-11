@@ -110,14 +110,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public static void PlaySound(string s)
         {
             DotnetGraph gd = new DotnetGraph(1, 1);
-            DotnetGraphControl.dngw.PlaySound("../sounds/sound.wav");
+            DotnetGraphControl.dngw.PlaySound(s);
         }
         public static void PlaySoundBackground(string s)
         {
+            DotnetGraph gd = new DotnetGraph(1, 1);
             DotnetGraphControl.dngw.PlaySoundBackground(s);
         }
         public static void PlaySoundBackgroundLoop(string s)
         {
+            DotnetGraph gd = new DotnetGraph(1, 1);
             DotnetGraphControl.dngw.PlaySoundBackgroundLoop(s);
         }
 
