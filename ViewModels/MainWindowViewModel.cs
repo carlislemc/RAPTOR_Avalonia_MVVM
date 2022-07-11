@@ -22,6 +22,7 @@ using parse_tree;
 using System.Timers;
 using System.Threading;
 using RAPTOR_Avalonia_MVVM.Views;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
@@ -328,7 +329,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     ((Subchart)this.theTabs[i]).scale_ink(this.scale);
                                 }*/
                             }
-                            this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000);
+                            this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000, FlowchartControl.ctrl);
                         }
                         //this.carlisle.SelectedTab = this.mainSubchart();
                     }
@@ -479,7 +480,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 this.mainSubchart().Start.scale = this.scale;
                 this.mainSubchart().Start.Scale(this.scale);
-                this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000);
+                this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000, FlowchartControl.ctrl);
                 this.Clear_Undo();
 
 

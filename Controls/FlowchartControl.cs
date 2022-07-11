@@ -23,6 +23,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             AffectsRender<FlowchartControl>(AngleProperty);
         }
         private Subchart sc;
+        public static bool ctrl = false;
 
         // This code seems to only run when the mouse is over the flowchart itself
         private void onMouseMove(object? sender, PointerEventArgs e)
@@ -42,7 +43,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 return;
             }
-            this.sc.Start.select(this.sc.positionX,this.sc.positionY);
+
+            
+            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
+            
+            
 
             if(this.sc.Start.check_expansion_click(this.sc.positionX, this.sc.positionY))
             {
@@ -83,6 +88,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int)f.GetPosition(this).Y;
             _ = this.sc.Start.setText(this.sc.positionX, this.sc.positionY);
         }
+
         public FlowchartControl()
         {
             sc = new Subchart();

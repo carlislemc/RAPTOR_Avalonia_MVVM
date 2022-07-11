@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System.Reflection;
 using Avalonia.Input;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -30,6 +31,24 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 {
                     MethodInfo mi = typeof(TabControl).GetMethod("UpdateSelectionFromEventSource", BindingFlags.NonPublic | BindingFlags.Instance);
                     mi.Invoke(s, new object[] { e.Source, true, false, false, false });
+                }
+            };
+
+            this.KeyDown += (s, e) =>
+            {
+                KeyEventArgs f = (KeyEventArgs)e;
+                if (f.Key == Avalonia.Input.Key.LeftCtrl || f.Key == Avalonia.Input.Key.RightCtrl)
+                {
+                    FlowchartControl.ctrl = true;
+                }
+            };
+
+            this.KeyUp += (s, e) =>
+            {
+                KeyEventArgs f = (KeyEventArgs)e;
+                if (f.Key == Avalonia.Input.Key.LeftCtrl || f.Key == Avalonia.Input.Key.RightCtrl)
+                {
+                    FlowchartControl.ctrl = false;
                 }
             };
         }

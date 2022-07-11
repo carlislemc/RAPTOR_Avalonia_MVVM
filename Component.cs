@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using RAPTOR_Avalonia_MVVM;
 using Avalonia;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace raptor
 {
@@ -894,29 +895,61 @@ namespace raptor
 
 		// If (x, y) is over the object color it red?
 		// If (x, y) is over the object color it red?
-		public virtual Component select(int x, int y)
+		public virtual Component select(int x, int y, bool ctrl)
 		{
 			// can't select if compiled
 			if (Component.compiled_flowchart)
 			{
 				return null;
 			}
-			this.selected = false;
+            if (!ctrl)
+            {
+				this.selected = false;
+			}
 			Component succ_selected=null;
 
 			if (this.Successor != null)
 			{
-				succ_selected = this.Successor.select(x,y);
+				succ_selected = this.Successor.select(x,y, FlowchartControl.ctrl);
 			}
 			if (this.contains(x,y))
 			{
-				this.selected = true;
+                if (ctrl)
+                {
+					this.selected = !this.selected;
+                }
+                else
+                {
+					this.selected = true;
+				}
 				return this;
 			}
 			return succ_selected;
 		}
 
-        public virtual Component Find_Component(int x, int y)
+		//public virtual Component selectMultiple(int x, int y)
+		//{
+		//	// can't select if compiled
+		//	if (Component.compiled_flowchart)
+		//	{
+		//		return null;
+		//	}
+		//	//this.selected = false;
+		//	Component succ_selected = null;
+
+		//	if (this.Successor != null)
+		//	{
+		//		succ_selected = this.Successor.select(x, y);
+		//	}
+		//	if (this.contains(x, y))
+		//	{
+		//		this.selected = !this.selected;
+		//		return this;
+		//	}
+		//	return succ_selected;
+		//}
+
+		public virtual Component Find_Component(int x, int y)
         {
             // can't find if compiled
             if (Component.compiled_flowchart)
