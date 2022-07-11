@@ -1,19 +1,23 @@
+using System;
+using System.Collections;
+using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Skia;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Media;
 using RAPTOR_Avalonia_MVVM.Views;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 using NetCoreAudio;
+using SkiaSharp;
+using Control = Avalonia.Controls.Control;
+using KeyEventArgs = Avalonia.Input.KeyEventArgs;
+using Timer = System.Timers.Timer;
+using Avalonia.Threading;
+using Avalonia.LogicalTree;
+using Avalonia.Controls;
+using System.Linq;
+
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
     public enum Color_Type
@@ -262,13 +266,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         RGB_E5_E5_E5,
         RGB_EC_EC_EC,
         RGB_F5_F5_F5
-    };
+    }
 
     public enum Mouse_Button
     {
         Left_Button,
         Right_Button
-    };
+    }
 
     public enum Event_Type
     {
@@ -278,314 +282,315 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         Left_Down,
         Right_Up,
         Right_Down
-    };
+    }
 
     public class MyRect
     {
         public int X, Y, Width, Height;
     }
 
-    class DotnetGraphControl : Control
+    internal class DotnetGraphControl : Control
     {
-        public static DotnetGraphControl dngw;
-
-        MyRect draw_rect = new MyRect();
-
         // I originally had the idea of making the BMP bigger than the screen,
         // but then flood fill goes off the visible window and does weird stuff
         public const int slop = 0;
-
+        private const int default_font_size = 14;
+        private const int NUM_BASIC_COLORS = 18;
+        public static DotnetGraphControl dngw;
+        private static DotnetGraph dotnetgraph;
+        private static Player loopPlayer;
         //public static dotnetgraph form;
         //private static SKBrush[] brushes;
         //private static SKPen[] pens;
         //private static Font[] fonts;
         private static SKPaint[] paints;
-        private Player player = new Player();
         public static bool start_topmost = false;
-        private const int default_font_size = 14;
-        private int current_font_size = default_font_size;
-        private bool left_is_down = false;
-        private bool right_is_down = false;
-        private bool[] key_is_down = new bool[255];
-        private bool playInBackground = false;
-        private bool looping = false;
-        private char pressed_key;
-        private string soundFilePath;
-        private Point mouse;
-        private int left_click = 0;
-        private int click_x, click_y;
-        private int left_click_x, left_click_y;
-        private int right_click_x, right_click_y;
-        private int x_size, y_size;
-        private System.Collections.ArrayList bitmaps = new System.Collections.ArrayList();
-        private const int NUM_BASIC_COLORS = 18;
-        private bool frozen = false;
 
-        static uint[] standard_color =
+        private static readonly uint[] standard_color =
         {
-            (0xFF000000), /* Black         */
-            (0xFF000080), /* Blue          */
-            (0xFF008000), /* Green         */
-            (0xFF008080), /* Cyan          */
-            (0xFF800000), /* Red           */
-            (0xFF800080), /* Magenta       */
-            (0xFF808000), /* Brown         */
-            (0xFFACACAC), /* Light_Gray    */
-            (0xFF4F4F4F), /* Dark_Gray     */
-            (0xFF0000FF), /* Light_Blue    */
-            (0xFF00FF00), /* Light_Green   */
-            (0xFF00FFFF), /* Light_Cyan    */
-            (0xFFFF0000), /* Light_Red     */
-            (0xFFFF00FF), /* Light_Magenta */
-            (0xFFFFFF00), /* Yellow        */
-            (0xFFFFC0CB), /* Pink          */
-            (0xFF800080), /* Purple        */
-            (0xFFFFFFFF), /* White         */
-            (0xFF000033),
-            (0xFF000066),
-            (0xFF0000CC),
-            (0xFF003300),
-            (0xFF003333),
-            (0xFF003366),
-            (0xFF003399),
-            (0xFF0033CC),
-            (0xFF0033FF),
-            (0xFF006600),
-            (0xFF006633),
-            (0xFF006666),
-            (0xFF006699),
-            (0xFF0066CC),
-            (0xFF0066FF),
-            (0xFF009900),
-            (0xFF009933),
-            (0xFF009966),
-            (0xFF0099CC),
-            (0xFF0099FF),
-            (0xFF00CC00),
-            (0xFF00CC33),
-            (0xFF00CC66),
-            (0xFF00CC99),
-            (0xFF00CCCC),
-            (0xFF00CCFF),
-            (0xFF00FF33),
-            (0xFF00FF66),
-            (0xFF00FF99),
-            (0xFF00FFCC),
-            (0xFF330000),
-            (0xFF330033),
-            (0xFF330066),
-            (0xFF330099),
-            (0xFF3300CC),
-            (0xFF3300FF),
-            (0xFF333300),
-            (0xFF333333),
-            (0xFF333366),
-            (0xFF333399),
-            (0xFF3333CC),
-            (0xFF3333FF),
-            (0xFF336600),
-            (0xFF336633),
-            (0xFF336666),
-            (0xFF336699),
-            (0xFF3366CC),
-            (0xFF3366FF),
-            (0xFF339900),
-            (0xFF339933),
-            (0xFF339966),
-            (0xFF339999),
-            (0xFF3399CC),
-            (0xFF3399FF),
-            (0xFF33CC00),
-            (0xFF33CC33),
-            (0xFF33CC66),
-            (0xFF33CC99),
-            (0xFF33CCCC),
-            (0xFF33CCFF),
-            (0xFF33FF00),
-            (0xFF33FF33),
-            (0xFF33FF66),
-            (0xFF33FF99),
-            (0xFF33FFCC),
-            (0xFF33FFFF),
-            (0xFF660000),
-            (0xFF660033),
-            (0xFF660066),
-            (0xFF660099),
-            (0xFF6600CC),
-            (0xFF6600FF),
-            (0xFF663300),
-            (0xFF663333),
-            (0xFF663366),
-            (0xFF663399),
-            (0xFF6633CC),
-            (0xFF6633FF),
-            (0xFF666600),
-            (0xFF666633),
-            (0xFF666666),
-            (0xFF666699),
-            (0xFF6666CC),
-            (0xFF6666FF),
-            (0xFF669900),
-            (0xFF669933),
-            (0xFF669966),
-            (0xFF669999),
-            (0xFF6699CC),
-            (0xFF6699FF),
-            (0xFF66CC00),
-            (0xFF66CC33),
-            (0xFF66CC66),
-            (0xFF66CC99),
-            (0xFF66CCCC),
-            (0xFF66CCFF),
-            (0xFF66FF00),
-            (0xFF66FF33),
-            (0xFF66FF66),
-            (0xFF66FF99),
-            (0xFF66FFCC),
-            (0xFF66FFFF),
-            (0xFF990000),
-            (0xFF990033),
-            (0xFF990066),
-            (0xFF990099),
-            (0xFF9900CC),
-            (0xFF9900FF),
-            (0xFF993300),
-            (0xFF993333),
-            (0xFF993366),
-            (0xFF993399),
-            (0xFF9933CC),
-            (0xFF9933FF),
-            (0xFF996600),
-            (0xFF996633),
-            (0xFF996666),
-            (0xFF996699),
-            (0xFF9966CC),
-            (0xFF9966FF),
-            (0xFF999933),
-            (0xFF999966),
-            (0xFF999999),
-            (0xFF9999CC),
-            (0xFF9999FF),
-            (0xFF99CC00),
-            (0xFF99CC33),
-            (0xFF99CC66),
-            (0xFF99CC99),
-            (0xFF99CCCC),
-            (0xFF99CCFF),
-            (0xFF99FF00),
-            (0xFF99FF33),
-            (0xFF99FF66),
-            (0xFF99FF99),
-            (0xFF99FFCC),
-            (0xFF99FFFF),
-            (0xFFCC0000),
-            (0xFFCC0033),
-            (0xFFCC0066),
-            (0xFFCC0099),
-            (0xFFCC00CC),
-            (0xFFCC00FF),
-            (0xFFCC3300),
-            (0xFFCC3333),
-            (0xFFCC3366),
-            (0xFFCC3399),
-            (0xFFCC33CC),
-            (0xFFCC33FF),
-            (0xFFCC6600),
-            (0xFFCC6633),
-            (0xFFCC6666),
-            (0xFFCC6699),
-            (0xFFCC66CC),
-            (0xFFCC66FF),
-            (0xFFCC9900),
-            (0xFFCC9933),
-            (0xFFCC9966),
-            (0xFFCC9999),
-            (0xFFCC99CC),
-            (0xFFCC99FF),
-            (0xFFCCCC00),
-            (0xFFCCCC33),
-            (0xFFCCCC66),
-            (0xFFCCCC99),
-            (0xFFCCCCCC),
-            (0xFFCCCCFF),
-            (0xFFCCFF00),
-            (0xFFCCFF33),
-            (0xFFCCFF66),
-            (0xFFCCFF99),
-            (0xFFCCFFCC),
-            (0xFFCCFFFF),
-            (0xFFFF0033),
-            (0xFFFF0066),
-            (0xFFFF00CC),
-            (0xFFFF3300),
-            (0xFFFF3333),
-            (0xFFFF3366),
-            (0xFFFF3399),
-            (0xFFFF33CC),
-            (0xFFFF33FF),
-            (0xFFFF6600),
-            (0xFFFF6633),
-            (0xFFFF6666),
-            (0xFFFF6699),
-            (0xFFFF66CC),
-            (0xFFFF66FF),
-            (0xFFFF9933),
-            (0xFFFF9966),
-            (0xFFFF9999),
-            (0xFFFF99CC),
-            (0xFFFF99FF),
-            (0xFFFFCC00),
-            (0xFFFFCC33),
-            (0xFFFFCC66),
-            (0xFFFFCC99),
-            (0xFFFFCCCC),
-            (0xFFFFCCFF),
-            (0xFFFFFF33),
-            (0xFFFFFF66),
-            (0xFFFFFF99),
-            (0xFFFFFFCC),
-            (0xFF0D0D0D),
-            (0xFF141414),
-            (0xFF1A1A1A),
-            (0xFF272727),
-            (0xFF3B3B3B),
-            (0xFF424242),
-            (0xFF555555),
-            (0xFF5C5C5C),
-            (0xFF696969),
-            (0xFF767676),
-            (0xFF7C7C7C),
-            (0xFF838383),
-            (0xFF8A8A8A),
-            (0xFFA4A4A4),
-            (0xFFB1B1B1),
-            (0xFFB7B7B7),
-            (0xFFBEBEBE),
-            (0xFFC5C5C5),
-            (0xFFD2D2D2),
-            (0xFFDADADA),
-            (0xFFE5E5E5),
-            (0xFFECECEC),
-            (0xFFF5F5F5)
+            0xFF000000, /* Black         */
+            0xFF000080, /* Blue          */
+            0xFF008000, /* Green         */
+            0xFF008080, /* Cyan          */
+            0xFF800000, /* Red           */
+            0xFF800080, /* Magenta       */
+            0xFF808000, /* Brown         */
+            0xFFACACAC, /* Light_Gray    */
+            0xFF4F4F4F, /* Dark_Gray     */
+            0xFF0000FF, /* Light_Blue    */
+            0xFF00FF00, /* Light_Green   */
+            0xFF00FFFF, /* Light_Cyan    */
+            0xFFFF0000, /* Light_Red     */
+            0xFFFF00FF, /* Light_Magenta */
+            0xFFFFFF00, /* Yellow        */
+            0xFFFFC0CB, /* Pink          */
+            0xFF800080, /* Purple        */
+            0xFFFFFFFF, /* White         */
+            0xFF000033,
+            0xFF000066,
+            0xFF0000CC,
+            0xFF003300,
+            0xFF003333,
+            0xFF003366,
+            0xFF003399,
+            0xFF0033CC,
+            0xFF0033FF,
+            0xFF006600,
+            0xFF006633,
+            0xFF006666,
+            0xFF006699,
+            0xFF0066CC,
+            0xFF0066FF,
+            0xFF009900,
+            0xFF009933,
+            0xFF009966,
+            0xFF0099CC,
+            0xFF0099FF,
+            0xFF00CC00,
+            0xFF00CC33,
+            0xFF00CC66,
+            0xFF00CC99,
+            0xFF00CCCC,
+            0xFF00CCFF,
+            0xFF00FF33,
+            0xFF00FF66,
+            0xFF00FF99,
+            0xFF00FFCC,
+            0xFF330000,
+            0xFF330033,
+            0xFF330066,
+            0xFF330099,
+            0xFF3300CC,
+            0xFF3300FF,
+            0xFF333300,
+            0xFF333333,
+            0xFF333366,
+            0xFF333399,
+            0xFF3333CC,
+            0xFF3333FF,
+            0xFF336600,
+            0xFF336633,
+            0xFF336666,
+            0xFF336699,
+            0xFF3366CC,
+            0xFF3366FF,
+            0xFF339900,
+            0xFF339933,
+            0xFF339966,
+            0xFF339999,
+            0xFF3399CC,
+            0xFF3399FF,
+            0xFF33CC00,
+            0xFF33CC33,
+            0xFF33CC66,
+            0xFF33CC99,
+            0xFF33CCCC,
+            0xFF33CCFF,
+            0xFF33FF00,
+            0xFF33FF33,
+            0xFF33FF66,
+            0xFF33FF99,
+            0xFF33FFCC,
+            0xFF33FFFF,
+            0xFF660000,
+            0xFF660033,
+            0xFF660066,
+            0xFF660099,
+            0xFF6600CC,
+            0xFF6600FF,
+            0xFF663300,
+            0xFF663333,
+            0xFF663366,
+            0xFF663399,
+            0xFF6633CC,
+            0xFF6633FF,
+            0xFF666600,
+            0xFF666633,
+            0xFF666666,
+            0xFF666699,
+            0xFF6666CC,
+            0xFF6666FF,
+            0xFF669900,
+            0xFF669933,
+            0xFF669966,
+            0xFF669999,
+            0xFF6699CC,
+            0xFF6699FF,
+            0xFF66CC00,
+            0xFF66CC33,
+            0xFF66CC66,
+            0xFF66CC99,
+            0xFF66CCCC,
+            0xFF66CCFF,
+            0xFF66FF00,
+            0xFF66FF33,
+            0xFF66FF66,
+            0xFF66FF99,
+            0xFF66FFCC,
+            0xFF66FFFF,
+            0xFF990000,
+            0xFF990033,
+            0xFF990066,
+            0xFF990099,
+            0xFF9900CC,
+            0xFF9900FF,
+            0xFF993300,
+            0xFF993333,
+            0xFF993366,
+            0xFF993399,
+            0xFF9933CC,
+            0xFF9933FF,
+            0xFF996600,
+            0xFF996633,
+            0xFF996666,
+            0xFF996699,
+            0xFF9966CC,
+            0xFF9966FF,
+            0xFF999933,
+            0xFF999966,
+            0xFF999999,
+            0xFF9999CC,
+            0xFF9999FF,
+            0xFF99CC00,
+            0xFF99CC33,
+            0xFF99CC66,
+            0xFF99CC99,
+            0xFF99CCCC,
+            0xFF99CCFF,
+            0xFF99FF00,
+            0xFF99FF33,
+            0xFF99FF66,
+            0xFF99FF99,
+            0xFF99FFCC,
+            0xFF99FFFF,
+            0xFFCC0000,
+            0xFFCC0033,
+            0xFFCC0066,
+            0xFFCC0099,
+            0xFFCC00CC,
+            0xFFCC00FF,
+            0xFFCC3300,
+            0xFFCC3333,
+            0xFFCC3366,
+            0xFFCC3399,
+            0xFFCC33CC,
+            0xFFCC33FF,
+            0xFFCC6600,
+            0xFFCC6633,
+            0xFFCC6666,
+            0xFFCC6699,
+            0xFFCC66CC,
+            0xFFCC66FF,
+            0xFFCC9900,
+            0xFFCC9933,
+            0xFFCC9966,
+            0xFFCC9999,
+            0xFFCC99CC,
+            0xFFCC99FF,
+            0xFFCCCC00,
+            0xFFCCCC33,
+            0xFFCCCC66,
+            0xFFCCCC99,
+            0xFFCCCCCC,
+            0xFFCCCCFF,
+            0xFFCCFF00,
+            0xFFCCFF33,
+            0xFFCCFF66,
+            0xFFCCFF99,
+            0xFFCCFFCC,
+            0xFFCCFFFF,
+            0xFFFF0033,
+            0xFFFF0066,
+            0xFFFF00CC,
+            0xFFFF3300,
+            0xFFFF3333,
+            0xFFFF3366,
+            0xFFFF3399,
+            0xFFFF33CC,
+            0xFFFF33FF,
+            0xFFFF6600,
+            0xFFFF6633,
+            0xFFFF6666,
+            0xFFFF6699,
+            0xFFFF66CC,
+            0xFFFF66FF,
+            0xFFFF9933,
+            0xFFFF9966,
+            0xFFFF9999,
+            0xFFFF99CC,
+            0xFFFF99FF,
+            0xFFFFCC00,
+            0xFFFFCC33,
+            0xFFFFCC66,
+            0xFFFFCC99,
+            0xFFFFCCCC,
+            0xFFFFCCFF,
+            0xFFFFFF33,
+            0xFFFFFF66,
+            0xFFFFFF99,
+            0xFFFFFFCC,
+            0xFF0D0D0D,
+            0xFF141414,
+            0xFF1A1A1A,
+            0xFF272727,
+            0xFF3B3B3B,
+            0xFF424242,
+            0xFF555555,
+            0xFF5C5C5C,
+            0xFF696969,
+            0xFF767676,
+            0xFF7C7C7C,
+            0xFF838383,
+            0xFF8A8A8A,
+            0xFFA4A4A4,
+            0xFFB1B1B1,
+            0xFFB7B7B7,
+            0xFFBEBEBE,
+            0xFFC5C5C5,
+            0xFFD2D2D2,
+            0xFFDADADA,
+            0xFFE5E5E5,
+            0xFFECECEC,
+            0xFFF5F5F5
         };
 
-        static int MAX_COLORS = standard_color.Length;
+        private static readonly int MAX_COLORS = standard_color.Length;
 
         //This is where we keep the bitmaps that comprise individual layers
         //we use to composite what we present to the user
         private int ActiveLayer;
+        private ArrayList bitmaps = new();
+        private int click_x, click_y;
+        private int current_font_size = default_font_size;
+
+        private readonly MyRect draw_rect = new();
+        private bool frozen;
+        private bool[] key_is_down = new bool[255];
+        private int left_click = 0;
+        private int left_click_x, left_click_y;
+        private bool left_is_down = false;
+        private bool looping = false;
+        private static bool graphWindowOpen = false;
+        private MouseButton mb;
+        private Point mouse;
+        private readonly Player player = new();
+        private bool playInBackground;
+        private char pressed_key;
 
 
         //Our render target we compile everything to and present to the user
         private RenderTargetBitmap RenderTarget;
-        private ISkiaDrawingContextImpl SkiaContext;
+        private int right_click_x, right_click_y;
+        private bool right_is_down = false;
 
         //Reference to the currently active drawing tool
         //Should have a OnToolChange Event
         private SKPaint SKBrush;
-        private bool waitForMouse;
+        private ISkiaDrawingContextImpl SkiaContext;
+        private string soundFilePath;
         private bool waitForKey;
-        private MouseButton mb;
+        private bool waitForMouse;
+        private int x_size, y_size;
 
         public override void EndInit()
         {
@@ -594,14 +599,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             dngw = this;
             SKBrush = new SKPaint();
             SKBrush.IsAntialias = true;
-            this.Width = this.Parent.Parent.Width;
-            this.Height = this.Parent.Parent.Height;
+            Width = Parent.Parent.Width;
+            Height = Parent.Parent.Height;
             SKBrush.Color = new SKColor(0, 0, 0);
             SKBrush.Shader = SKShader.CreateColor(SKBrush.Color);
             RenderTarget = new RenderTargetBitmap(new PixelSize((int)Width, (int)Height), new Vector(96, 96));
 
             var context = RenderTarget.CreateDrawingContext(null);
-            SkiaContext = (context as ISkiaDrawingContextImpl);
+            SkiaContext = context as ISkiaDrawingContextImpl;
             SkiaContext.SkCanvas.Clear(new SKColor(255, 255, 255));
 
             PointerPressed += DrawingCanvas_PointerPressed;
@@ -614,7 +619,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             base.EndInit();
 
             paints = new SKPaint[standard_color.Length];
-            for (int i = 0; i < paints.Length; i++)
+            for (var i = 0; i < paints.Length; i++)
             {
                 paints[i] = new SKPaint();
                 paints[i].Color = new SKColor(standard_color[i]);
@@ -654,7 +659,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (SkiaContext != null && e.MouseButton == mb && waitForMouse)
             {
-                Point p = e.GetPosition(this);
+                var p = e.GetPosition(this);
                 SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
                 InvalidateVisual();
                 waitForMouse = false;
@@ -680,7 +685,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             Console.WriteLine("sadsad");
             if (SkiaContext != null)
             {
-                Point p = e.GetPosition(this);
+                var p = e.GetPosition(this);
                 SkiaContext.SkCanvas.DrawRect(new SKRect((float)p.X, (float)p.Y,
                     (float)p.X + 10, (float)p.Y + 10), SKBrush);
                 InvalidateVisual();
@@ -704,14 +709,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             });
         }
 
-        public int Get_Window_Width()
+        public int GetWindowWidth()
         {
-            return (int)this.Width;
+            return (int)Width;
         }
 
-        public int Get_Window_Height()
+        public int GetWindowHeight()
         {
-            return (int)this.Height;
+            return (int)Height;
         }
         //--------------------------------------------------------------------
         //--
@@ -736,7 +741,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private int Make_0_Based_And_Unflip(
             int Coordinate)
         {
-            return Get_Window_Height() - Coordinate;
+            return GetWindowHeight() - Coordinate;
         }
 
         //--------------------------------------------------------------------
@@ -764,7 +769,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             try
             {
-                return Get_Window_Height() + 1 - Coordinate;
+                return GetWindowHeight() + 1 - Coordinate;
             }
             catch (Exception error)
             {
@@ -810,21 +815,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 //--       Adjust X1 and Y1 if Y2 not above top of window and 
                 //--       X1 and X2 not both to left of window
-                if ((Y2 >= 0) && !((X1 < 0) && (X2 < 0)))
+                if (Y2 >= 0 && !(X1 < 0 && X2 < 0))
                 {
-                    if (!Undefined_Slope)
-                    {
-                        X1 = X1 + (int)(((float)(0 - Y1)) * Slope);
-                    }
+                    if (!Undefined_Slope) X1 = X1 + (int)((0 - Y1) * Slope);
 
                     if (Line)
-                    {
                         Y1 = 0;
-                    }
                     else
-                    {
                         Y1 = -2;
-                    }
                 }
                 //-- set Y1 to -2, since the object shouldn't appear anyway
                 else
@@ -838,21 +836,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 //--       Adjust X2 and Y2 if Y1 not above top of window and 
                 //--       X1 and X2 not both to left of window
-                if ((Y1 >= 0) && !((X1 < 0) && (X2 < 0)))
+                if (Y1 >= 0 && !(X1 < 0 && X2 < 0))
                 {
-                    if (!Undefined_Slope)
-                    {
-                        X2 = X2 + (int)(((float)(0 - Y2)) * Slope);
-                    }
+                    if (!Undefined_Slope) X2 = X2 + (int)((0 - Y2) * Slope);
 
                     if (Line)
-                    {
                         Y2 = 0;
-                    }
                     else
-                    {
                         Y2 = -2;
-                    }
                 } //-- set Y2 to -2, since the object shouldn't appear anyway
                 else
                 {
@@ -866,21 +857,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 //--       Adjust X1 and Y1 if X2 not to the left of the window and 
                 //--       Y1 and Y2 not both above top of window
-                if ((X2 >= 0) && !((Y1 < 0) && (Y2 < 0)))
+                if (X2 >= 0 && !(Y1 < 0 && Y2 < 0))
                 {
-                    if (!Undefined_Slope)
-                    {
-                        Y1 = Y1 + (int)(((float)(0 - X1)) * Slope);
-                    }
+                    if (!Undefined_Slope) Y1 = Y1 + (int)((0 - X1) * Slope);
 
                     if (Line)
-                    {
                         X1 = 0;
-                    }
                     else
-                    {
                         X1 = -2;
-                    }
                 }
                 //-- set X1 to -2, since the object shouldn't appear anyway
                 else
@@ -894,21 +878,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 //--       Adjust X2 and Y2 if X1 not to the left of the window and 
                 //--       Y1 and Y2 not both above top of window
-                if ((X1 >= 0) && !((Y1 < 0) && (Y2 < 0)))
+                if (X1 >= 0 && !(Y1 < 0 && Y2 < 0))
                 {
-                    if (!Undefined_Slope)
-                    {
-                        Y2 = Y2 + (int)(((float)(0 - X2)) * Slope);
-                    }
+                    if (!Undefined_Slope) Y2 = Y2 + (int)((0 - X2) * Slope);
 
                     if (Line)
-                    {
                         X2 = 0;
-                    }
                     else
-                    {
                         X2 = -2;
-                    }
                 }
                 //-- set X2 to -2, since the object shouldn't appear anyway
                 else
@@ -936,11 +913,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             float Slope;
 
             //-- Calculate slope of the line
-            if ((x_coord2 - x_coord1) != 0)
+            if (x_coord2 - x_coord1 != 0)
             {
                 Undefined_Slope = false;
-                Slope = ((float)(y_coord2 - y_coord1)) / ((float)(x_coord2 -
-                                                                  x_coord1));
+                Slope = (y_coord2 - y_coord1) / (float)(x_coord2 -
+                                                        x_coord1);
             }
             //-- undefined slope
             else
@@ -961,27 +938,27 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 ref y_coord2);
             if (x_coord2 >= x_coord1)
             {
-                draw_rect.X = (x_coord1 > 0) ? x_coord1 : 0;
-                draw_rect.Width = ((x_coord2 < x_size) ? x_coord2 + 1 : x_size)
+                draw_rect.X = x_coord1 > 0 ? x_coord1 : 0;
+                draw_rect.Width = (x_coord2 < x_size ? x_coord2 + 1 : x_size)
                                   - draw_rect.X;
             }
             else
             {
-                draw_rect.X = (x_coord2 > 0) ? x_coord2 : 0;
-                draw_rect.Width = ((x_coord1 < x_size) ? x_coord1 + 1 : x_size)
+                draw_rect.X = x_coord2 > 0 ? x_coord2 : 0;
+                draw_rect.Width = (x_coord1 < x_size ? x_coord1 + 1 : x_size)
                                   - draw_rect.X;
             }
 
             if (y_coord2 >= y_coord1)
             {
-                draw_rect.Y = (y_coord1 > 0) ? y_coord1 : 0;
-                draw_rect.Height = ((y_coord2 < y_size) ? y_coord2 + 1 : y_size)
+                draw_rect.Y = y_coord1 > 0 ? y_coord1 : 0;
+                draw_rect.Height = (y_coord2 < y_size ? y_coord2 + 1 : y_size)
                                    - draw_rect.Y;
             }
             else
             {
-                draw_rect.Y = (y_coord2 > 0) ? y_coord2 : 0;
-                draw_rect.Height = ((y_coord1 < y_size) ? y_coord1 + 1 : y_size)
+                draw_rect.Y = y_coord2 > 0 ? y_coord2 : 0;
+                draw_rect.Height = (y_coord1 < y_size ? y_coord1 + 1 : y_size)
                                    - draw_rect.Y;
             }
 
@@ -998,7 +975,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                                     "color:" + hue + " message: " + error.Message);
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DrawBox(
@@ -1029,7 +1006,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DrawCircle(
@@ -1055,7 +1032,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DrawEllipse(
@@ -1087,7 +1064,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DrawEllipseRotate(
@@ -1123,7 +1100,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DrawArc(
@@ -1150,26 +1127,17 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 var paint = paints[(int)hue];
                 paint.Style = SKPaintStyle.Stroke;
                 // SKRect oval = new SKRect(cx, cy, rx, ry);
-                SKRect oval = new SKRect(x_coord1, y_coord1, x_coord2, y_coord2);
+                var oval = new SKRect(x_coord1, y_coord1, x_coord2, y_coord2);
                 var mid_x = ((double)x1 + x2) / 2.0;
                 var mid_y = ((double)y1 + y2) / 2.0;
                 var end_theta = Math.Atan2(starty - mid_y, startx - mid_x);
                 var start_theta = Math.Atan2(endy - mid_y, endx - mid_x);
-                if (end_theta < 0.0)
-                {
-                    end_theta += 2.0 * Math.PI;
-                }
+                if (end_theta < 0.0) end_theta += 2.0 * Math.PI;
 
-                if (start_theta < 0.0)
-                {
-                    start_theta += 2.0 * Math.PI;
-                }
+                if (start_theta < 0.0) start_theta += 2.0 * Math.PI;
 
                 var range = start_theta - end_theta;
-                if (range <= 0.0)
-                {
-                    range += 2.0 * Math.PI;
-                }
+                if (range <= 0.0) range += 2.0 * Math.PI;
 
                 SkiaContext.SkCanvas.DrawArc(oval, (float)((2.0 * Math.PI - start_theta) * 180.0 / Math.PI),
                     (float)(range * 180.0 / Math.PI), false, paint);
@@ -1178,13 +1146,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DisplayText(
             int x1,
             int y1,
-            String text,
+            string text,
             Color_Type hue
         )
         {
@@ -1204,7 +1172,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void DisplayNumber(
@@ -1227,7 +1195,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
         public void SetFontSize(
@@ -1235,18 +1203,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         )
         {
             if (size == 0)
-            {
-                this.current_font_size = default_font_size;
-            }
+                current_font_size = default_font_size;
             else if (size > 0 && size <= 100)
-            {
-                this.current_font_size = (int)(size * 1.4);
-            }
+                current_font_size = (int)(size * 1.4);
             else
-            {
-                throw new System.Exception("Error in Set_Font_Size: size must be in [0,100]");
-            }
+                throw new Exception("Error in Set_Font_Size: size must be in [0,100]");
         }
+
         private void OnPlaybackFinished(object sender, EventArgs e)
         {
             if (!playInBackground)
@@ -1255,6 +1218,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 InvalidateVisual();
             }
         }
+
         public void PlaySound(
             string soundFile
         )
@@ -1262,25 +1226,33 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             playInBackground = false;
             player.Play(soundFile);
         }
+
         public void PlaySoundBackground(
             string soundFile
         )
         {
+            if (loopPlayer != null)
+            {
+                loopPlayer.Stop();
+            }
             playInBackground = true;
             player.Play(soundFile);
         }
+
         public void PlaySoundBackgroundLoop(
             string soundFile
         )
         {
-            soundFilePath = soundFile;
-            Player loopPlayer = new Player();
-            loopPlayer.Play(soundFile);
-            loopPlayer.PlaybackFinished += (sender, e) =>
+            if (loopPlayer != null)
             {
-                PlaySoundBackgroundLoop(soundFile);
-            };
+                loopPlayer.Stop();
+            }
+            soundFilePath = soundFile;
+            loopPlayer = new Player();
+            loopPlayer.Play(soundFile);
+            loopPlayer.PlaybackFinished += (sender, e) => { PlaySoundBackgroundLoop(soundFile); };
         }
+
         public void ClearWindow(
             Color_Type hue
         )
@@ -1295,14 +1267,222 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
             }
 
-            this.UpdateWindowUnlessFrozen();
+            UpdateWindowUnlessFrozen();
         }
 
+        public async Task DelayFor(
+            double seconds
+        )
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            if(mw.myTimer != null)
+            {
+                mw.myTimer.Stop();
+            }
+            var timer = new Timer(seconds * 1000);
+            timer.Elapsed += (sender, e) =>
+            {
+                SkiaContext.SkCanvas.DrawText("timer finished", 200, 500, SKBrush);
+                InvalidateVisual();
+            };
+            timer.Enabled = true;
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Start();
+            }
+        }
+
+        public static int RED(uint color)
+        {
+            return (int)((color >> 16) & 0xFF);
+        }
+
+        public static int GREEN(uint color)
+        {
+            return (int)((color >> 8) & 0xFF);
+        }
+
+        public static int BLUE(uint color)
+        {
+            return (int)(color & 0xFF);
+        }
+
+        public Color_Type GetPixel(
+            int x,
+            int y
+        )
+        {
+            var x_coord = Make_0_Based(x);
+            var y_coord = Make_0_Based_And_Unflip(y);
+            var color = SkiaContext.SkSurface.PeekPixels().GetPixelColor(x_coord, y_coord);
+            return (Color_Type)GetClosestColor(color.Red, color.Green, color.Red);
+        }
+
+        public static int GetClosestColor(int red, int green, int blue)
+        {
+            int i;
+            int difference;
+            var min_difference = 3 * 256 * 256;
+            int red_diff, green_diff, blue_diff;
+
+            var closest = 0;
+            for (i = 0; i < MAX_COLORS; i++)
+            {
+                red_diff = RED(standard_color[i]) - red;
+                green_diff = GREEN(standard_color[i]) - green;
+                blue_diff = BLUE(standard_color[i]) - blue;
+                difference = red_diff * red_diff + green_diff * green_diff +
+                             blue_diff * blue_diff;
+                if (difference < min_difference)
+                {
+                    min_difference = difference;
+                    closest = i;
+                }
+            }
+
+            return closest;
+        }
+
+        public void PutPixel(
+            int x,
+            int y,
+            Color_Type hue)
+        {
+            var paint = paints[(int)hue];
+            paint.Style = SKPaintStyle.Fill;
+            var x_coord = Make_0_Based(x);
+            var y_coord = Make_0_Based_And_Unflip(y);
+            SkiaContext.SkCanvas.DrawPoint(x_coord, y_coord, paint);
+            UpdateWindowUnlessFrozen();
+        }
+
+        public void FloodFill(
+            int x,
+            int y,
+            Color_Type hue
+        )
+        {
+            if (x < 1 || y < 1 || x > GetWindowWidth() || y > GetWindowHeight()) return;
+            FloodFillRecursive(x, y, SkiaContext.SkSurface.PeekPixels().GetPixelColor(x, y), hue);
+            UpdateWindowUnlessFrozen();
+        }
+
+        public void FloodFillRecursive(
+            int x,
+            int y,
+            SKColor start_color,
+            Color_Type to_color
+
+        )
+        {
+            int x_coord, y_coord;
+            Queue flood_queue;
+            int[,] marked;
+            x_coord = Make_0_Based(x);
+            y_coord = Make_0_Based_And_Unflip(y);
+            var color = SkiaContext.SkSurface.PeekPixels().GetPixelColor(x_coord, y_coord);
+            marked = new int[GetWindowWidth(), GetWindowHeight()];
+
+            {
+                flood_queue = new Queue();
+                flood_queue.Enqueue(new Point(x_coord, y_coord));
+                marked[x_coord, y_coord] = 1;
+                while (flood_queue.Count > 0)
+                {
+                    var p = (Point)flood_queue.Dequeue();
+                    var worked = false;
+
+                    //string s1 = ("x,y,color:" +
+                    //    p.X + "," + p.Y + "," + this.bmp.GetPixel(p.X, p.Y));
+                    //System.Diagnostics.Trace.WriteLine(s1);
+                    //while (!worked)
+                    {
+                        //try
+                        {
+                            var paint = paints[(int)to_color];
+                            paint.Style = SKPaintStyle.Fill;
+                            SkiaContext.SkCanvas.DrawPoint((float)p.X, (float)p.Y, paint);
+                            worked = true;
+                        }
+                        //catch
+                        {
+                            //    System.Threading.Thread.Sleep(1);
+                        }
+                    }
+                    marked[(int)p.X, (int)p.Y] = 1;
+                    check_and_enqueue((int)p.X + 1, (int)p.Y, flood_queue, marked, color);
+                    check_and_enqueue((int)p.X, (int)p.Y + 1, flood_queue, marked, color);
+                    check_and_enqueue((int)p.X - 1, (int)p.Y, flood_queue, marked, color);
+                    check_and_enqueue((int)p.X, (int)p.Y - 1, flood_queue, marked, color);
+                }
+            }
+        }
+
+        public void check_and_enqueue(
+            int x,
+            int y,
+            Queue flood_queue,
+            int[,] marked,
+            SKColor color
+        )
+        {
+            SKColor pix_color;
+            if (x < 0 || x >= Width ||
+                y < 0 || y >= Height ||
+                marked[x, y] == 1)
+                return;
+            pix_color = SkiaContext.SkSurface.PeekPixels().GetPixelColor(x, y);
+            if (pix_color != color) return;
+
+            marked[x, y] = 1;
+            flood_queue.Enqueue(new Point(x, y));
+        }
 
         public void SetWindowTitle(string title)
         {
-            DotnetGraph.SetTitle(title);
-            this.UpdateWindowUnlessFrozen();
+            dotnetgraph.Title = title;
+            UpdateWindowUnlessFrozen();
+        }
+
+        //public int GetMaxHeight()
+        //{
+        //    var maxHeight = Screen.PrimaryScreen.Bounds.Height;
+        //    SkiaContext.SkCanvas.DrawText(maxHeight.ToString(), 100, 100, SKBrush);
+        //    InvalidateVisual();
+        //    return maxHeight;
+
+        //}
+
+        //public int GetMaxWidth()
+        //{
+        //    var maxWidth = Screen.PrimaryScreen.Bounds.Width;
+        //    SkiaContext.SkCanvas.DrawText(maxWidth.ToString(), 100, 200, SKBrush);
+        //    InvalidateVisual();
+        //    return maxWidth;
+        //}
+
+        public static void OpenGraphWindow(int width, int height)
+        {
+            if (!graphWindowOpen)
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    dotnetgraph = new DotnetGraph(width, height);
+                    dotnetgraph.Show();
+                    graphWindowOpen = true;
+
+                }, DispatcherPriority.Background);
+
+                
+            }
+        }
+        public void CloseGraphWindow()
+        {
+            if (graphWindowOpen)
+            {
+                dotnetgraph.Close();
+                graphWindowOpen = false;
+            }
         }
 
         public void FreezeGraphWindow()
@@ -1315,12 +1495,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             frozen = false;
         }
 
+        public void UpdateGraphWindow()
+        {
+            InvalidateVisual();
+        }
+
         public void UpdateWindowUnlessFrozen()
         {
-            if (!this.frozen)
-            {
-                this.InvalidateVisual();
-            }
+            if (!frozen) InvalidateVisual();
         }
 
         public override void Render(DrawingContext context)

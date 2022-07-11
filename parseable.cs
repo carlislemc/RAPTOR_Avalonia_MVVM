@@ -86,8 +86,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "ClearWindow");
                     break;
                 case "close_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "CloseGraphWindow");
                     break;
                 case "freeze_graph_window":
                     // NEED TO DO
@@ -133,8 +132,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawLine");
                     break;
                 case "flood_fill":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FloodFill");
                     break;
                 case "open_graph_window":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "OpenGraphWindow");
@@ -146,8 +144,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "WaitForMouseButton");
                     break;
                 case "put_pixel":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "PutPixel");
                     break;
                 case "set_window_title":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SetWindowTitle");
@@ -211,12 +208,12 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "get_max_width":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMaxWidth");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_max_height":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMaxHeight");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_mouse_x":
                     //NEED TO DO
@@ -561,10 +558,17 @@ namespace parse_tree
                     {
                         int w = numbers.Numbers.integer_of(ps[0]);
                         int h = numbers.Numbers.integer_of(ps[1]);
-                        DotnetGraph gd = new DotnetGraph(w, h);
-                        gd.Show();
+                        GraphDialogViewModel.OpenGraphWindow(w, h);
                     }, DispatcherPriority.Background);
                     
+                }
+                if (str.ToLower() == "close_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.CloseGraphWindow();
+                    }, DispatcherPriority.Background);
+
                 }
                 else if (str.ToLower() == "draw_line")
                 {
@@ -722,7 +726,38 @@ namespace parse_tree
                     }, DispatcherPriority.Background);
 
                 }
-                return;
+                else if (str.ToLower() == "delay_for")
+                { // NEED TO DO
+                    Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        int s = numbers.Numbers.integer_of(ps[0]);
+                        await GraphDialogViewModel.DelayFor(s);
+                    }, DispatcherPriority.Background).Wait(-1);
+
+                }
+                else if (str.ToLower() == "flood_fill")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x = numbers.Numbers.integer_of(ps[0]);
+                        int y = numbers.Numbers.integer_of(ps[1]);
+                        int c = numbers.Numbers.integer_of(ps[2]);
+                        GraphDialogViewModel.FloodFill(x,y,(Color_Type)c);
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "put_pixel")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int x = numbers.Numbers.integer_of(ps[0]);
+                        int y = numbers.Numbers.integer_of(ps[1]);
+                        int c = numbers.Numbers.integer_of(ps[2]);
+                        GraphDialogViewModel.PutPixel(x, y, (Color_Type)c);
+                    }, DispatcherPriority.Background);
+
+                }
+            return;
             
         }
 

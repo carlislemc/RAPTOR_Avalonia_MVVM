@@ -89,6 +89,10 @@ namespace RAPTOR_Avalonia_MVVM.Views
                         break;
                     }
                 }
+                if(spot < 0)
+                {
+                    return;
+                }
 
                 temp = temp.Substring(0, spot);
                 temp += ans;
