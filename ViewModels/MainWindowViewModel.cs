@@ -62,6 +62,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public string Text = "sdfasdf";
         private System.Guid file_guid_back = System.Guid.NewGuid();
         public Component? Current_Selection = null;
+        public System.DateTime last_autosave = System.DateTime.Now;
         public System.Guid file_guid
         {
             get
@@ -77,7 +78,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }*/
             }
         }
-        private string? fileName;
+        public string? fileName;
 
         private ObservableCollection<Subchart>? privateTheTabs;
         public ObservableCollection<Subchart>? theTabs {
@@ -149,6 +150,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             return theMainWindowViewModel;
         }
+
         public MainWindowViewModel()
         {
             theMainWindowViewModel = this;
@@ -598,6 +600,47 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 ClipboardMultiplatform.SetDataObject(cd, true);
             }
         }
+
+        public string Get_Autosave_Name()
+        {
+            char c;
+            System.DateTime oldest_time = System.DateTime.MaxValue;
+            System.DateTime this_time;
+            string oldest = this.fileName + ".backup0";
+
+            try
+            {
+                for (c = '0'; c <= '3'; c++)
+                {
+                    string this_name = this.fileName + ".backup" + c;
+
+                    if (System.IO.File.Exists(this_name))
+                    {
+                        this_time = System.IO.File.GetLastWriteTime(this_name);
+                        if (this_time < oldest_time)
+                        {
+                            oldest_time = this_time;
+                            oldest = this_name;
+                        }
+                    }
+                    else
+                    {
+                        return this_name;
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return oldest;
+        }
+
+        public void Perform_Autosave()
+        {
+            string name = this.Get_Autosave_Name();
+            this.Perform_Save(name, true);
+        }
+
         public void OnSaveCommand() {
 
             FileSave_Click();
@@ -618,10 +661,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         private bool Save_Error = false;
-        private void Perform_Save(string name, bool is_autosave)
+        private async void Perform_Save(string name, bool is_autosave)
         {
             Stream stream;
             string prefix;
+            this.last_autosave = System.DateTime.Now;
 
             if (is_autosave)
             {
@@ -641,7 +685,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if (File.Exists(name) &&
                     (File.GetAttributes(name) & FileAttributes.ReadOnly) > 0)
                 {
-                    MessageBoxClass.Show(
+                    await MessageBoxClass.Show(
                         prefix + '\n' +
                         name + " is a read-only file",
                         "Error",
@@ -649,7 +693,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
                 else
                 {
-                    MessageBoxClass.Show(
+                    await MessageBoxClass.Show(
                         prefix + '\n' +
                         "Unable to create file: " +
                         name, "Error",
