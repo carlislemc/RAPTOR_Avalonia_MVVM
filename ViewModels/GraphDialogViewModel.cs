@@ -171,6 +171,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             DotnetGraphControl.dngw.CloseGraphWindow();
         }
+
+        public static void FreezeGraphWindow()
+        {
+            DotnetGraphControl.dngw.FreezeGraphWindow();
+        }
+
+        public static void UnFreezeGraphWindow()
+        {
+            DotnetGraphControl.dngw.UnfreezeGraphWindow();
+        }
+
+        public static void UpdateGraphWindow()
+        {
+            DotnetGraphControl.dngw.FreezeGraphWindow();
+        }
     }
 
 }

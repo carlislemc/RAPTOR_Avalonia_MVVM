@@ -89,16 +89,13 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "CloseGraphWindow");
                     break;
                 case "freeze_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FreezeGraphWindow");
                     break;
                 case "unfreeze_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "UnFreezeGraphWindow");
                     break;
                 case "update_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "UpdateGraphWindow");
                     break;
                 case "set_font_size":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FontSize");
@@ -562,11 +559,35 @@ namespace parse_tree
                     }, DispatcherPriority.Background);
                     
                 }
-                if (str.ToLower() == "close_graph_window")
+                else if (str.ToLower() == "close_graph_window")
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.CloseGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "freeze_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.FreezeGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "unfreeze_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.UnFreezeGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "update_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.UpdateGraphWindow();
                     }, DispatcherPriority.Background);
 
                 }

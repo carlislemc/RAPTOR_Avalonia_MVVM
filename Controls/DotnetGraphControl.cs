@@ -14,9 +14,7 @@ using Control = Avalonia.Controls.Control;
 using KeyEventArgs = Avalonia.Input.KeyEventArgs;
 using Timer = System.Timers.Timer;
 using Avalonia.Threading;
-using Avalonia.LogicalTree;
-using Avalonia.Controls;
-using System.Linq;
+
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
