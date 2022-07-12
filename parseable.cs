@@ -290,59 +290,27 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "findMax");
                     break;
                 case "sin":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "Sin");
                     break;
                 case "cos":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "Cos");
                     break;
                 case "tan":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "Tan");
                     break;
                 case "cot":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "Cot");
                     break;
                 case "arcsin":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "ArcSin");
                     break;
                 case "arccos":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "ArcCos");
                     break;
                 case "arctan":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "ArcTan");
                     break;
                 case "arccot":
-                    if (i == 2)
-                    {
-                        throw new NotImplementedException();
-                    }
                     gil.Emit_Method("numbers.Numbers", "ArcCot");
                     break;
                 case "is_open":
@@ -2245,23 +2213,47 @@ namespace parse_tree
             Runtime.processing_parameter_list = false;
             switch (s.ToLower()){
                 case "sin":
-                    return new numbers.value(){V=Math.Sin(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Sin(ps[0]); }
+                    else
+                    { return numbers.Numbers.Sin(ps[0], ps[1]); }
                 case "cos":
-                    return new numbers.value(){V=Math.Cos(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Cos(ps[0]); }
+                    else
+                    { return numbers.Numbers.Cos(ps[0], ps[1]); }
                 case "tan":
-                    return new numbers.value(){V=Math.Tan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Tan(ps[0]); }
+                    else
+                    { return numbers.Numbers.Tan(ps[0], ps[1]); }
                 case "cot":
-                    return new numbers.value(){V=1/Math.Tan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Cot(ps[0]); }
+                    else
+                    { return numbers.Numbers.Cot(ps[0], ps[1]); }
                 case "arcsin":
-                    return new numbers.value(){V=Math.Asin(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcSin(ps[0]); }
+                    else
+                    { return numbers.Numbers.ArcSin(ps[0], ps[1]); }
                 case "arccos":
-                    return new numbers.value(){V=Math.Acos(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcCos(ps[0]); }
+                    else
+                    { return numbers.Numbers.ArcCos(ps[0], ps[1]); }
                 case "log":
                     return new numbers.value(){V=Math.Log(ps[0].V)};
                 case "arctan":
-                    return new numbers.value(){V=Math.Atan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcTan(ps[0]); }
+                    else
+                    { return numbers.Numbers.ArcTan(ps[0], ps[1]); }
                 case "arccot":
-                    return new numbers.value(){V=1/Math.Atan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcCot(ps[0]); }
+                    else
+                    { return numbers.Numbers.ArcCot(ps[0], ps[1]); }
                 case "min":
                     return numbers.Numbers.findMin(ps[0],ps[1]);
                 case "max":
