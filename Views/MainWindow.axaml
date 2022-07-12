@@ -468,7 +468,7 @@
     
     <DockPanel Width="129" DockPanel.Dock="Left">
       <UserControl Background="White" Height="239" DockPanel.Dock="Top">
-        <controls:SymbolsControl Height="239">
+        <controls:SymbolsControl Height="239" DragDrop.AllowDrop="True">
         </controls:SymbolsControl>
       </UserControl>
       <!--
@@ -536,7 +536,7 @@
             of the flowchart symbols -->
             <UserControl Width="200" Height="250" Background="Black" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
 
-              <controls:FlowchartControl Tag="{Binding Content}" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
+              <controls:FlowchartControl DragDrop.AllowDrop="True" Tag="{Binding Content}" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
                 <controls:FlowchartControl.ContextMenu>
                   <!-- This binding goes to the Subchart class because reasons -->
                   <ContextMenu Items="{Binding ContextMenuItemsFunction}">

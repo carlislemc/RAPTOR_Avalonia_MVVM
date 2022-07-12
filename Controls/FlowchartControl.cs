@@ -81,6 +81,42 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             }
 
         }
+
+        private void Drop(object? sender, DragEventArgs e)
+        {
+
+            this.sc.positionX = (int)e.GetPosition(this).X;
+            this.sc.positionY = (int)e.GetPosition(this).Y;
+            this.sc.positionXTapped = (int)e.GetPosition(this).X;
+            this.sc.positionYTapped = (int)e.GetPosition(this).Y;
+            
+            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
+            if (e.Data.GetText() == SymbolsControl.assignment_fig)
+            {
+                this.sc.OnInsertAssignmentCommand();
+                //Debug.WriteLine("Dropped");
+            }
+            else if (e.Data.GetText() == SymbolsControl.call_fig)
+            {
+                this.sc.OnInsertCallCommand();
+            }
+            else if (e.Data.GetText() == SymbolsControl.input_fig)
+            {
+                this.sc.OnInsertInputCommand();
+            }
+            else if (e.Data.GetText() == SymbolsControl.output_fig)
+            {
+                this.sc.OnInsertOutputCommand();
+            }
+            else if (e.Data.GetText() == SymbolsControl.if_control_fig)
+            {
+                this.sc.OnInsertSelectionCommand();
+            }
+            else if (e.Data.GetText() == SymbolsControl.loop_fig)
+            {
+                this.sc.OnInsertLoopCommand();
+            }
+        }
         private void doubleClick(object? sender, RoutedEventArgs e)
         {
             TappedEventArgs f = (TappedEventArgs)e;
@@ -99,6 +135,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.PointerMoved += this.onMouseMove;
             //this.Tapped += this.onClick;
             this.PointerPressed += this.onClick;
+            AddHandler(DragDrop.DropEvent, Drop);
             this.DoubleTapped += this.doubleClick;
         }
 

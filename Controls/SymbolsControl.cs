@@ -17,15 +17,20 @@ namespace RAPTOR_Avalonia_MVVM.Controls
     class SymbolsControl : Control
     {
 
-        public const int assignment_fig = 0;
-        public const int call_fig = 1;
-        public const int input_fig = 2;
-        public const int output_fig = 3;
-        public const int if_control_fig = 4;
-        public const int loop_fig = 5;
-        public const int return_fig = 6;
-        public static int control_figure_selected = -1;
-        private Rectangle ASGN, CALL;
+		public const string assignment_fig = "0";
+		public const string call_fig = "1";
+		public const string input_fig = "2";
+		public const string output_fig = "3";
+		public const string if_control_fig = "4";
+		public const string loop_fig = "5";
+		public const string return_fig = "6";
+		public const string noSelect = "-1";
+		public static string control_figure_selected = noSelect;
+
+		//data member to hold drag data
+		DataObject dragData = new DataObject();
+
+		private Rectangle ASGN, CALL;
         private Parallelogram INPUT, OUTPUT;
         private Oval_Return RETURN;
         private IF_Control IFC;
@@ -61,12 +66,18 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 "Return");
             IFC = new IF_Control(control_height - 15, control_width - 15, "IF_Control");
             LP = new Loop(control_height - 15, control_width - 15, "Loop");
-			this.PointerPressed += mouseDownEvent;
+			
+			//initialize dragData
+			dragData.Set(DataFormats.Text, noSelect);
+			// modified mouseDownEvent
+			this.PointerPressed += mouseDownDragEvent;
 			//this.Parent.PointerPressed += mouseDownEvent;
 			version = 0;
 
+
+
         }
-		public void mouseDownEvent(object? sender, PointerPressedEventArgs e)
+		public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
         {
 			int mouse_x = (int) e.GetCurrentPoint(this).Position.X;
 			int mouse_y = (int) e.GetCurrentPoint(this).Position.Y;
@@ -84,48 +95,80 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 				{
 					control_figure_selected = assignment_fig;
 					version++;
-					//this.DoDragDrop("raptor_ASGN", DragDropEffects.Copy | DragDropEffects.Link);
+
+					//update dragData state to corresponding configuarion
+					dragData.Set(DataFormats.Text, assignment_fig);
+					/*if (dragData.GetText() == assignment_fig) 
+						Debug.WriteLine($"ASSI fig copied: { dragData.GetText()}");*/
+
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
+
 				}
 				else if (CALL.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = call_fig;
 					version++;
 
-					//this.DoDragDrop("raptor_CALL", DragDropEffects.Copy | DragDropEffects.Link);
+					dragData.Set(DataFormats.Text, call_fig);
+					/*if (dragData.GetText() == call_fig)
+						Debug.WriteLine($"CALL fig copied: { dragData.GetText()}");*/
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
 				}
 				else if (INPUT.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = input_fig;
 					version++;
-					//this.DoDragDrop("raptor_INPUT", DragDropEffects.Copy | DragDropEffects.Link);
+
+					dragData.Set(DataFormats.Text, input_fig);
+					/*if (dragData.GetText() == input_fig)
+						Debug.WriteLine($"INP fig copied: {dragData.GetText()}");*/
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
 				}
 				else if (OUTPUT.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = output_fig;
 					version++;
-					//this.DoDragDrop("raptor_OUTPUT", DragDropEffects.Copy | DragDropEffects.Link);
+
+					dragData.Set(DataFormats.Text, output_fig);
+					/*if (dragData.GetText() == output_fig)
+						Debug.WriteLine($"INP fig copied: {dragData.GetText()}");*/
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
 				}
 				else if (IFC.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = if_control_fig;
 					version++;
-					//this.DoDragDrop("raptor_SELECTION", DragDropEffects.Copy | DragDropEffects.Link);
+
+					dragData.Set(DataFormats.Text, if_control_fig);
+					/*if (dragData.GetText() == if_control_fig)
+						Debug.WriteLine($"INP fig copied: {dragData.GetText()}");*/
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
 				}
 				else if (LP.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = loop_fig;
 					version++;
-					//this.DoDragDrop("raptor_LOOP", DragDropEffects.Copy | DragDropEffects.Link);
+
+					dragData.Set(DataFormats.Text, loop_fig);
+					/*if (dragData.GetText() == loop_fig)
+						Debug.WriteLine($"INP fig copied: {dragData.GetText()}");*/
+					DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
+
 				}
 				else if (RETURN.In_Footprint(mouse_x, mouse_y))
 				{
 					control_figure_selected = return_fig;
 					version++;
-					//this.DoDragDrop("raptor_RETURN", DragDropEffects.Copy | DragDropEffects.Link);
+
 				}
 				else
 				{
-					control_figure_selected = -1;
+					control_figure_selected = noSelect;
 					version++;
 				}
 			}
