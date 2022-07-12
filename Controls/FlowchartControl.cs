@@ -12,6 +12,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using raptor;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -22,7 +23,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             AffectsRender<FlowchartControl>(AngleProperty);
         }
-        private Subchart sc;
+        public Subchart sc;
         public static bool ctrl = false;
 
         // This code seems to only run when the mouse is over the flowchart itself
@@ -30,6 +31,17 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             this.sc.positionX = (int) e.GetPosition(this).X;
             this.sc.positionY = (int) e.GetPosition(this).Y;
+        }
+
+        DataObject dragData = new DataObject();
+        public Component dragComp = null;
+        public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
+        {   
+            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl){
+                return;
+            }
+            dragData.Set(DataFormats.Text, dragComp);
+			DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move);
         }
 
         private void onClick(object? sender, RoutedEventArgs e)
@@ -44,9 +56,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 return;
             }
 
-            
             this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
-            
+            dragComp = this.sc.Start.copy();
             
 
             if(this.sc.Start.check_expansion_click(this.sc.positionX, this.sc.positionY))
@@ -90,7 +101,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionXTapped = (int)e.GetPosition(this).X;
             this.sc.positionYTapped = (int)e.GetPosition(this).Y;
             
-            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
             if (e.Data.GetText() == SymbolsControl.assignment_fig)
             {
                 this.sc.OnInsertAssignmentCommand();
@@ -116,6 +126,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             {
                 this.sc.OnInsertLoopCommand();
             }
+            else if(dragComp != null){
+                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                if(mw.theTabs[mw.viewTab].Start.insert(dragComp, this.sc.positionX, this.sc.positionY, 0)){
+                    this.sc.Start.delete();
+                }
+            }
+            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
         }
         private void doubleClick(object? sender, RoutedEventArgs e)
         {
@@ -125,6 +142,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             _ = this.sc.Start.setText(this.sc.positionX, this.sc.positionY);
         }
 
+        private void released(object? sender, RoutedEventArgs e)
+        {
+            dragComp = null;
+        }
+
+
+        public static FlowchartControl fcc;
         public FlowchartControl()
         {
             sc = new Subchart();
@@ -137,7 +161,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.PointerPressed += this.onClick;
             AddHandler(DragDrop.DropEvent, Drop);
             this.DoubleTapped += this.doubleClick;
+            dragData.Set(DataFormats.Text, SymbolsControl.noSelect);
+            this.PointerPressed += mouseDownDragEvent;
+            this.PointerReleased += released;
+            fcc = this;
         }
+
 
         public static readonly StyledProperty<double> AngleProperty =
             AvaloniaProperty.Register<FlowchartControl, double>(nameof(Angle));

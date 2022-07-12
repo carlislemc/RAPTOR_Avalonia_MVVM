@@ -69,14 +69,21 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 			
 			//initialize dragData
 			dragData.Set(DataFormats.Text, noSelect);
+			AddHandler(DragDrop.DropEvent, Drop);
 			// modified mouseDownEvent
 			this.PointerPressed += mouseDownDragEvent;
 			//this.Parent.PointerPressed += mouseDownEvent;
 			version = 0;
-
-
-
         }
+
+		private void Drop(object? sender, DragEventArgs e)
+        {
+			if(FlowchartControl.fcc.dragComp != null){
+				FlowchartControl.fcc.sc.Start.delete();
+			}
+		}	
+
+
 		public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
         {
 			int mouse_x = (int) e.GetCurrentPoint(this).Position.X;
