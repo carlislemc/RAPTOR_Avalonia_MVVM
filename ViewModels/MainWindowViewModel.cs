@@ -564,7 +564,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnDeleteCommand()
         {
-            this.theTabs[this.activeTab].Start.delete();
+            this.theTabs[this.viewTab].Start.delete();
 
         }
 
