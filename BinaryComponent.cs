@@ -702,11 +702,13 @@ namespace raptor
 			}
 			base.Rename_Tab(from,to);
 		}
-		/*public override void compile_pass1(generate_interface.typ gen)
+		public override void compile_pass1(Generate_Interface gen)
 		{	
 			if (this.parse_tree!=null)
 			{
-				interpreter_pkg.compile_pass1(this.parse_tree,this.Text,gen);
+				Component.currentTempComponent = this;
+				Component.the_lexer = new RAPTOR_Avalonia_MVVM.Lexer(this.Text);
+				this.parse_tree.compile_pass1(gen);
 			}
 			if (this.first_child!=null)
 			{
@@ -720,7 +722,7 @@ namespace raptor
 			{
 				this.Successor.compile_pass1(gen);
 			}
-		}*/
+		}
         public override void collect_variable_names(System.Collections.Generic.IList<string> l,
             System.Collections.Generic.IDictionary<string, string> types)
         {

@@ -441,6 +441,10 @@ namespace raptor
 			}
 			if (this.Successor!=null)
 			{
+				//if(this.Successor.Text == "thetaindex:=1")
+    //            {
+				//	int aisdyfbai = 3;
+    //            }
 				this.Successor.compile_pass1(gen);
 			}
 		}

@@ -334,6 +334,78 @@ namespace numbers
             return false;
         }
 
+        public static bool Ogt(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V > second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) > 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C > second.C;
+            }
+            return false;
+        }
+
+        public static bool Oge(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V >= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) >= 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C >= second.C;
+            }
+            return false;
+        }
+
+        public static bool Olt(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V < second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) < 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C < second.C;
+            }
+            return false;
+        }
+
+        public static bool Ole(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V <= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) <= 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C <= second.C;
+            }
+            return false;
+        }
+
         public static int length_of(value variable_Value)
         {
             throw new NotImplementedException();
