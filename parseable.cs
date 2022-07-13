@@ -717,10 +717,19 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "delay_for")
                 { // NEED TO DO
-                    Dispatcher.UIThread.InvokeAsync(async () =>
+                    Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         int s = numbers.Numbers.integer_of(ps[0]);
-                        await GraphDialogViewModel.DelayFor(s);
+                        MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                        if(mw.myTimer != null)
+                        {
+                            mw.myTimer.Stop();
+                        }
+                        GraphDialogViewModel.DelayFor(s);
+                        if (mw.myTimer != null)
+                        {
+                            mw.myTimer.Start();
+                        }
                     }, DispatcherPriority.Background).Wait(-1);
 
                 }

@@ -14,7 +14,7 @@ using Control = Avalonia.Controls.Control;
 using KeyEventArgs = Avalonia.Input.KeyEventArgs;
 using Timer = System.Timers.Timer;
 using Avalonia.Threading;
-
+using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -1268,26 +1268,19 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             UpdateWindowUnlessFrozen();
         }
 
-        public async Task DelayFor(
+        public void DelayFor(
             double seconds
         )
         {
-            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            if(mw.myTimer != null)
-            {
-                mw.myTimer.Stop();
-            }
-            var timer = new Timer(seconds * 1000);
-            timer.Elapsed += (sender, e) =>
-            {
-                SkiaContext.SkCanvas.DrawText("timer finished", 200, 500, SKBrush);
-                InvalidateVisual();
-            };
-            timer.Enabled = true;
-            if (mw.myTimer != null)
-            {
-                mw.myTimer.Start();
-            }
+            System.Threading.Thread.Sleep((int)(seconds * 1000.0));
+
+            //var timer = new Timer(seconds * 1000);
+            //timer.Elapsed += (sender, e) =>
+            //{
+            //    SkiaContext.SkCanvas.DrawText("timer finished", 200, 500, SKBrush);
+            //    InvalidateVisual();
+            //};
+            //timer.Enabled = true;
         }
 
         public static int RED(uint color)
