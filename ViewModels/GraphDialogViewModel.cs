@@ -135,7 +135,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static void DelayFor(int seconds)
         {
-            DotnetGraphControl.dngw.DelayFor(seconds);
+            DotnetGraphControl.DelayFor(seconds);
         }
 
         public static void FloodFill(int x, int y, Color_Type hue)

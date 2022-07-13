@@ -1268,7 +1268,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             UpdateWindowUnlessFrozen();
         }
 
-        public void DelayFor(
+        public static void DelayFor(
             double seconds
         )
         {

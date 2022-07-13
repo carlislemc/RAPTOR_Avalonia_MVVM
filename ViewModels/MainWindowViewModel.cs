@@ -972,7 +972,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         parentComponent.running = false;
                         if(parentComponent.Successor != null)
                         {
-                            activeComponent = parentComponent.Successor;
+                            if(parentComponent.Successor.GetType() == typeof(Loop) && ((Loop)parentComponent.Successor).before_Child != null)
+                            {
+                                activeComponent = ((Loop)parentComponent.Successor).before_Child;
+                            }
+                            else
+                            {
+                                activeComponent = parentComponent.Successor;
+                            }
                         }
                         else
                         {
@@ -1060,7 +1067,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
                 else
                 {
-                    if ((activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null)
+                    if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null))
                     {
                         symbolCount++;
 
@@ -1342,21 +1349,29 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 if (temp.after_Child != null)
                                 {
                                     activeComponent.running = false;
-                                    activeComponent = temp.after_Child;
-                                    if (activeComponent.break_now())
+                                    if(temp.after_Child.GetType() == typeof(Loop) && ((Loop)temp.after_Child).before_Child != null)
                                     {
-                                        if (myTimer != null)
-                                        {
-                                            OnPauseCommand();
-                                        }
+                                        activeComponent = ((Loop)temp.after_Child).before_Child;
                                     }
-                                    activeComponent.running = true;
+                                    else
+                                    {
+                                        activeComponent = temp.after_Child;
+                                    }
+                                    if (activeComponent.break_now())
+                                        {
+                                            if (myTimer != null)
+                                            {
+                                                OnPauseCommand();
+                                            }
+                                        }
+                                        activeComponent.running = true;
+                                    
                                 }
                                 else if(temp.before_Child != null)
                                 {
                                     activeComponent.running = false;
                                     activeComponent = temp.before_Child;
-                                    inLoop--;
+                                    //inLoop--;
                                     if (activeComponent.break_now())
                                     {
                                         if (myTimer != null)

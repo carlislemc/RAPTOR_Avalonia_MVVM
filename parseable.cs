@@ -3002,11 +3002,16 @@ namespace parse_tree
         public Parameter_List? parameters;
 
         public override bool Execute(Lexer l){
-            throw new NotImplementedException();
+
+            string boolPlug = l.Get_Text(id.start, id.finish);
+            numbers.value ans = Plugins.Invoke_Function(boolPlug, parameters);
+            return numbers.Numbers.long_float_of(ans) > 0.5;
+
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
+            // NEED TO DO
             throw new NotImplementedException();
         }
 
