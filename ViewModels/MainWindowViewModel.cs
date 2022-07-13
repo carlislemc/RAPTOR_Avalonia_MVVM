@@ -862,18 +862,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 return;
             }
-            try
-            {
+            //try
+            //{
                 symbolCount++;
                 if (parentCount.Count != 0 && parentComponent == null)
                 {
                     parentComponent = parentCount[parentCount.Count - 1];
                     parentCount.RemoveAt(parentCount.Count - 1);
                 }
+                if(inLoop < 0)
+                {
+                    inLoop = 0;
+                }
                 if (activeComponent.Successor == null && parentComponent != null)
                 {
                     bool removeMe = true;
-                    if (inSelection != 0 || inLoop != 0)
+                    if ((inSelection != 0 || inLoop != 0) && activeComponent.GetType() != typeof(Oval))
                     {
                         activeComponent.running = false;
                         if (activeComponent.Successor == null)
@@ -911,6 +915,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 activeComponent = activeComponent.parent.Successor;
                                 inSelection--;
                             }
+                            //else if(activeComponent.GetType() == typeof(Loop))
+                            //{
+                            //    Loop tempLoop = (Loop)activeComponent;
+                            //    if (tempLoop.after_Child == null && tempLoop.before_Child != null)
+                            //    {
+                            //        activeComponent = tempLoop.before_Child;
+                            //    }
+                            //}
                         }
                         activeComponent.running = true;
                         if (removeMe)
@@ -958,7 +970,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             parentCount.RemoveAt(parentCount.Count - 1);
                         }
                         parentComponent.running = false;
-                        activeComponent = parentComponent.Successor;
+                        if(parentComponent.Successor != null)
+                        {
+                            activeComponent = parentComponent.Successor;
+                        }
+                        else
+                        {
+                            activeComponent = parentComponent;
+                            goToNextComponent();
+                        }
+                        
                         activeComponent.running = true;
 
                     }
@@ -973,7 +994,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         Loop tempComponent = (Loop)activeComponent.Successor;
                         if (tempComponent.before_Child != null)
                         {
-                            parentComponent = activeComponent;
+                            parentComponent = activeComponent.Successor;
                             parentCount.Add(parentComponent);
                             activeComponent = tempComponent.before_Child;
                             inLoop++;
@@ -1001,15 +1022,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 {
                     activeComponent.selected = false;
                 }
-            }
-            catch(Exception e)
-            {
-                if(myTimer != null)
-                {
-                    myTimer.Stop();
-                }
-                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    if(myTimer != null)
+            //    {
+            //        myTimer.Stop();
+            //    }
+            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
+            //}
         }
 
         private bool varFound(string s){
@@ -1029,8 +1050,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public async void OnNextCommand() {
-            try
-            {
+            //try
+            //{
                 if (activeComponent == null)
                 {
                     startRun();
@@ -1235,6 +1256,23 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     }
                                     activeComponent.running = true;
                                 }
+                                else
+                                {
+                                    activeComponent.running = false;
+                                    if(temp.Successor != null)
+                                    {
+                                        activeComponent = temp.Successor;
+                                        activeComponent.running = true;
+                                    }
+                                    else
+                                    {
+                                        activeComponent = temp.parent;
+                                        activeComponent.running = true;
+                                    }
+
+                                    parentCount.RemoveAt(parentCount.IndexOf(temp));
+                                    inSelection--;
+                                }
                             }
                             else
                             {
@@ -1250,6 +1288,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                         }
                                     }
                                     activeComponent.running = true;
+                                }
+                                else
+                                {
+                                    activeComponent.running = false;
+                                    if (temp.Successor != null)
+                                    {
+                                        activeComponent = temp.Successor;
+                                        activeComponent.running = true;
+                                    }
+                                    else
+                                    {
+                                        activeComponent = temp.parent;
+                                        activeComponent.running = true;
+                                    }
+                                    parentCount.RemoveAt(parentCount.IndexOf(temp));
+                                    inSelection--;
                                 }
                             }
                         }
@@ -1298,6 +1352,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                     }
                                     activeComponent.running = true;
                                 }
+                                else if(temp.before_Child != null)
+                                {
+                                    activeComponent.running = false;
+                                    activeComponent = temp.before_Child;
+                                    inLoop--;
+                                    if (activeComponent.break_now())
+                                    {
+                                        if (myTimer != null)
+                                        {
+                                            OnPauseCommand();
+                                        }
+                                    }
+                                    activeComponent.running = true;
+                                }
                             }
                         }
                     }
@@ -1321,18 +1389,31 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                         myTimer.Stop();
                                     }
 
-                                    Lexer l = new Lexer(temp.prompt);
-                                    temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
-                                    temp.prompt_tree = temp.prompt_result.tree;
-                                    Expr_Output ex = (Expr_Output)temp.prompt_tree;
-                                    numbers.value v = ex.Execute(l);
+                                    if (temp.input_is_expression)
+                                    {
+                                        Lexer l = new Lexer(temp.prompt);
+                                        temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
+                                        temp.prompt_tree = temp.prompt_result.tree;
+                                        Expr_Output ex = (Expr_Output)temp.prompt_tree;
+                                        numbers.value v = ex.Execute(l);
 
-                                    UserInputDialog uid = new UserInputDialog(temp, v);
-                                    await uid.ShowDialog(MainWindow.topWindow);
+                                        UserInputDialog uid = new UserInputDialog(temp, v);
+                                        await uid.ShowDialog(MainWindow.topWindow);
 
-                                    Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
-                                    Lexer l2 = new Lexer(temp.assign);
-                                    numbers.value v2 = ex2.Execute(l2);
+                                        Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
+                                        Lexer l2 = new Lexer(temp.assign);
+                                        numbers.value v2 = ex2.Execute(l2);
+                                    }
+                                    else
+                                    {
+                                        UserInputDialog uid = new UserInputDialog(temp);
+                                        await uid.ShowDialog(MainWindow.topWindow);
+
+                                        Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
+                                        Lexer l2 = new Lexer(temp.assign);
+                                        numbers.value v2 = ex2.Execute(l2);
+                                    }
+                                    
 
                                     if (myTimer != null)
                                     {
@@ -1370,15 +1451,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     }
                 }
 
-            }
-            catch(Exception e)
-            {
-                if (myTimer != null)
-                {
-                    myTimer.Stop();
-                }
-                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    if (myTimer != null)
+            //    {
+            //        myTimer.Stop();
+            //    }
+            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
+            //}
 
 
 

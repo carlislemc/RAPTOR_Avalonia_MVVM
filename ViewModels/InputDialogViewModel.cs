@@ -124,6 +124,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             Syntax_Result res = interpreter_pkg.input_syntax(getVariable);
             if(res.valid){
                 Undo_Stack.Make_Undoable(getSubchart());
+                if (!getPrompt.Contains("\""))
+                {
+                    getPrompt = '"' + getPrompt + '"';
+                    p.input_is_expression = false;
+                }
+                else
+                {
+                    p.input_is_expression = true;
+                }
                 p.prompt = getPrompt;
                 p.text_str = getVariable;
                 p.parse_tree = res.tree;
