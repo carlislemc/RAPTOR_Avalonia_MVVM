@@ -460,17 +460,39 @@ namespace numbers
 
         public static numbers.value subValues(numbers.value first, numbers.value second){
             numbers.value ans = new numbers.value();
-            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=first.V - second.V};
-            } else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
-                ans = new numbers.value() {V=first.V - (int)second.C};
-            }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=(int)first.C - second.V};
+            if (first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = first.V - second.V };
             }
-            else{
+            else if (first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind)
+            {
+                ans = new numbers.value() { V = first.V - (int)second.C };
+            }
+            else if (first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = (int)first.C - second.V };
+            }
+            else
+            {
                 throw new Exception("Cannot subtract type: [" + first.Kind + "] from type: [" + second.Kind + "]");
             }
             return ans;
+            
+        }
+
+        public static numbers.value negValue(numbers.value first)
+        {
+            numbers.value ans = new numbers.value();
+            if (first.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = -first.V };
+            }
+            else
+            {
+                throw new Exception("Cannot negate type: [" + first.Kind + "]");
+            }
+            return ans;
+
         }
 
         public static numbers.value multValues(numbers.value first, numbers.value second){

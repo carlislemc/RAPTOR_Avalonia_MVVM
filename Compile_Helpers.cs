@@ -235,18 +235,22 @@ namespace raptor
             }
             mainSubchart(tabpages).am_compiling = true;
             Generate_IL gil = new Generate_IL("MyAssembly");
-            try
-            {
-                Do_Compilation(start, gil, tabpages);
-            }
-            catch
-            {
-                foreach (Subchart sbchrt in allSubcharts(tabpages))
-                {
-                    sbchrt.am_compiling = false;
-                }
-                throw;
-            }
+
+
+            Do_Compilation(start, gil, tabpages);
+
+            //try
+            //{
+            //    Do_Compilation(start, gil, tabpages);
+            //}
+            //catch
+            //{
+            //    foreach (Subchart sbchrt in allSubcharts(tabpages))
+            //    {
+            //        sbchrt.am_compiling = false;
+            //    }
+            //    throw;
+            //}
             mainSubchart(tabpages).am_compiling = false;
         }
         public static void Compile_Flowchart_To(Oval start, string directory, string filename)
@@ -326,10 +330,10 @@ namespace raptor
             {
                 try
                 {
-                    SDILReader.Globals.LoadOpCodes();
-                    SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
-                    string msil = mr.GetBodyCode();
-                    Runtime.consoleWriteln(msil);
+                    //SDILReader.Globals.LoadOpCodes();
+                    //SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
+                    //string msil = mr.GetBodyCode();
+                    //Runtime.consoleWriteln(msil);
                     mi.Invoke(null, null);
 
                 }
@@ -347,6 +351,10 @@ namespace raptor
                     {
                         Runtime.consoleWriteln("Exception! " + e.Message + e.StackTrace);
                     }
+                    SDILReader.Globals.LoadOpCodes();
+                    SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
+                    string msil = mr.GetBodyCode();
+                    Runtime.consoleWriteln(msil);
 
                     // added 3/2/05 by mcc
                     //if (raptor_files.output_redirected() && from_commandline)

@@ -670,7 +670,7 @@ namespace raptor
         }
         public void Emit_Unary_Minus()
         {
-            this.Emit_Method("numbers.Numbers", "subValues");
+            this.Emit_Method("numbers.Numbers", "negValue");
         }
         public void Emit_Minus()
         {

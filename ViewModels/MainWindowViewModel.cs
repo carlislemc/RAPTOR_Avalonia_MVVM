@@ -1332,8 +1332,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             if (!parentCount.Contains(parentComponent))
                             {
                                 parentCount.Add(parentComponent);
+                                inLoop++;
                             }
-                            inLoop++;
+                            
                             if (rel)
                             {
                                 if (inLoop > 1)
@@ -1596,16 +1597,53 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 this.RaiseAndSetIfChanged(ref executeSpeed, value);
                 if(myTimer != null){
                     myTimer.Interval = 1000 * (1.01 - (double)setSpeed/100);
+
                 }
             }
         }
+        public class myCheckedTimer 
+        {
+            private MainWindowViewModel mvwm;
+            private System.Timers.Timer timer;
+            public myCheckedTimer(double interval, MainWindowViewModel mvwm)
+            {
+                this.timer = new System.Timers.Timer(interval);
+                this.mvwm = mvwm;
+            }
+            public bool AutoReset {
+                get { return this.timer.AutoReset; }
+                set { this.timer.AutoReset = value; }
+            }
+            public System.Timers.ElapsedEventHandler Elapsed
+            {
+                set { this.timer.Elapsed += value;  }
 
-        public System.Timers.Timer myTimer;
+            }
+
+            public double Interval
+            {
+                get { return this.timer.Interval; }
+                set { this.timer.Interval = value; }
+            }
+            public void Stop()
+            {
+                this.timer.Stop();
+                mvwm.startTimer = false;
+            }
+            public void Start()
+            {
+                this.timer.Start();
+            }
+        }
+
+        public myCheckedTimer myTimer;
         public void OnExecuteCommand() {
             if(myTimer == null){
                 
-                myTimer = new System.Timers.Timer(1000 * (1.01 - (double)setSpeed/100));
-                myTimer.Elapsed += new System.Timers.ElapsedEventHandler(stepper);
+                myTimer = new myCheckedTimer(1000 * (1.01 - (double)setSpeed/100),this);
+                myTimer.AutoReset = false;
+                myTimer.Elapsed = new System.Timers.ElapsedEventHandler(stepper);
+                
             }else{
                 MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
                 mc.Text += "Run Resumed!\n";
@@ -1614,10 +1652,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         private Thread InstanceCaller;
+        public bool startTimer = false;
         private void stepper(Object source, ElapsedEventArgs e)
         {
-
+            startTimer = true;
             OnNextCommand();
+            if(myTimer != null && startTimer)
+            {
+                myTimer.Start();
+            } 
+            
             // if (InstanceCaller != null && InstanceCaller.IsAlive)
 			// {
 			// 	return;
@@ -1808,8 +1852,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             //this.FileSave_Click();
             //this.OnResetCommand();
-            try
-            {
+            //try
+            //{
                 Compile_Helpers.Compile_Flowchart(theTabs);
                 try
                 {
@@ -1820,11 +1864,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     MessageBoxClass.Show("Flowchart terminated abnormally\n" +
                         exc.ToString());
                 }
-            }
-            catch (System.Exception exc)
-            {
-                await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //}
+            //catch (System.Exception exc)
+            //{
+            //    await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
 
 
             Component.run_compiled_flowchart = false;

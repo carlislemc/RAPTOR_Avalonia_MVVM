@@ -1456,13 +1456,16 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (!graphWindowOpen)
             {
-                Dispatcher.UIThread.Post(() =>
-                {
+                //Dispatcher.UIThread.Post(() =>
+                //{
                     dotnetgraph = new DotnetGraph(width, height);
                     dotnetgraph.Show();
                     graphWindowOpen = true;
-
-                }, DispatcherPriority.Background);
+                    //while (DotnetGraphControl.dngw==null)
+                    //{
+                    //    sleep(0.1);
+                    //}
+                //}, DispatcherPriority.Normal).Wait(-1);
 
                 
             }
