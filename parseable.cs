@@ -290,27 +290,59 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "findMax");
                     break;
                 case "sin":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "Sin");
                     break;
                 case "cos":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "Cos");
                     break;
                 case "tan":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "Tan");
                     break;
                 case "cot":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "Cot");
                     break;
                 case "arcsin":
+                    if(i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "ArcSin");
                     break;
                 case "arccos":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "ArcCos");
                     break;
                 case "arctan":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "ArcTan");
                     break;
                 case "arccot":
+                    if (i == 1)
+                    {
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
+                    }
                     gil.Emit_Method("numbers.Numbers", "ArcCot");
                     break;
                 case "is_open":
@@ -716,7 +748,7 @@ namespace parse_tree
 
                 }
                 else if (str.ToLower() == "delay_for")
-                { // NEED TO DO
+                { 
                     Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         int s = numbers.Numbers.integer_of(ps[0]);
@@ -1282,6 +1314,10 @@ namespace parse_tree
                 }, DispatcherPriority.Background);
 
             }
+            else
+            {
+                Plugins.Invoke(proc, param_list);
+            }
             Runtime.processing_parameter_list = false;
             if (mw.myTimer != null)
             {
@@ -1293,7 +1329,9 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string proc = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(proc, param_list);
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1986,7 +2024,7 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             Number_Expon ne = (Number_Expon)e;
             numbers.value temp = ne.Execute(l);
-            temp.V = temp.V * -1 - 1;
+            temp.V = temp.V * -1;
             return temp;
         }
 
@@ -2223,44 +2261,44 @@ namespace parse_tree
             switch (s.ToLower()){
                 case "sin":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.Sin(ps[0]); }
+                    { return numbers.Numbers.Sin(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.Sin(ps[0], ps[1]); }
                 case "cos":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.Cos(ps[0]); }
+                    { return numbers.Numbers.Cos(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.Cos(ps[0], ps[1]); }
                 case "tan":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.Tan(ps[0]); }
+                    { return numbers.Numbers.Tan(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.Tan(ps[0], ps[1]); }
                 case "cot":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.Cot(ps[0]); }
+                    { return numbers.Numbers.Cot(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.Cot(ps[0], ps[1]); }
                 case "arcsin":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.ArcSin(ps[0]); }
+                    { return numbers.Numbers.ArcSin(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.ArcSin(ps[0], ps[1]); }
                 case "arccos":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.ArcCos(ps[0]); }
+                    { return numbers.Numbers.ArcCos(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.ArcCos(ps[0], ps[1]); }
                 case "log":
                     return new numbers.value(){V=Math.Log(ps[0].V)};
                 case "arctan":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.ArcTan(ps[0]); }
+                    { return numbers.Numbers.ArcTan(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.ArcTan(ps[0], ps[1]); }
                 case "arccot":
                     if (ps.Length == 1)
-                    { return numbers.Numbers.ArcCot(ps[0]); }
+                    { return numbers.Numbers.ArcCot(ps[0], numbers.Numbers.Two_Pi); }
                     else
                     { return numbers.Numbers.ArcCot(ps[0], ps[1]); }
                 case "min":
@@ -2325,7 +2363,7 @@ namespace parse_tree
                     gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
-                    // weird
+                    //weird
                     break;
                 case "get_pixel":
                     gen.Emit_Conversion((int)Conversions.To_Integer);
@@ -2521,7 +2559,8 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            gen.Emit_Plugin_Call(Component.the_lexer.Get_Text(id.start, id.finish), parameters);
+            string text = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(text, parameters);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -3011,8 +3050,8 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            // NEED TO DO
-            throw new NotImplementedException();
+            string proc = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(proc, parameters);
         }
 
         public override void compile_pass1(Generate_Interface gen)

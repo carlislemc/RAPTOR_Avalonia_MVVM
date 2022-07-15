@@ -183,10 +183,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static void DelayFor(int seconds)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                DotnetGraphControl.DelayFor(seconds);
-            }, DispatcherPriority.Background);
+            DotnetGraphControl.DelayFor(seconds);
+            //Dispatcher.UIThread.Post(() =>
+            //{
+                
+            //}, DispatcherPriority.Background);
         }
 
         public static void FloodFill(int x, int y, Color_Type hue)

@@ -1482,6 +1482,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             }
         public void OnPauseCommand() {
+            if(myTimer == null)
+            {
+                return;
+            }
             MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
             mc.Text += "Run Paused!\n";
             myTimer.Stop();

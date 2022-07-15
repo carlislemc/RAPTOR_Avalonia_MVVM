@@ -204,6 +204,10 @@ namespace numbers
         {
             if (is_integer(v) && !Precision_Set)
             {
+                if(v.V < 0)
+                {
+                    return Convert.ToString(((int)(v.V - 0.1)));
+                }
                 return Convert.ToString(((int) (v.V+0.1)));
             }
             else
@@ -522,7 +526,7 @@ namespace numbers
         public static numbers.value divValues(numbers.value first, numbers.value second){
             numbers.value ans = new numbers.value();
             if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                if(second.V == 0){
+                if(second.V == 0.0){
                     throw new Exception("Cannot divide by 0!");
                 }
                 ans = new numbers.value() {V=first.V / second.V};
@@ -844,7 +848,8 @@ namespace numbers
                 {
                     throw new Exception("Cannot find arcsin of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
                 }
-                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asin(first.V / second.V * Math.PI * 2) };
+                numbers.value ans = new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asin(first.V / second.V * Math.PI * 2) };
+                return ans;
 
             }
 
