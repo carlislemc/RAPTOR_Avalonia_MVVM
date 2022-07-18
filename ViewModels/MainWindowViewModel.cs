@@ -133,16 +133,48 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return new ObservableCollection<MenuItem> { new MenuItem() { Header = "Hello" }, new MenuItem() { Header = "World" } };
         }*/
 
-        public bool OnClosingCommand()
-        {
-            if (x==0)
+        public bool shouldClose = true;
+
+        public async Task setShouldClose() {
+
+            await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                x++;
-                return true;
+                string msg = "Do you want to save your changes first?";
+                await MessageBoxClass.Show(msg, "Save First?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+                if (buttonAnswer == ButtonResult.Yes)
+                {
+                    shouldClose = false;
+                    OnSaveCommand(true);
+                }
+                else if (buttonAnswer == ButtonResult.No)
+                {
+                    shouldClose = false;
+                    MainWindow.topWindow.Close();
+                }
+                else
+                {
+                    shouldClose = true;
+                }
+
+            });
+
+
+        }
+
+
+        public async void OnClosingCommand()
+        {
+            if (modified)
+            {
+
+                await Dispatcher.UIThread.InvokeAsync(async () => { await setShouldClose(); });
+
             }
             else
             {
-                return false;
+                shouldClose = false;
+                MainWindow.topWindow.Close();
             }
         }
         private static MainWindowViewModel theMainWindowViewModel;
@@ -158,6 +190,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //Subchart main_subchart = new Subchart("main");
             theTabs = new ObservableCollection<Subchart>(FillTabs());
             Plugins.Load_Plugins("");
+            Generators.Load_Generators();
 
             /*
             GetWindow().Closing += (s, e) =>
@@ -641,27 +674,27 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.Perform_Save(name, true);
         }
 
-        public void OnSaveCommand() {
+        public void OnSaveCommand(bool closeAfter = false) {
 
-            FileSave_Click();
+            FileSave_Click(closeAfter);
 
         }
 
-        private void FileSave_Click()
+        private void FileSave_Click(bool closeAfter = false)
         {
             if (fileName == "" || fileName == null)
             {
-                this.OnSaveAsCommand();
+                this.OnSaveAsCommand(closeAfter);
             }
             else
             {
-                this.Perform_Save(this.fileName, false);
+                this.Perform_Save(this.fileName, false, closeAfter);
                 Plugins.Load_Plugins(this.fileName);
             }
         }
 
         private bool Save_Error = false;
-        private async void Perform_Save(string name, bool is_autosave)
+        private async void Perform_Save(string name, bool is_autosave, bool closeAfter = false)
         {
             Stream stream;
             string prefix;
@@ -777,14 +810,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 this.Save_Error = true;
             }
 
-
-
-
-
+            if (closeAfter)
+            {
+                MainWindow.topWindow.Close();
+            }
 
         }
 
-        public async void OnSaveAsCommand() {
+        public async void OnSaveAsCommand(bool closeAfter = false) {
 
             string dialog_fileName;
             string oldName = this.fileName;
@@ -813,7 +846,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 this.fileName = ans;
                 Plugins.Load_Plugins(this.fileName);
-                this.FileSave_Click();
+                this.FileSave_Click(closeAfter);
 
             }
 
@@ -1941,6 +1974,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             175,
             200
         };
+
+
+        public void generateCPlusPlusCode()
+        {
+            if(fileName == null || fileName == "")
+            {
+                return;
+            }
+            Generators.Create_From_Menu("C++", this.fileName);
+        }
 
     }
 }

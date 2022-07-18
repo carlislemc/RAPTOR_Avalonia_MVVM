@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using System.Reflection;
 using Avalonia.Input;
 using RAPTOR_Avalonia_MVVM.Controls;
+using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -20,9 +21,17 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.AttachDevTools();
 #endif
             topWindow = this;
-            this.Closing += (s, e) =>
+            this.Closing += async (s, e) =>
             {
-                e.Cancel = (this.DataContext as RAPTOR_Avalonia_MVVM.ViewModels.MainWindowViewModel).OnClosingCommand();
+                MainWindowViewModel mw = (this.DataContext as RAPTOR_Avalonia_MVVM.ViewModels.MainWindowViewModel);
+
+                bool ans = mw.shouldClose;
+                e.Cancel = ans;
+                if (ans)
+                {
+                    mw.OnClosingCommand();
+                }
+                
             };
 
             this.FindControl<TabControl>("tc12").PointerPressed += (s, e) =>

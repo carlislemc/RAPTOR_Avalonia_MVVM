@@ -41,8 +41,7 @@ namespace raptor
         }
 
 
-        public static void Process_Assembly(Visual_Flow_Form form,
-            System.Reflection.Assembly assembly)
+        public static void Process_Assembly(System.Reflection.Assembly assembly)
         {
             System.Type[] Types = assembly.GetTypes();
             int placement = 0;
@@ -83,7 +82,7 @@ namespace raptor
             }
         }
 
-        public static void Load_Generators(Visual_Flow_Form form)
+        public static void Load_Generators()
         {
 
             System.IO.DirectoryInfo exe_path = System.IO.Directory.GetParent(Assembly.GetEntryAssembly().Location);
@@ -94,10 +93,11 @@ namespace raptor
                 try
                 {
                     assembly = Assembly.LoadFrom(files[i].FullName);
-                    Process_Assembly(form, assembly);
+                    Process_Assembly(assembly);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Runtime.consoleWriteln(e.Message);
                 }
             }
         }
