@@ -41,6 +41,14 @@
         <Separator/>
         <MenuItem Header="_Clear all breakpoints" Command="{Binding OnClearBreakpointsCommand}" HotKey="F10"/>
       </MenuItem>
+      <MenuItem Header="_Generate">
+        <MenuItem Header="Ada"/>
+        <MenuItem Header="C#"/>
+        <MenuItem Header="C++"/>
+        <MenuItem Header="IT105 Java"/>
+        <MenuItem Header="Standalone"/>
+        <MenuItem Header="VBA"/>
+      </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About" Command="{Binding OnAboutCommand}"/>
         <MenuItem Header="_General Help   F11" Command="{Binding OnGeneralHelpCommand}" HotKey="F11"/>
