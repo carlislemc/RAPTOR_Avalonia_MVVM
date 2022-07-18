@@ -44,7 +44,7 @@
       <MenuItem Header="_Generate">
         <MenuItem Header="Ada"/>
         <MenuItem Header="C#"/>
-        <MenuItem Header="C++"/>
+        <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
         <MenuItem Header="IT105 Java"/>
         <MenuItem Header="Standalone"/>
         <MenuItem Header="VBA"/>
