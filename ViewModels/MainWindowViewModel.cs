@@ -1854,10 +1854,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public async void OnRunCompiledCommand(){
 
-            //this.FileSave_Click();
-            //this.OnResetCommand();
-            //try
-            //{
+            this.FileSave_Click();
+            this.OnResetCommand();
+            try
+            {
                 Compile_Helpers.Compile_Flowchart(theTabs);
                 try
                 {
@@ -1868,11 +1868,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     MessageBoxClass.Show("Flowchart terminated abnormally\n" +
                         exc.ToString());
                 }
-            //}
-            //catch (System.Exception exc)
-            //{
-            //    await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            }
+            catch (System.Exception exc)
+            {
+                await MessageBoxClass.Show(exc.Message + "\n", "Compilation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
 
             Component.run_compiled_flowchart = false;

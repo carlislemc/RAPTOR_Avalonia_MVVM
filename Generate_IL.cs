@@ -254,7 +254,6 @@ namespace raptor
             LocalBuilder local;
             if (variables.ContainsKey(name.ToLower()))
             {
-                name_variable = name;
                 local = ((LocalBuilder)variables[name.ToLower()]);
             }
             else if (arrays.ContainsKey(name.ToLower()))

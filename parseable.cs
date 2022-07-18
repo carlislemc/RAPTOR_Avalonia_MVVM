@@ -174,7 +174,7 @@ namespace parse_tree
                 case "pink":
                 case "purple":
                 case "white":
-                    gil.Emit_Load_Number(n);
+                    gil.Emit_Load_Number(n - (int)Token_Type.Black);
                     break;
                 case "left_button":
                 case "unfilled":
