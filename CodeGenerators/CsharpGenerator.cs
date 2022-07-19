@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -307,7 +307,7 @@ namespace CodeGenerators
                 stream.WriteLine(";");
             }
         }
-        
+
         public void Emit_Is_Array2D(string name)
         {
             if (arrays_2d.Contains(name.ToLower()))
@@ -372,7 +372,7 @@ namespace CodeGenerators
 
         public void Emit_Random(double first, double last)
         {
-            stream.Write("To_Color(random_generator.NextDouble()*" + (last-first) + "+" +first + ")");
+            stream.Write("To_Color(random_generator.NextDouble()*" + (last - first) + "+" + first + ")");
         }
 
         public void Emit_Times()
@@ -723,11 +723,13 @@ namespace CodeGenerators
             else
             {
                 Indent();
-                if (((loop_flags) o).negative_condition) {
-                   stream.Write("if (!(");
+                if (((loop_flags)o).negative_condition)
+                {
+                    stream.Write("if (!(");
                 }
-                else {
-                   stream.Write("if (");
+                else
+                {
+                    stream.Write("if (");
                 }
             }
         }

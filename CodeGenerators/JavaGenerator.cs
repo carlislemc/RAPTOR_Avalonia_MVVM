@@ -390,7 +390,7 @@ namespace CodeGenerators
         //        isVariables = true;
         //    return isVariables;
         //}
-        
+
         //// We write variables below, but these should be local variables for each method.
         //public void WriteVariables()
         //{
@@ -527,7 +527,7 @@ namespace CodeGenerators
         //    string[] colors = { "black", "blue", "green", "cyan", "red", "magenta", "brown", "light_gray", "dark_gray", 
         //        "light_blue", "light_green", "light_cyan", "light_red", "light_magenta", "yellow", "white", "filled", "unfilled" };
 
-            
+
         //    for (int i = 0; i < colors.Length; i++)
         //    {
         //        if (colors[i].CompareTo(name.ToLower()) == 0)
@@ -614,7 +614,7 @@ namespace CodeGenerators
         // */
         //public object Emit_Call_Subchart(string name)
         //{
-            
+
         //    Indent();
         //    MethodInformation mi = Procedures[name];
         //    holdMethod = name;
@@ -1251,7 +1251,7 @@ namespace CodeGenerators
         //// dependent on getting returnStatement from parameter building
         //public void Done_Method()
         //{
-            
+
         //        // We write return statements here
         //        indent_level -= 3;
         //        Indent();
@@ -1313,6 +1313,6 @@ namespace CodeGenerators
         //    return new subprogram(is_function);
         //}
         //#endregion
-       
+
     }
 }

@@ -257,6 +257,31 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 DotnetGraphControl.dngw.FreezeGraphWindow();
             }, DispatcherPriority.Background);
         }
+
+
+
+        public static void GetMouseX()
+        {
+            DotnetGraphControl.dngw.GetMouseX();
+        }
+        public static void GetMouseY()
+        {
+            DotnetGraphControl.dngw.GetMouseY();
+        }
+        public static void LoadBitmap(string fileName)
+        {
+            // "../../../sample_640×426.bmp"
+            DotnetGraphControl.dngw.LoadBitmap(fileName);
+        }
+        public static void DrawBitmap(int index, int x, int y, int width, int height)
+        {
+            // 0, 100, 100, 300, 300
+            DotnetGraphControl.dngw.DrawBitmap(index, x, y, width, height);
+        }
+        public static void KeyDown(Avalonia.Input.Key button)
+        {
+            DotnetGraphControl.dngw.Key_Down(button);
+        }
     }
 
 }

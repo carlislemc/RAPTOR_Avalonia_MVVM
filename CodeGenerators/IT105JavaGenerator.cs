@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -302,7 +302,7 @@ namespace IT105Java
         //        isVariables = true;
         //    return isVariables;
         //}
-        
+
         //// We write variables below, but these should be local variables for each method.
         //public void WriteVariables()
         //{
@@ -339,7 +339,7 @@ namespace IT105Java
         //        stream.WriteLine("??[][] " + var + " = new ??[??][??];");
         //    }
         //}
-      
+
         //public void Done_Variable_Declarations()
         //{
         //    if (current_method != "Main")
@@ -429,7 +429,7 @@ namespace IT105Java
         //    string[] colors = { "black", "blue", "green", "cyan", "red", "magenta", "brown", "light_gray", "dark_gray", 
         //        "light_blue", "light_green", "light_cyan", "light_red", "light_magenta", "yellow", "white", "filled", "unfilled" };
 
-            
+
         //    for (int i = 0; i < colors.Length; i++)
         //    {
         //        if (colors[i].CompareTo(name.ToLower()) == 0)
@@ -516,7 +516,7 @@ namespace IT105Java
         // */
         //public object Emit_Call_Subchart(string name)
         //{
-            
+
         //    Indent();
         //    MethodInformation mi = Procedures[name];
         //    holdMethod = name;
@@ -1152,7 +1152,7 @@ namespace IT105Java
         //// dependent on getting returnStatement from parameter building
         //public void Done_Method()
         //{
-            
+
         //        // We write return statements here
         //        indent_level -= 3;
         //        Indent();
@@ -1201,6 +1201,6 @@ namespace IT105Java
         //    //}
         //}
         //#endregion
-       
+
     } // close class
 } // close namespace

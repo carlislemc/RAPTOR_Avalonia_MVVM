@@ -86,7 +86,7 @@ namespace raptor
         {
 
             System.IO.DirectoryInfo exe_path = System.IO.Directory.GetParent(Assembly.GetEntryAssembly().Location);
-            System.IO.FileInfo[] files = exe_path.GetFiles("generator*.dll");
+            System.IO.FileInfo[] files = exe_path.GetFiles("CodeGenerators*.dll");
             Assembly assembly;
             for (int i = 0; i < files.Length; i++)
             {

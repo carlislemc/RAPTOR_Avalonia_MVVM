@@ -1975,6 +1975,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             200
         };
 
+        
 
         public void generateCPlusPlusCode()
         {
