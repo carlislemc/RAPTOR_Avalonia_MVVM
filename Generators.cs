@@ -57,8 +57,8 @@ namespace raptor
                         obj = constructor.Invoke(null);
                         string name = mi.Invoke(obj, null) as string;
 
-                        /*
-                        MenuItem menu_item = new MenuItem(name, new EventHandler(
+                        
+                        /*MenuItem menu_item = new MenuItem(name, new EventHandler(
                             form.handle_click));
                         if (form.menuItemGenerate.MenuItems.Count > 1)
                         {
