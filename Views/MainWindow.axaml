@@ -18,8 +18,8 @@
       <MenuItem Header="_File">
         <MenuItem Header="_New   Ctrl+N" Command="{Binding OnNewCommand}" HotKey="Ctrl+N"/>
         <MenuItem Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}" HotKey="Ctrl+O"/>
-        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand}" HotKey="Ctrl+S"/>
-        <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand}"/>
+        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand2}" HotKey="Ctrl+S"/>
+        <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand2}"/>
         <Separator/>
         <MenuItem Header="_Exit" Command="{Binding OnExitCommand}"/>
       </MenuItem>

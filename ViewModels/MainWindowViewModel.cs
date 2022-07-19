@@ -680,6 +680,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
+        public void OnSaveCommand2()
+        {
+
+            FileSave_Click(false);
+
+        }
+
         private void FileSave_Click(bool closeAfter = false)
         {
             if (fileName == "" || fileName == null)
@@ -815,6 +822,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 MainWindow.topWindow.Close();
             }
 
+        }
+
+        public async void OnSaveAsCommand2()
+        {
+            OnSaveAsCommand(false);
         }
 
         public async void OnSaveAsCommand(bool closeAfter = false) {
