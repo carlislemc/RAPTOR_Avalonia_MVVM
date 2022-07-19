@@ -41,14 +41,44 @@
         <Separator/>
         <MenuItem Header="_Clear all breakpoints" Command="{Binding OnClearBreakpointsCommand}" HotKey="F10"/>
       </MenuItem>
+
+<!--
+            <MenuItem.Styles>
+                <Style Selector="MenuItem">
+                    <Setter Property="Header" Value="{Binding Name}"/>
+                </Style>
+            </MenuItem.Styles>
+-->
+      
       <MenuItem Header="_Generate">
+
+        <MenuItem Items="{Binding GenerateMenuItems}">
+            
+                <MenuItem.Styles>
+                    <Style Selector="MenuItem">
+                        <Setter Property="Header" Value="mmm"/>
+                    </Style>
+                </MenuItem.Styles>
+            
+
+        </MenuItem>
+
+        <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
+        
+        <!--
         <MenuItem Header="Ada"/>
         <MenuItem Header="C#"/>
         <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
         <MenuItem Header="IT105 Java"/>
         <MenuItem Header="Standalone"/>
         <MenuItem Header="VBA"/>
+        -->
+
+
       </MenuItem>
+
+
+
       <MenuItem Header="_Help">
         <MenuItem Header="_About" Command="{Binding OnAboutCommand}"/>
         <MenuItem Header="_General Help   F11" Command="{Binding OnGeneralHelpCommand}" HotKey="F11"/>
@@ -57,6 +87,7 @@
         <MenuItem Header="_Count Symbols" Command="{Binding OnCountSymbolsCommand}"/>
       </MenuItem>
     </Menu>
+
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
       <StackPanel.Styles>
 

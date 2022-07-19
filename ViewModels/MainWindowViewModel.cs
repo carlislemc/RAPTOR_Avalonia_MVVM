@@ -190,7 +190,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //Subchart main_subchart = new Subchart("main");
             theTabs = new ObservableCollection<Subchart>(FillTabs());
             Plugins.Load_Plugins("");
-            Generators.Load_Generators();
+            raptor.Generators.Load_Generators();
 
             /*
             GetWindow().Closing += (s, e) =>
@@ -1975,7 +1975,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             200
         };
 
+
         
+        public ObservableCollection<MenuItem> GenerateMenuItems = new ObservableCollection<MenuItem>(){
+            new MenuItem(){ Name = "Hello" },
+            new MenuItem(){ Name = "HelloThere" }
+        };
+
+        public void OnRandomCommandThing()
+        {
+
+            GenerateMenuItems.Add(new MenuItem() { Header = "Hello there", Name = "sup" });
+            Runtime.consoleWriteln(GenerateMenuItems.Count + "");
+        }
 
         public void generateCPlusPlusCode()
         {
@@ -1983,7 +1995,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 return;
             }
-            Generators.Create_From_Menu("C++", this.fileName);
+            Generate_Interface gi = raptor.Generators.Create_From_Menu("C&++", this.fileName);
+            Compile_Helpers.Do_Compilation(this.mainSubchart().Start, gi, theTabs);
         }
 
     }
