@@ -64,6 +64,7 @@
         </MenuItem>
 
         <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
+        <MenuItem Header="C#" Command="{Binding generateCSharpCode}"/>
         
         <!--
         <MenuItem Header="Ada"/>

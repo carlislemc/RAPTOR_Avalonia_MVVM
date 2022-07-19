@@ -41,7 +41,7 @@ namespace raptor
         {
             if (Component.Current_Mode != Mode.Expert)
             {
-                Do_Compilation_Imperative(start, gil as CodeGenerators.Imperative_Interface, tpc);
+                Do_Compilation_Imperative(start, (CodeGenerators.Imperative_Interface)gil, tpc);
             }
             //else
             //{

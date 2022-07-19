@@ -906,7 +906,7 @@ namespace CodeGenerators
             }
             catch
             {
-                //System.Windows.Forms.MessageBox.Show("generated to: " + file_name);
+                MessageBoxClass.Show("generated to: " + file_name);
             }
         }
 
