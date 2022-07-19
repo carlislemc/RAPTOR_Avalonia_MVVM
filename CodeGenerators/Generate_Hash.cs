@@ -102,6 +102,10 @@ namespace raptor
 
         private StringBuilder strings;
         private System.IO.StreamWriter stream;
+        public Generate_Hash()
+        {
+            strings = new StringBuilder();
+        }
         public Generate_Hash(object x)
         {
             strings = new StringBuilder();
