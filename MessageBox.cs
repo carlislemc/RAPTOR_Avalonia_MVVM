@@ -43,7 +43,7 @@ namespace RAPTOR_Avalonia_MVVM
         }
 
         
-        internal async static Task Show(string v1, string v2, int oK, int warning)
+        public async static Task Show(string v1, string v2, int oK, int warning)
         {
 
             if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

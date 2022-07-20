@@ -80,7 +80,7 @@ namespace raptor
                         MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
 
                         genCodeCommand = ReactiveCommand.Create(generateCodeCommand);
-                        MenuItem menu_item = new MenuItem() { Header = name.Replace("&", ""), Command = genCodeCommand };
+                        MenuItem menu_item = new MenuItem() { Header = name.Replace("&", ""), Command = ReactiveCommand.Create(generateCodeCommand) };
 
                             /*(name, new EventHandler(
                             form.handle_click));*/

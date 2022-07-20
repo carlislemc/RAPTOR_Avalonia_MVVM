@@ -48,7 +48,19 @@ namespace RAPTOR_Avalonia_MVVM.Views
                         mw.myTimer.Start();
                     }
                 }
+                if(DotnetGraphControl.dngw != null)
+                {
+                    DotnetGraphControl.key = e.Key;
+                    DotnetGraphControl.keyDown = true;
+                }
+            };
 
+            this.KeyUp += (s, e) =>
+            {
+                if (DotnetGraphControl.dngw != null)
+                {
+                    DotnetGraphControl.keyDown = false;
+                }
             };
 
             this.PointerPressed += (s, e) =>

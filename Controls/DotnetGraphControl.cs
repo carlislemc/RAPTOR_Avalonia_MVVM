@@ -593,8 +593,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool waitForMouse;
         private int x_size, y_size;
 
-        private Key key;
-        private bool keyDown;
+        public static Key key;
+        public static bool keyDown;
         private bool mouseDown;
         private MouseButton buttonDown;
         private bool leftMouseButtonReleased = false;
