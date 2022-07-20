@@ -23,12 +23,17 @@ using System.Timers;
 using System.Threading;
 using RAPTOR_Avalonia_MVVM.Views;
 using RAPTOR_Avalonia_MVVM.Controls;
-
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using System.Collections;
 using Avalonia.Threading;
 using System.Diagnostics;
+using System.Linq;
+
+using Avalonia.Media;
+
+
 
 namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
@@ -145,7 +150,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return false;
             }
         }
-        private static MainWindowViewModel theMainWindowViewModel;
+        public static MainWindowViewModel theMainWindowViewModel;
         public static MainWindowViewModel GetMainWindowViewModel()
         {
             return theMainWindowViewModel;
@@ -159,6 +164,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             theTabs = new ObservableCollection<Subchart>(FillTabs());
             Plugins.Load_Plugins("");
 
+
+            
             /*
             GetWindow().Closing += (s, e) =>
             {
@@ -183,7 +190,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.theTabs.Clear();
             this.theTabs.Add(new Subchart());
         }
-        private void Load_File(string dialog_fileName)
+        public void Load_File(string dialog_fileName)
         {
 
             Stream stream;

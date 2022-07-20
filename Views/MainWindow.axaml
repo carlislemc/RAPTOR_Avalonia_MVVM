@@ -10,7 +10,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="RAPTOR">
 
-    <Design.DataContext>
+    <Design.DataContext >
         <vm:MainWindowViewModel/>
     </Design.DataContext>
   <DockPanel>
@@ -529,9 +529,9 @@
           </TextBlock>
         </DataTemplate>
       </TabControl.ItemTemplate>
-      <TabControl.ContentTemplate>
-        <DataTemplate>
-          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <TabControl.ContentTemplate  >
+        <DataTemplate >
+          <ScrollViewer DragDrop.AllowDrop="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <!-- we need to set the background of the UserControl so that it gets the mouse clicks outside
             of the flowchart symbols -->
             <UserControl Width="200" Height="250" Background="Black" x:Class="RAPTOR_Avalonia_MVVM.Views.MainWindow">
