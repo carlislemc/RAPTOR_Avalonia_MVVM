@@ -50,33 +50,14 @@
             </MenuItem.Styles>
 -->
       
-      <MenuItem Header="_Generate">
-
-        <MenuItem Items="{Binding GenerateMenuItems}">
+      <MenuItem Header="_Generate" Items="{Binding getGenerateMenuItems}" Classes="SubItems">
+            <MenuItem.Styles>
+                <Style Selector="MenuItem.SubItems MenuItem">
+                    <Setter Property="Header" Value="{Binding Header}"/>
+                    <Setter Property="Command" Value="{Binding Command}"/>
+                </Style>
+            </MenuItem.Styles>
             
-                <MenuItem.Styles>
-                    <Style Selector="MenuItem">
-                        <Setter Property="Header" Value="mmm"/>
-                    </Style>
-                </MenuItem.Styles>
-            
-
-        </MenuItem>
-
-        <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
-        <MenuItem Header="C#" Command="{Binding generateCSharpCode}"/>
-        <MenuItem Header="VBA" Command="{Binding generateVBACode}"/>
-        
-        <!--
-        <MenuItem Header="Ada"/>
-        <MenuItem Header="C#"/>
-        <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
-        <MenuItem Header="IT105 Java"/>
-        <MenuItem Header="Standalone"/>
-        <MenuItem Header="VBA"/>
-        -->
-
-
       </MenuItem>
 
 
@@ -464,7 +445,7 @@
       </StackPanel.Styles>
       <Button Classes="NewButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
       <Button Classes="OpenButton" ToolTip.Tip="Open" Command="{Binding OnOpenCommand}"></Button>
-      <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand}"></Button>
+      <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand2}"></Button>
       <Button Classes="CutButton" ToolTip.Tip="Cut" Command="{Binding OnCutCommand}"></Button>
       <Button Classes="CopyButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
       <Button Classes="PasteButton" ToolTip.Tip="Paste" Command="{Binding OnPasteCommand}"></Button>

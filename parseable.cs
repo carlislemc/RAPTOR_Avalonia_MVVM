@@ -213,12 +213,12 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_mouse_x":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMouseX");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_mouse_y":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMouseY");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key":
                     //NEED TO DO
@@ -786,6 +786,18 @@ namespace parse_tree
                         GraphDialogViewModel.PutPixel(x, y, (Color_Type)c);
                     }, DispatcherPriority.Background);
 
+                }
+                else if (str.ToLower() == "draw_bitmap")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int i = numbers.Numbers.integer_of(ps[0]);
+                        int x = numbers.Numbers.integer_of(ps[1]);
+                        int y = numbers.Numbers.integer_of(ps[2]);
+                        int w = numbers.Numbers.integer_of(ps[3]);
+                        int h = numbers.Numbers.integer_of(ps[4]);
+                        GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
+                    }, DispatcherPriority.Background);
                 }
             return;
             
@@ -2189,6 +2201,10 @@ namespace parse_tree
                     return new numbers.value() { V = 86 };
                 case "right_button":
                     return new numbers.value() { V = 87 };
+                case "get_mouse_x":
+                    return GraphDialogViewModel.GetMouseX();
+                case "get_mouse_y":
+                    return GraphDialogViewModel.GetMouseX();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
@@ -2335,6 +2351,10 @@ namespace parse_tree
                     return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
+                case "load_bitmap":
+                    string f = ps[0].S;
+                    return GraphDialogViewModel.LoadBitmap(f);
+                    
             }
             //return new numbers.value() { V = 333 };
             throw new NotImplementedException();
@@ -2972,6 +2992,23 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
+
+            Runtime.processing_parameter_list = true;
+            numbers.value ps = parameter.Execute(l);
+            Runtime.processing_parameter_list = false;
+            switch (kind)
+            {
+                case Token_Type.Key_Down:
+                    Avalonia.Input.Key k = (Avalonia.Input.Key)ps.S[0] - 53;
+                    return GraphDialogViewModel.KeyDown(k);
+                case Token_Type.Mouse_Button_Down:
+                    return false;
+                case Token_Type.Mouse_Button_Pressed:
+                    return false;
+                case Token_Type.Mouse_Button_Released:
+                    return false;
+            }
+
             throw new NotImplementedException();
         }
 

@@ -260,27 +260,36 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
 
-        public static void GetMouseX()
+        public static numbers.value GetMouseX()
         {
-            DotnetGraphControl.dngw.GetMouseX();
+            int x = DotnetGraphControl.dngw.GetMouseX();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = x };
         }
-        public static void GetMouseY()
+        public static numbers.value GetMouseY()
         {
-            DotnetGraphControl.dngw.GetMouseY();
+            int y = DotnetGraphControl.dngw.GetMouseY();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = y };
         }
-        public static void LoadBitmap(string fileName)
+        public static numbers.value LoadBitmap(string fileName)
         {
             // "../../../sample_640×426.bmp"
-            DotnetGraphControl.dngw.LoadBitmap(fileName);
+          
+            int i = DotnetGraphControl.dngw.LoadBitmap(fileName);
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = i };
+
         }
         public static void DrawBitmap(int index, int x, int y, int width, int height)
         {
             // 0, 100, 100, 300, 300
-            DotnetGraphControl.dngw.DrawBitmap(index, x, y, width, height);
+            Dispatcher.UIThread.Post(() =>
+            {
+                DotnetGraphControl.dngw.DrawBitmap(index, x, y, width, height);
+            }, DispatcherPriority.Background);
         }
-        public static void KeyDown(Avalonia.Input.Key button)
+        public static bool KeyDown(Avalonia.Input.Key button)
         {
-            DotnetGraphControl.dngw.Key_Down(button);
+            return DotnetGraphControl.dngw.Key_Down(button);
+            
         }
     }
 

@@ -1375,10 +1375,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             return graphWindowOpen;
         }
-        public void LoadBitmap(string path)
+        public int LoadBitmap(string path)
         {
             SKImage x = SKImage.FromEncodedData(path);
             bitmaps.Add(x);
+            return bitmaps.IndexOf(x);
         }
         public void DrawBitmap(int index, int x, int y, int width, int height)
         {
