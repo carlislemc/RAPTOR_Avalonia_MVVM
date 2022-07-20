@@ -107,8 +107,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DisplayText");
                     break;
                 case "draw_bitmap":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawBitmap");
                     break;
                 case "draw_arc":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "DrawArc");
@@ -233,8 +232,7 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "load_bitmap":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "LoadBitmap");
                     break;
                 case "closest_color":
                     //NEED TO DO
@@ -354,8 +352,7 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "key_down":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyDown");
                     break;
                 case "end_of_input":
                     //NEED TO DO
