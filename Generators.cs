@@ -4,6 +4,9 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using Avalonia.Controls;
+using RAPTOR_Avalonia_MVVM.ViewModels;
+using ReactiveUI;
+using System.Reactive;
 
 namespace raptor
 {
@@ -40,6 +43,19 @@ namespace raptor
             return result;
         }
 
+        public static void generateCodeCommand(string lang)
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            if (mw.fileName == null || mw.fileName == "" || lang == "")
+            {
+                return;
+            }
+            Generate_Interface gi = raptor.Generators.Create_From_Menu(lang, mw.fileName);
+            Compile_Helpers.Do_Compilation(mw.mainSubchart().Start, gi, mw.theTabs);
+
+        }
+
+        public static ReactiveCommand<string, Unit> genCodeCommand { get; set; }
 
         public static void Process_Assembly(System.Reflection.Assembly assembly)
         {
@@ -57,21 +73,25 @@ namespace raptor
                         obj = constructor.Invoke(null);
                         string name = mi.Invoke(obj, null) as string;
 
-                        /*
-                        MenuItem menu_item = new MenuItem(name, new EventHandler(
-                            form.handle_click));
-                        if (form.menuItemGenerate.MenuItems.Count > 1)
+                        MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
+                        genCodeCommand = ReactiveCommand.Create<string>(n => { Generators.generateCodeCommand(name); });
+                        MenuItemViewModel menu_item = new MenuItemViewModel() { Header = name.Replace("&", ""), Command = genCodeCommand, CommandParameter = name };
+
+                            /*(name, new EventHandler(
+                            form.handle_click));*/
+                        if (mw.GenerateMenuItems.Count > 1)
                         {
                             // add this in sorted order to the list
                             // make sure to get rid of the "&", which messes up alpha order
-                            while ((placement < form.menuItemGenerate.MenuItems.Count) &&
+                            while ((placement < mw.GenerateMenuItems.Count) &&
                                 (name.Replace("&", "").CompareTo(
-                                  form.menuItemGenerate.MenuItems[placement].Text.Replace("&", "")) > 0))
+                                  ((string)mw.GenerateMenuItems[placement].Header).Replace("&", "")) > 0))
                             {
                                 placement++;
                             }
                         }
-                        form.menuItemGenerate.MenuItems.Add(placement, menu_item); */
+                        mw.GenerateMenuItems.Insert(placement, menu_item); 
 
                         Generator_List.Add(name, Types[k]);
                     }
@@ -86,7 +106,7 @@ namespace raptor
         {
 
             System.IO.DirectoryInfo exe_path = System.IO.Directory.GetParent(Assembly.GetEntryAssembly().Location);
-            System.IO.FileInfo[] files = exe_path.GetFiles("generator*.dll");
+            System.IO.FileInfo[] files = exe_path.GetFiles("CodeGenerators*.dll");
             Assembly assembly;
             for (int i = 0; i < files.Length; i++)
             {

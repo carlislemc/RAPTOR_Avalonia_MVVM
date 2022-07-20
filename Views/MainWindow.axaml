@@ -18,8 +18,8 @@
       <MenuItem Header="_File">
         <MenuItem Header="_New   Ctrl+N" Command="{Binding OnNewCommand}" HotKey="Ctrl+N"/>
         <MenuItem Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}" HotKey="Ctrl+O"/>
-        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand}" HotKey="Ctrl+S"/>
-        <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand}"/>
+        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand2}" HotKey="Ctrl+S"/>
+        <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand2}"/>
         <Separator/>
         <MenuItem Header="_Exit" Command="{Binding OnExitCommand}"/>
       </MenuItem>
@@ -41,14 +41,27 @@
         <Separator/>
         <MenuItem Header="_Clear all breakpoints" Command="{Binding OnClearBreakpointsCommand}" HotKey="F10"/>
       </MenuItem>
-      <MenuItem Header="_Generate">
-        <MenuItem Header="Ada"/>
-        <MenuItem Header="C#"/>
-        <MenuItem Header="C++" Command="{Binding generateCPlusPlusCode}"/>
-        <MenuItem Header="IT105 Java"/>
-        <MenuItem Header="Standalone"/>
-        <MenuItem Header="VBA"/>
+
+<!--
+            <MenuItem.Styles>
+                <Style Selector="MenuItem">
+                    <Setter Property="Header" Value="{Binding Name}"/>
+                </Style>
+            </MenuItem.Styles>
+-->
+      
+      <MenuItem Header="_Generate" Items="{Binding getGenerateMenuItems}" Classes="SubItems">
+            <MenuItem.Styles>
+                <Style Selector="MenuItem.SubItems MenuItem">
+                    <Setter Property="Header" Value="{Binding Header}"/>
+                    <Setter Property="Command" Value="{Binding Command}"/>
+                </Style>
+            </MenuItem.Styles>
+            
       </MenuItem>
+
+
+
       <MenuItem Header="_Help">
         <MenuItem Header="_About" Command="{Binding OnAboutCommand}"/>
         <MenuItem Header="_General Help   F11" Command="{Binding OnGeneralHelpCommand}" HotKey="F11"/>
@@ -57,6 +70,7 @@
         <MenuItem Header="_Count Symbols" Command="{Binding OnCountSymbolsCommand}"/>
       </MenuItem>
     </Menu>
+
     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
       <StackPanel.Styles>
 
@@ -431,7 +445,7 @@
       </StackPanel.Styles>
       <Button Classes="NewButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
       <Button Classes="OpenButton" ToolTip.Tip="Open" Command="{Binding OnOpenCommand}"></Button>
-      <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand}"></Button>
+      <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand2}"></Button>
       <Button Classes="CutButton" ToolTip.Tip="Cut" Command="{Binding OnCutCommand}"></Button>
       <Button Classes="CopyButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
       <Button Classes="PasteButton" ToolTip.Tip="Paste" Command="{Binding OnPasteCommand}"></Button>

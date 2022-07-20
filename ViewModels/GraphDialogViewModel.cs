@@ -257,6 +257,40 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 DotnetGraphControl.dngw.FreezeGraphWindow();
             }, DispatcherPriority.Background);
         }
+
+
+
+        public static numbers.value GetMouseX()
+        {
+            int x = DotnetGraphControl.dngw.GetMouseX();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = x };
+        }
+        public static numbers.value GetMouseY()
+        {
+            int y = DotnetGraphControl.dngw.GetMouseY();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = y };
+        }
+        public static numbers.value LoadBitmap(string fileName)
+        {
+            // "../../../sample_640×426.bmp"
+          
+            int i = DotnetGraphControl.dngw.LoadBitmap(fileName);
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = i };
+
+        }
+        public static void DrawBitmap(int index, int x, int y, int width, int height)
+        {
+            // 0, 100, 100, 300, 300
+            Dispatcher.UIThread.Post(() =>
+            {
+                DotnetGraphControl.dngw.DrawBitmap(index, x, y, width, height);
+            }, DispatcherPriority.Background);
+        }
+        public static bool KeyDown(Avalonia.Input.Key button)
+        {
+            return DotnetGraphControl.dngw.Key_Down(button);
+            
+        }
     }
 
 }

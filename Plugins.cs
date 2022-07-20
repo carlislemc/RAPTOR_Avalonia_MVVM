@@ -9,7 +9,7 @@ using raptor;
 
 namespace RAPTOR_Avalonia_MVVM
 {
-    class Plugins
+    public class Plugins
     {
 
         static System.Reflection.MethodInfo[] methods;

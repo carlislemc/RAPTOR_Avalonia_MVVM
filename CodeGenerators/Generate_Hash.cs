@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
@@ -102,12 +102,17 @@ namespace raptor
 
         private StringBuilder strings;
         private System.IO.StreamWriter stream;
+        public Generate_Hash()
+        {
+            strings = new StringBuilder();
+        }
         public Generate_Hash(object x)
         {
             strings = new StringBuilder();
         }
-        public string toString() {
-            return this.computeHash(strings.ToString(),"SHA512");
+        public string toString()
+        {
+            return this.computeHash(strings.ToString(), "SHA512");
         }
         public string Get_Menu_Name()
         {
