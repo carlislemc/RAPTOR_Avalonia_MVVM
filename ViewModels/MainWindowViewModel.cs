@@ -1990,21 +1990,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
 
-        public ObservableCollection<MenuItem> GenerateMenuItems = new ObservableCollection<MenuItem>();
+        public ObservableCollection<MenuItemViewModel> GenerateMenuItems = new ObservableCollection<MenuItemViewModel>();
 
-        public ObservableCollection<MenuItem> getGenerateMenuItems
+        public ObservableCollection<MenuItemViewModel> getGenerateMenuItems
         {
             get
             {
                 return GenerateMenuItems;
             }
-        }
-
-        public void OnRandomCommandThing()
-        {
-
-            GenerateMenuItems.Add(new MenuItem() { Header = "Hello there", Name = "sup" });
-            Runtime.consoleWriteln(GenerateMenuItems.Count + "");
         }
 
         public void generateCPlusPlusCode()

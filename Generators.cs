@@ -43,7 +43,7 @@ namespace raptor
             return result;
         }
 
-        public static void generateCodeCommand()
+        public static void generateCodeCommand(string lang)
         {
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
             if (mw.fileName == null || mw.fileName == "" || lang == "")
@@ -55,9 +55,7 @@ namespace raptor
 
         }
 
-        public static string lang = "";
-
-        public static ReactiveCommand<Unit, Unit> genCodeCommand { get; set; }
+        public static ReactiveCommand<string, Unit> genCodeCommand { get; set; }
 
         public static void Process_Assembly(System.Reflection.Assembly assembly)
         {
@@ -75,12 +73,10 @@ namespace raptor
                         obj = constructor.Invoke(null);
                         string name = mi.Invoke(obj, null) as string;
 
-                        lang = name;
-
                         MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
 
-                        genCodeCommand = ReactiveCommand.Create(generateCodeCommand);
-                        MenuItem menu_item = new MenuItem() { Header = name.Replace("&", ""), Command = ReactiveCommand.Create(generateCodeCommand) };
+                        genCodeCommand = ReactiveCommand.Create<string>(n => { Generators.generateCodeCommand(name); });
+                        MenuItemViewModel menu_item = new MenuItemViewModel() { Header = name.Replace("&", ""), Command = genCodeCommand, CommandParameter = name };
 
                             /*(name, new EventHandler(
                             form.handle_click));*/
