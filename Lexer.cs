@@ -219,6 +219,10 @@ namespace RAPTOR_Avalonia_MVVM
         }
         public string Get_Text(int start, int finish)
         {
+            if(Current_String == "")
+            {
+                return "";
+            }
             return this.Current_String.Substring(start, finish - start + 1);
         }
         public void Rewind(Token p)

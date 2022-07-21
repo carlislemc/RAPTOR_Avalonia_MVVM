@@ -661,7 +661,7 @@ namespace raptor
 				if (this.Text == "Error")
 				{
 					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.Text, new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+						this.Text, new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 					gr.DrawText(PensBrushes.redbrush, rect.TopLeft, formattedtext);
 				}
@@ -669,7 +669,7 @@ namespace raptor
 				{
 					Avalonia.Size sz = new Avalonia.Size(drawing_text_width, height_of_text);
 					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+						this.getDrawText(), new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.Wrap, sz);
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtext);
 				}

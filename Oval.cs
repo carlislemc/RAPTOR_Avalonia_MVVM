@@ -92,13 +92,18 @@ namespace raptor
                 if (Component.full_text && ! Component.compiled_flowchart)
                 {
                     // we get rect from footprint
-                    if (drawing_text_width > W)
+
+
+                    if (drawing_text_width > W && this.Text != "start" && this.Text != "end")
                     {
-                        rect = new Avalonia.Rect(x - drawing_text_width / 2, Y + (H * 1) / 32, drawing_text_width, this.height_of_text * 3);
+						int textSizeAdjust = textSize > 14 ? 0 : textSize / 2;
+						rect = new Avalonia.Rect(x - drawing_text_width / 2 + textSizeAdjust, Y + (H * 6) / 32 + textSize, drawing_text_width, this.height_of_text * 3);
                     }
                     else
                     {
-                        rect = new Avalonia.Rect(x - this.width_of_text / 2, Y + (H * 6) / 16, this.width_of_text, this.height_of_text);
+                        int textSizeAdjust = textSize > 14 ? 0 : textSize / 2;
+						int smallTextSize = textSize < 10 ? 6 : 0;
+                        rect = new Avalonia.Rect(x - this.width_of_text / 2 + textSizeAdjust + smallTextSize, Y + (H * 6) / 16, this.width_of_text, this.height_of_text);
                     }
                 }
                 else
@@ -117,7 +122,7 @@ namespace raptor
 				else
 				{
 					Avalonia.Media.FormattedText formattedtextDraw = new Avalonia.Media.FormattedText(
-						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+						this.getDrawText(), new Avalonia.Media.Typeface("arial"), textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtextDraw);
 
@@ -166,6 +171,7 @@ namespace raptor
 			return false;
 		}
 
+		public static int textSize = 12;
 
 		//Scale the object
 		public override void Scale(float new_scale)
@@ -184,41 +190,49 @@ namespace raptor
 			{
 				PensBrushes.default_arial = PensBrushes.arial24;
 				PensBrushes.default_times = PensBrushes.times30;
+				textSize = 24;
 			}
 			else if (this.scale >= 1.75f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial16;
 				PensBrushes.default_times = PensBrushes.times18;
+				textSize = 18;
 			}
 			else if (this.scale >= 1.5f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial14;
 				PensBrushes.default_times = PensBrushes.times16;
+				textSize = 16;
 			}
 			else if (this.scale >= 1.25f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial12;
 				PensBrushes.default_times = PensBrushes.times14;
+				textSize = 14;
 			}
 			else if (this.scale >= 1.0f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial10;
 				PensBrushes.default_times = PensBrushes.times12;
+				textSize = 12;
 			}
 			else if (this.scale >= 0.8f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial8;
 				PensBrushes.default_times = PensBrushes.times10;
+				textSize = 10;
 			}
 			else if (this.scale >= 0.6f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial6;
 				PensBrushes.default_times = PensBrushes.times8;
+				textSize = 8;
 			}
 			else if (this.scale >= 0.4f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial4;
 				PensBrushes.default_times = PensBrushes.times6;
+				textSize = 6;
 			}
 			base.Scale(new_scale);
 

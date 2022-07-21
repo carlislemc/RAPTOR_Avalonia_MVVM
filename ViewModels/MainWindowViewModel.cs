@@ -233,6 +233,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 stream = File.Open(dialog_fileName, FileMode.Open,
                         FileAccess.Read);
                 attr = System.IO.File.GetAttributes(dialog_fileName);
+                MainWindow.setMainTitle("RAPTOR - " + dialog_fileName);
             }
             catch
             {
@@ -610,8 +611,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public async void OnPasteCommand() {
-            int x_position = this.theTabs[this.activeTab].positionXTapped;
-            int y_position = this.theTabs[this.activeTab].positionYTapped;
+            int x_position = this.theTabs[this.viewTab].positionXTapped;
+            int y_position = this.theTabs[this.viewTab].positionYTapped;
 
             try
             {
@@ -619,9 +620,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if (thing != null)
                 {
                     Component obj = ((Clipboard_Data)thing).symbols;
-                    Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
+                    Undo_Stack.Make_Undoable(this.theTabs[this.viewTab]);
                     Component the_clone = obj.Clone();
-                    this.theTabs[this.activeTab].Start.insert(the_clone, x_position, y_position, 0);
+                    this.theTabs[this.viewTab].Start.insert(the_clone, x_position, y_position, 0);
                 }
             }
             catch
@@ -632,7 +633,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
         public void OnCopyCommand() {
-            Component copyReturn = this.theTabs[this.activeTab].Start.copy();
+            Component copyReturn = this.theTabs[this.viewTab].Start.copy();
             if (copyReturn != null)
             {
                 Clipboard_Data cd = new Clipboard_Data(
@@ -865,6 +866,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
 
                 this.fileName = ans;
+                MainWindow.setMainTitle("RAPTOR - " + ans);
                 Plugins.Load_Plugins(this.fileName);
                 this.FileSave_Click(closeAfter);
 
@@ -1596,7 +1598,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             else
             {
-                checkSave = true;
+                checkSave = false;
             }
 
         }
@@ -1617,6 +1619,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //    });
             //msBoxStandardWindow.Show();
 
+            checkSave = modified;
+
             await Dispatcher.UIThread.InvokeAsync(async () => { await Save_Before_Losing(); });
 
             if (checkSave)
@@ -1634,6 +1638,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Undo_Stack.Clear_Undo();
             this.Text = My_Title + "- Untitled";
+            MainWindow.setMainTitle("RAPTOR");
 
             this.modified = false;
             this.fileName = null;

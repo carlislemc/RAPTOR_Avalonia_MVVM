@@ -139,12 +139,12 @@ namespace raptor
 			Y = y;
 
 			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-				"Yes", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+				"Yes", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 			height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
 
 			Avalonia.Media.FormattedText formattedtextX = new Avalonia.Media.FormattedText(
-				this.getDrawText() + " X", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+				this.getDrawText() + " X", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 			width_of_text = (int)Math.Ceiling(formattedtextX.Bounds.Width);
 
@@ -242,14 +242,14 @@ namespace raptor
 
 				if (this.Text == "Error")
 				{   Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.Text, new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center, 
+						this.Text, new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center, 
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 					gr.DrawText(PensBrushes.redbrush, rect.TopLeft, formattedtext);
 				}
 				else
 				{
 					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+						this.getDrawText(), new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.Wrap, new Avalonia.Size(drawing_text_width,height_of_text));
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtext);
 				}
