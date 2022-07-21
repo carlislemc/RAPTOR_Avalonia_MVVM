@@ -117,7 +117,7 @@ namespace raptor
 				else
 				{
 					Avalonia.Media.FormattedText formattedtextDraw = new Avalonia.Media.FormattedText(
-						this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+						this.getDrawText(), new Avalonia.Media.Typeface("arial"), textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtextDraw);
 
@@ -166,6 +166,7 @@ namespace raptor
 			return false;
 		}
 
+		public static int textSize = 12;
 
 		//Scale the object
 		public override void Scale(float new_scale)
@@ -184,41 +185,49 @@ namespace raptor
 			{
 				PensBrushes.default_arial = PensBrushes.arial24;
 				PensBrushes.default_times = PensBrushes.times30;
+				textSize = 24;
 			}
 			else if (this.scale >= 1.75f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial16;
 				PensBrushes.default_times = PensBrushes.times18;
+				textSize = 18;
 			}
 			else if (this.scale >= 1.5f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial14;
 				PensBrushes.default_times = PensBrushes.times16;
+				textSize = 16;
 			}
 			else if (this.scale >= 1.25f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial12;
 				PensBrushes.default_times = PensBrushes.times14;
+				textSize = 14;
 			}
 			else if (this.scale >= 1.0f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial10;
 				PensBrushes.default_times = PensBrushes.times12;
+				textSize = 12;
 			}
 			else if (this.scale >= 0.8f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial8;
 				PensBrushes.default_times = PensBrushes.times10;
+				textSize = 10;
 			}
 			else if (this.scale >= 0.6f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial6;
 				PensBrushes.default_times = PensBrushes.times8;
+				textSize = 8;
 			}
 			else if (this.scale >= 0.4f)
 			{
 				PensBrushes.default_arial = PensBrushes.arial4;
 				PensBrushes.default_times = PensBrushes.times6;
+				textSize = 6;
 			}
 			base.Scale(new_scale);
 

@@ -524,14 +524,14 @@ namespace raptor
 					if (this.Text == "Error")
 					{
 						Avalonia.Media.FormattedText formattedtextError = new Avalonia.Media.FormattedText(
-							"Error", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+							"Error", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 							Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 						gr.DrawText(PensBrushes.redbrush, rect.TopLeft, formattedtextError);
 					}
 					else
 					{
 						Avalonia.Media.FormattedText formattedtextText = new Avalonia.Media.FormattedText(
-							this.getDrawText(), new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+							this.getDrawText(), new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 							Avalonia.Media.TextWrapping.Wrap, new Avalonia.Size(drawing_text_width, height_of_text));
 						gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtextText);
 					}

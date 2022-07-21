@@ -244,18 +244,18 @@ namespace raptor
 
 
 			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-				"Yes", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+				"Yes", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 			height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
 			int length_of_yesStr = (int)Math.Ceiling(formattedtextYes.Bounds.Width);
 
 			Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-				this.Text + "XX", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+				this.Text + "XX", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 			width_of_text = (int)Math.Ceiling(formattedtext.Bounds.Width);
 
 			Avalonia.Media.FormattedText formattedtextNo = new Avalonia.Media.FormattedText(
-				"No", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+				"No", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
 			int length_of_noStr = (int)Math.Ceiling(formattedtextNo.Bounds.Width);
 
