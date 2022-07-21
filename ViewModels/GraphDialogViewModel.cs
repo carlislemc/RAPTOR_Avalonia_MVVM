@@ -317,7 +317,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             Key k = DotnetGraphControl.dngw.GetKey();
 
-            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = (int)k };
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = ((int)k)+53 };
+        }
+
+        public static numbers.value? GetKeyString()
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = -1 }; ;
+            }
+
+            Key k = DotnetGraphControl.dngw.GetKey();
+
+            return new numbers.value() { Kind = numbers.Value_Kind.String_Kind, S = k + "" };
         }
     }
 

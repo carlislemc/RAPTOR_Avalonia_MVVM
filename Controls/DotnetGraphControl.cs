@@ -682,7 +682,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public Key GetKey()
         {
-            return getKey;
+            Key temp = getKey;
+            getKey = new Key();
+            return temp;
         }
 
         public bool Key_Down(Key k)

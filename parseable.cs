@@ -226,7 +226,8 @@ namespace parse_tree
                     break;
                 case "get_key_string":
                     //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
+                    gil.Emit_Method("numbers.Numbers", "make_string_value");
                     break;
                 case "get_pixel":
                     //NEED TO DO
@@ -2204,6 +2205,8 @@ namespace parse_tree
                     return GraphDialogViewModel.GetMouseX();
                 case "get_key":
                     return GraphDialogViewModel.GetKey();
+                case "get_key_string":
+                    return GraphDialogViewModel.GetKeyString();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
