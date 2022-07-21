@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Input;
 using raptor;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using RAPTOR_Avalonia_MVVM.Controls;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -30,7 +31,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
 #endif
 
 
-            //this.FindControl<UserControl>("dng")
+            this.Closing += (s, e) =>
+            {
+                DotnetGraphControl.onClosingCommand();
+            };
+
             this.KeyDown += (s, e) =>
             {
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
@@ -43,7 +48,19 @@ namespace RAPTOR_Avalonia_MVVM.Views
                         mw.myTimer.Start();
                     }
                 }
+                if(DotnetGraphControl.dngw != null)
+                {
+                    DotnetGraphControl.key = e.Key;
+                    DotnetGraphControl.keyDown = true;
+                }
+            };
 
+            this.KeyUp += (s, e) =>
+            {
+                if (DotnetGraphControl.dngw != null)
+                {
+                    DotnetGraphControl.keyDown = false;
+                }
             };
 
             this.PointerPressed += (s, e) =>

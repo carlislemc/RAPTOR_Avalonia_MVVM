@@ -14,9 +14,7 @@ using Control = Avalonia.Controls.Control;
 using KeyEventArgs = Avalonia.Input.KeyEventArgs;
 using Timer = System.Timers.Timer;
 using Avalonia.Threading;
-using Avalonia.LogicalTree;
-using Avalonia.Controls;
-using System.Linq;
+using raptor;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
 {
@@ -559,11 +557,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         //This is where we keep the bitmaps that comprise individual layers
         //we use to composite what we present to the user
         private int ActiveLayer;
-        private ArrayList bitmaps = new();
+        private ArrayList bitmaps = new ArrayList();
         private int click_x, click_y;
         private int current_font_size = default_font_size;
 
-        private readonly MyRect draw_rect = new();
+        private int xCord;
+        private int yCord;
+
+        private readonly MyRect draw_rect = new MyRect();
         private bool frozen;
         private bool[] key_is_down = new bool[255];
         private int left_click = 0;
@@ -573,7 +574,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private static bool graphWindowOpen = false;
         private MouseButton mb;
         private Point mouse;
-        private readonly Player player = new();
+        private readonly Player player = new Player();
         private bool playInBackground;
         private char pressed_key;
 
@@ -591,6 +592,16 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool waitForKey;
         private bool waitForMouse;
         private int x_size, y_size;
+
+        public static Key key;
+        public static bool keyDown;
+        private bool mouseDown;
+        private MouseButton buttonDown;
+        private bool leftMouseButtonReleased = false;
+        private bool rightMouseButtonReleased = false;
+        private bool leftMouseButtonPressed = false;
+        private bool rightMouseButtonPressed = false;
+
 
         public override void EndInit()
         {
@@ -615,6 +626,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             PointerReleased += DrawingCanvas_PointerReleased;
             PointerEnter += DrawingCanvas_PointerEnter;
             KeyDown += DrawingCanvas_KeyDown;
+            KeyUp += DrawingCanvas_KeyUp;
             player.PlaybackFinished += OnPlaybackFinished;
             base.EndInit();
 
@@ -636,10 +648,28 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (SkiaContext != null && waitForKey)
             {
+                key = e.Key;
+                keyDown = true;
+                Key_Down(Key.A);
+
                 SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
                 waitForKey = false;
                 InvalidateVisual();
             }
+        }
+
+        private void DrawingCanvas_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (SkiaContext != null)
+            {
+                keyDown = false;
+            }
+        }
+        public bool Key_Down(Key k)
+        {
+            bool givenKeyDown = keyDown && key == k;
+            SkiaContext.SkCanvas.DrawText(givenKeyDown.ToString(), 400, 500, SKBrush);
+            return keyDown && key == k;
         }
 
         private void DrawingCanvas_PointerEnter(object sender, PointerEventArgs e)
@@ -659,6 +689,16 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (SkiaContext != null && e.MouseButton == mb && waitForMouse)
             {
+                switch (e.MouseButton)
+                {
+                    case MouseButton.Left:
+                        leftMouseButtonReleased = true;
+                        break;
+                    case MouseButton.Right:
+                        rightMouseButtonReleased = true;
+                        break;
+                }
+                mouseDown = false;
                 var p = e.GetPosition(this);
                 SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
                 InvalidateVisual();
@@ -677,19 +717,64 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (SkiaContext != null)
             {
+                var p = e.GetPosition(this);
+                xCord = Make_0_Based((int)p.X);
+                yCord = Make_0_Based_And_Unflip((int)p.Y);
             }
         }
 
         private void DrawingCanvas_PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            Console.WriteLine("sadsad");
             if (SkiaContext != null)
             {
+                switch (e.MouseButton)
+                {
+                    case MouseButton.Left:
+                        leftMouseButtonPressed = true;
+                        break;
+                    case MouseButton.Right:
+                        rightMouseButtonPressed = true;
+                        break;
+                }
                 var p = e.GetPosition(this);
                 SkiaContext.SkCanvas.DrawRect(new SKRect((float)p.X, (float)p.Y,
                     (float)p.X + 10, (float)p.Y + 10), SKBrush);
                 InvalidateVisual();
+                mouseDown = true;
+                buttonDown = e.MouseButton;
+                MouseButtonDown(MouseButton.Left);
             }
+            GetMouseX();
+            GetMouseY();
+        }
+        public bool MouseButtonPressed(MouseButton mb)
+        {
+            switch (mb)
+            {
+                case MouseButton.Left:
+                    return leftMouseButtonPressed;
+                case MouseButton.Right:
+                    return rightMouseButtonPressed;
+            }
+            return false;
+        }
+        public bool MouseButtonReleased(MouseButton mb)
+        {
+            switch (mb)
+            {
+                case MouseButton.Left:
+                    return leftMouseButtonReleased;
+                case MouseButton.Right:
+                    return rightMouseButtonReleased;
+            }
+            return false;
+        }
+        public bool MouseButtonDown(MouseButton button)
+        {
+            bool givenButtonDown = mouseDown && button == buttonDown;
+            SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
+            InvalidateVisual();
+            return givenButtonDown;
         }
 
         public Task<bool> SaveAsync(string path)
@@ -1188,8 +1273,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 int x_coord1, y_coord1;
                 x_coord1 = Make_0_Based(x1);
                 y_coord1 = Make_0_Based_And_Unflip(y1 - current_font_size);
+                SKFont f = new SKFont(SKTypeface.FromFamilyName("Lucida Console"));
                 SkiaContext.SkCanvas.DrawText(number.ToString(), x_coord1, y_coord1,
-                    new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
+                     new SKFont(SKTypeface.FromFamilyName("Lucida Console"), current_font_size), paint);
             }
             catch (Exception error)
             {
@@ -1253,6 +1339,21 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             loopPlayer.PlaybackFinished += (sender, e) => { PlaySoundBackgroundLoop(soundFile); };
         }
 
+        public int GetMouseX()
+        {
+            int x = xCord;
+            SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
+            InvalidateVisual();
+            return x;
+        }
+        public int GetMouseY()
+        {
+            int y = yCord;
+            SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
+            InvalidateVisual();
+            return y;
+        }
+
         public void ClearWindow(
             Color_Type hue
         )
@@ -1270,26 +1371,37 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             UpdateWindowUnlessFrozen();
         }
 
-        public async Task DelayFor(
+        public bool IsOpen()
+        {
+            return graphWindowOpen;
+        }
+        public int LoadBitmap(string path)
+        {
+            SKImage x = SKImage.FromEncodedData(path);
+            bitmaps.Add(x);
+            return bitmaps.IndexOf(x);
+        }
+        public void DrawBitmap(int index, int x, int y, int width, int height)
+        {
+            SKBitmap bmp = SKBitmap.FromImage((SKImage)bitmaps[index]);
+            bmp = bmp.Resize(new SKImageInfo(width, height), (SKFilterQuality)3);
+            SkiaContext.SkCanvas.DrawBitmap(bmp, x, y, SKBrush);
+            InvalidateVisual();
+        }
+
+        public static void DelayFor(
             double seconds
         )
         {
-            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            if(mw.myTimer != null)
-            {
-                mw.myTimer.Stop();
-            }
-            var timer = new Timer(seconds * 1000);
-            timer.Elapsed += (sender, e) =>
-            {
-                SkiaContext.SkCanvas.DrawText("timer finished", 200, 500, SKBrush);
-                InvalidateVisual();
-            };
-            timer.Enabled = true;
-            if (mw.myTimer != null)
-            {
-                mw.myTimer.Start();
-            }
+            System.Threading.Thread.Sleep((int)(seconds * 1000.0));
+
+            //var timer = new Timer(seconds * 1000);
+            //timer.Elapsed += (sender, e) =>
+            //{
+            //    SkiaContext.SkCanvas.DrawText("timer finished", 200, 500, SKBrush);
+            //    InvalidateVisual();
+            //};
+            //timer.Enabled = true;
         }
 
         public static int RED(uint color)
@@ -1465,17 +1577,25 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (!graphWindowOpen)
             {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    dotnetgraph = new DotnetGraph(width, height);
-                    dotnetgraph.Show();
-                    graphWindowOpen = true;
+                //Dispatcher.UIThread.Post(() =>
+                //{
+                dotnetgraph = new DotnetGraph(width, height);
+                dotnetgraph.Show();
+                graphWindowOpen = true;
+                //while (DotnetGraphControl.dngw==null)
+                //{
+                //    sleep(0.1);
+                //}
+                //}, DispatcherPriority.Normal).Wait(-1);
 
-                }, DispatcherPriority.Background);
 
-                
             }
         }
+
+        public static void onClosingCommand(){
+            graphWindowOpen = false;
+        }
+
         public void CloseGraphWindow()
         {
             if (graphWindowOpen)

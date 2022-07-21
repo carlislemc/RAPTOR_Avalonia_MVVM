@@ -41,7 +41,7 @@ namespace raptor
         {
             if (Component.Current_Mode != Mode.Expert)
             {
-                Do_Compilation_Imperative(start, gil as CodeGenerators.Imperative_Interface, tpc);
+                Do_Compilation_Imperative(start, (CodeGenerators.Imperative_Interface)gil, tpc);
             }
             //else
             //{
@@ -235,6 +235,10 @@ namespace raptor
             }
             mainSubchart(tabpages).am_compiling = true;
             Generate_IL gil = new Generate_IL("MyAssembly");
+
+
+            //Do_Compilation(start, gil, tabpages);
+
             try
             {
                 Do_Compilation(start, gil, tabpages);
@@ -347,6 +351,10 @@ namespace raptor
                     {
                         Runtime.consoleWriteln("Exception! " + e.Message + e.StackTrace);
                     }
+                    //SDILReader.Globals.LoadOpCodes();
+                    //SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
+                    //string msil = mr.GetBodyCode();
+                    //Runtime.consoleWriteln(msil);
 
                     // added 3/2/05 by mcc
                     //if (raptor_files.output_redirected() && from_commandline)

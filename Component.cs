@@ -476,6 +476,20 @@ namespace raptor
 			return Result;
 		}
 
+		public virtual Component CloneOne()
+		{
+			Component Result = (Component)this.MemberwiseClone();
+			Result.FP = this.FP.Clone();
+			Result.selected=false;
+			if (this.My_Comment != null)
+			{
+				Result.My_Comment = this.My_Comment.Clone();
+				Result.My_Comment.parent = Result;
+			}
+
+			return Result;
+		}
+
 		// Is (x, y) inside the object?
 		public virtual bool contains(int x, int y)
 		{

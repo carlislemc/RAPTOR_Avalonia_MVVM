@@ -204,6 +204,10 @@ namespace numbers
         {
             if (is_integer(v) && !Precision_Set)
             {
+                if(v.V < 0)
+                {
+                    return Convert.ToString(((int)(v.V - 0.1)));
+                }
                 return Convert.ToString(((int) (v.V+0.1)));
             }
             else
@@ -334,6 +338,78 @@ namespace numbers
             return false;
         }
 
+        public static bool Ogt(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V > second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) > 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C > second.C;
+            }
+            return false;
+        }
+
+        public static bool Oge(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V >= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) >= 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C >= second.C;
+            }
+            return false;
+        }
+
+        public static bool Olt(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V < second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) < 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C < second.C;
+            }
+            return false;
+        }
+
+        public static bool Ole(value first, value second)
+        {
+            if (first.Kind != second.Kind)
+            {
+                return false;
+            }
+            switch (first.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return first.V <= second.V;
+                case Value_Kind.String_Kind:
+                    return first.S.CompareTo(second.S) <= 0 ? true : false;
+                case Value_Kind.Character_Kind:
+                    return first.C <= second.C;
+            }
+            return false;
+        }
+
         public static int length_of(value variable_Value)
         {
             throw new NotImplementedException();
@@ -388,17 +464,39 @@ namespace numbers
 
         public static numbers.value subValues(numbers.value first, numbers.value second){
             numbers.value ans = new numbers.value();
-            if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=first.V - second.V};
-            } else if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind){
-                ans = new numbers.value() {V=first.V - (int)second.C};
-            }else if(first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                ans = new numbers.value() {V=(int)first.C - second.V};
+            if (first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = first.V - second.V };
             }
-            else{
+            else if (first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Character_Kind)
+            {
+                ans = new numbers.value() { V = first.V - (int)second.C };
+            }
+            else if (first.Kind == numbers.Value_Kind.Character_Kind && second.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = (int)first.C - second.V };
+            }
+            else
+            {
                 throw new Exception("Cannot subtract type: [" + first.Kind + "] from type: [" + second.Kind + "]");
             }
             return ans;
+            
+        }
+
+        public static numbers.value negValue(numbers.value first)
+        {
+            numbers.value ans = new numbers.value();
+            if (first.Kind == numbers.Value_Kind.Number_Kind)
+            {
+                ans = new numbers.value() { V = -first.V };
+            }
+            else
+            {
+                throw new Exception("Cannot negate type: [" + first.Kind + "]");
+            }
+            return ans;
+
         }
 
         public static numbers.value multValues(numbers.value first, numbers.value second){
@@ -428,7 +526,7 @@ namespace numbers
         public static numbers.value divValues(numbers.value first, numbers.value second){
             numbers.value ans = new numbers.value();
             if(first.Kind == numbers.Value_Kind.Number_Kind && second.Kind == numbers.Value_Kind.Number_Kind){
-                if(second.V == 0){
+                if(second.V == 0.0){
                     throw new Exception("Cannot divide by 0!");
                 }
                 ans = new numbers.value() {V=first.V / second.V};
@@ -596,75 +694,261 @@ namespace numbers
             return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Log(first.V, second.V) };
         }
 
-        public static numbers.value Sin(numbers.value first)
+        public static numbers.value Sin(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find sin of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if(!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find sin of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find sin of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V / second.V * Math.PI * 2) };
+                
+            }
+            
         }
 
-        public static numbers.value Cos(numbers.value first)
+        public static numbers.value Cos(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find cos of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Cos(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find cos of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Cos(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find cos of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Cos(first.V / second.V * Math.PI * 2) };
+
+            }
+
         }
 
-        public static numbers.value Tan(numbers.value first)
+        public static numbers.value Tan(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find tan of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Tan(first.V) };
-        }
-        public static numbers.value Cot(numbers.value first)
-        {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            catch
             {
-                throw new Exception("Cannot find cot of type: [" + first.Kind + "]");
+                isSecond = false;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Tan(first.V) };
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find tan of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find tan of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Tan(first.V / second.V * Math.PI * 2) };
+
+            }
+
         }
 
-        public static numbers.value ArcSin(numbers.value first)
+        public static numbers.value Cot(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find arcsin of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asin(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find cot of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find cot of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Tan(first.V / second.V * Math.PI * 2) };
+
+            }
+
         }
 
-        public static numbers.value ArcCos(numbers.value first)
+        public static numbers.value ArcSin(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find arccos of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Acos(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arcsin of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arcsin of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                numbers.value ans = new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Asin(first.V / second.V * Math.PI * 2) };
+                return ans;
+
+            }
+
         }
 
-        public static numbers.value ArcTan(numbers.value first)
+        public static numbers.value ArcCos(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find arctan of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Atan(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arccos of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arccos of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Acos(first.V / second.V * Math.PI * 2) };
+
+            }
+
         }
 
-        public static numbers.value ArcCot(numbers.value first)
+        public static numbers.value ArcTan(numbers.value first, numbers.value second = null)
         {
-            if (first.Kind != numbers.Value_Kind.Number_Kind)
+            bool isSecond = false;
+            try
             {
-                throw new Exception("Cannot find arccot of type: [" + first.Kind + "]");
+                int temp = (int)second.V;
+                isSecond = true;
             }
-            return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Atan(first.V) };
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arctan of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arctan of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Atan(first.V / second.V * Math.PI * 2) };
+
+            }
+
+        }
+
+        public static numbers.value ArcCot(numbers.value first, numbers.value second = null)
+        {
+            bool isSecond = false;
+            try
+            {
+                int temp = (int)second.V;
+                isSecond = true;
+            }
+            catch
+            {
+                isSecond = false;
+            }
+            if (!isSecond)
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arccot of type: [" + first.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = Math.Sin(first.V) };
+            }
+            else
+            {
+                if (first.Kind != numbers.Value_Kind.Number_Kind || second.Kind != Value_Kind.Number_Kind)
+                {
+                    throw new Exception("Cannot find arccot of type: [" + first.Kind + "] with cycle of type: [" + second.Kind + "]");
+                }
+                return new numbers.value() { Kind = Value_Kind.Number_Kind, V = 1 / Math.Atan(first.V / second.V * Math.PI * 2) };
+
+            }
+
         }
 
     }

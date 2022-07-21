@@ -12,17 +12,17 @@ using raptor;
 
 namespace RAPTOR_Avalonia_MVVM
 {
-    class MessageBoxButtons
+    public class MessageBoxButtons
     {
         public const int OK = 0;
         public const int YesNoCancel = 1;
     }
-    class MessageBoxIcon
+    public class MessageBoxIcon
     {
         public const int Warning = 0;
         public const int Error = 1;
     }
-    class MessageBoxClass
+    public class MessageBoxClass
     {
         public static void Show(string text) {
             if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -43,7 +43,7 @@ namespace RAPTOR_Avalonia_MVVM
         }
 
         
-        internal async static Task Show(string v1, string v2, int oK, int warning)
+        public async static Task Show(string v1, string v2, int oK, int warning)
         {
 
             if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -254,7 +254,6 @@ namespace raptor
             LocalBuilder local;
             if (variables.ContainsKey(name.ToLower()))
             {
-                name_variable = name;
                 local = ((LocalBuilder)variables[name.ToLower()]);
             }
             else if (arrays.ContainsKey(name.ToLower()))
@@ -670,7 +669,7 @@ namespace raptor
         }
         public void Emit_Unary_Minus()
         {
-            this.Emit_Method("numbers.Numbers", "subValues");
+            this.Emit_Method("numbers.Numbers", "negValue");
         }
         public void Emit_Minus()
         {

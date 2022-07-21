@@ -89,16 +89,13 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "CloseGraphWindow");
                     break;
                 case "freeze_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FreezeGraphWindow");
                     break;
                 case "unfreeze_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "UnFreezeGraphWindow");
                     break;
                 case "update_graph_window":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "UpdateGraphWindow");
                     break;
                 case "set_font_size":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "FontSize");
@@ -177,7 +174,7 @@ namespace parse_tree
                 case "pink":
                 case "purple":
                 case "white":
-                    gil.Emit_Load_Number(n);
+                    gil.Emit_Load_Number(n - (int)Token_Type.Black);
                     break;
                 case "left_button":
                 case "unfilled":
@@ -216,12 +213,12 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_mouse_x":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMouseX");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_mouse_y":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMouseY");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key":
                     //NEED TO DO
@@ -293,58 +290,58 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "findMax");
                     break;
                 case "sin":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "Sin");
                     break;
                 case "cos":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "Cos");
                     break;
                 case "tan":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "Tan");
                     break;
                 case "cot":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "Cot");
                     break;
                 case "arcsin":
-                    if (i == 2)
+                    if(i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "ArcSin");
                     break;
                 case "arccos":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "ArcCos");
                     break;
                 case "arctan":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "ArcTan");
                     break;
                 case "arccot":
-                    if (i == 2)
+                    if (i == 1)
                     {
-                        throw new NotImplementedException();
+                        gil.Emit_Load_Static("numbers.Numbers", "Two_Pi");
                     }
                     gil.Emit_Method("numbers.Numbers", "ArcCot");
                     break;
@@ -562,11 +559,35 @@ namespace parse_tree
                     }, DispatcherPriority.Background);
                     
                 }
-                if (str.ToLower() == "close_graph_window")
+                else if (str.ToLower() == "close_graph_window")
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.CloseGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "freeze_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.FreezeGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "unfreeze_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.UnFreezeGraphWindow();
+                    }, DispatcherPriority.Background);
+
+                }
+                else if (str.ToLower() == "update_graph_window")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GraphDialogViewModel.UpdateGraphWindow();
                     }, DispatcherPriority.Background);
 
                 }
@@ -727,11 +748,20 @@ namespace parse_tree
 
                 }
                 else if (str.ToLower() == "delay_for")
-                { // NEED TO DO
-                    Dispatcher.UIThread.InvokeAsync(async () =>
+                { 
+                    Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         int s = numbers.Numbers.integer_of(ps[0]);
-                        await GraphDialogViewModel.DelayFor(s);
+                        MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                        if(mw.myTimer != null)
+                        {
+                            mw.myTimer.Stop();
+                        }
+                        GraphDialogViewModel.DelayFor(s);
+                        if (mw.myTimer != null)
+                        {
+                            mw.myTimer.Start();
+                        }
                     }, DispatcherPriority.Background).Wait(-1);
 
                 }
@@ -756,6 +786,18 @@ namespace parse_tree
                         GraphDialogViewModel.PutPixel(x, y, (Color_Type)c);
                     }, DispatcherPriority.Background);
 
+                }
+                else if (str.ToLower() == "draw_bitmap")
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        int i = numbers.Numbers.integer_of(ps[0]);
+                        int x = numbers.Numbers.integer_of(ps[1]);
+                        int y = numbers.Numbers.integer_of(ps[2]);
+                        int w = numbers.Numbers.integer_of(ps[3]);
+                        int h = numbers.Numbers.integer_of(ps[4]);
+                        GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
+                    }, DispatcherPriority.Background);
                 }
             return;
             
@@ -1284,6 +1326,10 @@ namespace parse_tree
                 }, DispatcherPriority.Background);
 
             }
+            else
+            {
+                Plugins.Invoke(proc, param_list);
+            }
             Runtime.processing_parameter_list = false;
             if (mw.myTimer != null)
             {
@@ -1295,7 +1341,9 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string proc = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(proc, param_list);
+
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -1988,7 +2036,7 @@ namespace parse_tree
         public override numbers.value Execute(Lexer l){
             Number_Expon ne = (Number_Expon)e;
             numbers.value temp = ne.Execute(l);
-            temp.V = temp.V * -1 - 1;
+            temp.V = temp.V * -1;
             return temp;
         }
 
@@ -2153,6 +2201,10 @@ namespace parse_tree
                     return new numbers.value() { V = 86 };
                 case "right_button":
                     return new numbers.value() { V = 87 };
+                case "get_mouse_x":
+                    return GraphDialogViewModel.GetMouseX();
+                case "get_mouse_y":
+                    return GraphDialogViewModel.GetMouseX();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
@@ -2224,23 +2276,47 @@ namespace parse_tree
             Runtime.processing_parameter_list = false;
             switch (s.ToLower()){
                 case "sin":
-                    return new numbers.value(){V=Math.Sin(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Sin(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.Sin(ps[0], ps[1]); }
                 case "cos":
-                    return new numbers.value(){V=Math.Cos(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Cos(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.Cos(ps[0], ps[1]); }
                 case "tan":
-                    return new numbers.value(){V=Math.Tan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Tan(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.Tan(ps[0], ps[1]); }
                 case "cot":
-                    return new numbers.value(){V=1/Math.Tan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.Cot(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.Cot(ps[0], ps[1]); }
                 case "arcsin":
-                    return new numbers.value(){V=Math.Asin(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcSin(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.ArcSin(ps[0], ps[1]); }
                 case "arccos":
-                    return new numbers.value(){V=Math.Acos(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcCos(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.ArcCos(ps[0], ps[1]); }
                 case "log":
                     return new numbers.value(){V=Math.Log(ps[0].V)};
                 case "arctan":
-                    return new numbers.value(){V=Math.Atan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcTan(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.ArcTan(ps[0], ps[1]); }
                 case "arccot":
-                    return new numbers.value(){V=1/Math.Atan(ps[0].V)};
+                    if (ps.Length == 1)
+                    { return numbers.Numbers.ArcCot(ps[0], numbers.Numbers.Two_Pi); }
+                    else
+                    { return numbers.Numbers.ArcCot(ps[0], ps[1]); }
                 case "min":
                     return numbers.Numbers.findMin(ps[0],ps[1]);
                 case "max":
@@ -2275,6 +2351,10 @@ namespace parse_tree
                     return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
+                case "load_bitmap":
+                    string f = ps[0].S;
+                    return GraphDialogViewModel.LoadBitmap(f);
+                    
             }
             //return new numbers.value() { V = 333 };
             throw new NotImplementedException();
@@ -2303,7 +2383,7 @@ namespace parse_tree
                     gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
-                    // weird
+                    //weird
                     break;
                 case "get_pixel":
                     gen.Emit_Conversion((int)Conversions.To_Integer);
@@ -2499,7 +2579,8 @@ namespace parse_tree
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            gen.Emit_Plugin_Call(Component.the_lexer.Get_Text(id.start, id.finish), parameters);
+            string text = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(text, parameters);
         }
 
         public override void compile_pass1(Generate_Interface gen)
@@ -2911,6 +2992,23 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
+
+            Runtime.processing_parameter_list = true;
+            numbers.value ps = parameter.Execute(l);
+            Runtime.processing_parameter_list = false;
+            switch (kind)
+            {
+                case Token_Type.Key_Down:
+                    Avalonia.Input.Key k = (Avalonia.Input.Key)ps.S[0] - 53;
+                    return GraphDialogViewModel.KeyDown(k);
+                case Token_Type.Mouse_Button_Down:
+                    return false;
+                case Token_Type.Mouse_Button_Pressed:
+                    return false;
+                case Token_Type.Mouse_Button_Released:
+                    return false;
+            }
+
             throw new NotImplementedException();
         }
 
@@ -2980,12 +3078,17 @@ namespace parse_tree
         public Parameter_List? parameters;
 
         public override bool Execute(Lexer l){
-            throw new NotImplementedException();
+
+            string boolPlug = l.Get_Text(id.start, id.finish);
+            numbers.value ans = Plugins.Invoke_Function(boolPlug, parameters);
+            return numbers.Numbers.long_float_of(ans) > 0.5;
+
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            string proc = Component.the_lexer.Get_Text(id.start, id.finish);
+            gen.Emit_Plugin_Call(proc, parameters);
         }
 
         public override void compile_pass1(Generate_Interface gen)

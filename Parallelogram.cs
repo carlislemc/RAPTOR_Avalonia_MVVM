@@ -277,7 +277,7 @@ namespace raptor
 		public override void wide_footprint(Avalonia.Media.DrawingContext gr)
 		{
 			int height_of_text, width_of_text=2*W;
-			int szHeight, szWidth;
+			int szHeight, szWidth = 0;
 
 
 			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
@@ -289,7 +289,7 @@ namespace raptor
 			while (true) 
 			{
 				Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-					this.Text + "XX", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
+					this.getDrawText() + "XX", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
 					Avalonia.Media.TextWrapping.Wrap, Avalonia.Size.Infinity.WithWidth(width_of_text));
 				szHeight = (int)Math.Ceiling(formattedtext.Bounds.Height);
 				szWidth = (int)Math.Ceiling(formattedtext.Bounds.Width);
@@ -466,17 +466,19 @@ namespace raptor
 			{
 				if (Component.full_text)
 				{
-					if (!this.input_is_expression)
-					{
-						result = '"' + this.prompt + '"' + '\n' +
-							get_string;
-					}
-					else
-					{
-						result = this.prompt + '\n' +
-							get_string;
-					}
-				}
+					//result = this.prompt + '\n' +
+					//		get_string;
+                    if (!this.input_is_expression)
+                    {
+                        result = '"' + this.prompt + '"' + '\n' +
+                            get_string;
+                    }
+                    else
+                    {
+                        result = this.prompt + '\n' +
+                            get_string;
+                    }
+                }
 				else
 				{
 					result = get_string;

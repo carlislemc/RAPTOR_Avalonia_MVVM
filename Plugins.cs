@@ -9,7 +9,7 @@ using raptor;
 
 namespace RAPTOR_Avalonia_MVVM
 {
-    class Plugins
+    public class Plugins
     {
 
         static System.Reflection.MethodInfo[] methods;
@@ -37,11 +37,16 @@ namespace RAPTOR_Avalonia_MVVM
         {
 			parse_tree.Parameter_List walk;
 			int num_parameters;
-			string tempName = name.Substring(name.IndexOf(":=")+2).Trim();
-			if (tempName.Contains("("))
-			{
-				tempName = tempName.Substring(0, tempName.IndexOf("("));
+			string tempName = name;
+            if (name.Contains(":="))
+            {
+				tempName = name.Substring(name.IndexOf(":=") + 2).Trim();
+				if (tempName.Contains("("))
+				{
+					tempName = tempName.Substring(0, tempName.IndexOf("("));
+				}
 			}
+			
 			MethodInfo method = GetMethod(tempName);
 			ParameterInfo[] parameter_info = method.GetParameters();
 			num_parameters = parameter_info.Length;
