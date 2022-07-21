@@ -44,6 +44,8 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 }
             };
 
+            this.FindControl<TabControl>("tc12").AddHandler(DragDrop.DropEvent, FlowchartControl.sDrop);
+
             this.KeyDown += (s, e) =>
             {
                 KeyEventArgs f = (KeyEventArgs)e;

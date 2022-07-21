@@ -102,40 +102,45 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int)e.GetPosition(this).Y;
             this.sc.positionXTapped = (int)e.GetPosition(this).X;
             this.sc.positionYTapped = (int)e.GetPosition(this).Y;
-            
-            if (e.Data.GetText() == SymbolsControl.assignment_fig)
+            if (e.Data is Avalonia.Input.DataObject)
             {
-                this.sc.OnInsertAssignmentCommand();
-                //Debug.WriteLine("Dropped");
-            }
-            else if (e.Data.GetText() == SymbolsControl.call_fig)
-            {
-                this.sc.OnInsertCallCommand();
-            }
-            else if (e.Data.GetText() == SymbolsControl.input_fig)
-            {
-                this.sc.OnInsertInputCommand();
-            }
-            else if (e.Data.GetText() == SymbolsControl.output_fig)
-            {
-                this.sc.OnInsertOutputCommand();
-            }
-            else if (e.Data.GetText() == SymbolsControl.if_control_fig)
-            {
-                this.sc.OnInsertSelectionCommand();
-            }
-            else if (e.Data.GetText() == SymbolsControl.loop_fig)
-            {
-                this.sc.OnInsertLoopCommand();
-            }
-            else if(dragComp != null){
-                MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-                if(mw.theTabs[mw.viewTab].Start.insert(dragComp, this.sc.positionX, this.sc.positionY, 0)){
-                    this.sc.Start.delete();
+                if (e.Data.GetText() == SymbolsControl.assignment_fig)
+                {
+                    this.sc.OnInsertAssignmentCommand();
+                    //Debug.WriteLine("Dropped");
                 }
+                else if (e.Data.GetText() == SymbolsControl.call_fig)
+                {
+                    this.sc.OnInsertCallCommand();
+                }
+                else if (e.Data.GetText() == SymbolsControl.input_fig)
+                {
+                    this.sc.OnInsertInputCommand();
+                }
+                else if (e.Data.GetText() == SymbolsControl.output_fig)
+                {
+                    this.sc.OnInsertOutputCommand();
+                }
+                else if (e.Data.GetText() == SymbolsControl.if_control_fig)
+                {
+                    this.sc.OnInsertSelectionCommand();
+                }
+                else if (e.Data.GetText() == SymbolsControl.loop_fig)
+                {
+                    this.sc.OnInsertLoopCommand();
+                }
+                else if (dragComp != null)
+                {
+                    MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                    if (mw.theTabs[mw.viewTab].Start.insert(dragComp, this.sc.positionX, this.sc.positionY, 0))
+                    {
+                        this.sc.Start.delete();
+                    }
+                }
+                dragComp = null;
+                this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
+                e.Handled = true;
             }
-            dragComp = null;
-            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
         }
         private void doubleClick(object? sender, RoutedEventArgs e)
         {
@@ -145,9 +150,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             _ = this.sc.Start.setText(this.sc.positionX, this.sc.positionY);
         }
         
-        private void sDrop(object? sender, DragEventArgs e)
+        public async static void sDrop(object? sender, DragEventArgs e)
         {
-            if (e.Data.GetText() == null)
+            if (e.Data.GetFileNames() != null)
             {
                 string file;
                 try
@@ -158,8 +163,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 {
                     return;
                 }
-                
+
                 //Debug.WriteLine(file);
+
+                await MainWindowViewModel.GetMainWindowViewModel().OnNewCommand();
+                
                 string name = (String)file.Clone();
 
                 file.ToCharArray();
@@ -178,7 +186,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 //Debug.WriteLine(name);
                 MainWindowViewModel.GetMainWindowViewModel().Load_File(name);
 
-
+                e.Handled = true;
                 
             }
             
