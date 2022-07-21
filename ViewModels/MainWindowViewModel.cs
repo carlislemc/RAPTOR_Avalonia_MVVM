@@ -226,7 +226,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 stream = File.Open(dialog_fileName, FileMode.Open,
                         FileAccess.Read);
                 attr = System.IO.File.GetAttributes(dialog_fileName);
-                MainWindow.setMainTitle(dialog_fileName);
+                MainWindow.setMainTitle("RAPTOR - " + dialog_fileName);
             }
             catch
             {
@@ -859,7 +859,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
 
                 this.fileName = ans;
-                MainWindow.setMainTitle(ans);
+                MainWindow.setMainTitle("RAPTOR - " + ans);
                 Plugins.Load_Plugins(this.fileName);
                 this.FileSave_Click(closeAfter);
 

@@ -92,13 +92,18 @@ namespace raptor
                 if (Component.full_text && ! Component.compiled_flowchart)
                 {
                     // we get rect from footprint
-                    if (drawing_text_width > W)
+
+
+                    if (drawing_text_width > W && this.Text != "start" && this.Text != "end")
                     {
-                        rect = new Avalonia.Rect(x - drawing_text_width / 2, Y + (H * 1) / 32, drawing_text_width, this.height_of_text * 3);
+						int textSizeAdjust = textSize > 14 ? 0 : textSize / 2;
+						rect = new Avalonia.Rect(x - drawing_text_width / 2 + textSizeAdjust, Y + (H * 6) / 32 + textSize, drawing_text_width, this.height_of_text * 3);
                     }
                     else
                     {
-                        rect = new Avalonia.Rect(x - this.width_of_text / 2, Y + (H * 6) / 16, this.width_of_text, this.height_of_text);
+                        int textSizeAdjust = textSize > 14 ? 0 : textSize / 2;
+						int smallTextSize = textSize < 10 ? 6 : 0;
+                        rect = new Avalonia.Rect(x - this.width_of_text / 2 + textSizeAdjust + smallTextSize, Y + (H * 6) / 16, this.width_of_text, this.height_of_text);
                     }
                 }
                 else
