@@ -12,6 +12,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using raptor;
+using System.Diagnostics;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 
 namespace RAPTOR_Avalonia_MVVM.Controls
@@ -25,6 +26,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         }
         public Subchart sc;
         public static bool ctrl = false;
+       
 
         // This code seems to only run when the mouse is over the flowchart itself
         private void onMouseMove(object? sender, PointerEventArgs e)
@@ -142,7 +144,37 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int)f.GetPosition(this).Y;
             _ = this.sc.Start.setText(this.sc.positionX, this.sc.positionY);
         }
+        
+        private void sDrop(object? sender, DragEventArgs e)
+        {
+            if (e.Data.GetText() == null)
+            {
+                string file = e.Data.GetFileNames().First();
+                //Debug.WriteLine(file);
+                string name = (String)file.Clone();
 
+                file.ToCharArray();
+                int i = 1;
+                foreach (char c in file)
+                {
+
+                    if (c == '\\')
+                    {
+                        name = name.Insert(i, "\\");
+                        i++;
+                    }
+                    i++;
+                }
+
+                //Debug.WriteLine(name);
+                MainWindowViewModel.GetMainWindowViewModel().Load_File(name);
+
+
+                
+            }
+            
+        }
+        
         private void released(object? sender, RoutedEventArgs e)
         {
             dragComp = null;
@@ -162,6 +194,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.PointerPressed += this.onClick;
             AddHandler(DragDrop.DropEvent, Drop);
             this.DoubleTapped += this.doubleClick;
+            AddHandler(DragDrop.DropEvent, sDrop);
             dragData.Set(DataFormats.Text, SymbolsControl.noSelect);
             this.PointerPressed += mouseDownDragEvent;
             this.PointerReleased += released;
