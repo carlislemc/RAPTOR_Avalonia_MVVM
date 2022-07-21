@@ -604,8 +604,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public async void OnPasteCommand() {
-            int x_position = this.theTabs[this.activeTab].positionXTapped;
-            int y_position = this.theTabs[this.activeTab].positionYTapped;
+            int x_position = this.theTabs[this.viewTab].positionXTapped;
+            int y_position = this.theTabs[this.viewTab].positionYTapped;
 
             try
             {
@@ -613,9 +613,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if (thing != null)
                 {
                     Component obj = ((Clipboard_Data)thing).symbols;
-                    Undo_Stack.Make_Undoable(this.theTabs[this.activeTab]);
+                    Undo_Stack.Make_Undoable(this.theTabs[this.viewTab]);
                     Component the_clone = obj.Clone();
-                    this.theTabs[this.activeTab].Start.insert(the_clone, x_position, y_position, 0);
+                    this.theTabs[this.viewTab].Start.insert(the_clone, x_position, y_position, 0);
                 }
             }
             catch
@@ -626,7 +626,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
         public void OnCopyCommand() {
-            Component copyReturn = this.theTabs[this.activeTab].Start.copy();
+            Component copyReturn = this.theTabs[this.viewTab].Start.copy();
             if (copyReturn != null)
             {
                 Clipboard_Data cd = new Clipboard_Data(
