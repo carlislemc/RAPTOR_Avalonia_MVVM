@@ -60,6 +60,12 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     FlowchartControl.ctrl = false;
                 }
             };
+
+        }
+
+        public static void setMainTitle(string s)
+        {
+            topWindow.Title = s;
         }
 
         private void InitializeComponent()

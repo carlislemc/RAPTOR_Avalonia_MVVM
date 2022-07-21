@@ -226,6 +226,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 stream = File.Open(dialog_fileName, FileMode.Open,
                         FileAccess.Read);
                 attr = System.IO.File.GetAttributes(dialog_fileName);
+                MainWindow.setMainTitle(dialog_fileName);
             }
             catch
             {
@@ -858,6 +859,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
 
                 this.fileName = ans;
+                MainWindow.setMainTitle(ans);
                 Plugins.Load_Plugins(this.fileName);
                 this.FileSave_Click(closeAfter);
 
@@ -1589,7 +1591,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             else
             {
-                checkSave = true;
+                checkSave = false;
             }
 
         }
@@ -1610,6 +1612,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             //    });
             //msBoxStandardWindow.Show();
 
+            checkSave = modified;
+
             await Dispatcher.UIThread.InvokeAsync(async () => { await Save_Before_Losing(); });
 
             if (checkSave)
@@ -1627,6 +1631,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Undo_Stack.Clear_Undo();
             this.Text = My_Title + "- Untitled";
+            MainWindow.setMainTitle("RAPTOR");
 
             this.modified = false;
             this.fileName = null;
