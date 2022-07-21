@@ -652,7 +652,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 keyDown = true;
                 Key_Down(Key.A);
 
-                SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
+                //SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
                 waitForKey = false;
                 InvalidateVisual();
             }
@@ -665,10 +665,30 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 keyDown = false;
             }
         }
+
+        public static bool keyHit = false;
+        public static Key getKey = new Key();
+
+        public bool KeyHit()
+        {
+            bool ans = keyHit;
+            if (keyHit)
+            {
+                keyHit = false;
+            }
+
+            return ans;
+        }
+
+        public Key GetKey()
+        {
+            return getKey;
+        }
+
         public bool Key_Down(Key k)
         {
             bool givenKeyDown = keyDown && key == k;
-            SkiaContext.SkCanvas.DrawText(givenKeyDown.ToString(), 400, 500, SKBrush);
+            //SkiaContext.SkCanvas.DrawText(givenKeyDown.ToString(), 400, 500, SKBrush);
             return keyDown && key == k;
         }
 
@@ -700,7 +720,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 }
                 mouseDown = false;
                 var p = e.GetPosition(this);
-                SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
+                //SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
                 InvalidateVisual();
                 waitForMouse = false;
             }
@@ -772,7 +792,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public bool MouseButtonDown(MouseButton button)
         {
             bool givenButtonDown = mouseDown && button == buttonDown;
-            SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
+            //SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
             InvalidateVisual();
             return givenButtonDown;
         }
@@ -1300,7 +1320,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (!playInBackground)
             {
-                SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
+                //SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
                 InvalidateVisual();
             }
         }
@@ -1342,14 +1362,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public int GetMouseX()
         {
             int x = xCord;
-            SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
+            //SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
             InvalidateVisual();
             return x;
         }
         public int GetMouseY()
         {
             int y = yCord;
-            SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
+            //SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
             InvalidateVisual();
             return y;
         }

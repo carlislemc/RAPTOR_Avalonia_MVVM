@@ -262,11 +262,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static numbers.value GetMouseX()
         {
+            if(DotnetGraphControl.dngw == null)
+            {
+                return new numbers.value();
+            }
             int x = DotnetGraphControl.dngw.GetMouseX();
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = x };
         }
         public static numbers.value GetMouseY()
         {
+            if (DotnetGraphControl.dngw == null)
+            {
+                return new numbers.value();
+            }
             int y = DotnetGraphControl.dngw.GetMouseY();
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = y };
         }
@@ -290,6 +298,26 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             return DotnetGraphControl.dngw.Key_Down(button);
             
+        }
+        public static bool KeyHit()
+        {
+            if(DotnetGraphControl.dngw == null)
+            {
+                return false;
+            }
+            return DotnetGraphControl.dngw.KeyHit();
+
+        }
+
+        public static numbers.value? GetKey()
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = -1 }; ;
+            }
+            Key k = DotnetGraphControl.dngw.GetKey();
+
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = (int)k };
         }
     }
 

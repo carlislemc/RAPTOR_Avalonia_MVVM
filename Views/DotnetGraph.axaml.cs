@@ -39,6 +39,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.KeyDown += (s, e) =>
             {
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                DotnetGraphControl.keyHit = true;
                 if (mw.waitingForKey == true)
                 {
                     mw.waitingForKey = false;

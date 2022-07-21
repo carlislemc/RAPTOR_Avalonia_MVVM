@@ -1127,7 +1127,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             else
             {
-                if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null))
+                if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
                 {
                     symbolCount++;
 
@@ -1918,6 +1918,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             this.FileSave_Click();
             this.OnResetCommand();
+            //Compile_Helpers.Compile_Flowchart(theTabs);
+            //Compile_Helpers.Run_Compiled(false);
             try
             {
                 Compile_Helpers.Compile_Flowchart(theTabs);

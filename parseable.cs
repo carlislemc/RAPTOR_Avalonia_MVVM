@@ -220,8 +220,9 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
+                    gil.Emit_To_Integer();
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key_string":
                     //NEED TO DO
@@ -348,8 +349,7 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "key_hit":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyHit");
                     break;
                 case "key_down":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyDown");
@@ -2202,6 +2202,8 @@ namespace parse_tree
                     return GraphDialogViewModel.GetMouseX();
                 case "get_mouse_y":
                     return GraphDialogViewModel.GetMouseX();
+                case "get_key":
+                    return GraphDialogViewModel.GetKey();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
@@ -2940,7 +2942,15 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
-            throw new NotImplementedException();
+            switch (kind)
+            {
+                case Token_Type.Key_Hit :
+                    return GraphDialogViewModel.KeyHit();
+                case Token_Type.Is_Open :
+                    break;
+            }
+
+            return false;
         }
 
         public override void Emit_Code(Generate_Interface gen)  
