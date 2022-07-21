@@ -149,7 +149,16 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (e.Data.GetText() == null)
             {
-                string file = e.Data.GetFileNames().First();
+                string file;
+                try
+                {
+                    file = e.Data.GetFileNames().First();
+                }
+                catch
+                {
+                    return;
+                }
+                
                 //Debug.WriteLine(file);
                 string name = (String)file.Clone();
 
