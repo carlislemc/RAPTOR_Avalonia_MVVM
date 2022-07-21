@@ -16,20 +16,20 @@
   <DockPanel>
     <Menu DockPanel.Dock="Top">
       <MenuItem Header="_File">
-        <MenuItem Header="_New   Ctrl+N" Command="{Binding OnNewCommand}" HotKey="Ctrl+N"/>
-        <MenuItem Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}" HotKey="Ctrl+O"/>
-        <MenuItem Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand2}" HotKey="Ctrl+S"/>
+        <MenuItem Name="NewCommand" Header="_New   Ctrl+N" Command="{Binding OnNewCommand}"/>
+        <MenuItem Name="OpenCommand" Header="_Open   Ctrl+O" Command="{Binding OnOpenCommand}"/>
+        <MenuItem Name="SaveCommand" Header="_Save   Ctrl+S" Command="{Binding OnSaveCommand2}"/>
         <MenuItem Header="Save _As" Command="{Binding OnSaveAsCommand2}"/>
         <Separator/>
         <MenuItem Header="_Exit" Command="{Binding OnExitCommand}"/>
       </MenuItem>
       <MenuItem Header="_Edit">
-        <MenuItem Header="_Undo   Ctrl+Z" Command="{Binding OnUndoCommand}" HotKey="Ctrl+Z"/>
-        <MenuItem Header="_Redo   Ctrl+Y" Command="{Binding OnRedoCommand}" HotKey="Ctrl+Y"/>
+        <MenuItem Name="UndoCommand" Header="_Undo   Ctrl+Z" Command="{Binding OnUndoCommand}"/>
+        <MenuItem Name="RedoCommand" Header="_Redo   Ctrl+Y" Command="{Binding OnRedoCommand}"/>
         <Separator/>
-        <MenuItem Header="C_ut   Ctrl+X" Command="{Binding OnCutCommand}" HotKey="Ctrl+X"/>
-        <MenuItem Header="Co_py   Ctrl+C" Command="{Binding OnCopyCommand}" HotKey="Ctrl+C"/>
-        <MenuItem Header="_Paste   Ctrl+V" Command="{Binding OnPasteCommand}" HotKey="Ctrl+V"/>
+        <MenuItem Name="CutCommand" Header="C_ut   Ctrl+X" Command="{Binding OnCutCommand}"/>
+        <MenuItem Name="CopyCommand" Header="Co_py   Ctrl+C" Command="{Binding OnCopyCommand}"/>
+        <MenuItem Name="PasteCommand" Header="_Paste   Ctrl+V" Command="{Binding OnPasteCommand}"/>
         <MenuItem Header="_Delete   Del" Command="{Binding OnDeleteCommand}" HotKey="Delete"/>
       </MenuItem>
       <MenuItem Header="_Run">
