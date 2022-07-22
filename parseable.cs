@@ -2354,6 +2354,10 @@ namespace parse_tree
                 case "to_character":
                     return new numbers.value() {Kind=numbers.Value_Kind.Character_Kind ,C = (char)ps[0].V };
                 case "length_of":
+                    if(ps[0].Kind == numbers.Value_Kind.String_Kind)
+                    {
+                        return new numbers.value() {Kind = numbers.Value_Kind.Number_Kind, V = ps[0].S.Length };
+                    }
                     return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
@@ -2375,6 +2379,7 @@ namespace parse_tree
             {
                 o = gen.Emit_Call_Method(functionName);
             }
+            
 
             switch (s)
             {
@@ -2389,7 +2394,7 @@ namespace parse_tree
                     gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
-                    //weird
+                    ((Expr_Output)parameters.parameter).Emit_Length_Of(gen);
                     break;
                 case "get_pixel":
                     gen.Emit_Conversion((int)Conversions.To_Integer);
@@ -3342,6 +3347,55 @@ namespace parse_tree
         {
             expr.compile_pass1(gen);
         }
+
+        public void Emit_Length_Of(Generate_Interface gen)
+        {
+            if(expr.left.GetType() == typeof(Add_Expression) || expr.left.GetType() == typeof(Minus_Expression))
+            {
+                gen.Emit_Conversion((int)Conversions.To_String);
+                expr.Emit_Code(gen);
+                gen.Emit_End_Conversion((int)Conversions.To_String);
+                gen.Emit_String_Length();
+                return;
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if(m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if(e1.GetType() == typeof(String_Expon))
+            {
+                String_Expon tempExpon = (String_Expon)e1;
+                string s = Component.the_lexer.Get_Text(tempExpon.s.start,  tempExpon.s.finish);
+                gen.Emit_Load_Number(Convert.ToInt32(s));
+                return;
+            }
+
+            if(e1.GetType() == typeof(Func0_Expon) || e1.GetType() == typeof(Func_Expon) || e1.GetType() == typeof(Plugin_Func_Expon))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            if(e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Id_Rhs tempRHS = (Id_Rhs)((Rhs_Expon)e1).rhs;
+
+            string tempStr = Component.the_lexer.Get_Text(tempRHS.id.start, tempRHS.id.finish);
+            gen.Emit_Array_Size(tempStr);
+        }
+
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
     public class Parameter_List
