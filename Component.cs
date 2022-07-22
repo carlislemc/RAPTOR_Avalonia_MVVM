@@ -672,6 +672,7 @@ namespace raptor
 					{
 						this.Successor = null;
 					}
+					MainWindowViewModel.GetMainWindowViewModel().modified = true;
 					return true;
 				}
 				else
