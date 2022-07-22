@@ -17,7 +17,16 @@ namespace RAPTOR_Avalonia_MVVM
             DataContext = RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel.MC;
             this.Closing += (s, e) =>
             {
+                this.Hide();
                 e.Cancel = true;
+            };
+
+            this.Activated += (s, e) =>
+            {
+                if (!this.IsVisible)
+                {
+                    this.Show();
+                }
             };
         }
 
