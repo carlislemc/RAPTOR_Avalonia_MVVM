@@ -2207,6 +2207,10 @@ namespace parse_tree
                     return GraphDialogViewModel.GetKey();
                 case "get_key_string":
                     return GraphDialogViewModel.GetKeyString();
+                case "get_max_height":
+                    return GraphDialogViewModel.GetMaxHeight();
+                case "get_max_width":
+                    return GraphDialogViewModel.GetMaxWidth();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();

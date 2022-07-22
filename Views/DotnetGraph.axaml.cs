@@ -101,6 +101,11 @@ namespace RAPTOR_Avalonia_MVVM.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        public static double getMaxHeight()
+        {
+            return 3;
+        }
     }
 }
 

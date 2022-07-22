@@ -184,10 +184,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public static void DelayFor(int seconds)
         {
             DotnetGraphControl.DelayFor(seconds);
-            //Dispatcher.UIThread.Post(() =>
-            //{
-                
-            //}, DispatcherPriority.Background);
         }
 
         public static void FloodFill(int x, int y, Color_Type hue)
@@ -206,15 +202,47 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }, DispatcherPriority.Background);
         }
 
-        //public static void GetMaxHeight()
-        //{
-        //    DotnetGraphControl.dngw.GetMaxHeight();
-        //}
+        public static numbers.value GetMaxHeight()
+        {
+            
+            double h = 0;
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                if(DotnetGraph.dotnetgraph == null)
+                {
+                    DotnetGraph d = new DotnetGraph(1, 1);
+                    h = d.Screens.Primary.Bounds.Size.Height;
+                }
+                else
+                {
+                    h = DotnetGraph.dotnetgraph.Screens.Primary.Bounds.Size.Height;
+                }
 
-        //public static void GetMaxWidth()
-        //{
-        //    DotnetGraphControl.dngw.GetMaxWidth();
-        //}
+            }).Wait(-1);
+            
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = h };
+            
+        }
+
+        public static numbers.value GetMaxWidth()
+        {
+            //DotnetGraphControl.dngw.GetMaxWidth();
+            double w = 0;
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                if (DotnetGraph.dotnetgraph == null)
+                {
+                    DotnetGraph d = new DotnetGraph(1, 1);
+                    w = d.Screens.Primary.Bounds.Size.Width;
+                }
+                else
+                {
+                    w = DotnetGraph.dotnetgraph.Screens.Primary.Bounds.Size.Width;
+                }
+
+            }).Wait(-1);
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = w };
+        }
 
         public static void OpenGraphWindow(int w, int h)
         {
