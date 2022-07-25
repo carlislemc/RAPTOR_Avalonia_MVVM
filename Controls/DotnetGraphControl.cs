@@ -1393,6 +1393,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             UpdateWindowUnlessFrozen();
         }
 
+        public void saveGraphWindow(string filename)
+        {
+            RenderTarget.Save(filename);
+        }
+
         public bool IsOpen()
         {
             return graphWindowOpen;
@@ -1449,7 +1454,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             var x_coord = Make_0_Based(x);
             var y_coord = Make_0_Based_And_Unflip(y);
             var color = SkiaContext.SkSurface.PeekPixels().GetPixelColor(x_coord, y_coord);
-            return (Color_Type)GetClosestColor(color.Red, color.Green, color.Red);
+            return (Color_Type)GetClosestColor(color.Red, color.Green, color.Blue);
         }
 
         public static int GetClosestColor(int red, int green, int blue)

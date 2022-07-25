@@ -359,6 +359,24 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             return new numbers.value() { Kind = numbers.Value_Kind.String_Kind, S = k + "" };
         }
+
+        public static numbers.value GetPixel(int x, int y)
+        {
+            Color_Type c = new Color_Type();
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                c = DotnetGraphControl.dngw.GetPixel(x, y);
+
+            }).Wait(-1);
+
+            return new numbers.value() { Kind = numbers.Value_Kind.String_Kind, S = c + "" };
+        }
+
+        public static void SaveGraphWindow(string filename)
+        {
+            DotnetGraphControl.dngw.saveGraphWindow(filename);
+        }
     }
+
 
 }

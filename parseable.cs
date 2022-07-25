@@ -146,8 +146,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SetWindowTitle");
                     break;
                 case "save_graph_window":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SaveGraphWindow");
                     break;
                 case "pi":
                     gil.Emit_Load_Static("numbers.Numbers", "Pi");
@@ -797,6 +796,14 @@ namespace parse_tree
                         GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
                     }, DispatcherPriority.Background);
                 }
+            else if (str.ToLower() == "save_graph_window")
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    string f = ps[0].S;
+                    GraphDialogViewModel.SaveGraphWindow(f);
+                }, DispatcherPriority.Background);
+            }
             return;
             
         }
@@ -2280,7 +2287,7 @@ namespace parse_tree
             Runtime.processing_parameter_list = true;
             numbers.value[] ps = parameters.Execute(l);
             Runtime.processing_parameter_list = false;
-            switch (s.ToLower()){
+            switch (s.ToLower()) {
                 case "sin":
                     if (ps.Length == 1)
                     { return numbers.Numbers.Sin(ps[0], numbers.Numbers.Two_Pi); }
@@ -2312,7 +2319,7 @@ namespace parse_tree
                     else
                     { return numbers.Numbers.ArcCos(ps[0], ps[1]); }
                 case "log":
-                    return new numbers.value(){V=Math.Log(ps[0].V)};
+                    return new numbers.value() { V = Math.Log(ps[0].V) };
                 case "arctan":
                     if (ps.Length == 1)
                     { return numbers.Numbers.ArcTan(ps[0], numbers.Numbers.Two_Pi); }
@@ -2324,39 +2331,39 @@ namespace parse_tree
                     else
                     { return numbers.Numbers.ArcCot(ps[0], ps[1]); }
                 case "min":
-                    return numbers.Numbers.findMin(ps[0],ps[1]);
+                    return numbers.Numbers.findMin(ps[0], ps[1]);
                 case "max":
-                    return numbers.Numbers.findMax(ps[0],ps[1]);
+                    return numbers.Numbers.findMax(ps[0], ps[1]);
                 case "sinh":
-                    return new numbers.value(){V=Math.Sinh(ps[0].V)};
+                    return new numbers.value() { V = Math.Sinh(ps[0].V) };
                 case "tanh":
-                    return new numbers.value(){V=Math.Tanh(ps[0].V)};
+                    return new numbers.value() { V = Math.Tanh(ps[0].V) };
                 case "cosh":
-                    return new numbers.value(){V=Math.Cosh(ps[0].V)};
+                    return new numbers.value() { V = Math.Cosh(ps[0].V) };
                 case "arccosh":
-                    return new numbers.value(){V=Math.Acosh(ps[0].V)};
+                    return new numbers.value() { V = Math.Acosh(ps[0].V) };
                 case "arcsinh":
-                    return new numbers.value(){V=Math.Asinh(ps[0].V)};
+                    return new numbers.value() { V = Math.Asinh(ps[0].V) };
                 case "arctanh":
-                    return new numbers.value(){V=Math.Atanh(ps[0].V)};
+                    return new numbers.value() { V = Math.Atanh(ps[0].V) };
                 case "coth":
-                    return new numbers.value(){V=1/Math.Tanh(ps[0].V)};;
+                    return new numbers.value() { V = 1 / Math.Tanh(ps[0].V) }; ;
                 case "arccoth":
-                    return new numbers.value(){V=1/Math.Atanh(ps[0].V)};
+                    return new numbers.value() { V = 1 / Math.Atanh(ps[0].V) };
                 case "sqrt":
-                    return new numbers.value(){V=Math.Sqrt(ps[0].V)};
+                    return new numbers.value() { V = Math.Sqrt(ps[0].V) };
                 case "floor":
-                    return new numbers.value(){V=Math.Floor(ps[0].V)};
+                    return new numbers.value() { V = Math.Floor(ps[0].V) };
                 case "ceiling":
-                    return new numbers.value(){V=Math.Ceiling(ps[0].V)};
+                    return new numbers.value() { V = Math.Ceiling(ps[0].V) };
                 case "to_ascii":
                     return new numbers.value() { V = ps[0].C };
                 case "to_character":
-                    return new numbers.value() {Kind=numbers.Value_Kind.Character_Kind ,C = (char)ps[0].V };
+                    return new numbers.value() { Kind = numbers.Value_Kind.Character_Kind, C = (char)ps[0].V };
                 case "length_of":
-                    if(ps[0].Kind == numbers.Value_Kind.String_Kind)
+                    if (ps[0].Kind == numbers.Value_Kind.String_Kind)
                     {
-                        return new numbers.value() {Kind = numbers.Value_Kind.Number_Kind, V = ps[0].S.Length };
+                        return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = ps[0].S.Length };
                     }
                     return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
@@ -2364,7 +2371,11 @@ namespace parse_tree
                 case "load_bitmap":
                     string f = ps[0].S;
                     return GraphDialogViewModel.LoadBitmap(f);
-                    
+                case "get_pixel":
+                    int x = numbers.Numbers.integer_of(ps[0]);
+                    int y = numbers.Numbers.integer_of(ps[1]);
+                    return GraphDialogViewModel.GetPixel(x, y);
+
             }
             //return new numbers.value() { V = 333 };
             throw new NotImplementedException();

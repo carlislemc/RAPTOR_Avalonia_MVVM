@@ -922,8 +922,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 return;
             }
-            //try
-            //{
+            try
+            {
             symbolCount++;
             if (parentCount.Count != 0 && parentComponent == null)
             {
@@ -1089,15 +1089,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 activeComponent.selected = false;
             }
-            //}
-            //catch(Exception e)
-            //{
-            //    if(myTimer != null)
-            //    {
-            //        myTimer.Stop();
-            //    }
-            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
-            //}
+            }
+            catch(Exception e)
+            {
+                if(myTimer != null)
+                {
+                    myTimer.Stop();
+                }
+                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
+            }
         }
 
         private bool varFound(string s) {
@@ -1117,9 +1117,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public async void OnNextCommand() {
-            //try
-            //{
-            if (activeComponent == null)
+            try
+            {
+                if (activeComponent == null)
             {
                 startRun();
                 activeComponent = this.mainSubchart().Start;
@@ -1527,15 +1527,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             }
 
-            //}
-            //catch(Exception e)
-            //{
-            //    if (myTimer != null)
-            //    {
-            //        myTimer.Stop();
-            //    }
-            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
-            //}
+            }
+            catch (Exception e)
+            {
+                if (myTimer != null)
+                {
+                    myTimer.Stop();
+                }
+                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
+            }
 
 
 

@@ -73,6 +73,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.PointerPressed += (s, e) =>
             {
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
                 if (mw.waitingForMouse == true)
                 {
                     if (e.MouseButton == mw.mouseWait)
