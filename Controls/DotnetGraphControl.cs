@@ -595,12 +595,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public static Key key;
         public static bool keyDown;
-        private bool mouseDown;
-        private MouseButton buttonDown;
-        private bool leftMouseButtonReleased = false;
-        private bool rightMouseButtonReleased = false;
-        private bool leftMouseButtonPressed = false;
-        private bool rightMouseButtonPressed = false;
+        public static bool mouseDown;
+        public static MouseButton buttonDown;
+        public static bool leftMouseButtonReleased = false;
+        public static bool rightMouseButtonReleased = false;
+        public static bool leftMouseButtonPressed = false;
+        public static bool rightMouseButtonPressed = false;
 
 
         public override void EndInit()
@@ -683,9 +683,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if(key + "" == "None")
             {
-                WaitForKey();
-                parse_tree.Proc_Call.WaitForKey();
-               
+                Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        WaitForKey();
+                        await DotnetGraph.waitForKey();
+                    }
+                ).Wait(-1);
             }
 
             Key temp = key;
@@ -777,23 +780,33 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         }
         public bool MouseButtonPressed(MouseButton mb)
         {
+            bool ans = false;
             switch (mb)
             {
                 case MouseButton.Left:
-                    return leftMouseButtonPressed;
+                    ans = leftMouseButtonPressed;
+                    leftMouseButtonPressed = false;
+                    return ans;
                 case MouseButton.Right:
-                    return rightMouseButtonPressed;
+                    ans = rightMouseButtonPressed;
+                    rightMouseButtonPressed = false;
+                    return ans;
             }
             return false;
         }
         public bool MouseButtonReleased(MouseButton mb)
         {
+            bool ans;
             switch (mb)
             {
                 case MouseButton.Left:
-                    return leftMouseButtonReleased;
+                    ans = leftMouseButtonReleased;
+                    leftMouseButtonReleased = false;
+                    return ans;
                 case MouseButton.Right:
-                    return rightMouseButtonReleased;
+                    ans = rightMouseButtonReleased;
+                    rightMouseButtonReleased = false;
+                    return ans;
             }
             return false;
         }

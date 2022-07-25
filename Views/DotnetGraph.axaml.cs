@@ -5,6 +5,8 @@ using Avalonia.Input;
 using raptor;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using RAPTOR_Avalonia_MVVM.Controls;
+using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace RAPTOR_Avalonia_MVVM.Views
 {
@@ -85,8 +87,38 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     }
                 }
 
+                if (DotnetGraphControl.dngw != null)
+                {
+                    if(e.MouseButton == MouseButton.Left)
+                    {
+                        DotnetGraphControl.leftMouseButtonPressed = true;
+                    }
+                    else
+                    {
+                        DotnetGraphControl.rightMouseButtonPressed = true;
+                    }
+                    DotnetGraphControl.mouseDown = true;
+                    DotnetGraphControl.buttonDown = e.MouseButton;
+                }
+
             };
 
+            this.PointerReleased += (s, e) =>
+            {
+                if (DotnetGraphControl.dngw != null)
+                {
+                    DotnetGraphControl.mouseDown = false;
+
+                    if(e.InitialPressMouseButton == MouseButton.Left)
+                    {
+                        DotnetGraphControl.leftMouseButtonReleased = true;
+                    }
+                    else
+                    {
+                        DotnetGraphControl.rightMouseButtonReleased = true;
+                    }
+                }
+            };
 
         }
 
@@ -104,6 +136,28 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public static double getMaxHeight()
         {
             return 3;
+        }
+
+        public async static Task waitForKey()
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Stop();
+            }
+            bool waiting = true;
+            while (waiting)
+            {
+                waiting = DotnetGraphControl.waitForKey;
+                await Task.Delay(1);
+            }
+
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Start();
+            }
+
         }
     }
 }

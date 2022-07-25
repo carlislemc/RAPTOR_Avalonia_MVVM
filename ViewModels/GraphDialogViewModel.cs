@@ -407,6 +407,31 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = c , S = (Color_Type)c + ""};
         }
+
+        public static bool MouseButtonDown(MouseButton button)
+        {
+            return DotnetGraphControl.dngw.MouseButtonDown(button);
+        }
+
+        public static bool MouseButtonPressed(MouseButton button)
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                throw new Exception("Graph window not open!");
+            }
+
+            return DotnetGraphControl.dngw.MouseButtonPressed(button);
+        }
+
+        public static bool MouseButtonReleased(MouseButton button)
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                throw new Exception("Graph window not open!");
+            }
+
+            return DotnetGraphControl.dngw.MouseButtonReleased(button);
+        }
     }
 
 

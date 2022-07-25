@@ -224,7 +224,6 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key_string":
-                    //NEED TO DO
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
                     gil.Emit_Method("numbers.Numbers", "make_string_value");
                     break;
@@ -356,16 +355,13 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "mouse_button_down":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonDown");
                     break;
                 case "mouse_button_pressed":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonPressed");
                     break;
                 case "mouse_button_released":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonReleased");
                     break;
             }
             
@@ -3040,11 +3036,14 @@ namespace parse_tree
                     Avalonia.Input.Key k = (Avalonia.Input.Key)ps.S[0] - 53;
                     return GraphDialogViewModel.KeyDown(k);
                 case Token_Type.Mouse_Button_Down:
-                    return false;
+                    Avalonia.Input.MouseButton b = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonDown(b);
                 case Token_Type.Mouse_Button_Pressed:
-                    return false;
+                    Avalonia.Input.MouseButton b2 = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonPressed(b2);
                 case Token_Type.Mouse_Button_Released:
-                    return false;
+                    Avalonia.Input.MouseButton b3 = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonReleased(b3);
             }
 
             throw new NotImplementedException();
