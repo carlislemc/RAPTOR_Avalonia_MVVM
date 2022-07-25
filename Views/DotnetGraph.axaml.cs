@@ -44,20 +44,18 @@ namespace RAPTOR_Avalonia_MVVM.Views
                 if (mw.waitingForKey == true)
                 {
                     mw.waitingForKey = false;
+                    DotnetGraphControl.waitForKey = false;
                     mw.goToNextComponent();
                     if (mw.myTimer != null)
                     {
                         mw.myTimer.Start();
                     }
                 }
-                else
-                {
-                    DotnetGraphControl.keyHit = true;
-                    DotnetGraphControl.getKey = e.Key;
-                }
+         
                 if(DotnetGraphControl.dngw != null)
                 {
                     DotnetGraphControl.key = e.Key;
+                    DotnetGraphControl.keyHit = true;
                     DotnetGraphControl.keyDown = true;
                 }
             };

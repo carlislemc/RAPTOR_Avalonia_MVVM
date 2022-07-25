@@ -589,7 +589,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private SKPaint SKBrush;
         private ISkiaDrawingContextImpl SkiaContext;
         private string soundFilePath;
-        private bool waitForKey;
+        public static bool waitForKey;
         private bool waitForMouse;
         private int x_size, y_size;
 
@@ -667,7 +667,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         }
 
         public static bool keyHit = false;
-        public static Key getKey = new Key();
 
         public bool KeyHit()
         {
@@ -682,8 +681,15 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public Key GetKey()
         {
-            Key temp = getKey;
-            getKey = new Key();
+            if(key + "" == "None")
+            {
+                WaitForKey();
+                parse_tree.Proc_Call.WaitForKey();
+               
+            }
+
+            Key temp = key;
+            key = new Key();
             return temp;
         }
 
@@ -1323,7 +1329,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             if (!playInBackground)
             {
                 //SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
-                InvalidateVisual();
+                //InvalidateVisual();
             }
         }
 
@@ -1365,14 +1371,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             int x = xCord;
             //SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
-            InvalidateVisual();
+            //InvalidateVisual();
             return x;
         }
         public int GetMouseY()
         {
             int y = yCord;
             //SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
-            InvalidateVisual();
+            //InvalidateVisual();
             return y;
         }
 

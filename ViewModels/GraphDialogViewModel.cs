@@ -341,18 +341,20 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             if (DotnetGraphControl.dngw == null)
             {
-                return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = -1 }; ;
+                throw new Exception("Graph window not open!");
             }
-            Key k = DotnetGraphControl.dngw.GetKey();
 
-            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = ((int)k)+53 };
+            Key k = DotnetGraphControl.dngw.GetKey();
+            
+
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = getAsciiValue((int)k) };
         }
 
         public static numbers.value? GetKeyString()
         {
             if (DotnetGraphControl.dngw == null)
             {
-                return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = -1 }; ;
+                throw new Exception("Graph window not open!");
             }
 
             Key k = DotnetGraphControl.dngw.GetKey();
@@ -375,6 +377,35 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public static void SaveGraphWindow(string filename)
         {
             DotnetGraphControl.dngw.saveGraphWindow(filename);
+        }
+
+        public static bool IsOpen()
+        {
+            if(DotnetGraphControl.dngw == null)
+            {
+                return false;
+            }
+            return DotnetGraphControl.dngw.IsOpen();
+        }
+
+        public static int getAsciiValue(int a)
+        {
+            switch (a)
+            {
+                case int n when (n >= 44 && n <= 44+26):
+                    return n + 53;
+                case int n when (n >= 34 && n <= 43):
+                    return n + 14;
+            }
+
+            return -1;
+        }
+
+        public static numbers.value GetClosestColor(int r, int g, int b)
+        {
+            int c = DotnetGraphControl.GetClosestColor(r, g, b);
+
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = c , S = (Color_Type)c + ""};
         }
     }
 

@@ -229,15 +229,13 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_string_value");
                     break;
                 case "get_pixel":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetPixel");
                     break;
                 case "load_bitmap":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "LoadBitmap");
                     break;
                 case "closest_color":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetClosestColor");
                     break;
                 case "sinh":
                     gil.Emit_Method("numbers.Numbers", "Sinh");
@@ -345,8 +343,7 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "ArcCot");
                     break;
                 case "is_open":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "IsOpen");
                     break;
                 case "key_hit":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyHit");
@@ -700,15 +697,7 @@ namespace parse_tree
                 }
                 else if(str.ToLower() == "wait_for_key")
                 {
-                    mw.waitingForKey = true;
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.WaitForKey();
-                        if(mw.myTimer != null)
-                        {
-                            mw.myTimer.Stop();
-                        }
-                    }, DispatcherPriority.Background);
+                    WaitForKey();
 
                 }
                 else if (str.ToLower() == "wait_for_mouse_button")
@@ -806,6 +795,20 @@ namespace parse_tree
             }
             return;
             
+        }
+
+        public static void WaitForKey()
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            mw.waitingForKey = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                GraphDialogViewModel.WaitForKey();
+                if (mw.myTimer != null)
+                {
+                    mw.myTimer.Stop();
+                }
+            }, DispatcherPriority.Background);
         }
 
         public override void Emit_Code(Generate_Interface gen)  
@@ -2375,6 +2378,11 @@ namespace parse_tree
                     int x = numbers.Numbers.integer_of(ps[0]);
                     int y = numbers.Numbers.integer_of(ps[1]);
                     return GraphDialogViewModel.GetPixel(x, y);
+                case "closest_color":
+                    int r = numbers.Numbers.integer_of(ps[0]);
+                    int g = numbers.Numbers.integer_of(ps[1]);
+                    int b = numbers.Numbers.integer_of(ps[2]);
+                    return GraphDialogViewModel.GetClosestColor(r, g, b);
 
             }
             //return new numbers.value() { V = 333 };
@@ -2970,7 +2978,7 @@ namespace parse_tree
                 case Token_Type.Key_Hit :
                     return GraphDialogViewModel.KeyHit();
                 case Token_Type.Is_Open :
-                    break;
+                    return GraphDialogViewModel.IsOpen();
             }
 
             return false;
