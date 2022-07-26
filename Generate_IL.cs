@@ -152,14 +152,14 @@ namespace raptor
             System.Type t1 = null;
             for (int i = 0; i < myAssemblies.Length; i++)
             {
-                t1 = myAssemblies[i].GetType("dotnetgraphlibrary.dotnetgraph");
+                t1 = myAssemblies[i].GetType("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel");
                 if (t1 != null) break;
             }
             System.Type[] types = new System.Type[1];
             //dotnetgraphlibrary.Mouse_Button bob = new dotnetgraphlibrary.Mouse_Button();
             MouseButton bob = new MouseButton();
             types[0] = bob.GetType();
-            mi = t1.GetMethod("Get_Mouse_Button", types);
+            mi = t1.GetMethod("GetMouseButton", types);
             gen.EmitCall(OpCodes.Call, mi, null);
         }
         public void Emit_Get_Click(int x_or_y)

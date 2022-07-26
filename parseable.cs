@@ -810,15 +810,31 @@ namespace parse_tree
                         GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
                     }, DispatcherPriority.Background);
                 }
-            else if (str.ToLower() == "save_graph_window")
-            {
-                checkOpenGraph();
-                Dispatcher.UIThread.Post(() =>
+                else if (str.ToLower() == "save_graph_window")
                 {
-                    string f = ps[0].S;
-                    GraphDialogViewModel.SaveGraphWindow(f);
-                }, DispatcherPriority.Background);
-            }
+                    checkOpenGraph();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        string f = ps[0].S;
+                        GraphDialogViewModel.SaveGraphWindow(f);
+                    }, DispatcherPriority.Background);
+                }
+                else if(str.ToLower() == "get_mouse_button")
+                {
+                    checkOpenGraph();
+                    Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        Avalonia.Input.MouseButton m = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                        await GraphDialogViewModel.GetMouseButton(m);
+
+                        numbers.value x = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.xLoc };
+                        numbers.value y = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.yLoc };
+
+                        ((Expr_Output)param_list.next.parameter).Assign_To(l, x);
+                        ((Expr_Output)param_list.next.next.parameter).Assign_To(l, y);
+
+                    }, DispatcherPriority.Background).Wait(-1);
+                }
             return;
             
         }
@@ -1170,8 +1186,8 @@ namespace parse_tree
                     emit_parameter_number(param_list.parameter, gen);
                     gen.Emit_End_Conversion((int)Conversions.To_Integer);
                     gen.Emit_Get_Mouse_Button();
-                    // weird
-                    // NEED TO DO
+                    ((Expr_Output)this.param_list.next.parameter).Emit_Store_Dotnetgraph_Int_Func(gen, 0);
+                    ((Expr_Output)this.param_list.next.next.parameter).Emit_Store_Dotnetgraph_Int_Func(gen, 1);
                     break;
             }
         }
@@ -3421,6 +3437,128 @@ namespace parse_tree
         public override void compile_pass1(Generate_Interface gen)
         {
             expr.compile_pass1(gen);
+        }
+
+        public void Assign_To(Lexer l, numbers.value val)
+        {
+            if (expr.GetType() == typeof(Add_Expression) || expr.GetType() == typeof(Minus_Expression))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if (m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if (e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only use a local var");
+            }
+
+
+            Rhs tempRHS = ((Rhs_Expon)e1).rhs;
+
+            if (tempRHS.GetType() == typeof(Array_Ref_2D_Rhs))
+            {
+                Array_Ref_2D_Rhs r = (Array_Ref_2D_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                
+            }
+            else if (tempRHS.GetType() == typeof(Array_Ref_Rhs))
+            {
+                Array_Ref_Rhs r = (Array_Ref_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                
+            }
+            else if (tempRHS.GetType() == typeof(Id_Rhs))
+            {
+                Id_Rhs r = (Id_Rhs)tempRHS;
+                string str = l.Get_Text(r.id.start, r.id.finish);
+                Runtime.setVariable(str, val);
+            }
+            else
+            {
+                throw new Exception("Not a variable!");
+            }
+
+        }
+
+        public void Emit_Store_Dotnetgraph_Int_Func(Generate_Interface gen, int func)
+        {
+            if(expr.GetType() == typeof(Add_Expression) || expr.GetType() == typeof(Minus_Expression))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if (m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if (e1.GetType() == typeof(Func0_Expon) || e1.GetType() == typeof(Func_Expon) || e1.GetType() == typeof(Plugin_Func_Expon))
+            {
+                throw new Exception("Cannot have a function here!");
+            }
+
+            if (e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only compile dotnetgraph to store to a local var");
+            }
+
+            Rhs tempRHS = ((Rhs_Expon)e1).rhs;
+
+            if(tempRHS.GetType() == typeof(Array_Ref_2D_Rhs))
+            {
+                Array_Ref_2D_Rhs r = (Array_Ref_2D_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Array_2D_Assignment_Start(str);
+                r.reference.Emit_Code(gen);
+                gen.Array_2D_Assignment_Between_Indices();
+                r.reference2.Emit_Code(gen);
+                gen.Array_2D_Assignment_After_Indices();
+                gen.Emit_Get_Click(func);
+                gen.Array_2D_Assignment_PastRHS();
+            }
+            else if(tempRHS.GetType() == typeof(Array_Ref_Rhs))
+            {
+                Array_Ref_Rhs r = (Array_Ref_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Array_1D_Assignment_Start(str);
+                r.reference.Emit_Code(gen);
+                gen.Array_1D_Assignment_After_Index();
+                gen.Emit_Get_Click(func);
+                gen.Array_1D_Assignment_PastRHS();
+            }
+            else if(tempRHS.GetType() == typeof(Id_Rhs))
+            {
+                Id_Rhs r = (Id_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Variable_Assignment_Start(str);
+                gen.Emit_Get_Click(func);
+                gen.Variable_Assignment_PastRHS();
+            }
+            else
+            {
+                throw new Exception("Not a variable!");
+            }
+
         }
 
         public void Emit_Length_Of(Generate_Interface gen)

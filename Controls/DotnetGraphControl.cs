@@ -561,8 +561,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private int click_x, click_y;
         private int current_font_size = default_font_size;
 
-        private int xCord;
-        private int yCord;
+        public static int xCord;
+        public static int yCord;
+
+        public static int xLoc;
+        public static int yLoc;
 
         private readonly MyRect draw_rect = new MyRect();
         private bool frozen;
@@ -572,7 +575,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool left_is_down = false;
         private bool looping = false;
         private static bool graphWindowOpen = false;
-        private MouseButton mb;
+        public static MouseButton mb;
         private Point mouse;
         private readonly Player player = new Player();
         private bool playInBackground;
@@ -590,7 +593,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private ISkiaDrawingContextImpl SkiaContext;
         private string soundFilePath;
         public static bool waitForKey;
-        private bool waitForMouse;
+        public static bool waitForMouse;
         private int x_size, y_size;
 
         public static Key key;
@@ -816,6 +819,22 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             //SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
             InvalidateVisual();
             return givenButtonDown;
+        }
+
+        
+
+        public async Task GetMouseButton(MouseButton button)
+        {
+            if(mb + "" == "None")
+            {
+                mb = button;
+                //Dispatcher.UIThread.InvokeAsync(async () =>
+                //{
+                WaitForMouseButton(button);
+                await DotnetGraph.WaitForMouseButton(button);
+                //}).Wait(-1);
+            }
+
         }
 
         public Task<bool> SaveAsync(string path)

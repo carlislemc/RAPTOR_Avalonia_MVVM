@@ -112,15 +112,33 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     if(e.InitialPressMouseButton == MouseButton.Left)
                     {
                         DotnetGraphControl.leftMouseButtonReleased = true;
+
                     }
                     else
                     {
                         DotnetGraphControl.rightMouseButtonReleased = true;
                     }
+
+                    if (DotnetGraphControl.waitForMouse)
+                    {
+                        if(e.InitialPressMouseButton == DotnetGraphControl.mb)
+                        {
+                            DotnetGraphControl.waitForMouse = false;
+                        }
+                    }
+                    
+                    DotnetGraphControl.xLoc = DotnetGraphControl.xCord;
+                    DotnetGraphControl.yLoc = DotnetGraphControl.yCord;
                 }
             };
 
+            this.PointerMoved += (s, e) =>
+            {
+                DotnetGraphControl.xCord = (int)e.GetPosition(dotnetgraph).X - 1;
+                DotnetGraphControl.yCord = (int)dotnetgraph.Height - (int)e.GetPosition(dotnetgraph).Y;
+            };
         }
+
 
         public static void SetTitle(string title)
         {
@@ -136,6 +154,27 @@ namespace RAPTOR_Avalonia_MVVM.Views
         public static double getMaxHeight()
         {
             return 3;
+        }
+
+        public async static Task WaitForMouseButton(MouseButton button)
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Stop();
+            }
+            bool waiting = true;
+            while (waiting)
+            {
+                waiting = DotnetGraphControl.waitForMouse;
+                await Task.Delay(1);
+            }
+
+            if (mw.myTimer != null)
+            {
+                mw.myTimer.Start();
+            }
         }
 
         public async static Task waitForKey()

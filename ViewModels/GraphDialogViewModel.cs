@@ -465,8 +465,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public static bool MouseButtonReleased(MouseButton button)
         {
             
-
             return DotnetGraphControl.dngw.MouseButtonReleased(button);
+        }
+
+        public async static Task GetMouseButton(MouseButton button)
+        {
+            await DotnetGraphControl.dngw.GetMouseButton(button);
         }
     }
 
