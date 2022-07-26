@@ -1099,17 +1099,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return Runtime.getAnyVariable(s, activeScopes[activeScopes.Count - 1]);
         }
 
-        public async void postDialog(string text, bool isEnd)
-        {
-            MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-            mc.Text += text;
-            MainWindow.masterConsole.Activate();
-            if (isEnd)
-            {
-                symbolCount = 0;
-            }
 
-        }
 
         public async void OnNextCommand() {
             //try
@@ -1126,7 +1116,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 {
                     symbolCount++;
 
-                    Dispatcher.UIThread.Post(() => postDialog("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n", true), DispatcherPriority.Background);
+                    Runtime.consoleWrite("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n");
 
 
                     activeComponent.running = false;
@@ -1459,32 +1449,25 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 {
                                     myTimer.Stop();
                                 }
-
+                                numbers.value v;
                                 if (temp.input_is_expression)
                                 {
                                     Lexer l = new Lexer(temp.prompt);
                                     temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
                                     temp.prompt_tree = temp.prompt_result.tree;
                                     Expr_Output ex = (Expr_Output)temp.prompt_tree;
-                                    numbers.value v = ex.Execute(l);
-
-                                    UserInputDialog uid = new UserInputDialog(temp, v);
-                                    await uid.ShowDialog(MainWindow.topWindow);
-
-                                    Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
-                                    Lexer l2 = new Lexer(temp.assign);
-                                    numbers.value v2 = ex2.Execute(l2);
+                                    v = ex.Execute(l);
                                 }
                                 else
                                 {
-                                    UserInputDialog uid = new UserInputDialog(temp);
-                                    await uid.ShowDialog(MainWindow.topWindow);
-
-                                    Expr_Assignment ex2 = (Expr_Assignment)temp.result.tree;
-                                    Lexer l2 = new Lexer(temp.assign);
-                                    numbers.value v2 = ex2.Execute(l2);
+                                    v = null; // this really shouldn't happen
                                 }
+                                //numbers.value answer = Runtime.getUserInput(v, temp);
 
+                                await Runtime.getUserInput(v, temp);
+                                numbers.value answer = temp.pans;
+                                Lexer l2 = new Lexer(temp.Text);
+                                ((Input)temp.result.tree).Execute(l2, answer);
 
                                 if (myTimer != null)
                                 {
@@ -1510,10 +1493,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                             {
                                 outputAns += "\n";
                             }
-
-                            Dispatcher.UIThread.Post(() => postDialog(outputAns, false), DispatcherPriority.Background);
-                            //MainWindow.masterConsole.Activate();
-
+                            Runtime.consoleWrite(outputAns);
+                            
                         }
 
                     }
@@ -1830,12 +1811,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public void OnShowLogCommand() {
             if (log != null)
             {
-                Dispatcher.UIThread.Post(() => postDialog(log.Display(file_guid, true) + "\n", false), DispatcherPriority.Background);
-
+                Runtime.consoleWrite(log.Display(file_guid, true) + "\n");
             }
             else
             {
-                Dispatcher.UIThread.Post(() => postDialog("Log unavailable", false), DispatcherPriority.Background);
+                Runtime.consoleWriteln("Log unavailable");
             }
 
         }
@@ -1897,7 +1877,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             }
 
-            Dispatcher.UIThread.Post(() => postDialog("The total number of symbols is: " + count, false), DispatcherPriority.Background);
+            Runtime.consoleWriteln("The total number of symbols is: " + count);
 
         }
 

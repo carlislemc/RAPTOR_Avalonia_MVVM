@@ -246,7 +246,7 @@ namespace numbers
             }
         }
 
-        public static value make_value__6(string s)
+        public static value make_correct_number_value_type(string s)
         {
             try
             {
