@@ -561,8 +561,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private int click_x, click_y;
         private int current_font_size = default_font_size;
 
-        private int xCord;
-        private int yCord;
+        public static int xCord;
+        public static int yCord;
+
+        public static int xLoc;
+        public static int yLoc;
 
         private readonly MyRect draw_rect = new MyRect();
         private bool frozen;
@@ -572,7 +575,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private bool left_is_down = false;
         private bool looping = false;
         private static bool graphWindowOpen = false;
-        private MouseButton mb;
+        public static MouseButton mb;
         private Point mouse;
         private readonly Player player = new Player();
         private bool playInBackground;
@@ -589,18 +592,18 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private SKPaint SKBrush;
         private ISkiaDrawingContextImpl SkiaContext;
         private string soundFilePath;
-        private bool waitForKey;
-        private bool waitForMouse;
+        public static bool waitForKey;
+        public static bool waitForMouse;
         private int x_size, y_size;
 
         public static Key key;
         public static bool keyDown;
-        private bool mouseDown;
-        private MouseButton buttonDown;
-        private bool leftMouseButtonReleased = false;
-        private bool rightMouseButtonReleased = false;
-        private bool leftMouseButtonPressed = false;
-        private bool rightMouseButtonPressed = false;
+        public static bool mouseDown;
+        public static MouseButton buttonDown;
+        public static bool leftMouseButtonReleased = false;
+        public static bool rightMouseButtonReleased = false;
+        public static bool leftMouseButtonPressed = false;
+        public static bool rightMouseButtonPressed = false;
 
 
         public override void EndInit()
@@ -652,7 +655,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 keyDown = true;
                 Key_Down(Key.A);
 
-                SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
+                //SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
                 waitForKey = false;
                 InvalidateVisual();
             }
@@ -665,10 +668,41 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 keyDown = false;
             }
         }
+
+        public static bool keyHit = false;
+
+        public bool KeyHit()
+        {
+            bool ans = keyHit;
+            if (keyHit)
+            {
+                keyHit = false;
+            }
+
+            return ans;
+        }
+
+        public Key GetKey()
+        {
+            if(key + "" == "None")
+            {
+                Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        WaitForKey();
+                        await DotnetGraph.waitForKey();
+                    }
+                ).Wait(-1);
+            }
+
+            Key temp = key;
+            key = new Key();
+            return temp;
+        }
+
         public bool Key_Down(Key k)
         {
             bool givenKeyDown = keyDown && key == k;
-            SkiaContext.SkCanvas.DrawText(givenKeyDown.ToString(), 400, 500, SKBrush);
+            //SkiaContext.SkCanvas.DrawText(givenKeyDown.ToString(), 400, 500, SKBrush);
             return keyDown && key == k;
         }
 
@@ -700,7 +734,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 }
                 mouseDown = false;
                 var p = e.GetPosition(this);
-                SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
+                //SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
                 InvalidateVisual();
                 waitForMouse = false;
             }
@@ -749,32 +783,58 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         }
         public bool MouseButtonPressed(MouseButton mb)
         {
+            bool ans = false;
             switch (mb)
             {
                 case MouseButton.Left:
-                    return leftMouseButtonPressed;
+                    ans = leftMouseButtonPressed;
+                    leftMouseButtonPressed = false;
+                    return ans;
                 case MouseButton.Right:
-                    return rightMouseButtonPressed;
+                    ans = rightMouseButtonPressed;
+                    rightMouseButtonPressed = false;
+                    return ans;
             }
             return false;
         }
         public bool MouseButtonReleased(MouseButton mb)
         {
+            bool ans;
             switch (mb)
             {
                 case MouseButton.Left:
-                    return leftMouseButtonReleased;
+                    ans = leftMouseButtonReleased;
+                    leftMouseButtonReleased = false;
+                    return ans;
                 case MouseButton.Right:
-                    return rightMouseButtonReleased;
+                    ans = rightMouseButtonReleased;
+                    rightMouseButtonReleased = false;
+                    return ans;
             }
             return false;
         }
         public bool MouseButtonDown(MouseButton button)
         {
             bool givenButtonDown = mouseDown && button == buttonDown;
-            SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
+            //SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
             InvalidateVisual();
             return givenButtonDown;
+        }
+
+        
+
+        public async Task GetMouseButton(MouseButton button)
+        {
+            if(mb + "" == "None")
+            {
+                mb = button;
+                //Dispatcher.UIThread.InvokeAsync(async () =>
+                //{
+                WaitForMouseButton(button);
+                await DotnetGraph.WaitForMouseButton(button);
+                //}).Wait(-1);
+            }
+
         }
 
         public Task<bool> SaveAsync(string path)
@@ -1300,8 +1360,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (!playInBackground)
             {
-                SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
-                InvalidateVisual();
+                //SkiaContext.SkCanvas.DrawText("sound finished", 200, 500, SKBrush);
+                //InvalidateVisual();
             }
         }
 
@@ -1342,15 +1402,15 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public int GetMouseX()
         {
             int x = xCord;
-            SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
-            InvalidateVisual();
+            //SkiaContext.SkCanvas.DrawText("xCord: " + x.ToString(), 100, 100, SKBrush);
+            //InvalidateVisual();
             return x;
         }
         public int GetMouseY()
         {
             int y = yCord;
-            SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
-            InvalidateVisual();
+            //SkiaContext.SkCanvas.DrawText("yCord: " + y.ToString(), 100, 200, SKBrush);
+            //InvalidateVisual();
             return y;
         }
 
@@ -1369,6 +1429,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             }
 
             UpdateWindowUnlessFrozen();
+        }
+
+        public void saveGraphWindow(string filename)
+        {
+            RenderTarget.Save(filename);
         }
 
         public bool IsOpen()
@@ -1427,7 +1492,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             var x_coord = Make_0_Based(x);
             var y_coord = Make_0_Based_And_Unflip(y);
             var color = SkiaContext.SkSurface.PeekPixels().GetPixelColor(x_coord, y_coord);
-            return (Color_Type)GetClosestColor(color.Red, color.Green, color.Red);
+            return (Color_Type)GetClosestColor(color.Red, color.Green, color.Blue);
         }
 
         public static int GetClosestColor(int red, int green, int blue)

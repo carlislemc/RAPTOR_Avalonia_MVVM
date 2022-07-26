@@ -146,8 +146,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SetWindowTitle");
                     break;
                 case "save_graph_window":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "SaveGraphWindow");
                     break;
                 case "pi":
                     gil.Emit_Load_Static("numbers.Numbers", "Pi");
@@ -220,23 +219,22 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
+                    gil.Emit_To_Integer();
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key_string":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
+                    gil.Emit_Method("numbers.Numbers", "make_string_value");
                     break;
                 case "get_pixel":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetPixel");
                     break;
                 case "load_bitmap":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "LoadBitmap");
                     break;
                 case "closest_color":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetClosestColor");
                     break;
                 case "sinh":
                     gil.Emit_Method("numbers.Numbers", "Sinh");
@@ -344,12 +342,10 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "ArcCot");
                     break;
                 case "is_open":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "IsOpen");
                     break;
                 case "key_hit":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyHit");
                     break;
                 case "key_down":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyDown");
@@ -359,16 +355,13 @@ namespace parse_tree
                     throw new NotImplementedException();
                     break;
                 case "mouse_button_down":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonDown");
                     break;
                 case "mouse_button_pressed":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonPressed");
                     break;
                 case "mouse_button_released":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonReleased");
                     break;
             }
             
@@ -528,6 +521,15 @@ namespace parse_tree
         {
             return false;
         }
+
+        public static void checkOpenGraph()
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                throw new Exception("Graph window not open!");
+            }
+        }
+
         public override void Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
@@ -558,6 +560,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "close_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.CloseGraphWindow();
@@ -566,6 +569,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "freeze_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.FreezeGraphWindow();
@@ -574,6 +578,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "unfreeze_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.UnFreezeGraphWindow();
@@ -582,6 +587,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "update_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.UpdateGraphWindow();
@@ -590,6 +596,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_line")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -598,10 +605,12 @@ namespace parse_tree
                         int y2 = numbers.Numbers.integer_of(ps[3]);
                         int c = numbers.Numbers.integer_of(ps[4]);
                         GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                        
                     }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_box")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -609,12 +618,14 @@ namespace parse_tree
                         int x2 = numbers.Numbers.integer_of(ps[2]);
                         int y2 = numbers.Numbers.integer_of(ps[3]);
                         int c = numbers.Numbers.integer_of(ps[4]);
-                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;    
                         GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
                     }, DispatcherPriority.Background);
+                
                 }
                 else if (str.ToLower() == "draw_circle")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -627,6 +638,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_ellipse")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -640,6 +652,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_arc")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -656,6 +669,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_ellipse_rotate")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -670,6 +684,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "display_text")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -681,6 +696,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "display_number")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -692,6 +708,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "set_font_size")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int size = numbers.Numbers.integer_of(ps[0]);
@@ -700,19 +717,11 @@ namespace parse_tree
                 }
                 else if(str.ToLower() == "wait_for_key")
                 {
-                    mw.waitingForKey = true;
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.WaitForKey();
-                        if(mw.myTimer != null)
-                        {
-                            mw.myTimer.Stop();
-                        }
-                    }, DispatcherPriority.Background);
-
+                    WaitForKey();
                 }
                 else if (str.ToLower() == "wait_for_mouse_button")
                 {
+                    checkOpenGraph();
                     mw.waitingForMouse = true;
                     mw.mouseWait = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
                     Dispatcher.UIThread.Post(() =>
@@ -728,6 +737,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "set_window_title")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
@@ -737,6 +747,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "clear_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int c = numbers.Numbers.integer_of(ps[0]);
@@ -764,6 +775,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "flood_fill")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x = numbers.Numbers.integer_of(ps[0]);
@@ -775,6 +787,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "put_pixel")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x = numbers.Numbers.integer_of(ps[0]);
@@ -786,6 +799,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_bitmap")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int i = numbers.Numbers.integer_of(ps[0]);
@@ -796,8 +810,49 @@ namespace parse_tree
                         GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
                     }, DispatcherPriority.Background);
                 }
+                else if (str.ToLower() == "save_graph_window")
+                {
+                    checkOpenGraph();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        string f = ps[0].S;
+                        GraphDialogViewModel.SaveGraphWindow(f);
+                    }, DispatcherPriority.Background);
+                }
+                else if(str.ToLower() == "get_mouse_button")
+                {
+                    checkOpenGraph();
+                    Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        Avalonia.Input.MouseButton m = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                        await GraphDialogViewModel.GetMouseButton(m);
+
+                        numbers.value x = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.xLoc };
+                        numbers.value y = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.yLoc };
+
+                        ((Expr_Output)param_list.next.parameter).Assign_To(l, x);
+                        ((Expr_Output)param_list.next.next.parameter).Assign_To(l, y);
+
+                        DotnetGraphControl.mb = new Avalonia.Input.MouseButton();
+
+                    }, DispatcherPriority.Background).Wait(-1);
+                }
             return;
             
+        }
+
+        public static void WaitForKey()
+        {
+            MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+            mw.waitingForKey = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                GraphDialogViewModel.WaitForKey();
+                if (mw.myTimer != null)
+                {
+                    mw.myTimer.Stop();
+                }
+            }, DispatcherPriority.Background);
         }
 
         public override void Emit_Code(Generate_Interface gen)  
@@ -1133,8 +1188,8 @@ namespace parse_tree
                     emit_parameter_number(param_list.parameter, gen);
                     gen.Emit_End_Conversion((int)Conversions.To_Integer);
                     gen.Emit_Get_Mouse_Button();
-                    // weird
-                    // NEED TO DO
+                    ((Expr_Output)this.param_list.next.parameter).Emit_Store_Dotnetgraph_Int_Func(gen, 0);
+                    ((Expr_Output)this.param_list.next.next.parameter).Emit_Store_Dotnetgraph_Int_Func(gen, 1);
                     break;
             }
         }
@@ -2199,9 +2254,37 @@ namespace parse_tree
                 case "right_button":
                     return new numbers.value() { V = 87 };
                 case "get_mouse_x":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetMouseX();
                 case "get_mouse_y":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetMouseX();
+                case "get_key":
+                    Proc_Call.checkOpenGraph();
+                    return GraphDialogViewModel.GetKey();
+                case "get_key_string":
+                    Proc_Call.checkOpenGraph();
+                    return GraphDialogViewModel.GetKeyString();
+                case "get_max_height":
+                    return GraphDialogViewModel.GetMaxHeight();
+                case "get_max_width":
+                    return GraphDialogViewModel.GetMaxWidth();
+                case "get_window_height":
+                    Proc_Call.checkOpenGraph();
+                    double h = 0;
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        h = GraphDialogViewModel.GetWindowHeight();
+                    }).Wait(-1);
+                    return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = h };
+                case "get_window_width":
+                    Proc_Call.checkOpenGraph();
+                    double w = 0;
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        w = GraphDialogViewModel.GetWindowWidth();
+                    }).Wait(-1);
+                    return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = w };
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
@@ -2271,7 +2354,7 @@ namespace parse_tree
             Runtime.processing_parameter_list = true;
             numbers.value[] ps = parameters.Execute(l);
             Runtime.processing_parameter_list = false;
-            switch (s.ToLower()){
+            switch (s.ToLower()) {
                 case "sin":
                     if (ps.Length == 1)
                     { return numbers.Numbers.Sin(ps[0], numbers.Numbers.Two_Pi); }
@@ -2303,7 +2386,7 @@ namespace parse_tree
                     else
                     { return numbers.Numbers.ArcCos(ps[0], ps[1]); }
                 case "log":
-                    return new numbers.value(){V=Math.Log(ps[0].V)};
+                    return new numbers.value() { V = Math.Log(ps[0].V) };
                 case "arctan":
                     if (ps.Length == 1)
                     { return numbers.Numbers.ArcTan(ps[0], numbers.Numbers.Two_Pi); }
@@ -2315,43 +2398,58 @@ namespace parse_tree
                     else
                     { return numbers.Numbers.ArcCot(ps[0], ps[1]); }
                 case "min":
-                    return numbers.Numbers.findMin(ps[0],ps[1]);
+                    return numbers.Numbers.findMin(ps[0], ps[1]);
                 case "max":
-                    return numbers.Numbers.findMax(ps[0],ps[1]);
+                    return numbers.Numbers.findMax(ps[0], ps[1]);
                 case "sinh":
-                    return new numbers.value(){V=Math.Sinh(ps[0].V)};
+                    return new numbers.value() { V = Math.Sinh(ps[0].V) };
                 case "tanh":
-                    return new numbers.value(){V=Math.Tanh(ps[0].V)};
+                    return new numbers.value() { V = Math.Tanh(ps[0].V) };
                 case "cosh":
-                    return new numbers.value(){V=Math.Cosh(ps[0].V)};
+                    return new numbers.value() { V = Math.Cosh(ps[0].V) };
                 case "arccosh":
-                    return new numbers.value(){V=Math.Acosh(ps[0].V)};
+                    return new numbers.value() { V = Math.Acosh(ps[0].V) };
                 case "arcsinh":
-                    return new numbers.value(){V=Math.Asinh(ps[0].V)};
+                    return new numbers.value() { V = Math.Asinh(ps[0].V) };
                 case "arctanh":
-                    return new numbers.value(){V=Math.Atanh(ps[0].V)};
+                    return new numbers.value() { V = Math.Atanh(ps[0].V) };
                 case "coth":
-                    return new numbers.value(){V=1/Math.Tanh(ps[0].V)};;
+                    return new numbers.value() { V = 1 / Math.Tanh(ps[0].V) }; ;
                 case "arccoth":
-                    return new numbers.value(){V=1/Math.Atanh(ps[0].V)};
+                    return new numbers.value() { V = 1 / Math.Atanh(ps[0].V) };
                 case "sqrt":
-                    return new numbers.value(){V=Math.Sqrt(ps[0].V)};
+                    return new numbers.value() { V = Math.Sqrt(ps[0].V) };
                 case "floor":
-                    return new numbers.value(){V=Math.Floor(ps[0].V)};
+                    return new numbers.value() { V = Math.Floor(ps[0].V) };
                 case "ceiling":
-                    return new numbers.value(){V=Math.Ceiling(ps[0].V)};
+                    return new numbers.value() { V = Math.Ceiling(ps[0].V) };
                 case "to_ascii":
                     return new numbers.value() { V = ps[0].C };
                 case "to_character":
-                    return new numbers.value() {Kind=numbers.Value_Kind.Character_Kind ,C = (char)ps[0].V };
+                    return new numbers.value() { Kind = numbers.Value_Kind.Character_Kind, C = (char)ps[0].V };
                 case "length_of":
+                    if (ps[0].Kind == numbers.Value_Kind.String_Kind)
+                    {
+                        return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = ps[0].S.Length };
+                    }
                     return ((Variable)ps[0].Object).values[0].value;
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
                 case "load_bitmap":
+                    Proc_Call.checkOpenGraph();
                     string f = ps[0].S;
                     return GraphDialogViewModel.LoadBitmap(f);
-                    
+                case "get_pixel":
+                    Proc_Call.checkOpenGraph();
+                    int x = numbers.Numbers.integer_of(ps[0]);
+                    int y = numbers.Numbers.integer_of(ps[1]);
+                    return GraphDialogViewModel.GetPixel(x, y);
+                case "closest_color":
+                    int r = numbers.Numbers.integer_of(ps[0]);
+                    int g = numbers.Numbers.integer_of(ps[1]);
+                    int b = numbers.Numbers.integer_of(ps[2]);
+                    return GraphDialogViewModel.GetClosestColor(r, g, b);
+
             }
             //return new numbers.value() { V = 333 };
             throw new NotImplementedException();
@@ -2366,6 +2464,7 @@ namespace parse_tree
             {
                 o = gen.Emit_Call_Method(functionName);
             }
+            
 
             switch (s)
             {
@@ -2380,7 +2479,7 @@ namespace parse_tree
                     gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
-                    //weird
+                    ((Expr_Output)parameters.parameter).Emit_Length_Of(gen);
                     break;
                 case "get_pixel":
                     gen.Emit_Conversion((int)Conversions.To_Integer);
@@ -2940,7 +3039,16 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
-            throw new NotImplementedException();
+            switch (kind)
+            {
+                case Token_Type.Key_Hit :
+                    Proc_Call.checkOpenGraph();
+                    return GraphDialogViewModel.KeyHit();
+                case Token_Type.Is_Open :
+                    return GraphDialogViewModel.IsOpen();
+            }
+
+            return false;
         }
 
         public override void Emit_Code(Generate_Interface gen)  
@@ -2996,14 +3104,21 @@ namespace parse_tree
             switch (kind)
             {
                 case Token_Type.Key_Down:
+                    Proc_Call.checkOpenGraph();
                     Avalonia.Input.Key k = (Avalonia.Input.Key)ps.S[0] - 53;
                     return GraphDialogViewModel.KeyDown(k);
                 case Token_Type.Mouse_Button_Down:
-                    return false;
+                    Proc_Call.checkOpenGraph();
+                    Avalonia.Input.MouseButton b = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonDown(b);
                 case Token_Type.Mouse_Button_Pressed:
-                    return false;
+                    Proc_Call.checkOpenGraph();
+                    Avalonia.Input.MouseButton b2 = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonPressed(b2);
                 case Token_Type.Mouse_Button_Released:
-                    return false;
+                    Proc_Call.checkOpenGraph();
+                    Avalonia.Input.MouseButton b3 = (Avalonia.Input.MouseButton)ps.V - 85;
+                    return GraphDialogViewModel.MouseButtonReleased(b3);
             }
 
             throw new NotImplementedException();
@@ -3325,6 +3440,194 @@ namespace parse_tree
         {
             expr.compile_pass1(gen);
         }
+
+        public void Assign_To(Lexer l, numbers.value val)
+        {
+            if (expr.GetType() == typeof(Add_Expression) || expr.GetType() == typeof(Minus_Expression))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if (m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if (e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only use a local var");
+            }
+
+
+            Rhs tempRHS = ((Rhs_Expon)e1).rhs;
+
+            if (tempRHS.GetType() == typeof(Array_Ref_2D_Rhs))
+            {
+                Array_Ref_2D_Rhs r = (Array_Ref_2D_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                numbers.value v = r.reference.Execute(l);
+                numbers.value v2 = r.reference2.Execute(l);
+                if (!numbers.Numbers.is_integer(v))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                if (!numbers.Numbers.is_integer(v2))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                Runtime.set2DArrayElement(str, numbers.Numbers.integer_of(v), numbers.Numbers.integer_of(v2), val);
+                
+            }
+            else if (tempRHS.GetType() == typeof(Array_Ref_Rhs))
+            {
+                Array_Ref_Rhs r = (Array_Ref_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                numbers.value v = r.reference.Execute(l);
+                if (!numbers.Numbers.is_integer(v))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                Runtime.setArrayElement(str, numbers.Numbers.integer_of(v), val);
+
+            }
+            else if (tempRHS.GetType() == typeof(Id_Rhs))
+            {
+                Id_Rhs r = (Id_Rhs)tempRHS;
+                string str = l.Get_Text(r.id.start, r.id.finish);
+                Runtime.setVariable(str, val);
+            }
+            else
+            {
+                throw new Exception("Not a variable!");
+            }
+
+        }
+
+        public void Emit_Store_Dotnetgraph_Int_Func(Generate_Interface gen, int func)
+        {
+            if(expr.GetType() == typeof(Add_Expression) || expr.GetType() == typeof(Minus_Expression))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if (m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Cannot have arithmetic operation here!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if (e1.GetType() == typeof(Func0_Expon) || e1.GetType() == typeof(Func_Expon) || e1.GetType() == typeof(Plugin_Func_Expon))
+            {
+                throw new Exception("Cannot have a function here!");
+            }
+
+            if (e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only compile dotnetgraph to store to a local var");
+            }
+
+            Rhs tempRHS = ((Rhs_Expon)e1).rhs;
+
+            if(tempRHS.GetType() == typeof(Array_Ref_2D_Rhs))
+            {
+                Array_Ref_2D_Rhs r = (Array_Ref_2D_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Array_2D_Assignment_Start(str);
+                r.reference.Emit_Code(gen);
+                gen.Array_2D_Assignment_Between_Indices();
+                r.reference2.Emit_Code(gen);
+                gen.Array_2D_Assignment_After_Indices();
+                gen.Emit_Get_Click(func);
+                gen.Array_2D_Assignment_PastRHS();
+            }
+            else if(tempRHS.GetType() == typeof(Array_Ref_Rhs))
+            {
+                Array_Ref_Rhs r = (Array_Ref_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Array_1D_Assignment_Start(str);
+                r.reference.Emit_Code(gen);
+                gen.Array_1D_Assignment_After_Index();
+                gen.Emit_Get_Click(func);
+                gen.Array_1D_Assignment_PastRHS();
+            }
+            else if(tempRHS.GetType() == typeof(Id_Rhs))
+            {
+                Id_Rhs r = (Id_Rhs)tempRHS;
+                string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                gen.Variable_Assignment_Start(str);
+                gen.Emit_Get_Click(func);
+                gen.Variable_Assignment_PastRHS();
+            }
+            else
+            {
+                throw new Exception("Not a variable!");
+            }
+
+        }
+
+        public void Emit_Length_Of(Generate_Interface gen)
+        {
+            if(expr.left.GetType() == typeof(Add_Expression) || expr.left.GetType() == typeof(Minus_Expression))
+            {
+                gen.Emit_Conversion((int)Conversions.To_String);
+                expr.Emit_Code(gen);
+                gen.Emit_End_Conversion((int)Conversions.To_String);
+                gen.Emit_String_Length();
+                return;
+            }
+
+            Add a1 = (Add)expr.left;
+            if (a1.GetType() == typeof(Div_Add) || a1.GetType() == typeof(Rem_Add) || a1.GetType() == typeof(Mod_Add) || a1.GetType() == typeof(Mult_Add))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Mult m1 = (Mult)a1.left;
+            if(m1.GetType() == typeof(Expon_Mult))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Expon e1 = (Expon)m1.left;
+            if(e1.GetType() == typeof(String_Expon))
+            {
+                String_Expon tempExpon = (String_Expon)e1;
+                string s = Component.the_lexer.Get_Text(tempExpon.s.start,  tempExpon.s.finish);
+                gen.Emit_Load_Number(Convert.ToInt32(s));
+                return;
+            }
+
+            if(e1.GetType() == typeof(Func0_Expon) || e1.GetType() == typeof(Func_Expon) || e1.GetType() == typeof(Plugin_Func_Expon))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            if(e1.GetType() != typeof(Rhs_Expon))
+            {
+                throw new Exception("Can only take length of string or 1D array!");
+            }
+
+            Id_Rhs tempRHS = (Id_Rhs)((Rhs_Expon)e1).rhs;
+
+            string tempStr = Component.the_lexer.Get_Text(tempRHS.id.start, tempRHS.id.finish);
+            gen.Emit_Array_Size(tempStr);
+        }
+
     }
     //Parameter_List => Output[, Parameter_List | Lambda]
     public class Parameter_List

@@ -557,6 +557,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public async void OnOpenCommand()
         {
+            if (modified)
+            {
+                await OnNewCommand();
+            }
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filters.Add(new FileDialogFilter() { Name = "RAPTOR", Extensions = { "rap" } });
             dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
@@ -568,6 +572,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 {
                     if (result.Length > 0)
                     {
+                        
                         Load_File(result[0]);
                     }
                     /*var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
@@ -683,9 +688,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.Perform_Save(name, true);
         }
 
-        public void OnSaveCommand(bool closeAfter = false) {
+        public async Task OnSaveCommand(bool closeAfter = false) {
 
-            FileSave_Click(closeAfter);
+            await FileSave_Click(closeAfter);
 
         }
 
@@ -696,21 +701,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        private void FileSave_Click(bool closeAfter = false)
+        private async Task FileSave_Click(bool closeAfter = false)
         {
             if (fileName == "" || fileName == null)
             {
-                this.OnSaveAsCommand(closeAfter);
+                await this.OnSaveAsCommand(closeAfter);
             }
             else
             {
-                this.Perform_Save(this.fileName, false, closeAfter);
+                await this.Perform_Save(this.fileName, false, closeAfter);
                 Plugins.Load_Plugins(this.fileName);
             }
         }
 
         private bool Save_Error = false;
-        private async void Perform_Save(string name, bool is_autosave, bool closeAfter = false)
+        private async Task Perform_Save(string name, bool is_autosave, bool closeAfter = false)
         {
             Stream stream;
             string prefix;
@@ -838,7 +843,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             OnSaveAsCommand(false);
         }
 
-        public async void OnSaveAsCommand(bool closeAfter = false) {
+        public async Task OnSaveAsCommand(bool closeAfter = false) {
 
             string dialog_fileName;
             string oldName = this.fileName;
@@ -868,7 +873,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 this.fileName = ans;
                 MainWindow.setMainTitle("RAPTOR - " + ans);
                 Plugins.Load_Plugins(this.fileName);
-                this.FileSave_Click(closeAfter);
+                await this.FileSave_Click(closeAfter);
 
             }
 
@@ -917,8 +922,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 return;
             }
-            //try
-            //{
+            try
+            {
             symbolCount++;
             if (parentCount.Count != 0 && parentComponent == null)
             {
@@ -1084,15 +1089,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 activeComponent.selected = false;
             }
-            //}
-            //catch(Exception e)
-            //{
-            //    if(myTimer != null)
-            //    {
-            //        myTimer.Stop();
-            //    }
-            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
-            //}
+            }
+            catch(Exception e)
+            {
+                if(myTimer != null)
+                {
+                    myTimer.Stop();
+                }
+                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
+            }
         }
 
         private bool varFound(string s) {
@@ -1112,9 +1117,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
 
         public async void OnNextCommand() {
-            //try
-            //{
-            if (activeComponent == null)
+            try
+            {
+                if (activeComponent == null)
             {
                 startRun();
                 activeComponent = this.mainSubchart().Start;
@@ -1122,7 +1127,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             else
             {
-                if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null))
+                if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
                 {
                     symbolCount++;
 
@@ -1522,18 +1527,15 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             }
 
-            //}
-            //catch(Exception e)
-            //{
-            //    if (myTimer != null)
-            //    {
-            //        myTimer.Stop();
-            //    }
-            //    Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
-            //}
-
-
-
+            }
+            catch (Exception e)
+            {
+                if (myTimer != null)
+                {
+                    myTimer.Stop();
+                }
+                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
+            }
 
         }
         public void OnPauseCommand() {
@@ -1576,13 +1578,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 string msg = "Choosing this option will delete the current flow chart!" + '\n' + "Do you want to save first?";
 
-                await Dispatcher.UIThread.InvokeAsync(async () => {
 
                     await MessageBoxClass.Show(msg, "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
                     if (buttonAnswer == ButtonResult.Yes)
                     {
-                        OnSaveCommand();
+                        await OnSaveCommand();
                         checkSave = false;
                     }
                     else if (buttonAnswer == ButtonResult.No)
@@ -1593,7 +1594,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     {
                         checkSave = false;
                     }
-                });
 
             }
             else
@@ -1606,7 +1606,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public ButtonResult buttonAnswer = new ButtonResult();
         public bool checkSave = true;
 
-        public async void OnNewCommand()
+        public async Task OnNewCommand()
         {
             //var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
             //    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
@@ -1621,7 +1621,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             checkSave = modified;
 
-            await Dispatcher.UIThread.InvokeAsync(async () => { await Save_Before_Losing(); });
+            await Save_Before_Losing();
+            //await Dispatcher.UIThread.InvokeAsync(async () => { await Save_Before_Losing(); });
 
             if (checkSave)
             {
@@ -1912,8 +1913,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public async void OnRunCompiledCommand() {
 
-            this.FileSave_Click();
+            await this.FileSave_Click();
             this.OnResetCommand();
+            //Compile_Helpers.Compile_Flowchart(theTabs);
+            //Compile_Helpers.Run_Compiled(false);
             try
             {
                 Compile_Helpers.Compile_Flowchart(theTabs);
