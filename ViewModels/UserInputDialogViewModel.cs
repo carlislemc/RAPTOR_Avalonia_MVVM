@@ -77,12 +77,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public void OnDoneCommand(){
-            p.result = interpreter_pkg.assignment_syntax(p.text_str, getVariable);
-            p.assign = p.text_str + ":=" + getVariable;
+            //p.result = interpreter_pkg.assignment_syntax(p.text_str, getVariable);
+            //p.assign = p.text_str + ":=" + getVariable;
 
             if (compileMode)
             {
-                p.pans = numbers.Numbers.make_value__6(getVariable);
+                p.pans = numbers.Numbers.make_correct_number_value_type(getVariable);
             }
 
             w.Close();

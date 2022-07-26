@@ -1087,41 +1087,60 @@ namespace raptor
 		}
 		public static void consoleWriteln(string v)
         {
-			//throw new NotImplementedException();
-			Dispatcher.UIThread.Post(() =>
-			{
-				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-				mc.Text += v + "\n";
-				MainWindow.masterConsole.Activate();
-			}, DispatcherPriority.Background);
+			consoleWrite(v + "\n");
 		}
 		public static void consoleWrite(string v)
 		{
-			//throw new NotImplementedException();
-			Dispatcher.UIThread.Post(() =>
+			if (!raptor_files.output_redirected())
 			{
-				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-				mc.Text += v;
-				MainWindow.masterConsole.Activate();
-			}, DispatcherPriority.Background);
+				Dispatcher.UIThread.Post(() =>
+					{
+						MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+						mc.Text += v;
+						MainWindow.masterConsole.Activate();
+					}, DispatcherPriority.Background);
+			}
+			else
+			{
+				raptor_files.write(v);
+			}
 		}
 
-		public static numbers.value getUserIn(string prompt, bool force_number)
-        {
-
-            Parallelogram temp = (Parallelogram)Component.currentTempComponent;
-
-            Dispatcher.UIThread.InvokeAsync(async () =>
+		public async static Task getUserInput(numbers.value prompt, Parallelogram component)
+		{
+			// I would love to combine this with the below method, but tasking.... :-(
+			if (!raptor_files.input_redirected())
+			{
+				UserInputDialog uid = new UserInputDialog(component, prompt, true);
+				await uid.ShowDialog(MainWindow.topWindow);
+			}
+			else
             {
-                UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, true);
-                await uid.ShowDialog(MainWindow.topWindow);
-            }).Wait(-1);
+				component.pans = numbers.Numbers.make_correct_number_value_type(raptor_files.read());
+            }
+		}
+		public static numbers.value getUserIn(string prompt, bool force_number)
+		{
+			if (!raptor_files.input_redirected())
+			{
 
-            return temp.pans;
-        }
+				Parallelogram temp = (Parallelogram)Component.currentTempComponent;
+				Dispatcher.UIThread.InvokeAsync(async () =>
+				{
+					UserInputDialog uid = new UserInputDialog(temp, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, true);
+					await uid.ShowDialog(MainWindow.topWindow);
+				}).Wait(-1);
+				return temp.pans;
+			}
+			else
+			{
+				return numbers.Numbers.make_correct_number_value_type(raptor_files.read());
+			}
+			//return getUserInput(new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, temp);
+		}
 
-		// Container holding all variables and their values
-		public static Avalonia.Controls.Window parent;
+// Container holding all variables and their values
+public static Avalonia.Controls.Window parent;
 		private static RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel console;
 		private static Avalonia.Controls.TreeView watchBox;
 		public Runtime()
