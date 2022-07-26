@@ -25,25 +25,19 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 {
     public class GraphDialogViewModel : ViewModelBase
     {
-        // public GraphDialogViewModel() {
 
-        // }
-
-        //public static void OpenGraphWindow(int w, int h)
+        //public static void checkOpen()
         //{
-        //    Dispatcher.UIThread.Post(() =>
+        //    if(DotnetGraphControl.dngw == null)
         //    {
-        //        DotnetGraph gd = new DotnetGraph(w, h);
-        //        SetWindowTitle("RAPTORGraph");
-        //        gd.Show();
-
-        //    }, DispatcherPriority.Background);
-
+        //        throw new Exception("Graph window not open!");
+        //    }
         //}
 
         public static void DrawLine(int x1, int y1, int x2, int y2,Color_Type c)
         {
-            
+
+            //checkOpen();
 
             Dispatcher.UIThread.Post(() =>
             {
