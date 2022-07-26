@@ -1537,9 +1537,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
             }
 
-
-
-
         }
         public void OnPauseCommand() {
             if (myTimer == null)
@@ -1916,7 +1913,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public async void OnRunCompiledCommand() {
 
-            this.FileSave_Click();
+            await this.FileSave_Click();
             this.OnResetCommand();
             //Compile_Helpers.Compile_Flowchart(theTabs);
             //Compile_Helpers.Run_Compiled(false);

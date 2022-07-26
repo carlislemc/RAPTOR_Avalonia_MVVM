@@ -521,6 +521,15 @@ namespace parse_tree
         {
             return false;
         }
+
+        public static void checkOpenGraph()
+        {
+            if (DotnetGraphControl.dngw == null)
+            {
+                throw new Exception("Graph window not open!");
+            }
+        }
+
         public override void Execute(Lexer l)
         {   
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
@@ -551,6 +560,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "close_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.CloseGraphWindow();
@@ -559,6 +569,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "freeze_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.FreezeGraphWindow();
@@ -567,6 +578,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "unfreeze_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.UnFreezeGraphWindow();
@@ -575,6 +587,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "update_graph_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         GraphDialogViewModel.UpdateGraphWindow();
@@ -583,6 +596,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_line")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -591,10 +605,12 @@ namespace parse_tree
                         int y2 = numbers.Numbers.integer_of(ps[3]);
                         int c = numbers.Numbers.integer_of(ps[4]);
                         GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                        
                     }, DispatcherPriority.Background);
                 }
                 else if (str.ToLower() == "draw_box")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -602,12 +618,14 @@ namespace parse_tree
                         int x2 = numbers.Numbers.integer_of(ps[2]);
                         int y2 = numbers.Numbers.integer_of(ps[3]);
                         int c = numbers.Numbers.integer_of(ps[4]);
-                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;    
                         GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
                     }, DispatcherPriority.Background);
+                
                 }
                 else if (str.ToLower() == "draw_circle")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -620,6 +638,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_ellipse")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -633,6 +652,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_arc")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -649,6 +669,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_ellipse_rotate")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -663,6 +684,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "display_text")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -674,6 +696,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "display_number")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x1 = numbers.Numbers.integer_of(ps[0]);
@@ -685,6 +708,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "set_font_size")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int size = numbers.Numbers.integer_of(ps[0]);
@@ -694,10 +718,10 @@ namespace parse_tree
                 else if(str.ToLower() == "wait_for_key")
                 {
                     WaitForKey();
-
                 }
                 else if (str.ToLower() == "wait_for_mouse_button")
                 {
+                    checkOpenGraph();
                     mw.waitingForMouse = true;
                     mw.mouseWait = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
                     Dispatcher.UIThread.Post(() =>
@@ -713,6 +737,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "set_window_title")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
@@ -722,6 +747,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "clear_window")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int c = numbers.Numbers.integer_of(ps[0]);
@@ -749,6 +775,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "flood_fill")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x = numbers.Numbers.integer_of(ps[0]);
@@ -760,6 +787,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "put_pixel")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int x = numbers.Numbers.integer_of(ps[0]);
@@ -771,6 +799,7 @@ namespace parse_tree
                 }
                 else if (str.ToLower() == "draw_bitmap")
                 {
+                    checkOpenGraph();
                     Dispatcher.UIThread.Post(() =>
                     {
                         int i = numbers.Numbers.integer_of(ps[0]);
@@ -783,6 +812,7 @@ namespace parse_tree
                 }
             else if (str.ToLower() == "save_graph_window")
             {
+                checkOpenGraph();
                 Dispatcher.UIThread.Post(() =>
                 {
                     string f = ps[0].S;
@@ -2206,17 +2236,37 @@ namespace parse_tree
                 case "right_button":
                     return new numbers.value() { V = 87 };
                 case "get_mouse_x":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetMouseX();
                 case "get_mouse_y":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetMouseX();
                 case "get_key":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetKey();
                 case "get_key_string":
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.GetKeyString();
                 case "get_max_height":
                     return GraphDialogViewModel.GetMaxHeight();
                 case "get_max_width":
                     return GraphDialogViewModel.GetMaxWidth();
+                case "get_window_height":
+                    Proc_Call.checkOpenGraph();
+                    double h = 0;
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        h = GraphDialogViewModel.GetWindowHeight();
+                    }).Wait(-1);
+                    return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = h };
+                case "get_window_width":
+                    Proc_Call.checkOpenGraph();
+                    double w = 0;
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        w = GraphDialogViewModel.GetWindowWidth();
+                    }).Wait(-1);
+                    return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = w };
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
@@ -2368,9 +2418,11 @@ namespace parse_tree
                 case "abs":
                     return new numbers.value() { V = Math.Abs(ps[0].V) };
                 case "load_bitmap":
+                    Proc_Call.checkOpenGraph();
                     string f = ps[0].S;
                     return GraphDialogViewModel.LoadBitmap(f);
                 case "get_pixel":
+                    Proc_Call.checkOpenGraph();
                     int x = numbers.Numbers.integer_of(ps[0]);
                     int y = numbers.Numbers.integer_of(ps[1]);
                     return GraphDialogViewModel.GetPixel(x, y);
@@ -2972,6 +3024,7 @@ namespace parse_tree
             switch (kind)
             {
                 case Token_Type.Key_Hit :
+                    Proc_Call.checkOpenGraph();
                     return GraphDialogViewModel.KeyHit();
                 case Token_Type.Is_Open :
                     return GraphDialogViewModel.IsOpen();
@@ -3033,15 +3086,19 @@ namespace parse_tree
             switch (kind)
             {
                 case Token_Type.Key_Down:
+                    Proc_Call.checkOpenGraph();
                     Avalonia.Input.Key k = (Avalonia.Input.Key)ps.S[0] - 53;
                     return GraphDialogViewModel.KeyDown(k);
                 case Token_Type.Mouse_Button_Down:
+                    Proc_Call.checkOpenGraph();
                     Avalonia.Input.MouseButton b = (Avalonia.Input.MouseButton)ps.V - 85;
                     return GraphDialogViewModel.MouseButtonDown(b);
                 case Token_Type.Mouse_Button_Pressed:
+                    Proc_Call.checkOpenGraph();
                     Avalonia.Input.MouseButton b2 = (Avalonia.Input.MouseButton)ps.V - 85;
                     return GraphDialogViewModel.MouseButtonPressed(b2);
                 case Token_Type.Mouse_Button_Released:
+                    Proc_Call.checkOpenGraph();
                     Avalonia.Input.MouseButton b3 = (Avalonia.Input.MouseButton)ps.V - 85;
                     return GraphDialogViewModel.MouseButtonReleased(b3);
             }
