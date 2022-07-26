@@ -1096,7 +1096,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 {
                     myTimer.Stop();
                 }
-                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n"+e.Message, true), DispatcherPriority.Background);
+                Runtime.consoleWriteln("--- Run Halted! ---\n" + e.Message);
             }
         }
 
@@ -1107,8 +1107,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public async void OnNextCommand() {
-            try
-            {
+            //try
+            //{
                 if (activeComponent == null)
             {
                 startRun();
@@ -1472,7 +1472,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 await Runtime.getUserInput(v, temp);
                                 numbers.value answer = temp.pans;
                                 Lexer l2 = new Lexer(temp.Text);
-                                ((Input)temp.result.tree).Execute(l2, answer);
+                                ((Input)temp.parse_tree).Execute(l2, answer);
 
                                 if (myTimer != null)
                                 {
@@ -1508,15 +1508,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             }
 
-            }
-            catch (Exception e)
-            {
-                if (myTimer != null)
-                {
-                    myTimer.Stop();
-                }
-                Dispatcher.UIThread.Post(() => postDialog("--- Run Halted! ---\n" + e.Message, true), DispatcherPriority.Background);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    if (myTimer != null)
+            //    {
+            //        myTimer.Stop();
+            //    }
+
+            //    Runtime.consoleWriteln("--- Run Halted! ---\n" + e.Message);
+            //}
 
         }
         public void OnPauseCommand() {
