@@ -833,6 +833,8 @@ namespace parse_tree
                         ((Expr_Output)param_list.next.parameter).Assign_To(l, x);
                         ((Expr_Output)param_list.next.next.parameter).Assign_To(l, y);
 
+                        DotnetGraphControl.mb = new Avalonia.Input.MouseButton();
+
                     }, DispatcherPriority.Background).Wait(-1);
                 }
             return;
