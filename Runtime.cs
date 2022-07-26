@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 //using System.Windows.Forms;
 using System.Data;
+using System.IO;
 //using dotnetgraphlibrary;
 //using PlaySound;
 using RAPTOR_Avalonia_MVVM.ViewModels;
@@ -13,6 +14,8 @@ using ReactiveUI;
 using Avalonia.Threading;
 using RAPTOR_Avalonia_MVVM;
 using System.Threading.Tasks;
+using numbers;
+
 
 namespace raptor
 {
@@ -1085,45 +1088,110 @@ namespace raptor
 				MainWindow.masterConsole.Activate();
 			}, DispatcherPriority.Background);
 		}
+
+		public static void R_output(string fileName)
+        {
+			raptor_files.myRaptor_files.Output_Is_Redirected = true;
+			o_fileName = fileName;
+        }
 		public static void consoleWriteln(string v)
         {
-			//throw new NotImplementedException();
-			Dispatcher.UIThread.Post(() =>
-			{
-				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-				mc.Text += v + "\n";
-				MainWindow.masterConsole.Activate();
-			}, DispatcherPriority.Background);
+            //throw new NotImplementedException();
+            if (!raptor_files.output_redirected())
+            {
+				Dispatcher.UIThread.Post(() =>
+				{
+					MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+					mc.Text += v + "\n";
+					MainWindow.masterConsole.Activate();
+				}, DispatcherPriority.Background);
+			}
+            else
+            {
+				StreamWriter sw = new StreamWriter(o_fileName);
+				sw.WriteLine(v);
+			}
 		}
 		public static void consoleWrite(string v)
 		{
 			//throw new NotImplementedException();
-			Dispatcher.UIThread.Post(() =>
+			if (!raptor_files.output_redirected())
 			{
-				MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
-				mc.Text += v;
-				MainWindow.masterConsole.Activate();
-			}, DispatcherPriority.Background);
+				Dispatcher.UIThread.Post(() =>
+				{
+					MasterConsoleViewModel mc = MasterConsoleViewModel.MC;
+					mc.Text += v;
+					MainWindow.masterConsole.Activate();
+				}, DispatcherPriority.Background);
+			}
+            else
+            {
+				StreamWriter sw = new StreamWriter(o_fileName);
+				sw.WriteLine(v);
+            }
+            
 		}
 
 		public static numbers.value getUserIn(string prompt, bool force_number)
         {
-
-            Parallelogram temp = (Parallelogram)Component.currentTempComponent;
-
-            Dispatcher.UIThread.InvokeAsync(async () =>
+            if (!raptor_files.input_redirected())
             {
-                UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, true);
-                await uid.ShowDialog(MainWindow.topWindow);
-            }).Wait(-1);
+				Parallelogram temp = (Parallelogram)Component.currentTempComponent;
 
-            return temp.pans;
+				Dispatcher.UIThread.InvokeAsync(async () =>
+				{
+					UserInputDialog uid = new UserInputDialog((Parallelogram)Component.currentTempComponent, new numbers.value() { S = prompt, Kind = numbers.Value_Kind.String_Kind }, true);
+					await uid.ShowDialog(MainWindow.topWindow);
+				}).Wait(-1);
+
+				return temp.pans;
+			}
+            else
+            {
+				string line;
+				StreamReader sr = new StreamReader(i_fileName);
+				line = sr.ReadLine();
+				string[] elems = line.Split(" ");
+
+				object val = elems[0];
+;
+                if (val.GetType() == typeof(int))
+                {
+					return Numbers.make_value__3( (int)val );
+                }
+				else if(val.GetType() == typeof(double))
+                {
+					return Numbers.make_value__2( (double)val );
+				}
+				else if(val.GetType() == typeof(string))
+                {
+					return Numbers.make_value__5( (string)val );
+				}
+				else if(val.GetType() == typeof(bool))
+                {
+					return Numbers.make_value__4( (bool)val );
+				}
+                else
+                {
+					return Numbers.make_object_value(val);
+				}
+            }
         }
+
+		public static void R_input(string fileName)
+		{
+			raptor_files.myRaptor_files.Input_Is_Redirected = true;
+			i_fileName = fileName;
+		}
 
 		// Container holding all variables and their values
 		public static Avalonia.Controls.Window parent;
 		private static RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel console;
 		private static Avalonia.Controls.TreeView watchBox;
+		
+		private static string i_fileName;
+		private static string o_fileName;
+
 		public Runtime()
 		{
 
