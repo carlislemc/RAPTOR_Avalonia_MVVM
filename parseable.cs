@@ -3471,13 +3471,30 @@ namespace parse_tree
             {
                 Array_Ref_2D_Rhs r = (Array_Ref_2D_Rhs)tempRHS;
                 string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
+                numbers.value v = r.reference.Execute(l);
+                numbers.value v2 = r.reference2.Execute(l);
+                if (!numbers.Numbers.is_integer(v))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                if (!numbers.Numbers.is_integer(v2))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                Runtime.set2DArrayElement(str, numbers.Numbers.integer_of(v), numbers.Numbers.integer_of(v2), val);
                 
             }
             else if (tempRHS.GetType() == typeof(Array_Ref_Rhs))
             {
                 Array_Ref_Rhs r = (Array_Ref_Rhs)tempRHS;
                 string str = Component.the_lexer.Get_Text(r.id.start, r.id.finish);
-                
+                numbers.value v = r.reference.Execute(l);
+                if (!numbers.Numbers.is_integer(v))
+                {
+                    throw new Exception("Index must be an integer!");
+                }
+                Runtime.setArrayElement(str, numbers.Numbers.integer_of(v), val);
+
             }
             else if (tempRHS.GetType() == typeof(Id_Rhs))
             {
