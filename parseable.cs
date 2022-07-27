@@ -11,6 +11,7 @@ using RAPTOR_Avalonia_MVVM.Views;
 using System.Collections.ObjectModel;
 using RAPTOR_Avalonia_MVVM.Controls;
 using Avalonia.Threading;
+using Avalonia.Controls;
 
 namespace parse_tree
 {
@@ -65,19 +66,16 @@ namespace parse_tree
                     gen.Emit_Random(0.0, 242.0);
                     break;
                 case "redirect_output_append":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.raptor_files", "redirect_output");
                     break;
                 case "set_precision":
                     gil.Emit_Method("numbers.Numbers", "Set_Precision");
                     break;
                 case "redirect_input":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.raptor_files", "redirect_input");
                     break;
                 case "redirect_output":
-                    // NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.raptor_files", "redirect_output");
                     break;
                 case "clear_console":
                     gil.Emit_Method("raptor.Runtime", "clearConsole");
@@ -381,6 +379,11 @@ namespace parse_tree
         {
             ((Expr_Output)p).expr.Emit_Code(gen);
         }
+
+        public void emit_string_parameter(Output p, Generate_Interface gen)
+        {
+            ((Expr_Output)p).expr.Emit_Code(gen);
+        }
     }
     public abstract class Value_Parseable : Parseable
     {
@@ -540,303 +543,319 @@ namespace parse_tree
                     sub = s;
                 }
             }
-                string str = l.Get_Text(id.start, id.finish);
-                numbers.value[] ps = new numbers.value[0];
-                if (param_list != null)
-                {
-                    Runtime.processing_parameter_list = true;
-                    ps = param_list.Execute(l);
-                }
+            string str = l.Get_Text(id.start, id.finish);
+            numbers.value[] ps = new numbers.value[0];
+            if (param_list != null)
+            {
+                Runtime.processing_parameter_list = true;
+                ps = param_list.Execute(l);
+            }
 
-                if (str.ToLower() == "open_graph_window")
+            if (str.ToLower() == "open_graph_window")
+            {
+                Dispatcher.UIThread.Post(() =>
                 {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int w = numbers.Numbers.integer_of(ps[0]);
-                        int h = numbers.Numbers.integer_of(ps[1]);
-                        GraphDialogViewModel.OpenGraphWindow(w, h);
-                    }, DispatcherPriority.Background);
+                    int w = numbers.Numbers.integer_of(ps[0]);
+                    int h = numbers.Numbers.integer_of(ps[1]);
+                    GraphDialogViewModel.OpenGraphWindow(w, h);
+                }, DispatcherPriority.Background);
                     
-                }
-                else if (str.ToLower() == "close_graph_window")
+            }
+            else if (str.ToLower() == "close_graph_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.CloseGraphWindow();
-                    }, DispatcherPriority.Background);
+                    GraphDialogViewModel.CloseGraphWindow();
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "freeze_graph_window")
+            }
+            else if (str.ToLower() == "freeze_graph_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.FreezeGraphWindow();
-                    }, DispatcherPriority.Background);
+                    GraphDialogViewModel.FreezeGraphWindow();
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "unfreeze_graph_window")
+            }
+            else if (str.ToLower() == "unfreeze_graph_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.UnFreezeGraphWindow();
-                    }, DispatcherPriority.Background);
+                    GraphDialogViewModel.UnFreezeGraphWindow();
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "update_graph_window")
+            }
+            else if (str.ToLower() == "update_graph_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GraphDialogViewModel.UpdateGraphWindow();
-                    }, DispatcherPriority.Background);
+                    GraphDialogViewModel.UpdateGraphWindow();
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "draw_line")
+            }
+            else if (str.ToLower() == "draw_line")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int x2 = numbers.Numbers.integer_of(ps[2]);
-                        int y2 = numbers.Numbers.integer_of(ps[3]);
-                        int c = numbers.Numbers.integer_of(ps[4]);
-                        GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    GraphDialogViewModel.DrawLine(x1, y1, x2, y2, (Color_Type)c);
                         
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "draw_box")
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "draw_box")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int x2 = numbers.Numbers.integer_of(ps[2]);
-                        int y2 = numbers.Numbers.integer_of(ps[3]);
-                        int c = numbers.Numbers.integer_of(ps[4]);
-                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;    
-                        GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
-                    }, DispatcherPriority.Background);
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;    
+                    GraphDialogViewModel.DrawBox(x1, y1, x2, y2, (Color_Type)c, fill);
+                }, DispatcherPriority.Background);
                 
-                }
-                else if (str.ToLower() == "draw_circle")
+            }
+            else if (str.ToLower() == "draw_circle")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int rad = numbers.Numbers.integer_of(ps[2]);
+                    int c = numbers.Numbers.integer_of(ps[3]);
+                    bool fill = numbers.Numbers.integer_of(ps[4]) == 1;
+                    GraphDialogViewModel.DrawCircle(x1, y1, rad, (Color_Type)c, fill);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "draw_ellipse")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int c = numbers.Numbers.integer_of(ps[4]);
+                    bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
+                    GraphDialogViewModel.DrawEllipse(x1, y1, x2, y2, (Color_Type)c, fill);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "draw_arc")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    int startx = numbers.Numbers.integer_of(ps[4]);
+                    int starty = numbers.Numbers.integer_of(ps[5]);
+                    int endx = numbers.Numbers.integer_of(ps[6]);
+                    int endy = numbers.Numbers.integer_of(ps[7]);
+                    int c = numbers.Numbers.integer_of(ps[8]);
+                    GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "draw_ellipse_rotate")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    int x2 = numbers.Numbers.integer_of(ps[2]);
+                    int y2 = numbers.Numbers.integer_of(ps[3]);
+                    double angle = numbers.Numbers.long_float_of(ps[4]);
+                    int c = numbers.Numbers.integer_of(ps[5]);
+                    bool fill = numbers.Numbers.integer_of(ps[6]) == 1;
+                    GraphDialogViewModel.DrawEllipseRotate(x1, y1, x2, y2, angle, (Color_Type)c, fill);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "display_text")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    string t = ps[2].S.Replace("\"","");
+                    int c = numbers.Numbers.integer_of(ps[3]);
+                    GraphDialogViewModel.DisplayText(x1, y1, t, (Color_Type)c);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "display_number")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int x1 = numbers.Numbers.integer_of(ps[0]);
+                    int y1 = numbers.Numbers.integer_of(ps[1]);
+                    double n = numbers.Numbers.long_float_of(ps[2]);
+                    int c = numbers.Numbers.integer_of(ps[3]);
+                    GraphDialogViewModel.DisplayNumber(x1, y1, n, (Color_Type)c);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "set_font_size")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
+                {
+                    int size = numbers.Numbers.integer_of(ps[0]);
+                    GraphDialogViewModel.FontSize(size);
+                }, DispatcherPriority.Background);
+            }
+            else if(str.ToLower() == "wait_for_key")
+            {
+                WaitForKey();
+            }
+            else if (str.ToLower() == "wait_for_mouse_button")
+            {
+                checkOpenGraph();
+                mw.waitingForMouse = true;
+                mw.mouseWait = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    Avalonia.Input.MouseButton b = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                    GraphDialogViewModel.WaitForMouseButton(b);
+                    if (mw.myTimer != null)
                     {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int rad = numbers.Numbers.integer_of(ps[2]);
-                        int c = numbers.Numbers.integer_of(ps[3]);
-                        bool fill = numbers.Numbers.integer_of(ps[4]) == 1;
-                        GraphDialogViewModel.DrawCircle(x1, y1, rad, (Color_Type)c, fill);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "draw_ellipse")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int x2 = numbers.Numbers.integer_of(ps[2]);
-                        int y2 = numbers.Numbers.integer_of(ps[3]);
-                        int c = numbers.Numbers.integer_of(ps[4]);
-                        bool fill = numbers.Numbers.integer_of(ps[5]) == 1;
-                        GraphDialogViewModel.DrawEllipse(x1, y1, x2, y2, (Color_Type)c, fill);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "draw_arc")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int x2 = numbers.Numbers.integer_of(ps[2]);
-                        int y2 = numbers.Numbers.integer_of(ps[3]);
-                        int startx = numbers.Numbers.integer_of(ps[4]);
-                        int starty = numbers.Numbers.integer_of(ps[5]);
-                        int endx = numbers.Numbers.integer_of(ps[6]);
-                        int endy = numbers.Numbers.integer_of(ps[7]);
-                        int c = numbers.Numbers.integer_of(ps[8]);
-                        GraphDialogViewModel.DrawArc(x1, y1, x2, y2, startx, starty, endx, endy, (Color_Type)c);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "draw_ellipse_rotate")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        int x2 = numbers.Numbers.integer_of(ps[2]);
-                        int y2 = numbers.Numbers.integer_of(ps[3]);
-                        double angle = numbers.Numbers.long_float_of(ps[4]);
-                        int c = numbers.Numbers.integer_of(ps[5]);
-                        bool fill = numbers.Numbers.integer_of(ps[6]) == 1;
-                        GraphDialogViewModel.DrawEllipseRotate(x1, y1, x2, y2, angle, (Color_Type)c, fill);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "display_text")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        string t = ps[2].S.Replace("\"","");
-                        int c = numbers.Numbers.integer_of(ps[3]);
-                        GraphDialogViewModel.DisplayText(x1, y1, t, (Color_Type)c);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "display_number")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x1 = numbers.Numbers.integer_of(ps[0]);
-                        int y1 = numbers.Numbers.integer_of(ps[1]);
-                        double n = numbers.Numbers.long_float_of(ps[2]);
-                        int c = numbers.Numbers.integer_of(ps[3]);
-                        GraphDialogViewModel.DisplayNumber(x1, y1, n, (Color_Type)c);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "set_font_size")
-                {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int size = numbers.Numbers.integer_of(ps[0]);
-                        GraphDialogViewModel.FontSize(size);
-                    }, DispatcherPriority.Background);
-                }
-                else if(str.ToLower() == "wait_for_key")
-                {
-                    WaitForKey();
-                }
-                else if (str.ToLower() == "wait_for_mouse_button")
-                {
-                    checkOpenGraph();
-                    mw.waitingForMouse = true;
-                    mw.mouseWait = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Avalonia.Input.MouseButton b = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
-                        GraphDialogViewModel.WaitForMouseButton(b);
-                        if (mw.myTimer != null)
-                        {
-                            mw.myTimer.Stop();
-                        }
-                    }, DispatcherPriority.Background);
+                        mw.myTimer.Stop();
+                    }
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "set_window_title")
+            }
+            else if (str.ToLower() == "set_window_title")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
-                        GraphDialogViewModel.SetWindowTitle(t);
-                    }, DispatcherPriority.Background);
+                    string t = numbers.Numbers.msstring_view_image(ps[0]).Replace("\"","");
+                    GraphDialogViewModel.SetWindowTitle(t);
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "clear_window")
+            }
+            else if (str.ToLower() == "clear_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int c = numbers.Numbers.integer_of(ps[0]);
-                        GraphDialogViewModel.ClearWindow((Color_Type)c);
-                    }, DispatcherPriority.Background);
+                    int c = numbers.Numbers.integer_of(ps[0]);
+                    GraphDialogViewModel.ClearWindow((Color_Type)c);
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "delay_for")
-                { 
-                    Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        int s = numbers.Numbers.integer_of(ps[0]);
-                        MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-                        if(mw.myTimer != null)
-                        {
-                            mw.myTimer.Stop();
-                        }
-                        GraphDialogViewModel.DelayFor(s);
-                        if (mw.myTimer != null)
-                        {
-                            mw.myTimer.Start();
-                        }
-                    }, DispatcherPriority.Background).Wait(-1);
-
-                }
-                else if (str.ToLower() == "flood_fill")
+            }
+            else if (str.ToLower() == "delay_for")
+            { 
+                Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
+                    int s = numbers.Numbers.integer_of(ps[0]);
+                    MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+                    if(mw.myTimer != null)
                     {
-                        int x = numbers.Numbers.integer_of(ps[0]);
-                        int y = numbers.Numbers.integer_of(ps[1]);
-                        int c = numbers.Numbers.integer_of(ps[2]);
-                        GraphDialogViewModel.FloodFill(x,y,(Color_Type)c);
-                    }, DispatcherPriority.Background);
+                        mw.myTimer.Stop();
+                    }
+                    GraphDialogViewModel.DelayFor(s);
+                    if (mw.myTimer != null)
+                    {
+                        mw.myTimer.Start();
+                    }
+                }, DispatcherPriority.Background).Wait(-1);
 
-                }
-                else if (str.ToLower() == "put_pixel")
+            }
+            else if (str.ToLower() == "flood_fill")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int x = numbers.Numbers.integer_of(ps[0]);
-                        int y = numbers.Numbers.integer_of(ps[1]);
-                        int c = numbers.Numbers.integer_of(ps[2]);
-                        GraphDialogViewModel.PutPixel(x, y, (Color_Type)c);
-                    }, DispatcherPriority.Background);
+                    int x = numbers.Numbers.integer_of(ps[0]);
+                    int y = numbers.Numbers.integer_of(ps[1]);
+                    int c = numbers.Numbers.integer_of(ps[2]);
+                    GraphDialogViewModel.FloodFill(x,y,(Color_Type)c);
+                }, DispatcherPriority.Background);
 
-                }
-                else if (str.ToLower() == "draw_bitmap")
+            }
+            else if (str.ToLower() == "put_pixel")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        int i = numbers.Numbers.integer_of(ps[0]);
-                        int x = numbers.Numbers.integer_of(ps[1]);
-                        int y = numbers.Numbers.integer_of(ps[2]);
-                        int w = numbers.Numbers.integer_of(ps[3]);
-                        int h = numbers.Numbers.integer_of(ps[4]);
-                        GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
-                    }, DispatcherPriority.Background);
-                }
-                else if (str.ToLower() == "save_graph_window")
+                    int x = numbers.Numbers.integer_of(ps[0]);
+                    int y = numbers.Numbers.integer_of(ps[1]);
+                    int c = numbers.Numbers.integer_of(ps[2]);
+                    GraphDialogViewModel.PutPixel(x, y, (Color_Type)c);
+                }, DispatcherPriority.Background);
+
+            }
+            else if (str.ToLower() == "draw_bitmap")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        string f = ps[0].S;
-                        GraphDialogViewModel.SaveGraphWindow(f);
-                    }, DispatcherPriority.Background);
-                }
-                else if(str.ToLower() == "get_mouse_button")
+                    int i = numbers.Numbers.integer_of(ps[0]);
+                    int x = numbers.Numbers.integer_of(ps[1]);
+                    int y = numbers.Numbers.integer_of(ps[2]);
+                    int w = numbers.Numbers.integer_of(ps[3]);
+                    int h = numbers.Numbers.integer_of(ps[4]);
+                    GraphDialogViewModel.DrawBitmap(i,x,y,w,h);
+                }, DispatcherPriority.Background);
+            }
+            else if (str.ToLower() == "save_graph_window")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    checkOpenGraph();
-                    Dispatcher.UIThread.InvokeAsync(async () =>
-                    {
-                        Avalonia.Input.MouseButton m = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
-                        await GraphDialogViewModel.GetMouseButton(m);
+                    string f = ps[0].S;
+                    GraphDialogViewModel.SaveGraphWindow(f);
+                }, DispatcherPriority.Background);
+            }
+            else if(str.ToLower() == "get_mouse_button")
+            {
+                checkOpenGraph();
+                Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    Avalonia.Input.MouseButton m = ps[0].V == 86 ? Avalonia.Input.MouseButton.Left : Avalonia.Input.MouseButton.Right;
+                    await GraphDialogViewModel.GetMouseButton(m);
 
-                        numbers.value x = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.xLoc };
-                        numbers.value y = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.yLoc };
+                    numbers.value x = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.xLoc };
+                    numbers.value y = new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = DotnetGraphControl.yLoc };
 
-                        ((Expr_Output)param_list.next.parameter).Assign_To(l, x);
-                        ((Expr_Output)param_list.next.next.parameter).Assign_To(l, y);
+                    ((Expr_Output)param_list.next.parameter).Assign_To(l, x);
+                    ((Expr_Output)param_list.next.next.parameter).Assign_To(l, y);
 
-                        DotnetGraphControl.mb = new Avalonia.Input.MouseButton();
+                    DotnetGraphControl.mb = new Avalonia.Input.MouseButton();
 
-                    }, DispatcherPriority.Background).Wait(-1);
-                }
+                }, DispatcherPriority.Background).Wait(-1);
+            }
+            else if(str.ToLower() == "redirect_output")
+            {
+                raptor_files.redirect_output(ps[0]);
+
+            }
+            else if(str.ToLower() == "redirect_input")
+            {
+                raptor_files.redirect_input(ps[0]);
+
+            }
+            else if (str.ToLower() == "redirect_output_append")
+            {
+                raptor_files.redirect_output_append(ps[0]);
+
+            }
+
             return;
             
         }
@@ -875,7 +894,8 @@ namespace parse_tree
                 case "redirect_output":
                 case "redirect_output_append":
                 case "redirect_input":
-                    // NEED TO DO
+                    emit_parameter_number(param_list.parameter, gen);
+                    gen.Emit_Last_Parameter(o);
                     break;
                 case "set_precision":
                 case "wait_for_mouse_button":

@@ -1120,7 +1120,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
                 {
                     symbolCount++;
-
+                    raptor_files.Stop_Redirect_Output();
+                    raptor_files.Stop_Redirect_Input();
                     Runtime.consoleWrite("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n");
 
 
