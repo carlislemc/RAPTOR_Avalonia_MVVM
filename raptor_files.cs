@@ -38,10 +38,10 @@ namespace RAPTOR_Avalonia_MVVM
         }
 		public static void redirect_output(numbers.value filename)
         {
-			if (Output_Is_Redirected)
-            {
-				Stop_Redirect_Output();
-            }
+			//if (Output_Is_Redirected)
+   //         {
+			//	Stop_Redirect_Output();
+   //         }
 
 			if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
@@ -90,39 +90,23 @@ namespace RAPTOR_Avalonia_MVVM
 
 		public static void redirect_output_append(numbers.value filename)
 		{
-			if (Output_Is_Redirected)
-			{
-				Stop_Redirect_Output();
-			}
+			//if (Output_Is_Redirected)
+			//{
+			//	Stop_Redirect_Output();
+			//}
 
 			if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
-				output_stream = new StreamWriter(filename.S);
+				output_stream = new StreamWriter(filename.S, true);
 				Output_Is_Redirected = true;
 			}
 			else
 			{
 				if (filename.V == 1)
 				{
-					OpenFileDialog dialog = new OpenFileDialog();
-					dialog.Filters.Add(new FileDialogFilter() { Name = "Text Files", Extensions = { "txt" } });
-					dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
-					dialog.AllowMultiple = false;
+					string file = openFileFunction();
 
-					string[] result = { };
-
-					Dispatcher.UIThread.InvokeAsync(async () =>
-					{
-						result = await dialog.ShowAsync(MainWindow.topWindow);
-
-					}).Wait(-1);
-
-					if (result == null || result[0] == "")
-					{
-						return;
-					}
-
-					output_stream = new StreamWriter(result[0]);
+					output_stream = new StreamWriter(file, true);
 					Output_Is_Redirected = true;
 				}
 				else
@@ -137,10 +121,10 @@ namespace RAPTOR_Avalonia_MVVM
 
 		public static void redirect_input(numbers.value filename)
 		{
-            if (Input_Is_Redirected)
-            {
-                Stop_Redirect_Input();
-            }
+            //if (Input_Is_Redirected)
+            //{
+            //    Stop_Redirect_Input();
+            //}
 
             if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
@@ -149,26 +133,11 @@ namespace RAPTOR_Avalonia_MVVM
 			}
             else
             {
-				if(filename.V == 1) { 
-					OpenFileDialog dialog = new OpenFileDialog();
-					dialog.Filters.Add(new FileDialogFilter() { Name = "Text Files", Extensions = { "txt" } });
-					dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
-					dialog.AllowMultiple = false;
+				if(filename.V == 1) {
 
-					string[] result = { };
+					string file = openFileFunction();
 
-					Dispatcher.UIThread.InvokeAsync(async () =>
-					{
-						result = await dialog.ShowAsync(MainWindow.topWindow);
-
-					}).Wait(-1);
-
-					if (result == null || result[0] == "")
-					{
-						return;
-					}
-
-					input_stream = new StreamReader(result[0]);
+					input_stream = new StreamReader(file);
 					Input_Is_Redirected = true;
 				}
 				else
@@ -178,6 +147,30 @@ namespace RAPTOR_Avalonia_MVVM
 				}
 
 			}
+		}
+
+		public static string openFileFunction()
+        {
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Filters.Add(new FileDialogFilter() { Name = "Text Files", Extensions = { "txt" } });
+			dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
+			dialog.AllowMultiple = false;
+
+			string[] result = { };
+
+			Dispatcher.UIThread.InvokeAsync(async () =>
+			{
+				result = await dialog.ShowAsync(MainWindow.topWindow);
+
+			}).Wait(-1);
+
+			if (result == null || result[0] == "")
+			{
+				return "";
+			}
+
+			return result[0];
+
 		}
 
 		public static bool output_redirected()
