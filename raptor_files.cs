@@ -12,84 +12,197 @@ using System.Collections.ObjectModel;
 using RAPTOR_Avalonia_MVVM.Controls;
 using Avalonia.Threading;
 using System.IO;
-
+using Avalonia.Controls;
 
 namespace RAPTOR_Avalonia_MVVM
 {
 	public class raptor_files
 	{
-		public static raptor_files myRaptor_files;
 
-		public raptor_files()
-		{
-			myRaptor_files = this;
-		}
-
-		public bool Input_Is_Redirected = false;
-		public bool Output_Is_Redirected = false;
-		private StreamReader input_stream;
-		private StreamWriter output_stream;
+		public static bool Input_Is_Redirected = false;
+		public static bool Output_Is_Redirected = false;
+		private static StreamReader input_stream;
+		private static StreamWriter output_stream;
 
 		public static void writeln(string text)
         {
-			myRaptor_files.output_stream.Write(text);
+			output_stream.Write(text);
 		}
 		public static void write(string text)
         {
-			myRaptor_files.output_stream.WriteLine(text);
+			output_stream.WriteLine(text);
 		}
 		public static string read()
         {
-			return myRaptor_files.input_stream.ReadLine();
+			return input_stream.ReadLine();
         }
-		public static void redirect_output(string filename)
+		public static void redirect_output(numbers.value filename)
         {
-			if (myRaptor_files.Output_Is_Redirected)
-            {
-				Stop_Redirect_Output();
-            }
-			myRaptor_files.output_stream = new StreamWriter(filename);
-        }
+			//if (Output_Is_Redirected)
+   //         {
+			//	Stop_Redirect_Output();
+   //         }
 
-		public static void redirect_input(string filename)
-		{
-			if (myRaptor_files.Input_Is_Redirected)
+			if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
-				Stop_Redirect_Input();
+				output_stream = new StreamWriter(filename.S);
+				Output_Is_Redirected = true;
 			}
-			myRaptor_files.input_stream = new StreamReader(filename);
+			else
+			{
+				if (filename.V == 1)
+				{
+					SaveFileDialog fileChooser = new SaveFileDialog();
+					List<FileDialogFilter> Filters = new List<FileDialogFilter>();
+					FileDialogFilter filter = new FileDialogFilter();
+					List<string> extension = new List<string>();
+					extension.Add("txt");
+					filter.Extensions = extension;
+					filter.Name = "Text Files";
+					Filters.Add(filter);
+					fileChooser.Filters = Filters;
+
+					fileChooser.DefaultExtension = "txt";
+
+					string ans = "";
+					Dispatcher.UIThread.InvokeAsync(async () =>
+					{
+						ans = await fileChooser.ShowAsync(MainWindow.topWindow);
+
+					}).Wait(-1);
+
+					if (ans == null || ans == "")
+					{
+						return;
+					}
+
+					output_stream = new StreamWriter(ans);
+				}
+				else
+				{
+					Stop_Redirect_Output();
+					Output_Is_Redirected = false;
+				}
+
+			}
+
+		}
+
+		public static void redirect_output_append(numbers.value filename)
+		{
+			//if (Output_Is_Redirected)
+			//{
+			//	Stop_Redirect_Output();
+			//}
+
+			if (filename.Kind == numbers.Value_Kind.String_Kind)
+			{
+				output_stream = new StreamWriter(filename.S, true);
+				Output_Is_Redirected = true;
+			}
+			else
+			{
+				if (filename.V == 1)
+				{
+					string file = openFileFunction();
+
+					output_stream = new StreamWriter(file, true);
+					Output_Is_Redirected = true;
+				}
+				else
+				{
+					Stop_Redirect_Output();
+					Output_Is_Redirected = false;
+				}
+
+			}
+
+		}
+
+		public static void redirect_input(numbers.value filename)
+		{
+            //if (Input_Is_Redirected)
+            //{
+            //    Stop_Redirect_Input();
+            //}
+
+            if (filename.Kind == numbers.Value_Kind.String_Kind)
+			{
+				input_stream = new StreamReader(filename.S);
+				Input_Is_Redirected = true;
+			}
+            else
+            {
+				if(filename.V == 1) {
+
+					string file = openFileFunction();
+
+					input_stream = new StreamReader(file);
+					Input_Is_Redirected = true;
+				}
+				else
+				{
+					Stop_Redirect_Input();
+					Input_Is_Redirected = false;
+				}
+
+			}
+		}
+
+		public static string openFileFunction()
+        {
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Filters.Add(new FileDialogFilter() { Name = "Text Files", Extensions = { "txt" } });
+			dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
+			dialog.AllowMultiple = false;
+
+			string[] result = { };
+
+			Dispatcher.UIThread.InvokeAsync(async () =>
+			{
+				result = await dialog.ShowAsync(MainWindow.topWindow);
+
+			}).Wait(-1);
+
+			if (result == null || result[0] == "")
+			{
+				return "";
+			}
+
+			return result[0];
+
 		}
 
 		public static bool output_redirected()
         {
-			return myRaptor_files.Output_Is_Redirected;
+			return Output_Is_Redirected;
         }
 
 		public static bool input_redirected()
 		{
-			return myRaptor_files.Input_Is_Redirected;
+			return Input_Is_Redirected;
 		}
 
 		public static void Stop_Redirect_Input()
 		{
-			if (myRaptor_files.Input_Is_Redirected)
+			if (Input_Is_Redirected)
 			{
-				myRaptor_files.Input_Is_Redirected = false;
-				if (myRaptor_files.input_stream != null)
+				Input_Is_Redirected = false;
+				if (input_stream != null)
 				{
-					myRaptor_files.input_stream.Close();
+					input_stream.Close();
 				}
 			}
 		}
 
 		public static void Stop_Redirect_Output()
 		{
-			if (myRaptor_files.Output_Is_Redirected)
+			if (Output_Is_Redirected)
 			{
-				myRaptor_files.Output_Is_Redirected = false;
-				if (myRaptor_files.output_stream != null)
+				Output_Is_Redirected = false;
+				if (output_stream != null)
 				{
-					myRaptor_files.output_stream.Close();
+					output_stream.Close();
 				}
 			}
 		}

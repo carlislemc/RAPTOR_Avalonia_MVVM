@@ -510,10 +510,10 @@ namespace raptor
 						else
 						{
 							rect = new Avalonia.Rect(
-								x-this.width_of_text/2,
-								diamond_top+H/2-this.height_of_text/2,
-								this.width_of_text,
-								this.height_of_text);
+								x - this.drawing_text_width / 2,
+								diamond_top + H / 2 - this.height_of_text + Oval.textSize/2,
+								this.drawing_text_width,
+								this.height_of_text * 2);
 						}
 					}
 					else

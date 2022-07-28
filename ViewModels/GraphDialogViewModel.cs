@@ -472,6 +472,18 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             await DotnetGraphControl.dngw.GetMouseButton(button);
         }
+
+        public static numbers.value GetFontHeight()
+        {
+            int x = DotnetGraphControl.dngw.GetFontHeight();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = x };
+        }
+        public static numbers.value GetFontWidth()
+        {
+            int x = DotnetGraphControl.dngw.GetFontWidth();
+            return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = x };
+
+        }
     }
 
 

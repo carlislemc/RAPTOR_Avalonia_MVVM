@@ -837,6 +837,27 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         }
 
+        public int GetFontHeight()
+        {
+            Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
+                "W", new Avalonia.Media.Typeface("Lucida Console"), current_font_size, Avalonia.Media.TextAlignment.Center,
+                Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
+            var height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
+            SkiaContext.SkCanvas.DrawText(height_of_text.ToString(), 400, 500, SKBrush);
+            InvalidateVisual();
+            return height_of_text;
+        }
+        public int GetFontWidth()
+        {
+            Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
+                "MMMMMMMMMMMM", new Avalonia.Media.Typeface("Lucida Console"), current_font_size, Avalonia.Media.TextAlignment.Center,
+                Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
+            var width_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Width) / 12;
+            SkiaContext.SkCanvas.DrawText(width_of_text.ToString(), 400, 550, SKBrush);
+            InvalidateVisual();
+            return width_of_text;
+        }
+
         public Task<bool> SaveAsync(string path)
         {
             return Task.Run(() =>
