@@ -198,16 +198,13 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             raptor.Generators.Load_Generators();
 
 
-            
-            /*
-            GetWindow().Closing += (s, e) =>
+            string[] args = App.getArgs();
+            if (args != null && args[0] != "")
             {
-                if (x < 5)
-                {
-                    e.Cancel = true;
-                    x++;
-                }
-            }; */
+                Load_File(args[0]);
+            }
+
+
         }
         public string Greeting => "Welcome to Avalonia!";
         private Window GetWindow()
