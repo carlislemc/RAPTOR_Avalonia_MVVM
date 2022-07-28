@@ -554,7 +554,8 @@ namespace raptor
 					Avalonia.Media.FormattedText formattedtextLP = new Avalonia.Media.FormattedText(
 						LP, new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
 						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-					gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 + 30, Y + (H * 6) / 16), formattedtextLP);
+					
+					gr.DrawText(PensBrushes.blackbrush, new Point(x - formattedtextLP.Bounds.Width / 2, Y + (H * 6) / 16), formattedtextLP);
 				}
 			}
 			if (draw_text) 

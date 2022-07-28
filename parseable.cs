@@ -2305,6 +2305,12 @@ namespace parse_tree
                         w = GraphDialogViewModel.GetWindowWidth();
                     }).Wait(-1);
                     return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = w };
+                case "get_font_height":
+                    Proc_Call.checkOpenGraph();
+                    return GraphDialogViewModel.GetFontHeight();
+                case "get_font_width":
+                    Proc_Call.checkOpenGraph();
+                    return GraphDialogViewModel.GetFontWidth();
             }
             //return new numbers.value() { V = 9999 };
             throw new NotImplementedException();
