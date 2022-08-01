@@ -301,8 +301,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
 
             Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
-            addMe.kind=Subchart_Kinds.Procedure;
-            addMe.Num_Params = paramCount();
   
             if(!modding){
                 tbs.Add(addMe);

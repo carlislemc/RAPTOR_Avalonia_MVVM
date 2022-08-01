@@ -657,7 +657,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
                 //SkiaContext.SkCanvas.DrawText("key pressed", 500, 500, SKBrush);
                 waitForKey = false;
-                InvalidateVisual();
+                //InvalidateVisual();
             }
         }
 
@@ -735,7 +735,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 mouseDown = false;
                 var p = e.GetPosition(this);
                 //SkiaContext.SkCanvas.DrawText("mouse pressed", (float)p.X, (float)p.Y, SKBrush);
-                InvalidateVisual();
+                //InvalidateVisual();
                 waitForMouse = false;
             }
         }
@@ -773,7 +773,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 var p = e.GetPosition(this);
                 SkiaContext.SkCanvas.DrawRect(new SKRect((float)p.X, (float)p.Y,
                     (float)p.X + 10, (float)p.Y + 10), SKBrush);
-                InvalidateVisual();
+                //InvalidateVisual();
                 mouseDown = true;
                 buttonDown = e.MouseButton;
                 MouseButtonDown(MouseButton.Left);
@@ -817,7 +817,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             bool givenButtonDown = mouseDown && button == buttonDown;
             //SkiaContext.SkCanvas.DrawText(givenButtonDown.ToString(), 400, 500, SKBrush);
-            InvalidateVisual();
+            //InvalidateVisual();
             return givenButtonDown;
         }
 
@@ -844,7 +844,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
             var height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
             SkiaContext.SkCanvas.DrawText(height_of_text.ToString(), 400, 500, SKBrush);
-            InvalidateVisual();
             return height_of_text;
         }
         public int GetFontWidth()
@@ -854,7 +853,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
             var width_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Width) / 12;
             SkiaContext.SkCanvas.DrawText(width_of_text.ToString(), 400, 550, SKBrush);
-            InvalidateVisual();
             return width_of_text;
         }
 
@@ -1472,7 +1470,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             SKBitmap bmp = SKBitmap.FromImage((SKImage)bitmaps[index]);
             bmp = bmp.Resize(new SKImageInfo(width, height), (SKFilterQuality)3);
             SkiaContext.SkCanvas.DrawBitmap(bmp, x, y, SKBrush);
-            InvalidateVisual();
+            UpdateWindowUnlessFrozen();
         }
 
         public static void DelayFor(
@@ -1663,19 +1661,16 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
             if (!graphWindowOpen)
             {
-                //Dispatcher.UIThread.Post(() =>
-                //{
-                dotnetgraph = new DotnetGraph(width, height);
-                dotnetgraph.Show();
-                graphWindowOpen = true;
-                //while (DotnetGraphControl.dngw==null)
-                //{
-                //    sleep(0.1);
-                //}
-                //}, DispatcherPriority.Normal).Wait(-1);
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    dotnetgraph = new DotnetGraph(width, height);
+                    dotnetgraph.Show();
+                    graphWindowOpen = true;
+                
+                }).Wait(-1);
 
 
-            }
+        }
         }
 
         public static void onClosingCommand(){
@@ -1703,12 +1698,15 @@ namespace RAPTOR_Avalonia_MVVM.Controls
 
         public void UpdateGraphWindow()
         {
-            InvalidateVisual();
+            //Dispatcher.UIThread.InvokeAsync(() =>
+            //{
+                InvalidateVisual();
+            //});
         }
 
         public void UpdateWindowUnlessFrozen()
         {
-            if (!frozen) InvalidateVisual();
+            if (!frozen) UpdateGraphWindow();
         }
 
         public override void Render(DrawingContext context)

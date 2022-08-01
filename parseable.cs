@@ -218,7 +218,8 @@ namespace parse_tree
                     break;
                 case "get_key":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
-                    gil.Emit_To_Integer();
+                    gil.Emit_Method("numbers.Numbers", "integer_of");
+                    //gil.Emit_To_Integer();
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key_string":
@@ -553,12 +554,12 @@ namespace parse_tree
 
             if (str.ToLower() == "open_graph_window")
             {
-                Dispatcher.UIThread.Post(() =>
-                {
+                //Dispatcher.UIThread.InvokeAsync(() =>
+                //{
                     int w = numbers.Numbers.integer_of(ps[0]);
                     int h = numbers.Numbers.integer_of(ps[1]);
                     GraphDialogViewModel.OpenGraphWindow(w, h);
-                }, DispatcherPriority.Background);
+                //}).Wait(-1);
                     
             }
             else if (str.ToLower() == "close_graph_window")
@@ -692,7 +693,15 @@ namespace parse_tree
                 {
                     int x1 = numbers.Numbers.integer_of(ps[0]);
                     int y1 = numbers.Numbers.integer_of(ps[1]);
-                    string t = ps[2].S.Replace("\"","");
+                    string t = "";
+                    try
+                    {
+                        t = ps[2].S.Replace("\"", "");
+                    }
+                    catch
+                    {
+                        t = ps[2].C + "";
+                    }
                     int c = numbers.Numbers.integer_of(ps[3]);
                     GraphDialogViewModel.DisplayText(x1, y1, t, (Color_Type)c);
                 }, DispatcherPriority.Background);
@@ -1573,7 +1582,7 @@ namespace parse_tree
             if (sub.Start.GetType() == typeof(Oval_Procedure))
             {
                 Oval_Procedure tempStart = (Oval_Procedure)sub.Start;
-                for(int k = 0; k < tempStart.param_names.Length; k++)
+                for (int k = 0; k < tempStart.param_names.Length; k++)
                 {
                     if (tempStart.is_input_parameter(k))
                     {
@@ -2490,19 +2499,19 @@ namespace parse_tree
             {
                 o = gen.Emit_Call_Method(functionName);
             }
-            
+
 
             switch (s)
             {
                 case "to_ascii":
                     gen.Emit_Conversion((int)Conversions.Char_To_Int);
                     emit_parameter_number(parameters.parameter, gen);
-                    gen.Emit_End_Conversion((int)Conversions.Char_To_Int);
+                    //gen.Emit_End_Conversion((int)Conversions.Char_To_Int);
                     break;
                 case "to_character":
                     gen.Emit_Conversion((int)Conversions.Int_To_Char);
                     emit_parameter_number(parameters.parameter, gen);
-                    gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
+                    //gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
                     ((Expr_Output)parameters.parameter).Emit_Length_Of(gen);
