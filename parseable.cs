@@ -193,12 +193,12 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_font_height":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetFontHeight");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_font_width":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetFontWidth");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_max_width":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetMaxWidth");
@@ -219,7 +219,6 @@ namespace parse_tree
                 case "get_key":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "GetKey");
                     gil.Emit_Method("numbers.Numbers", "integer_of");
-                    //gil.Emit_To_Integer();
                     gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
                 case "get_key_string":
