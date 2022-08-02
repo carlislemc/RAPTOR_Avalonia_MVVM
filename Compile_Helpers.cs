@@ -237,20 +237,20 @@ namespace raptor
             Generate_IL gil = new Generate_IL("MyAssembly");
 
 
-            Do_Compilation(start, gil, tabpages);
+            //Do_Compilation(start, gil, tabpages);
 
-            //try
-            //{
-            //    Do_Compilation(start, gil, tabpages);
-            //}
-            //catch
-            //{
-            //    foreach (Subchart sbchrt in allSubcharts(tabpages))
-            //    {
-            //        sbchrt.am_compiling = false;
-            //    }
-            //    throw;
-            //}
+            try
+            {
+                Do_Compilation(start, gil, tabpages);
+            }
+            catch
+            {
+                foreach (Subchart sbchrt in allSubcharts(tabpages))
+                {
+                    sbchrt.am_compiling = false;
+                }
+                throw;
+            }
             mainSubchart(tabpages).am_compiling = false;
         }
         public static void Compile_Flowchart_To(Oval start, string directory, string filename)

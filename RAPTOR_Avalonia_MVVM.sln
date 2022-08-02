@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerators", "CodeGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugins_powermod", "plugins_powermod\plugins_powermod.csproj", "{24E1A52B-4F39-4907-A356-2FA5C2E39358}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugins_time", "plugins_time\plugins_time.csproj", "{04811354-A010-4D89-8894-96B4C82D8A8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugins_stringoperations", "plugins_stringoperations\plugins_stringoperations.csproj", "{27C9AB3E-D009-4507-99D0-4393C4971D95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,14 @@ Global
 		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04811354-A010-4D89-8894-96B4C82D8A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04811354-A010-4D89-8894-96B4C82D8A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04811354-A010-4D89-8894-96B4C82D8A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04811354-A010-4D89-8894-96B4C82D8A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C9AB3E-D009-4507-99D0-4393C4971D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C9AB3E-D009-4507-99D0-4393C4971D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C9AB3E-D009-4507-99D0-4393C4971D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C9AB3E-D009-4507-99D0-4393C4971D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
