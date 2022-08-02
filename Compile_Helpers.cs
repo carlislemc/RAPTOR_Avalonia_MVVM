@@ -306,6 +306,7 @@ namespace raptor
         {
             Assembly[] myAssemblies = Thread.GetDomain().GetAssemblies();
             MethodInfo mi = null;
+            int assemblyNumber = 0;
             // Get the dynamic assembly named 'MyAssembly'. 
             for (int i = 0; i < myAssemblies.Length; i++)
             {
@@ -315,6 +316,7 @@ namespace raptor
                     try
                     {
                         new_mi = myAssemblies[i].GetType("MyType").GetMethod("Main");
+                        assemblyNumber = i;
                         mi = new_mi;
                     }
                     catch
@@ -352,9 +354,18 @@ namespace raptor
                         Runtime.consoleWriteln("Exception! " + e.Message + e.StackTrace);
                     }
                     SDILReader.Globals.LoadOpCodes();
-                    SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mi);
-                    string msil = mr.GetBodyCode();
-                    Runtime.consoleWriteln(msil);
+                    MethodInfo[] all_methods = myAssemblies[assemblyNumber].GetType("MyType").GetMethods();
+                    foreach (MethodInfo mia in all_methods) {
+                        SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mia);
+                        Runtime.consoleWriteln(mia.Name);
+                        foreach (ParameterInfo pi in mia.GetParameters())
+                        {
+                            Runtime.consoleWrite(pi.ParameterType.Name + " ");
+                            Runtime.consoleWriteln(pi.Name);
+                        }
+                        string msil = mr.GetBodyCode();
+                        Runtime.consoleWriteln(msil);
+                    }
 
                     // added 3/2/05 by mcc
                     //if (raptor_files.output_redirected() && from_commandline)

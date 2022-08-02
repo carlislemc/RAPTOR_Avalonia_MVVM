@@ -168,12 +168,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static void PlaySound(string s)
         {
-            
+
 
             Dispatcher.UIThread.Post(() =>
             {
-                DotnetGraph gd = new DotnetGraph(1, 1);
-                DotnetGraphControl.dngw.PlaySound(s);
+                DotnetGraphControl.PlaySound(s);
+
             }, DispatcherPriority.Background);
         }
         public static void PlaySoundBackground(string s)
@@ -182,8 +182,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Dispatcher.UIThread.Post(() =>
             {
-                DotnetGraph gd = new DotnetGraph(1, 1);
-                DotnetGraphControl.dngw.PlaySoundBackground(s);
+                DotnetGraphControl.PlaySoundBackground(s);
             }, DispatcherPriority.Background);
         }
         public static void PlaySoundBackgroundLoop(string s)
@@ -192,8 +191,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             Dispatcher.UIThread.Post(() =>
             {
-                DotnetGraph gd = new DotnetGraph(1, 1);
-                DotnetGraphControl.dngw.PlaySoundBackgroundLoop(s);
+                DotnetGraphControl.PlaySoundBackgroundLoop(s);
             }, DispatcherPriority.Background);
         }
 

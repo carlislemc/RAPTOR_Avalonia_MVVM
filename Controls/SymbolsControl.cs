@@ -80,6 +80,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         {
 			if(FlowchartControl.fcc.dragComp != null){
 				FlowchartControl.fcc.sc.Start.delete();
+				Undo_Stack.Make_Undoable(FlowchartControl.fcc.sc);
 			}
 		}	
 

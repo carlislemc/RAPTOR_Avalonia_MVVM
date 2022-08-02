@@ -451,9 +451,12 @@ namespace numbers
             return f.Kind == Value_Kind.Character_Kind;
         }
 
-        public static numbers.value copy(numbers.value f)
-        {
-            return new numbers.value() { Kind = f.Kind, V = f.V, S = f.S, C = f.C, Object = f.Object };
+        public static void copy(numbers.value src, numbers.value dest) { 
+            dest.Kind = src.Kind;
+            dest.V = src.V;
+            dest.S = src.S;
+            dest.C = src.C;
+            dest.Object = src.Object;
         }
 
         public static numbers.value addValues(numbers.value first, numbers.value second){
