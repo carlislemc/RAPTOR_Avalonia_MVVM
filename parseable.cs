@@ -20,31 +20,33 @@ namespace parse_tree
         public static void Emit_Conversion(int o, Generate_Interface gen)
         {
             Generate_IL gil = (Generate_IL)gen;
-            switch (o)
+            switch ((Parseable.Conversions)o)
             {
-                case 0:
+                case Parseable.Conversions.To_Integer:
                     gil.Emit_Method("numbers.Numbers", "integer_of");
                     break;
-                case 1:
+                case Parseable.Conversions.To_Float:
                     gil.Emit_Method("numbers.Numbers", "long_float_of");
                     break;
-                case 2:
+                case Parseable.Conversions.To_String:
                     gil.Emit_Method("numbers.Numbers", "string_of");
                     break;
-                case 3:
+                case Parseable.Conversions.Number_To_String:
                     gil.Emit_Method("numbers.Numbers", "msstring_view_image");
                     break;
-                case 4:
+                case Parseable.Conversions.To_Bool:
                     gil.Emit_Method("numbers.Numbers", "integer_of");
                     break;
-                case 5:
+                case Parseable.Conversions.To_Color:
                     gil.Emit_Method("numbers.Numbers", "integer_of");
                     break;
-                case 6:
+                case Parseable.Conversions.Char_To_Int:
                     gil.Emit_Method("numbers.Numbers", "character_of");
+                    gil.Emit_Method("numbers.Numbers", "make_value__3");
                     break;
-                case 7:
+                case Parseable.Conversions.Int_To_Char:
                     gil.Emit_Method("numbers.Numbers", "integer_of");
+                    gil.Emit_Method("numbers.Numbers", "make_character_value");
                     break;
 
             }
@@ -2505,12 +2507,12 @@ namespace parse_tree
                 case "to_ascii":
                     gen.Emit_Conversion((int)Conversions.Char_To_Int);
                     emit_parameter_number(parameters.parameter, gen);
-                    //gen.Emit_End_Conversion((int)Conversions.Char_To_Int);
+                    gen.Emit_End_Conversion((int)Conversions.Char_To_Int);
                     break;
                 case "to_character":
                     gen.Emit_Conversion((int)Conversions.Int_To_Char);
                     emit_parameter_number(parameters.parameter, gen);
-                    //gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
+                    gen.Emit_End_Conversion((int)Conversions.Int_To_Char);
                     break;
                 case "length_of":
                     ((Expr_Output)parameters.parameter).Emit_Length_Of(gen);
