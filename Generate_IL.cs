@@ -1003,7 +1003,7 @@ namespace raptor
             if (!is_string)
             {
                 this.Emit_Method("numbers.Numbers",
-                    "msstring_view_image");
+                    "msstring_console_view_image");
             }
             if (has_newline)
             {

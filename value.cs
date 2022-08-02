@@ -230,7 +230,7 @@ namespace numbers
         }
         public static string msstring_view_image(value v)
         {
-            switch(v.Kind)
+            switch (v.Kind)
             {
                 case Value_Kind.Number_Kind:
                     return number_string(v);
@@ -246,7 +246,24 @@ namespace numbers
                     throw new Exception("bad kind");
             }
         }
-
+        public static string msstring_console_view_image(value v)
+        {
+            switch (v.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return number_string(v);
+                case Value_Kind.String_Kind:
+                    return v.S;
+                case Value_Kind.Character_Kind:
+                    return ""+v.C;
+                case Value_Kind.Object_Kind:
+                case Value_Kind.Ref_1D:
+                case Value_Kind.Ref_2D:
+                    return object_image(v);
+                default:
+                    throw new Exception("bad kind");
+            }
+        }
         public static value make_correct_number_value_type(string s)
         {
             try

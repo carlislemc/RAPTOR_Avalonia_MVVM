@@ -1548,7 +1548,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             paint.Style = SKPaintStyle.Fill;
             var x_coord = Make_0_Based(x);
             var y_coord = Make_0_Based_And_Unflip(y);
-            SkiaContext.SkCanvas.DrawPoint(x_coord, y_coord, paint);
+            SkiaContext.SkCanvas.DrawPoint(((float)x_coord)+0.5f, ((float)y_coord)+0.5f, paint);
             UpdateWindowUnlessFrozen();
         }
 
@@ -1597,7 +1597,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                         {
                             var paint = paints[(int)to_color];
                             paint.Style = SKPaintStyle.Fill;
-                            SkiaContext.SkCanvas.DrawPoint((float)p.X, (float)p.Y, paint);
+                            paint.StrokeCap = SKStrokeCap.Round;
+                            paint.StrokeWidth = 1.0f;
+                            SkiaContext.SkCanvas.DrawPoint(((float)p.X)+0.5f, ((float)p.Y)+0.5f, paint);
                             worked = true;
                         }
                         //catch

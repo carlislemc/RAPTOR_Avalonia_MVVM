@@ -32,7 +32,7 @@ namespace parse_tree
                     gil.Emit_Method("numbers.Numbers", "string_of");
                     break;
                 case Parseable.Conversions.Number_To_String:
-                    gil.Emit_Method("numbers.Numbers", "msstring_view_image");
+                    gil.Emit_Method("numbers.Numbers", "msstring_console_view_image");
                     break;
                 case Parseable.Conversions.To_Bool:
                     gil.Emit_Method("numbers.Numbers", "integer_of");
