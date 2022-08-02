@@ -199,7 +199,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
             string[] args = App.getArgs();
-            if (args != null && args[0] != "")
+            if (args != null && args.Length>=1 && args[0] != "")
             {
                 Load_File(args[0]);
             }
@@ -374,13 +374,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         }
                         //this.carlisle.SelectedTab = this.mainSubchart();
                     }
-                    catch (System.Exception)
+                    catch (System.Exception e) 
                     {
                         // previous to version 11, there is just one tab page
                         // moved this way down here for very old files (previous to version 11)
                         this.fileName = dialog_fileName;
                         Plugins.Load_Plugins(this.fileName);
                         stream.Seek(0, SeekOrigin.Begin);
+                        Runtime.consoleWriteln(e.Message);
                         this.mainSubchart().Start = (Oval)bformatter.Deserialize(stream);
                         Component.last_incoming_serialization_version =
                            this.mainSubchart().Start.incoming_serialization_version;
@@ -593,7 +594,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         }
         public void OnCutCommand()
         {
-            Component cutReturn = this.theTabs[this.activeTab].Start.cut();
+            Component cutReturn = this.theTabs[this.viewTab].Start.cut();
             if (cutReturn != null)
             {
                 Clipboard_Data cd = new Clipboard_Data(
@@ -927,10 +928,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 parentComponent = parentCount[parentCount.Count - 1];
                 parentCount.RemoveAt(parentCount.Count - 1);
             }
-            if (inLoop < 0)
-            {
-                inLoop = 0;
-            }
             if (activeComponent.Successor == null && parentComponent != null)
             {
                 bool removeMe = true;
@@ -942,18 +939,24 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         while (activeComponent.parent.GetType() != typeof(Loop) && activeComponent.parent.Successor == null)
                         {
                             activeComponent = activeComponent.parent;
+                            parentCount.RemoveAt(parentCount.Count - 1);
                             inSelection--;
                         }
                         if (activeComponent.parent.GetType() == typeof(Loop))
                         {
+                            removeMe = false;
                             Loop tempLoop = (Loop)activeComponent.parent;
                             if (!activeComponent.is_beforeChild && tempLoop.before_Child != null)
                             {
                                 activeComponent = tempLoop.before_Child;
                                 parentComponent = tempLoop;
+                                //if (parentCount.Contains(tempLoop))
+                                //{
+
+                                //}
                                 //parentCount.Add(tempLoop);
-                                removeMe = true;
-                                //inLoop++;
+                                //removeMe = false;
+                                    //inLoop++;
                             }
                             else
                             {
@@ -962,7 +965,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 {
                                     parentCount.Add(activeComponent);
                                 }
-                                inLoop--;
+                                //inLoop--;
 
                             }
 
@@ -970,6 +973,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         else if (activeComponent.parent.GetType() == typeof(IF_Control))
                         {
                             activeComponent = activeComponent.parent.Successor;
+                            parentCount.RemoveAt(parentCount.Count-1);
                             inSelection--;
                         }
                         //else if(activeComponent.GetType() == typeof(Loop))
@@ -982,10 +986,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         //}
                     }
                     activeComponent.running = true;
-                    if (removeMe)
-                    {
-                        parentCount.RemoveAt(parentCount.Count - 1);
-                    }
+                    //if (removeMe)
+                    //{
+                    //    parentCount.RemoveAt(parentCount.Count - 1);
+                    //}
 
                 }
                 else
@@ -1104,8 +1108,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
 
         public async void OnNextCommand() {
-            //try
-            //{
+            try
+            {
                 if (activeComponent == null)
             {
                 startRun();
@@ -1506,16 +1510,16 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 }
             }
 
-            //}
-            //catch (Exception e)
-            //{
-            //    if (myTimer != null)
-            //    {
-            //        myTimer.Stop();
-            //    }
+            }
+            catch (Exception e)
+            {
+                if (myTimer != null)
+                {
+                    myTimer.Stop();
+                }
 
-            //    Runtime.consoleWriteln("--- Run Halted! ---\n" + e.Message);
-            //}
+                Runtime.consoleWriteln("--- Run Halted! ---\n" + e.Message);
+            }
 
         }
         public void OnPauseCommand() {
@@ -1894,8 +1898,10 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             await this.FileSave_Click();
             this.OnResetCommand();
+
             //Compile_Helpers.Compile_Flowchart(theTabs);
             //Compile_Helpers.Run_Compiled(false);
+
             try
             {
                 Compile_Helpers.Compile_Flowchart(theTabs);

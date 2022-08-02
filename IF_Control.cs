@@ -1266,7 +1266,7 @@ namespace raptor
 			{
 				Component.the_lexer = new Lexer(this.Text);
 				Component.currentTempComponent = this;
-				base.Emit_Code(gen);
+				this.parse_tree.Emit_Code(gen);
 			}
             gen.If_Then_Part(o);
 			if (this.yes_child!=null)
