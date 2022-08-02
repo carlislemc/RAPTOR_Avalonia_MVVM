@@ -363,6 +363,18 @@ namespace parse_tree
                 case "mouse_button_released":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonReleased");
                     break;
+                case "play_sound":
+                    gil.Emit_Method("numbers.Numbers", "string_of");
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "PlaySound");
+                    break;
+                case "play_sound_background":
+                    gil.Emit_Method("numbers.Numbers", "string_of");
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "PlaySoundBackground");
+                    break;
+                case "play_sound_background_loop":
+                    gil.Emit_Method("numbers.Numbers", "string_of");
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "PlaySoundBackgroundLoop");
+                    break;
             }
             
         }
@@ -865,7 +877,33 @@ namespace parse_tree
                 raptor_files.redirect_output_append(ps[0]);
 
             }
+            else if (str.ToLower() == "play_sound")
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySound(soundFile);
+                }, DispatcherPriority.Background);
 
+            }
+            else if (str.ToLower() == "play_sound_background")
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySoundBackground(soundFile);
+                }, DispatcherPriority.Background);
+
+            }
+            else if (str.ToLower() == "play_sound_background_loop")
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    string soundFile = ps[0].S;
+                    GraphDialogViewModel.PlaySoundBackgroundLoop(soundFile);
+                }, DispatcherPriority.Background);
+
+            }
             return;
             
         }
@@ -901,6 +939,9 @@ namespace parse_tree
                     emit_parameter_number(param_list.parameter, gen);
                     gen.Emit_Past_Sleep();
                     break;
+                case "play_sound":
+                case "play_sound_background":
+                case "play_sound_background_loop":
                 case "redirect_output":
                 case "redirect_output_append":
                 case "redirect_input":
@@ -1235,6 +1276,11 @@ namespace parse_tree
             {
                 param_list.parameter.compile_pass1(gen);
             }
+            else if (str.ToLower() == "play_sound" || str.ToLower()=="play_sound_background" ||
+                str.ToLower()=="play_sound_background_loop")
+            {
+                param_list.parameter.compile_pass1(gen);
+            }
             else if (str.ToLower() == "redirect_input")
             {
                 param_list.parameter.compile_pass1(gen);
@@ -1381,37 +1427,9 @@ namespace parse_tree
             {
                 mw.myTimer.Stop();
             }
-            if (proc.ToLower() == "play_sound")
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    string soundFile = ps[0].S;
-                    GraphDialogViewModel.PlaySound(soundFile);
-                }, DispatcherPriority.Background);
+            
+            Plugins.Invoke(proc, param_list);
 
-            }
-            if (proc.ToLower() == "play_sound_background")
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    string soundFile = ps[0].S;
-                    GraphDialogViewModel.PlaySoundBackground(soundFile);
-                }, DispatcherPriority.Background);
-
-            }
-            if (proc.ToLower() == "play_sound_background_loop")
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    string soundFile = ps[0].S;
-                    GraphDialogViewModel.PlaySoundBackgroundLoop(soundFile);
-                }, DispatcherPriority.Background);
-
-            }
-            else
-            {
-                Plugins.Invoke(proc, param_list);
-            }
             Runtime.processing_parameter_list = false;
             if (mw.myTimer != null)
             {

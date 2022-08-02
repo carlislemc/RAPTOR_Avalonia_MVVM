@@ -59,7 +59,7 @@ namespace RAPTOR_Avalonia_MVVM
         Get_Window_Width, Get_Window_Height,
         Get_Key, Get_Key_String, Get_Font_Width, Get_Font_Height,
         // adagraph functions 1 parameters
-        Load_Bitmap,
+        Load_Bitmap, 
         // functions of 2 parameters
         Get_Pixel,
         // functions of 3 parameters
@@ -69,7 +69,7 @@ namespace RAPTOR_Avalonia_MVVM
         // regular procedures with params
         Delay_For, Redirect_Output_Append, Set_Precision, Redirect_Input, Redirect_Output,
         // adagraph procedures
-        Clear_Window, Display_Number, Display_Text, Draw_Arc,
+        Clear_Window, Play_Sound, Play_Sound_Background, Play_Sound_Background_Loop, Display_Number, Display_Text, Draw_Arc,
         // adagraph procs of 0 params
         Close_Graph_Window, Freeze_Graph_Window, Update_Graph_Window,
         Unfreeze_Graph_Window,
@@ -319,6 +319,10 @@ namespace RAPTOR_Avalonia_MVVM
                 case Token_Type.Save_Graph_Window:
                     return 1;
                 case Token_Type.Set_Window_Title:
+                    return 1;
+                case Token_Type.Play_Sound:
+                case Token_Type.Play_Sound_Background:
+                case Token_Type.Play_Sound_Background_Loop:
                     return 1;
             }
             throw new Lexer_Exception("invalid parameter to Parameter_Count");

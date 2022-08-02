@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerators", "CodeGenerators\CodeGenerators.csproj", "{74A3944E-62F1-4D6E-88CE-FE8BA6CFE243}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugins_powermod", "plugins_powermod\plugins_powermod.csproj", "{24E1A52B-4F39-4907-A356-2FA5C2E39358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{74A3944E-62F1-4D6E-88CE-FE8BA6CFE243}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74A3944E-62F1-4D6E-88CE-FE8BA6CFE243}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74A3944E-62F1-4D6E-88CE-FE8BA6CFE243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24E1A52B-4F39-4907-A356-2FA5C2E39358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

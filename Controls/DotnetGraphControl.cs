@@ -577,8 +577,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         private static bool graphWindowOpen = false;
         public static MouseButton mb;
         private Point mouse;
-        private readonly Player player = new Player();
-        private bool playInBackground;
+        private static readonly Player player = new Player();
+        private static bool playInBackground;
         private char pressed_key;
 
 
@@ -591,7 +591,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         //Should have a OnToolChange Event
         private SKPaint SKBrush;
         private ISkiaDrawingContextImpl SkiaContext;
-        private string soundFilePath;
+        private static string soundFilePath;
         public static bool waitForKey;
         public static bool waitForMouse;
         private int x_size, y_size;
@@ -771,8 +771,6 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                         break;
                 }
                 var p = e.GetPosition(this);
-                SkiaContext.SkCanvas.DrawRect(new SKRect((float)p.X, (float)p.Y,
-                    (float)p.X + 10, (float)p.Y + 10), SKBrush);
                 //InvalidateVisual();
                 mouseDown = true;
                 buttonDown = e.MouseButton;
@@ -1384,7 +1382,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             }
         }
 
-        public void PlaySound(
+        public static void PlaySound(
             string soundFile
         )
         {
@@ -1392,7 +1390,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             player.Play(soundFile);
         }
 
-        public void PlaySoundBackground(
+        public static void PlaySoundBackground(
             string soundFile
         )
         {
@@ -1404,7 +1402,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             player.Play(soundFile);
         }
 
-        public void PlaySoundBackgroundLoop(
+        public static void PlaySoundBackgroundLoop(
             string soundFile
         )
         {

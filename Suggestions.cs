@@ -441,7 +441,11 @@ namespace raptor
             "is_number(variable)",
             "is_open",
             "key_hit",
-            "end_of_input"
+            "end_of_input",
+            "play_sound(\"soundfile\")",
+            "play_sound_background(\"soundfile\")",
+            "play_sound_background_loop(\"soundfile\")",
+
         };
 
 

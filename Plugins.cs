@@ -704,18 +704,18 @@ namespace RAPTOR_Avalonia_MVVM
 				if (parameter_info[i].ParameterType.Name == "Int32")
 				{
 					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
-					gil.Emit_Method("numbers_pkg", "integer_of");
+					gil.Emit_Method("numbers.Numbers", "integer_of");
 				}
 				else if (parameter_info[i].ParameterType.Name == "Single")
 				{
 					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
-					gil.Emit_Method("numbers_pkg", "long_float_of");
+					gil.Emit_Method("numbers.Numbers", "long_float_of");
 					gen.Emit(OpCodes.Conv_R4);
 				}
 				else if (parameter_info[i].ParameterType.Name == "Double")
 				{
 					((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
-					gil.Emit_Method("numbers_pkg", "long_float_of");
+					gil.Emit_Method("numbers.Numbers", "long_float_of");
 				}
 				else if (parameter_info[i].ParameterType.Name == "String")
 				{
@@ -731,7 +731,7 @@ namespace RAPTOR_Avalonia_MVVM
 					catch
 					{
 						((parse_tree.Expr_Output)walk.parameter).expr.Emit_Code(gil);
-						gil.Emit_Method("numbers_pkg", "string_of");
+						gil.Emit_Method("numbers.Numbers", "string_of");
 					}
 				}
 				else if (parameter_info[i].ParameterType.Name == "Int32&")
@@ -920,19 +920,19 @@ namespace RAPTOR_Avalonia_MVVM
 			if (method.ReturnType.Name == "Single")
 			{
 				gen.Emit(OpCodes.Conv_R8);
-				gil.Emit_Method("numbers_pkg", "make_value__2");
+				gil.Emit_Method("numbers.Numbers", "make_value__2");
 			}
 			else if (method.ReturnType.Name == "Double")
 			{
-				gil.Emit_Method("numbers_pkg", "make_value__2");
+				gil.Emit_Method("numbers.Numbers", "make_value__2");
 			}
 			else if (method.ReturnType.Name == "Int32")
 			{
-				gil.Emit_Method("numbers_pkg", "make_value__3");
+				gil.Emit_Method("numbers.Numbers", "make_value__3");
 			}
 			else if (method.ReturnType.Name == "String")
 			{
-				gil.Emit_Method("numbers_pkg", "make_string_value");
+				gil.Emit_Method("numbers.Numbers", "make_string_value");
 			}
 			else if (method.ReturnType.Name == "Boolean")
 			{
