@@ -281,11 +281,11 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         public static void OpenGraphWindow(int w, int h)
         {
-            Dispatcher.UIThread.Post(() =>
-            {
+            //Dispatcher.UIThread.InvokeAsync(() =>
+            //{
                 DotnetGraphControl.OpenGraphWindow(w, h);
                 //DotnetGraphControl.dngw.OpenGraphWindow(w, h);
-            }, DispatcherPriority.Background);
+            //}).Wait(-1);
 
         }
 
@@ -384,8 +384,9 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             
 
             Key k = DotnetGraphControl.dngw.GetKey();
-            
 
+            int x = getAsciiValue((int)k);
+            
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = getAsciiValue((int)k) };
         }
 

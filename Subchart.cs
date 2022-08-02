@@ -563,6 +563,8 @@ namespace raptor
             End.Text = "end";
             Start = new Oval_Procedure(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval", parameter_count);
             Start.Text = "start";
+            this.kind = Subchart_Kinds.Procedure;
+
         }
         public Procedure_Chart(string name, string[] incoming_params, bool[] ins, bool[] outs) 
         {
@@ -570,6 +572,7 @@ namespace raptor
             End = new Oval(Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
             End.Text = "end";
             Start = new Oval_Procedure(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval", incoming_params, ins, outs);
+            this.kind = Subchart_Kinds.Procedure;
             //Start.Text = "start";
         }
         public override int Num_Params

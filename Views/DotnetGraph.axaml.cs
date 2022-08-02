@@ -36,6 +36,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.Closing += (s, e) =>
             {
                 DotnetGraphControl.onClosingCommand();
+                dotnetgraph = null;
             };
 
             this.KeyDown += (s, e) =>

@@ -446,7 +446,7 @@ namespace raptor
         public void Emit_Load_Character(char val)
         {
             gen.Emit(OpCodes.Ldc_I4, val);
-            Emit_Method("numbers.Numbers", "make_value__4");
+            Emit_Method("numbers.Numbers", "make_character_value");
         }
         public void Emit_Load_String(string val)
         {
@@ -473,6 +473,7 @@ namespace raptor
         //dotnetgraphlibrary.dotnetgraph.
         public void Emit_Conversion(int o)
         {
+            //parse_tree.Emit_Functions.Emit_Conversion(o, this);
         }
         public void Emit_End_Conversion(int o)
         {
@@ -1002,7 +1003,7 @@ namespace raptor
             if (!is_string)
             {
                 this.Emit_Method("numbers.Numbers",
-                    "msstring_view_image");
+                    "msstring_console_view_image");
             }
             if (has_newline)
             {

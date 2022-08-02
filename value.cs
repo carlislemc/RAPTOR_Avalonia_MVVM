@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using raptor;
 
 namespace numbers
 {
@@ -229,7 +230,7 @@ namespace numbers
         }
         public static string msstring_view_image(value v)
         {
-            switch(v.Kind)
+            switch (v.Kind)
             {
                 case Value_Kind.Number_Kind:
                     return number_string(v);
@@ -245,7 +246,24 @@ namespace numbers
                     throw new Exception("bad kind");
             }
         }
-
+        public static string msstring_console_view_image(value v)
+        {
+            switch (v.Kind)
+            {
+                case Value_Kind.Number_Kind:
+                    return number_string(v);
+                case Value_Kind.String_Kind:
+                    return v.S;
+                case Value_Kind.Character_Kind:
+                    return ""+v.C;
+                case Value_Kind.Object_Kind:
+                case Value_Kind.Ref_1D:
+                case Value_Kind.Ref_2D:
+                    return object_image(v);
+                default:
+                    throw new Exception("bad kind");
+            }
+        }
         public static value make_correct_number_value_type(string s)
         {
             try
@@ -431,6 +449,11 @@ namespace numbers
         public static bool is_character(value f)
         {
             return f.Kind == Value_Kind.Character_Kind;
+        }
+
+        public static numbers.value copy(numbers.value f)
+        {
+            return new numbers.value() { Kind = f.Kind, V = f.V, S = f.S, C = f.C, Object = f.Object };
         }
 
         public static numbers.value addValues(numbers.value first, numbers.value second){
