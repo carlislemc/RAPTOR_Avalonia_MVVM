@@ -104,8 +104,8 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionYTapped = (int)e.GetPosition(this).Y;
             
             string r = e.Data.GetText();
-            //if (e.Data is Avalonia.Input.DataObject)
-            //{
+            if (r!=null || dragComp!=null)
+            {
                 if (e.Data.GetText() == SymbolsControl.assignment_fig)
                 {
                     this.sc.OnInsertAssignmentCommand();
@@ -139,10 +139,11 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                         this.sc.Start.delete();
                     }
                 }
-            //}
-            dragComp = null;
-            this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
-            e.Handled = true;
+                dragComp = null;
+                this.sc.Start.select(this.sc.positionX, this.sc.positionY, ctrl);
+                e.Handled = true;
+            }
+
         }
         private void doubleClick(object? sender, RoutedEventArgs e)
         {

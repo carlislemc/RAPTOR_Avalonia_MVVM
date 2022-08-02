@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR Avalonia" Language="1033" Version="0.0.0.1" Manufacturer="WixEdit" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
+    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR Avalonia" Language="1033" Version="0.9.0.1" Manufacturer="WixEdit" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
         <Package Description="RAPTOR Avalonia Edition" Comments="RAPTOR" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -130,7 +130,12 @@
                         <File Id="RAPTOR.EXE" Name="raptor.exe" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe">
                             <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
                             <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="RAPTOR" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" />
-                        </File>
+                         </File>
+                    <ProgId Id="RAPTOR.file" Description="RAPTOR Avalonia File" Icon="StartMenuIcon.exe" IconIndex="0" Advertise="yes">
+                      <Extension Id="rap">
+                      <Verb Id="open" Command="Open" Argument="&quot;%1&quot;"/>
+                        </Extension>
+                    </ProgId>
                     </Component>
                     <Component Id="RAPTOR.PDB" DiskId="1" Guid="49A4887C-F78E-4C01-A6CB-931B6B618349">
                         <File Id="RAPTOR.PDB" Name="raptor.pdb" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.pdb" />
