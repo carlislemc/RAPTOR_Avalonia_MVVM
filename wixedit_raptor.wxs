@@ -5,7 +5,7 @@
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="PUBLISH" Name="publish">
+                <Directory Id="PUBLISH" Name="RAPTOR_Avalonia">
                     <Component Id="AVALONIA.ANIMATION.DLL" DiskId="1" Guid="1DC5AD5C-BC9B-464C-BD68-4B358C01F829">
                         <File Id="AVALONIA.ANIMATION.DLL" Name="Avalonia.Animation.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Animation.dll" />
                     </Component>
@@ -464,6 +464,15 @@
                             <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
+                    <Component Id="PLUGINS_POWERMOD.DLL" DiskId="1" Guid="0CDAA62A-3FC1-48EA-8616-FF93EAAC2490">
+                        <File Id="PLUGINS_POWERMOD.DLL" Name="plugins_powermod.dll" Source="bin\Release\publish\plugins_powermod.dll" />
+                    </Component>
+                    <Component Id="PLUGINS_STRINGOPERATIONS.DLL" DiskId="1" Guid="ED2517D0-602C-4AD2-A5DB-0144825A763D">
+                        <File Id="PLUGINS_STRINGOPERATIONS.DLL" Name="plugins_stringoperations.dll" Source="bin\Release\publish\plugins_stringoperations.dll" />
+                    </Component>
+                    <Component Id="PLUGINS_TIME.DLL" DiskId="1" Guid="2ABD9692-8EA8-435A-8FA5-FEFB9B7DFA27">
+                        <File Id="PLUGINS_TIME.DLL" Name="plugins_time.dll" Source="bin\Release\publish\plugins_time.dll" />
+                    </Component>
                 </Directory>
             </Directory>
             <Directory Id="DesktopFolder" />
@@ -605,6 +614,9 @@
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" />
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" />
             <ComponentRef Id="StartMenuShortcuts" />
+            <ComponentRef Id="PLUGINS_POWERMOD.DLL" />
+            <ComponentRef Id="PLUGINS_STRINGOPERATIONS.DLL" />
+            <ComponentRef Id="PLUGINS_TIME.DLL" />
         </Feature>
         <UI />
         <UIRef Id="WixUI_Minimal" />

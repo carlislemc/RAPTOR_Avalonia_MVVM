@@ -50,4 +50,9 @@
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageReference Include="NetCoreAudio" Version="1.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="plugins_powermod\plugins_powermod.csproj" />
+    <ProjectReference Include="plugins_stringoperations\plugins_stringoperations.csproj" />
+    <ProjectReference Include="plugins_time\plugins_time.csproj" />
+  </ItemGroup>
 </Project>
