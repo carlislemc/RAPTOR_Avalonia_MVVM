@@ -61,6 +61,8 @@ namespace RAPTOR_Avalonia_MVVM.Views
                     DotnetGraphControl.keyHit = true;
                     DotnetGraphControl.keyDown = true;
                 }
+
+                e.Handled = true;
             };
 
             this.KeyUp += (s, e) =>
