@@ -39,12 +39,12 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public Component dragComp = null;
         public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
         {
-            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl || e.MouseButton == MouseButton.Left)
+            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl || e.MouseButton == MouseButton.Right)
             {
                 return;
             }
             dragData.Set(DataFormats.Text, dragComp);
-			DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move);
+            DragDrop.DoDragDrop((PointerPressedEventArgs)e, dragData, DragDropEffects.Move);
         }
 
         private void onClick(object? sender, RoutedEventArgs e)

@@ -286,18 +286,26 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
 
             string[] ps = getParams();
-            if(setProcedureName[0] < 65 || setProcedureName[0] > 122 || (setProcedureName[0] > 90 && setProcedureName[0] < 97 && setProcedureName[0] != 95))
+            foreach(char c in setProcedureName)
             {
-                Text = "Cannot name Procedure: " + setProcedureName;
-                return;
-            }
-            foreach (string s in ps)
-            {
-                if(s[0] < 65 || s[0] > 122 || (s[0] > 90 && s[0] < 97 && s[0] != 95))
+                if (c < 65 || c > 122 || (c > 90 && c < 97 && c != 95))
                 {
-                    Text = "Cannot name variabe: " + s;
+                    Text = "Cannot name Procedure: " + setProcedureName;
                     return;
                 }
+            }
+            
+            foreach (string s in ps)
+            {
+                foreach(char c in s)
+                {
+                    if (c < 65 || c > 122 || (c > 90 && c < 97 && c != 95))
+                    {
+                        Text = "Cannot name variabe: " + s;
+                        return;
+                    }
+                }
+                
             }
 
             Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
