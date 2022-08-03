@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR Avalonia" Language="1033" Version="0.9.0.1" Manufacturer="WixEdit" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
+    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR_Avalonia" Language="1033" Version="0.9.0.1" Manufacturer="Martin Carlisle" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
         <Package Description="RAPTOR Avalonia Edition" Comments="RAPTOR" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -128,8 +128,6 @@
                     </Component>
                     <Component Id="RAPTOR.EXE" DiskId="1" Guid="F7FA56BA-41E0-4A65-A363-14F9AE35CB88">
                         <File Id="RAPTOR.EXE" Name="raptor.exe" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe">
-                            <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
-                            <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="RAPTOR" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" />
                          </File>
                     <ProgId Id="RAPTOR.file" Description="RAPTOR Avalonia File" Icon="StartMenuIcon.exe" IconIndex="0" Advertise="yes">
                       <Extension Id="rap">
@@ -480,12 +478,25 @@
                     </Component>
                 </Directory>
             </Directory>
-            <Directory Id="DesktopFolder" />
+            <Directory Id="DesktopFolder">
+			     <Component Id="ApplicationShortcutDesktop" Guid="65441557-8d8d-4c2d-b796-411b9035737b">
+                  <Shortcut Id="desktopShortcut" Target="RAPTOR.EXE" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR"  Icon="DesktopIcon.exe" IconIndex="0" />
+				   <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+				   <RegistryValue
+                      Root="HKCU"
+                      Key="Software\Martin Carlisle\RAPTOR_Avalonia"
+                      Name="installed"
+                      Type="integer"
+                      Value="1"
+                      KeyPath="yes"/>
+				  </Component>
+			</Directory>
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ProgramMenuDir" Name="RAPTOR Avalonia">
                     <Component Id="StartMenuShortcuts" Guid="C2DCD86B-8437-4F9F-B513-0645D1F19DB5">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
                         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+                         <Shortcut Id="ExeShortcut" Target="RAPTOR.EXE" Name="RAPTOR"  Icon="StartMenuIcon.exe" IconIndex="0" />
                         <Shortcut Id="UninstallProduct" Name="Uninstall RAPTOR Avalonia" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                         <util:InternetShortcut Id="WebsiteShortcut" Name="RAPTOR website" Target="https://raptor.martincarlisle.com" />
                     </Component>
@@ -619,6 +630,7 @@
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" />
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" />
             <ComponentRef Id="StartMenuShortcuts" />
+            <ComponentRef Id="ApplicationShortcutDesktop" />
             <ComponentRef Id="PLUGINS_POWERMOD.DLL" />
             <ComponentRef Id="PLUGINS_STRINGOPERATIONS.DLL" />
             <ComponentRef Id="PLUGINS_TIME.DLL" />

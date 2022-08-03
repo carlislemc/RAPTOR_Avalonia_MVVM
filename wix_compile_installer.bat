@@ -1,0 +1,2 @@
+"C:\Program Files (x86)\WixEdit\wix-3.0.5419.0\candle.exe" -nologo "C:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\wixedit_raptor.wxs" -out "C:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\wixedit_raptor.wixobj"  -ext WixUtilExtension  -ext WixUIExtension  -ext WixNetFxExtension
+"C:\Program Files (x86)\WixEdit\wix-3.0.5419.0\light.exe" -nologo "C:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\wixedit_raptor.wixobj" -out "C:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\wixedit_raptor.msi"  -ext WixUtilExtension  -ext WixUIExtension  -ext WixNetFxExtension
