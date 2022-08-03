@@ -38,8 +38,9 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         DataObject dragData = new DataObject();
         public Component dragComp = null;
         public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
-        {   
-            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl){
+        {
+            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl || e.MouseButton == MouseButton.Left)
+            {
                 return;
             }
             dragData.Set(DataFormats.Text, dragComp);
@@ -53,7 +54,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int)f.GetPosition(this).Y;
             this.sc.positionXTapped = (int)f.GetPosition(this).X;
             this.sc.positionYTapped = (int)f.GetPosition(this).Y;
-            if (f.MouseButton!=MouseButton.Left)
+            if (f.MouseButton != MouseButton.Left)
             {
                 return;
             }
@@ -137,6 +138,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                     if (mw.theTabs[mw.viewTab].Start.insert(dragComp, this.sc.positionX, this.sc.positionY, 0))
                     {
                         this.sc.Start.delete();
+                        Undo_Stack.Make_Undoable(mw.theTabs[mw.viewTab]);
                     }
                 }
                 dragComp = null;
