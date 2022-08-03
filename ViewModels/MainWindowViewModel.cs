@@ -699,7 +699,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        private async Task FileSave_Click(bool closeAfter = false)
+        public async Task FileSave_Click(bool closeAfter = false)
         {
             if (fileName == "" || fileName == null)
             {

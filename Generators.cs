@@ -43,12 +43,12 @@ namespace raptor
             return result;
         }
 
-        public static void generateCodeCommand(string lang)
+        public async static void generateCodeCommand(string lang)
         {
             MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
-            if (mw.fileName == null || mw.fileName == "" || lang == "")
+            if (mw.fileName == null || mw.fileName == "" || lang == "" || mw.modified)
             {
-                return;
+                await mw.FileSave_Click();
             }
             Generate_Interface gi = raptor.Generators.Create_From_Menu(lang, mw.fileName);
             Compile_Helpers.Do_Compilation(mw.mainSubchart().Start, gi, mw.theTabs);
