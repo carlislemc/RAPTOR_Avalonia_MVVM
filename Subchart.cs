@@ -59,7 +59,7 @@ namespace raptor
                 else
                 {
                     Component t = findSelected(this);
-                    if(t != null)
+                    if (t != null)
                     {
                         //if (this.contextMenuType != 1)
                         //{

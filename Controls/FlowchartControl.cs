@@ -137,6 +137,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                     if (mw.theTabs[mw.viewTab].Start.insert(dragComp, this.sc.positionX, this.sc.positionY, 0))
                     {
                         this.sc.Start.delete();
+                        Undo_Stack.Make_Undoable(mw.theTabs[mw.viewTab]);
                     }
                 }
                 dragComp = null;

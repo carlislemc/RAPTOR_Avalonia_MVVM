@@ -1744,8 +1744,24 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             if (this.activeComponent.running) {
                 this.activeComponent.running = false;
-                this.activeComponent = null;
             }
+            foreach(Component c in parentCount)
+            {
+                if (c.running)
+                {
+                    c.running = false;
+                }
+                if (c.selected)
+                {
+                    c.selected = false;
+                }
+            }
+            this.parentComponent = null;
+            this.parentCount = new ObservableCollection<Component>();
+            
+            this.activeComponent = null;
+            inLoop = 0;
+            inSelection = 0;
         }
 
         public void startRun() {

@@ -49,7 +49,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
             this.KeyDown += (s, e) =>
             {
                 KeyEventArgs f = (KeyEventArgs)e;
-                if (f.Key == Avalonia.Input.Key.LeftCtrl || f.Key == Avalonia.Input.Key.RightCtrl)
+                if (f.KeyModifiers == PlatformCommandKey)
                 {
                     FlowchartControl.ctrl = true;
                 }
