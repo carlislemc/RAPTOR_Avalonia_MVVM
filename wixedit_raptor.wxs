@@ -5,7 +5,7 @@
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="PUBLISH" Name="RAPTOR_Avalonia">
+                <Directory Id="INSTALLDIR" Name="RAPTOR_Avalonia">
                     <Component Id="AVALONIA.ANIMATION.DLL" DiskId="1" Guid="1DC5AD5C-BC9B-464C-BD68-4B358C01F829">
                         <File Id="AVALONIA.ANIMATION.DLL" Name="Avalonia.Animation.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Animation.dll" />
                     </Component>
@@ -480,7 +480,7 @@
             </Directory>
             <Directory Id="DesktopFolder">
 			     <Component Id="ApplicationShortcutDesktop" Guid="65441557-8d8d-4c2d-b796-411b9035737b">
-                  <Shortcut Id="desktopShortcut" Target="RAPTOR.EXE" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR"  Icon="DesktopIcon.exe" IconIndex="0" />
+                  <Shortcut Id="desktopShortcut" Target="[INSTALLDIR]\RAPTOR.EXE" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR"  Icon="DesktopIcon.exe" IconIndex="0" />
 				   <RemoveFolder Id="DesktopFolder" On="uninstall"/>
 				   <RegistryValue
                       Root="HKCU"
@@ -496,7 +496,7 @@
                     <Component Id="StartMenuShortcuts" Guid="C2DCD86B-8437-4F9F-B513-0645D1F19DB5">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
                         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
-                         <Shortcut Id="ExeShortcut" Target="RAPTOR.EXE" Name="RAPTOR"  Icon="StartMenuIcon.exe" IconIndex="0" />
+                         <Shortcut Id="ExeShortcut" Target="[INSTALLDIR]RAPTOR.EXE" Name="RAPTOR"  Icon="StartMenuIcon.exe" IconIndex="0" />
                         <Shortcut Id="UninstallProduct" Name="Uninstall RAPTOR Avalonia" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                         <util:InternetShortcut Id="WebsiteShortcut" Name="RAPTOR website" Target="https://raptor.martincarlisle.com" />
                     </Component>
