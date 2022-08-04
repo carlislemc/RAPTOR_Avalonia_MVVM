@@ -431,10 +431,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         {
             switch (a)
             {
-                case int n when (n >= 44 && n <= 44+26):
+                case int n when (n >= (int)Key.A && n <= (int)Key.Z):
                     return n + 53;
-                case int n when (n >= 34 && n <= 43):
+                case int n when (n >= (int)Key.D0 && n <= (int)Key.D9):
                     return n + 14;
+                case (int)Key.Add:
+                    return 43;
+                case (int)Key.Back:
+                    return 8;
+                case (int)Key.Delete:
+                    return 127;
+                case (int)Key.Escape:
+                    return 27;
+                case (int)Key.LeftCtrl:
+                    return 17;
+                case (int)Key.RightCtrl:
+                    return 18;
             }
 
             return -1;
