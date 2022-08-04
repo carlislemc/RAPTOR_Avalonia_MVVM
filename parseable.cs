@@ -1477,10 +1477,10 @@ namespace parse_tree
                     sub = s;
                 }
             }
-            if(sub == mw.mainSubchart())
-            {
-                throw new Exception("Subchart [" + head + "] not found!");
-            }
+            //if(sub == mw.mainSubchart())
+            //{
+            //    throw new Exception("Subchart [" + head + "] not found!");
+            //}
 
             if (sub.Start.GetType() == typeof(Oval_Procedure))
             { //if its a user procedure
