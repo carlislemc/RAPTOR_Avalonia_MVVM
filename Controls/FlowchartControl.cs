@@ -39,12 +39,14 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public Component dragComp = null;
         public void mouseDownDragEvent(object? sender, PointerPressedEventArgs e)
         {
-            if(dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl || e.MouseButton == MouseButton.Left)
+            if (dragComp == null || dragComp.GetType() == typeof(Oval) || ctrl || e.MouseButton == MouseButton.Right)
             {
                 return;
             }
+
             dragData.Set(DataFormats.Text, dragComp);
-			DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move);
+            DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move);
+
         }
 
         private void onClick(object? sender, RoutedEventArgs e)
@@ -54,6 +56,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             this.sc.positionY = (int)f.GetPosition(this).Y;
             this.sc.positionXTapped = (int)f.GetPosition(this).X;
             this.sc.positionYTapped = (int)f.GetPosition(this).Y;
+
             if (f.MouseButton != MouseButton.Left)
             {
                 return;
@@ -206,13 +209,13 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public static FlowchartControl fcc;
         public FlowchartControl()
         {
+            fcc = this;
             sc = new Subchart();
             var timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1 / 60.0);
             timer.Tick += (sender, e) => Angle += Math.PI / 360;
             timer.Start();
             this.PointerMoved += this.onMouseMove;
-            //this.Tapped += this.onClick;
             this.PointerPressed += this.onClick;
             AddHandler(DragDrop.DropEvent, Drop);
             this.DoubleTapped += this.doubleClick;
@@ -220,7 +223,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
             dragData.Set(DataFormats.Text, SymbolsControl.noSelect);
             this.PointerPressed += mouseDownDragEvent;
             this.PointerReleased += released;
-            fcc = this;
+            
         }
 
 

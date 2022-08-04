@@ -699,7 +699,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        private async Task FileSave_Click(bool closeAfter = false)
+        public async Task FileSave_Click(bool closeAfter = false)
         {
             if (fileName == "" || fileName == null)
             {
@@ -2014,36 +2014,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 return GenerateMenuItems;
             }
-        }
-
-        public void generateCPlusPlusCode()
-        {
-            if(fileName == null || fileName == "")
-            {
-                return;
-            }
-            Generate_Interface gi = raptor.Generators.Create_From_Menu("C&++", this.fileName);
-            Compile_Helpers.Do_Compilation(this.mainSubchart().Start, gi, theTabs);
-        }
-
-        public void generateCSharpCode()
-        {
-            if (fileName == null || fileName == "")
-            {
-                return;
-            }
-            Generate_Interface gi = raptor.Generators.Create_From_Menu("C&#", this.fileName);
-            Compile_Helpers.Do_Compilation(this.mainSubchart().Start, gi, theTabs);
-        }
-
-        public void generateVBACode()
-        {
-            if (fileName == null || fileName == "")
-            {
-                return;
-            }
-            Generate_Interface gi = raptor.Generators.Create_From_Menu("V&BA", this.fileName);
-            Compile_Helpers.Do_Compilation(this.mainSubchart().Start, gi, theTabs);
         }
 
     }

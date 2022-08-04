@@ -353,19 +353,19 @@ namespace raptor
                     {
                         Runtime.consoleWriteln("Exception! " + e.Message + e.StackTrace);
                     }
-                    SDILReader.Globals.LoadOpCodes();
-                    MethodInfo[] all_methods = myAssemblies[assemblyNumber].GetType("MyType").GetMethods();
-                    foreach (MethodInfo mia in all_methods) {
-                        SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mia);
-                        Runtime.consoleWriteln(mia.Name);
-                        foreach (ParameterInfo pi in mia.GetParameters())
-                        {
-                            Runtime.consoleWrite(pi.ParameterType.Name + " ");
-                            Runtime.consoleWriteln(pi.Name);
-                        }
-                        string msil = mr.GetBodyCode();
-                        Runtime.consoleWriteln(msil);
-                    }
+                    //SDILReader.Globals.LoadOpCodes();
+                    //MethodInfo[] all_methods = myAssemblies[assemblyNumber].GetType("MyType").GetMethods();
+                    //foreach (MethodInfo mia in all_methods) {
+                    //    SDILReader.MethodBodyReader mr = new SDILReader.MethodBodyReader(mia);
+                    //    Runtime.consoleWriteln(mia.Name);
+                    //    foreach (ParameterInfo pi in mia.GetParameters())
+                    //    {
+                    //        Runtime.consoleWrite(pi.ParameterType.Name + " ");
+                    //        Runtime.consoleWriteln(pi.Name);
+                    //    }
+                    //    string msil = mr.GetBodyCode();
+                    //    Runtime.consoleWriteln(msil);
+                    //}
 
                     // added 3/2/05 by mcc
                     //if (raptor_files.output_redirected() && from_commandline)

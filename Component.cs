@@ -672,7 +672,9 @@ namespace raptor
 					{
 						this.Successor = null;
 					}
-					MainWindowViewModel.GetMainWindowViewModel().modified = true;
+					MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
+					mw.modified = true;
+					Undo_Stack.Make_Undoable(mw.theTabs[mw.viewTab]);
 					return true;
 				}
 				else
