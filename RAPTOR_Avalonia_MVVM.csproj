@@ -39,6 +39,10 @@
     <EmbeddedResource Remove="CodeGenerators\**" />
     <None Remove="CodeGenerators\**" />
     <None Remove=".gitignore" />
+    <None Remove="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Condition="$([MSBuild]::IsOsPlatform('OSX'))"/>
+    <None Remove="sounds\" />
+    <Folder Include="sounds\" />
+    <None Remove="MacOS\osx-64\" Condition="$([MSBuild]::IsOsPlatform('OSX'))"/>
   </ItemGroup>
   <ItemGroup>
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -50,6 +54,10 @@
     <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageReference Include="NetCoreAudio" Version="1.7.0" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="6.0.5.128" Condition="$([MSBuild]::IsOsPlatform('OSX'))"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="plugins_powermod\plugins_powermod.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="plugins_powermod\plugins_powermod.csproj" />
