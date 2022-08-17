@@ -510,7 +510,7 @@ namespace raptor
 		}
 		public override void compile_pass1(Generate_Interface gen)
 		{
-			if (this.parse_tree!=null && this.is_input && this.input_is_expression)
+			if (this.parse_tree!=null && this.is_input) // && this.input_is_expression)
 			{
                 // maintain with parse_tree.adb
                 if (!Compile_Helpers.Start_New_Declaration("raptor_prompt_variable_zzyz"))
@@ -530,16 +530,22 @@ namespace raptor
 					if (!this.input_is_expression)
 					{
 						//parse_tree.set_prompt(this.prompt);
+						gen.Variable_Assignment_Start("raptor_prompt_variable_zzyz");
+						gen.Emit_Load_String(this.prompt);
+						gen.Variable_Assignment_PastRHS();
 					}
 					else
 					{
 						//parse_tree.set_prompt(null);
                         // maintain with parse_tree.adb
                         gen.Variable_Assignment_Start("raptor_prompt_variable_zzyz");
-						Component.the_lexer = new Lexer(this.prompt);
-						Component.currentTempComponent = this;
-                        base.Emit_Code(gen);
-                        gen.Variable_Assignment_PastRHS();
+						if (this.prompt_tree != null)
+						{
+							Component.the_lexer = new Lexer(this.prompt);
+							Component.currentTempComponent = this;
+							((parse_tree.Expr_Output) this.prompt_tree).expr.Emit_Code(gen);
+						}
+						gen.Variable_Assignment_PastRHS();
 					}
 				}
 				Component.the_lexer = new Lexer(this.Text);

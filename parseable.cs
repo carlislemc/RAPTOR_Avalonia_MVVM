@@ -3438,24 +3438,24 @@ namespace parse_tree
             lhs.Execute(l, v);
         }
 
-        private async Task Emit_Load_Prompt(Generate_Interface gen)
+        private void Emit_Load_Prompt(Generate_Interface gen)
         {
-            string prompt = ((Parallelogram)Component.currentTempComponent).prompt;
+            /*string prompt = ((Parallelogram)Component.currentTempComponent).prompt;
             if(prompt != null)
             {
                 gen.Emit_Load_String_Const(prompt);
             }
-            else {
+            else {*/
                 gen.Emit_Load("raptor_prompt_variable_zzyz");
-            }
+            //}
 
         }
 
-        public override async void Emit_Code(Generate_Interface gen)
+        public override void Emit_Code(Generate_Interface gen)
         {
             Emit_Context = Context_Type.Input_Context;
             lhs.Emit_Code(gen);
-            await Emit_Load_Prompt(gen); 
+            Emit_Load_Prompt(gen); 
             gen.Input_Past_Prompt();
         }
 

@@ -769,7 +769,7 @@ namespace raptor
                         if (local.LocalType == typeof(numbers.value))
                         {
                             subILGenerator.Emit(OpCodes.Ldloc, local);
-                            subILGenerator.Emit(OpCodes.Ldarg, k);
+                            subILGenerator.Emit(OpCodes.Ldarg_S, k);
                             subILGenerator.Emit(OpCodes.Castclass, typeof(numbers.value));
                             Emit_Method("numbers.Numbers", "copy");
                         }
@@ -949,7 +949,7 @@ namespace raptor
                 this.Emit_Assign_To(name_variable);
             }
         }
-        private bool dest_is_array;
+        private bool dest_is_array = false;
         private enum input_kind { variable, array, array2d };
         private input_kind kind_of_input;
         public void Input_Start_Variable(string name)

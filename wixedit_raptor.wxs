@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR_Avalonia" Language="1033" Version="0.9.0.1" Manufacturer="Martin Carlisle" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
+    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR_Avalonia" Language="1033" Version="0.9.0.6" Manufacturer="Martin Carlisle" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
         <Package Description="RAPTOR Avalonia Edition" Comments="RAPTOR" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -637,8 +637,6 @@
         </Feature>
         <UI />
         <UIRef Id="WixUI_Minimal" />
-        <PropertyRef Id="NETFRAMEWORK35" />
-        <Condition Message="This application requires .NET Framework X.Y.">Installed OR NETFRAMEWORK35</Condition>
         <Icon Id="DesktopIcon.exe" SourceFile="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
         <Icon Id="StartMenuIcon.exe" SourceFile="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
     </Product>

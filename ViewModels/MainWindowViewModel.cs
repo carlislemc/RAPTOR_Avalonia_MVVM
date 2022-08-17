@@ -1196,7 +1196,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         {
                             if (tempStart.param_is_output[k])
                             {
-                                textStr[k] = textStr[k].Replace(")", "");
+                                textStr[k] = textStr[k].Replace(")", "").Replace(" ","");
                                 Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
                                 if (tempVar == null)
                                 {

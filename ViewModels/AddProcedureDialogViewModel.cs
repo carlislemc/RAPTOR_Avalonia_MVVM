@@ -38,41 +38,85 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                 Oval_Procedure op = (Oval_Procedure)s.Start;
                 string[] ps = op.param_names;
+                bool[] ins = op.getArgIsInput();
+                bool[] outs = op.getArgIsOutput();
                 switch(ps.Length){
                     case 0:
                         return;
                     case 1:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         return;
                     case 2:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         param2 = ps[1];
+                        in2 = ins[1];
+                        out2 = outs[1];
                         return;
                     case 3:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         param2 = ps[1];
+                        in2 = ins[1];
+                        out2 = outs[1];
                         param3 = ps[2];
+                        in3 = ins[2];
+                        out3 = outs[2];
                         return;
                     case 4:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         param2 = ps[1];
+                        in2 = ins[1];
+                        out2 = outs[1];
                         param3 = ps[2];
+                        in3 = ins[2];
+                        out3 = outs[2];
                         param4 = ps[3];
+                        in4 = ins[3];
+                        out4 = outs[3];
                         return;
                     case 5:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         param2 = ps[1];
+                        in2 = ins[1];
+                        out2 = outs[1];
                         param3 = ps[2];
+                        in3 = ins[2];
+                        out3 = outs[2];
                         param4 = ps[3];
+                        in4 = ins[3];
+                        out4 = outs[3];
                         param5 = ps[4];
+                        in5 = ins[4];
+                        out5 = outs[4];
                         return;
                     case 6:
                         param1 = ps[0];
+                        in1 = ins[0];
+                        out1 = outs[0];
                         param2 = ps[1];
+                        in2 = ins[1];
+                        out2 = outs[1];
                         param3 = ps[2];
+                        in3 = ins[2];
+                        out3 = outs[2];
                         param4 = ps[3];
+                        in4 = ins[3];
+                        out4 = outs[3];
                         param5 = ps[4];
+                        in5 = ins[4];
+                        out5 = outs[4];
                         param6 = ps[5];
+                        in6 = ins[5];
+                        out6 = outs[5];
                         return;
                     
                 }
@@ -286,9 +330,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             ObservableCollection<Subchart> tbs = MainWindowViewModel.GetMainWindowViewModel().theTabs;
 
             string[] ps = getParams();
+            if (!Char.IsLetter(setProcedureName[0]))
+            {
+                Text = "Cannot name Procedure: " + setProcedureName;
+                return;
+            }
             foreach(char c in setProcedureName)
             {
-                if (c < 65 || c > 122 || (c > 90 && c < 97 && c != 95))
+                if (!Char.IsLetterOrDigit(c) && c!='_')
                 {
                     Text = "Cannot name Procedure: " + setProcedureName;
                     return;
@@ -297,30 +346,46 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             
             foreach (string s in ps)
             {
-                foreach(char c in s)
+                if (!Char.IsLetter(s[0]))
                 {
-                    if (c < 65 || c > 122 || (c > 90 && c < 97 && c != 95))
+                    Text = "Cannot name variable: " + s;
+                    return;
+                }
+                foreach (char c in s)
+                {
+                    if (!Char.IsLetterOrDigit(c) && c != '_')
                     {
-                        Text = "Cannot name variabe: " + s;
+                        Text = "Cannot name variable: " + s;
                         return;
                     }
                 }
                 
             }
 
-            Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
   
             if(!modding){
+                Subchart addMe = new Procedure_Chart(setProcedureName, getParams(), getIns(), getOuts());
                 tbs.Add(addMe);
-            }else{
+                Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count - 1]);
+            }
+            else
+            {
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
                 int spot = mw.setViewTab;
+                string[] new_params = getParams();
+                ((Oval_Procedure)tbs[spot].Start).changeParameters(
+                    new_params.Length, new_params, getIns(), getOuts());
+                Procedure_Chart pc = (Procedure_Chart) tbs[spot];
                 tbs.RemoveAt(spot);
-                tbs.Insert(spot, addMe);
+                pc.Header = setProcedureName;
+                tbs.Insert(spot, pc);
                 mw.setViewTab = spot;
+                /*tbs.RemoveAt(spot);
+                tbs.Insert(spot, addMe);
+                mw.setViewTab = spot;*/
+                Undo_Stack.Clear_Undo();
             }
 
-            Undo_Stack.Make_Add_Tab_Undoable(tbs[tbs.Count-1]);
             w.Close();
         }
 
