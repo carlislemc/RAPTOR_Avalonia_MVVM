@@ -430,7 +430,14 @@ namespace numbers
 
         public static int length_of(value variable_Value)
         {
-            throw new NotImplementedException();
+            if (variable_Value.Kind == Value_Kind.String_Kind)
+            {
+                return variable_Value.S.Length;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public static value make_string_value(string new_string)

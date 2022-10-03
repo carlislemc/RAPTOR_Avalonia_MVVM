@@ -637,19 +637,19 @@ namespace raptor
 							index + " elements.");
 					}
 				}
-				/*else if (this.Kind==Runtime.Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
+				else if (this.Kind==Runtime.Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value)) 
 				{
 					if (numbers.Numbers.length_of (this.Variable_Value) >=
-						index)
+						index && index>=1)
 					{
-						return numbers.Numbers.make_value__4 (this.Variable_Value.s[index-1]);
+						return numbers.Numbers.make_character_value (this.Variable_Value.S[index-1]);
 					}
 					else
 					{
 						throw new Exception(this.Var_Name + " doesn't have " +
 							index + " elements.");
 					}
-				}*/
+				}
 				else
 				{
 					throw new Exception(this.Var_Name + 
@@ -659,17 +659,19 @@ namespace raptor
 
 			public int getArraySize()
 			{
-				/*if (this.Kind==Variable_Kind.One_D_Array) 
+				if (this.Kind==Runtime.Variable_Kind.One_D_Array) 
 				{
 					// first node is size of array
-					return numbers.Numbers.integer_of(((Variable) 
-						(this.FirstNode)).Variable_Value);
+					ObservableCollection<Arr> val = this.values;
+					int count = numbers.Numbers.integer_of(val[0].value);
+					return count;
 				}
-				else if (this.Kind==Variable_Kind.Value && numbers.Numbers.is_string(this.Variable_Value))
+				else if (this.Kind==Runtime.Variable_Kind.Value && 
+						numbers.Numbers.is_string(this.Variable_Value))
 				{
-					return numbers.Numbers.length_of(this.Variable_Value);
+					return (this.Variable_Value.S.Length);
 				}
-				else*/
+				else
 				{
 					throw new Exception(this.Var_Name + " is not a 1D array.");
 				}
