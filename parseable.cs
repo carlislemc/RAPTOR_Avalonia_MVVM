@@ -3229,12 +3229,42 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
+            Token t = this.id;
+            switch (this.kind)
+            {
+                case Token_Type.Is_Character:
+                    return raptor.Runtime.is_Character(l.Get_Text(t.start, t.finish));
+                case Token_Type.Is_Number:
+                    return raptor.Runtime.is_Scalar(l.Get_Text(t.start, t.finish));
+                case Token_Type.Is_String:
+                    return raptor.Runtime.is_String(l.Get_Text(t.start, t.finish));
+                case Token_Type.Is_Array:
+                    return raptor.Runtime.isArray(l.Get_Text(t.start, t.finish));
+                case Token_Type.Is_2D_Array:
+                    return raptor.Runtime.is_2D_Array(l.Get_Text(t.start, t.finish));
+            }
             throw new NotImplementedException();
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            throw new NotImplementedException();
+            Token t = this.id;
+            Lexer l = Component.the_lexer;
+            switch (this.kind)
+            {
+                case Token_Type.Is_Number:
+                    gen.Emit_Is_Number(l.Get_Text(t.start, t.finish));
+                    break;
+                case Token_Type.Is_String:
+                    gen.Emit_Is_String(l.Get_Text(t.start, t.finish));
+                    break;
+                case Token_Type.Is_Array:
+                    gen.Emit_Is_Array(l.Get_Text(t.start, t.finish));
+                    break;
+                case Token_Type.Is_2D_Array:
+                    gen.Emit_Is_Array2D(l.Get_Text(t.start, t.finish));
+                    break;
+            }
         }
 
         public override void compile_pass1(Generate_Interface gen)
