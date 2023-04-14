@@ -819,7 +819,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 MessageBoxClass.Show(
                     prefix + '\n' +
-                    "Please report to Martin.Carlisle@usafa.edu" + '\n' +
+                    "Please report to carlislem@tamu.edu" + '\n' +
                     "Meantime, try undo then save (keep doing undo until success)" + '\n' +
                     "Or open an autosave file: " + this.fileName + ".[0-9]" + '\n' +
                     "Use Alt-PrtSc and paste into email" + '\n' +
