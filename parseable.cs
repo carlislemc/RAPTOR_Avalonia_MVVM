@@ -862,6 +862,11 @@ namespace parse_tree
 
                 }, DispatcherPriority.Background).Wait(-1);
             }
+            else if(str.ToLower()=="set_precision")
+            {
+                numbers.Numbers.Set_Precision(numbers.Numbers.integer_of(ps[0]));
+                
+            }
             else if(str.ToLower() == "redirect_output")
             {
                 raptor_files.redirect_output(ps[0]);
@@ -3229,43 +3234,53 @@ namespace parse_tree
         }
 
         public override bool Execute(Lexer l){
-            Token t = this.id;
             switch (this.kind)
             {
-                case Token_Type.Is_Character:
-                    return raptor.Runtime.is_Character(l.Get_Text(t.start, t.finish));
                 case Token_Type.Is_Number:
-                    return raptor.Runtime.is_Scalar(l.Get_Text(t.start, t.finish));
-                case Token_Type.Is_String:
-                    return raptor.Runtime.is_String(l.Get_Text(t.start, t.finish));
+                    return Runtime.is_Scalar(l.Get_Text(this.id.start,this.id.finish));
+                    break;
                 case Token_Type.Is_Array:
-                    return raptor.Runtime.isArray(l.Get_Text(t.start, t.finish));
+                    return Runtime.isArray(l.Get_Text(this.id.start,this.id.finish));
+                    break;
+                case Token_Type.Is_Character:
+                    return Runtime.is_Character(l.Get_Text(this.id.start,this.id.finish));
+                    break;
+                case Token_Type.Is_String:
+                    return Runtime.is_String(l.Get_Text(this.id.start,this.id.finish));
+                    break;
                 case Token_Type.Is_2D_Array:
-                    return raptor.Runtime.is_2D_Array(l.Get_Text(t.start, t.finish));
+                    return Runtime.is_2D_Array(l.Get_Text(this.id.start,this.id.finish));
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
             }
-            throw new NotImplementedException();
         }
 
         public override void Emit_Code(Generate_Interface gen)  
         {
-            Token t = this.id;
             Lexer l = Component.the_lexer;
             switch (this.kind)
             {
                 case Token_Type.Is_Number:
-                    gen.Emit_Is_Number(l.Get_Text(t.start, t.finish));
-                    break;
-                case Token_Type.Is_String:
-                    gen.Emit_Is_String(l.Get_Text(t.start, t.finish));
+                    gen.Emit_Is_Number(l.Get_Text(this.id.start,this.id.finish));
                     break;
                 case Token_Type.Is_Array:
-                    gen.Emit_Is_Array(l.Get_Text(t.start, t.finish));
+                    gen.Emit_Is_Array(l.Get_Text(this.id.start,this.id.finish));
+                    break;
+                case Token_Type.Is_Character:
+                    gen.Emit_Is_Character(l.Get_Text(this.id.start,this.id.finish));
+                    break;
+                case Token_Type.Is_String:
+                    gen.Emit_Is_String(l.Get_Text(this.id.start,this.id.finish));
                     break;
                 case Token_Type.Is_2D_Array:
-                    gen.Emit_Is_Array2D(l.Get_Text(t.start, t.finish));
+                    gen.Emit_Is_Array2D(l.Get_Text(this.id.start,this.id.finish));
                     break;
-            }
-        }
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }        }
 
         public override void compile_pass1(Generate_Interface gen)
         {
