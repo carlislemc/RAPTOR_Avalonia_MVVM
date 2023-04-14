@@ -64,7 +64,7 @@ namespace raptor
         void Emit_Is_Array(string name);
         void Emit_Is_String(string name);
         void Emit_Is_Number(string name);
-
+        void Emit_Is_Character(string name);
         // Boolean operators
         void Emit_Or_Shortcut(Boolean2 left, Boolean_Expression right);
         void Emit_And_Shortcut(Boolean_Parseable left, Boolean2 right, bool left_negated);
