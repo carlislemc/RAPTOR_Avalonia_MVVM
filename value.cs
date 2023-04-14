@@ -135,7 +135,7 @@ namespace numbers
         private const int DEFAULT_PRECISION = 4;
         private static bool Precision_Set = false;
         private static int Precision = DEFAULT_PRECISION;
-        static void Set_Precision(int i)
+        public static void Set_Precision(int i)
         {
             if (i<0)
             {
@@ -210,6 +210,12 @@ namespace numbers
                     return Convert.ToString(((int)(v.V - 0.1)));
                 }
                 return Convert.ToString(((int) (v.V+0.1)));
+            }
+            else if (Precision_Set)
+            {
+                return v.V.ToString("F" + Precision);
+                //decimal d = (decimal)v.V;
+                //return d.ToString("0." + ('#' * Precision));
             }
             else
             {
