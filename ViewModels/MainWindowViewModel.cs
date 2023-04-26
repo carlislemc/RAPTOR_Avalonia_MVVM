@@ -928,6 +928,8 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 c.selected = false;
             }
+            ScrollViewer sv = (FlowchartControl.fcc.Parent as UserControl).Parent as ScrollViewer;
+            Dispatcher.UIThread.InvokeAsync(async() => sv.Offset = new Avalonia.Vector(c.X, c.Y));
             c.running = true;
         }
         public void goToNextComponent() { 
@@ -1066,14 +1068,14 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             try
             {
                 if (activeComponent == null)
-            {
-                startRun();
-                activeComponent = this.mainSubchart().Start;
-                activeComponent.selected = false;
-                activeComponent.running = true;
-            }
-            else
-            {
+                {
+                    startRun();
+                    activeComponent = this.mainSubchart().Start;
+                    activeComponent.selected = false;
+                    activeComponent.running = true;
+                }
+                else
+                {
                     if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
                     {
                         symbolCount++;
@@ -1284,6 +1286,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     else if (activeComponent.GetType() == typeof(Loop))
                     {
                         Loop temp = (Loop)activeComponent;
+                        activeComponent.running = false;
                         if (temp.light_head)
                         {
                             temp.light_head = false;
@@ -1315,7 +1318,6 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 {
                                     if (temp.after_Child != null)
                                     {
-                                        activeComponent.running = false;
                                         activeComponent = temp.after_Child.First_Of();
                                     }
                                     else // stay here
@@ -1399,7 +1401,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                         goToNextComponent();
 
                     }
-            }
+                }
 
             }
             catch (Exception e)
