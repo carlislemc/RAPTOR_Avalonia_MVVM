@@ -18,7 +18,7 @@
 
   <StackPanel Background="Linen" Spacing="10">
     <TextBlock HorizontalAlignment="Center">
-      Enter a proceude call.:
+      Enter a procedure call.:
       
       Examples:
          Wait_For_Mouse_Button(Left_Button)
