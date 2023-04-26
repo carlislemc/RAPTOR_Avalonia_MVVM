@@ -572,6 +572,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     {
                         
                         Load_File(result[0]);
+                        this.OnResetCommand();
                     }
                     /*var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                         .GetMessageBoxStandardWindow(new MessageBoxStandardParams
@@ -914,7 +915,22 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
         public bool waitingForKey = false;
         public bool waitingForMouse = false;
         public Avalonia.Input.MouseButton mouseWait;
-        public void goToNextComponent() {
+        public void aboutToRunComponent(Component c)
+        {
+            if (c.break_now())
+            {
+                if (myTimer != null)
+                {
+                    OnPauseCommand();
+                }
+            }
+            if (c.selected)
+            {
+                c.selected = false;
+            }
+            c.running = true;
+        }
+        public void goToNextComponent() { 
 
             if (waitingForKey || waitingForMouse)
             {
@@ -922,78 +938,21 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             try
             {
-            symbolCount++;
-            if (parentCount.Count != 0 && parentComponent == null)
-            {
-                parentComponent = parentCount[parentCount.Count - 1];
-                parentCount.RemoveAt(parentCount.Count - 1);
-            }
-            if (activeComponent.Successor == null && parentComponent != null)
-            {
-                bool removeMe = true;
-                if ((inSelection != 0 || inLoop != 0) && activeComponent.GetType() != typeof(Oval))
+                symbolCount++;
+                if (parentCount.Count != 0 && parentComponent == null)
                 {
-                    activeComponent.running = false;
-                    if (activeComponent.Successor == null)
-                    {
-                        while (activeComponent.parent.GetType() != typeof(Loop) && activeComponent.parent.Successor == null)
-                        {
-                            activeComponent = activeComponent.parent;
-                            parentCount.RemoveAt(parentCount.Count - 1);
-                            inSelection--;
-                        }
-                        if (activeComponent.parent.GetType() == typeof(Loop))
-                        {
-                            removeMe = false;
-                            Loop tempLoop = (Loop)activeComponent.parent;
-                            if (!activeComponent.is_beforeChild && tempLoop.before_Child != null)
-                            {
-                                activeComponent = tempLoop.before_Child;
-                                parentComponent = tempLoop;
-                                //if (parentCount.Contains(tempLoop))
-                                //{
-
-                                //}
-                                //parentCount.Add(tempLoop);
-                                //removeMe = false;
-                                    //inLoop++;
-                            }
-                            else
-                            {
-                                activeComponent = activeComponent.parent;
-                                if (!parentCount.Contains(activeComponent))
-                                {
-                                    parentCount.Add(activeComponent);
-                                }
-                                //inLoop--;
-
-                            }
-
-                        }
-                        else if (activeComponent.parent.GetType() == typeof(IF_Control))
-                        {
-                            activeComponent = activeComponent.parent.Successor;
-                            parentCount.RemoveAt(parentCount.Count-1);
-                            inSelection--;
-                        }
-                        //else if(activeComponent.GetType() == typeof(Loop))
-                        //{
-                        //    Loop tempLoop = (Loop)activeComponent;
-                        //    if (tempLoop.after_Child == null && tempLoop.before_Child != null)
-                        //    {
-                        //        activeComponent = tempLoop.before_Child;
-                        //    }
-                        //}
-                    }
-                    activeComponent.running = true;
-                    //if (removeMe)
-                    //{
-                    //    parentCount.RemoveAt(parentCount.Count - 1);
-                    //}
-
+                    parentComponent = parentCount[parentCount.Count - 1];
+                    parentCount.RemoveAt(parentCount.Count - 1);
+                }
+                activeComponent.running = false;
+                if (activeComponent.GetType() != typeof(Oval) || activeComponent.Successor != null)
+                {
+                    Component temp = Find_Successor(activeComponent);
+                    activeComponent = temp;
                 }
                 else
                 {
+                    // We are in an Oval with no successor (end of a routine)
                     if (isSub)
                     {
                         decreaseSub--;
@@ -1033,65 +992,17 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     parentComponent.running = false;
                     if (parentComponent.Successor != null)
                     {
-                        if (parentComponent.Successor.GetType() == typeof(Loop) && ((Loop)parentComponent.Successor).before_Child != null)
-                        {
-                            activeComponent = ((Loop)parentComponent.Successor).before_Child;
-                        }
-                        else
-                        {
-                            activeComponent = parentComponent.Successor;
-                        }
+                        activeComponent = parentComponent.Successor.First_Of();
                     }
                     else
                     {
                         activeComponent = parentComponent;
                         goToNextComponent();
                     }
-
-                    activeComponent.running = true;
-
                 }
-
+                aboutToRunComponent(activeComponent);
             }
-            else
-            {
-                activeComponent.running = false;
-
-                if (activeComponent.Successor != null && activeComponent.Successor.GetType() == typeof(Loop))
-                {
-                    Loop tempComponent = (Loop)activeComponent.Successor;
-                    if (tempComponent.before_Child != null)
-                    {
-                        parentComponent = activeComponent.Successor;
-                        parentCount.Add(parentComponent);
-                        activeComponent = tempComponent.before_Child;
-                        inLoop++;
-                    }
-                    else
-                    {
-                        activeComponent = activeComponent.Successor;
-                    }
-                }
-                else
-                {
-                    activeComponent = activeComponent.Successor;
-                }
-                activeComponent.running = true;
-            }
-
-            if (activeComponent.break_now())
-            {
-                if (myTimer != null)
-                {
-                    OnPauseCommand();
-                }
-            }
-            if (activeComponent.selected)
-            {
-                activeComponent.selected = false;
-            }
-            }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if(myTimer != null)
                 {
@@ -1105,6 +1016,50 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             return Runtime.getAnyVariable(s, activeScopes[activeScopes.Count - 1]);
         }
 
+        public static Component Find_Successor(Component c)
+        {
+            //if (c.GetType()==typeof(Loop) && ((Loop) c).light_head)
+            //{
+
+            //}
+            // if I've got a successor, just go there!
+            if (c.Successor != null)
+            {
+                //return c.Successor; // mcc: I think I might should say First_Of, but that seems to light the head in confusing ways.
+                return c.Successor.First_Of();
+            }
+            if (c.parent == null)
+            {
+                throw new System.Exception(
+                    "I have no successor or parent!");
+            }
+            // if I'm the child of an IF statement, then I just
+            // want the successor of my parent
+            if (c.parent.GetType() == typeof(IF_Control))
+            {
+                return Find_Successor(c.parent);
+            }
+            else if (c.parent.GetType() == typeof(Loop))
+            {
+                // if I'm the before child of a loop,
+                // then go to the loop (test)
+                if (c.is_beforeChild)
+                {
+                    return c.parent;
+                }
+                else
+                {
+                    // since I'm an after child, I just want
+                    // to go back to the top of the loop
+                    return c.parent.First_Of();
+                }
+            }
+            else
+            {
+                throw new Exception(
+                    "My parent isn't a loop or if_control!");
+            }
+        }
 
 
         public async void OnNextCommand() {
@@ -1114,400 +1069,336 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 startRun();
                 activeComponent = this.mainSubchart().Start;
+                activeComponent.selected = false;
                 activeComponent.running = true;
             }
             else
             {
-                if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
-                {
-                    symbolCount++;
-                    raptor_files.Stop_Redirect_Output();
-                    raptor_files.Stop_Redirect_Input();
-                    Runtime.consoleWrite("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n");
-
-
-                    activeComponent.running = false;
-                    activeComponent = null;
-                    if (myTimer != null)
+                    if ((activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && activeTab == 0 && inLoop == 0 && inSelection == 0) || (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent == null && activeTab == 0))
                     {
-                        myTimer.Stop();
-                        myTimer = null;
-                    }
-                    parentCount.Clear();
-                    parentComponent = null;
-                    decreaseScope = 0;
-                    activeTab = 0;
-                    return;
-                }
-                else if (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null)
-                {
+                        symbolCount++;
+                        raptor_files.Stop_Redirect_Output();
+                        raptor_files.Stop_Redirect_Input();
+                        Runtime.consoleWrite("--- Run Complete! " + symbolCount + " Symbols Evaluated ---\n");
 
-                    Subchart activeSubchart = theTabs[activeTab];
-                    symbolCount++;
-                    activeComponent.running = false;
 
-                    if (activeSubchart.Start.GetType() != typeof(Oval_Procedure))
-                    {
-                        isSub = true;
-                        goToNextComponent();
-                        setViewTab = activeTab;
+                        activeComponent.running = false;
+                        activeComponent = null;
+                        if (myTimer != null)
+                        {
+                            myTimer.Stop();
+                            myTimer = null;
+                        }
+                        parentCount.Clear();
+                        parentComponent = null;
+                        decreaseScope = 0;
+                        activeTab = 0;
                         return;
                     }
-
-                    Oval_Procedure tempStart = (Oval_Procedure)activeSubchart.Start;
-                    ObservableCollection<Object> outVals = new ObservableCollection<Object>();
-
-                    for (int i = 0; i < tempStart.param_names.Length; i++)
+                    else if (activeComponent.GetType() == typeof(Oval) && activeComponent.Successor == null && parentComponent != null)
                     {
-                        if (tempStart.param_is_output[i])
-                        {
-                            Variable tempVar = Runtime.Lookup_Variable(tempStart.param_names[i]);
-                            if (tempVar.Kind == Runtime.Variable_Kind.Value)
-                            {
-                                numbers.value outVal = Runtime.getVariable(tempStart.param_names[i]);
-                                outVals.Add(outVal);
-                            }
-                            else if (tempVar.Kind == Runtime.Variable_Kind.One_D_Array)
-                            {
-                                numbers.value[] outVal = Runtime.getValueArray(tempStart.param_names[i]);
-                                outVals.Add(outVal);
-                            }
-                            else if (tempVar.Kind == Runtime.Variable_Kind.Two_D_Array)
-                            {
-                                numbers.value[][] outVal = Runtime.get2DValueArray(tempStart.param_names[i]);
-                                outVals.Add(outVal);
-                            }
 
+                        Subchart activeSubchart = theTabs[activeTab];
+                        symbolCount++;
+                        activeComponent.running = false;
+
+                        if (activeSubchart.Start.GetType() != typeof(Oval_Procedure))
+                        {
+                            isSub = true;
+                            goToNextComponent();
+                            setViewTab = activeTab;
+                            return;
                         }
-                    }
 
-                    //string[] textStr = parentComponent.text_str.Split("(")[1].Split(","); // wont work for array[3,5] 
+                        Oval_Procedure tempStart = (Oval_Procedure)activeSubchart.Start;
+                        ObservableCollection<Object> outVals = new ObservableCollection<Object>();
 
-                    //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
-                    goToNextComponent();
-                    setViewTab = activeTab;
-
-                    string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
-
-                    int spot = 0;
-                    for (int i = 0; i < outVals.Count; i++)
-                    {
-                        for (int k = spot; k < tempStart.param_names.Length; k++)
+                        for (int i = 0; i < tempStart.param_names.Length; i++)
                         {
-                            if (tempStart.param_is_output[k])
+                            if (tempStart.param_is_output[i])
                             {
-                                textStr[k] = textStr[k].Replace(")", "").Replace(" ","");
-                                Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
-                                if (tempVar == null)
-                                {
-                                    throw new Exception("Variable " + textStr[k] + " not found!");
-                                }
+                                Variable tempVar = Runtime.Lookup_Variable(tempStart.param_names[i]);
                                 if (tempVar.Kind == Runtime.Variable_Kind.Value)
                                 {
-                                    Runtime.setVariable(textStr[k], (numbers.value)outVals[i]);
-                                    spot = k + 1;
-                                    break;
+                                    numbers.value outVal = Runtime.getVariable(tempStart.param_names[i]);
+                                    outVals.Add(outVal);
                                 }
                                 else if (tempVar.Kind == Runtime.Variable_Kind.One_D_Array)
                                 {
-                                    numbers.value[] arr = (numbers.value[])outVals[i];
-                                    for (int n = 0; n < arr.Length; n++)
-                                    {
-                                        Runtime.setArrayElement(textStr[k], n + 1, arr[n]);
-                                        spot = k + 1;
-                                    }
-                                    break;
+                                    numbers.value[] outVal = Runtime.getValueArray(tempStart.param_names[i]);
+                                    outVals.Add(outVal);
                                 }
                                 else if (tempVar.Kind == Runtime.Variable_Kind.Two_D_Array)
                                 {
-                                    numbers.value[][] arr = (numbers.value[][])outVals[i];
-                                    for (int r = 0; r < arr.Length; r++)
+                                    numbers.value[][] outVal = Runtime.get2DValueArray(tempStart.param_names[i]);
+                                    outVals.Add(outVal);
+                                }
+
+                            }
+                        }
+
+                        //string[] textStr = parentComponent.text_str.Split("(")[1].Split(","); // wont work for array[3,5] 
+
+                        //ObservableCollection<string> textStr = getParamNames(parentComponent.text_str);
+                        goToNextComponent();
+                        setViewTab = activeTab;
+
+                        string[] textStr = parentComponent.text_str.Split("(")[1].Split(",");
+
+                        int spot = 0;
+                        for (int i = 0; i < outVals.Count; i++)
+                        {
+                            for (int k = spot; k < tempStart.param_names.Length; k++)
+                            {
+                                if (tempStart.param_is_output[k])
+                                {
+                                    textStr[k] = textStr[k].Replace(")", "").Replace(" ", "");
+                                    Variable tempVar = Runtime.Lookup_Variable(textStr[k]);
+                                    if (tempVar == null)
                                     {
-                                        for (int c = 0; c < arr[r].Length; c++)
+                                        throw new Exception("Variable " + textStr[k] + " not found!");
+                                    }
+                                    if (tempVar.Kind == Runtime.Variable_Kind.Value)
+                                    {
+                                        Runtime.setVariable(textStr[k], (numbers.value)outVals[i]);
+                                        spot = k + 1;
+                                        break;
+                                    }
+                                    else if (tempVar.Kind == Runtime.Variable_Kind.One_D_Array)
+                                    {
+                                        numbers.value[] arr = (numbers.value[])outVals[i];
+                                        for (int n = 0; n < arr.Length; n++)
                                         {
-                                            Runtime.set2DArrayElement(textStr[k], r + 1, c + 1, arr[r][c]);
+                                            Runtime.setArrayElement(textStr[k], n + 1, arr[n]);
                                             spot = k + 1;
                                         }
+                                        break;
                                     }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    return;
-                }
-                else if (activeComponent.GetType() == typeof(Oval))
-                {
-                    goToNextComponent();
-                    return;
-                }
-                else if (activeComponent.GetType() == typeof(Rectangle))
-                {
-                    Rectangle temp = (Rectangle)activeComponent;
-                    if (temp.kind == Rectangle.Kind_Of.Assignment)
-                    {
-                        string str = temp.text_str;
-                        if (temp.text_str == "")
-                        {
-                            throw new Exception("Assignment not instantiated");
-                        }
-                        Lexer l = new Lexer(str);
-                        if (temp.parse_tree != null)
-                        {
-                            Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
-                            ea.Execute(l);
-                            if (decreaseScope != 0 && !varFound(l.Get_Text(0, str.IndexOf(":"))))
-                            {
-                                //decreaseScope--;
-                                Variable tempVar = theVariables[theVariables.Count - 1];
-                                theVariables.RemoveAt(theVariables.Count - 1);
-                                theVariables.Insert(1, tempVar);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string str = temp.text_str;
-                        if (temp.text_str == "")
-                        {
-                            throw new Exception("Call not instantiated");
-                        }
-                        Lexer l = new Lexer(str);
-                        if (temp.parse_tree != null)
-                        {
-                            Procedure_Call ea = (Procedure_Call)temp.parse_tree;
-                            ea.Execute(l);
-                        }
-                    }
-                    goToNextComponent();
-                }
-                else if (activeComponent.GetType() == typeof(IF_Control))
-                {
-                    IF_Control temp = (IF_Control)activeComponent;
-                    string str = temp.text_str;
-                    if (temp.text_str == "")
-                    {
-                        throw new Exception("Selection not instantiated");
-                    }
-                    Lexer l = new Lexer(str);
-                    if (temp.parse_tree != null)
-                    {
-                        Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
-                        bool rel = r.Execute(l);
-                        parentComponent = temp;
-                        if (!parentCount.Contains(parentComponent))
-                        {
-                            parentCount.Add(parentComponent);
-                            inSelection++;
-                        }
-                        if (rel)
-                        {
-                            if (temp.left_Child != null)
-                            {
-                                activeComponent.running = false;
-                                activeComponent = temp.left_Child;
-                                if (activeComponent.break_now())
-                                {
-                                    if (myTimer != null)
+                                    else if (tempVar.Kind == Runtime.Variable_Kind.Two_D_Array)
                                     {
-                                        OnPauseCommand();
+                                        numbers.value[][] arr = (numbers.value[][])outVals[i];
+                                        for (int r = 0; r < arr.Length; r++)
+                                        {
+                                            for (int c = 0; c < arr[r].Length; c++)
+                                            {
+                                                Runtime.set2DArrayElement(textStr[k], r + 1, c + 1, arr[r][c]);
+                                                spot = k + 1;
+                                            }
+                                        }
+                                        break;
                                     }
                                 }
-                                activeComponent.running = true;
                             }
-                            else
+                        }
+                        return;
+                    }
+                    else if (activeComponent.GetType() == typeof(Oval))
+                    {
+                        goToNextComponent();
+                        return;
+                    }
+                    else if (activeComponent.GetType() == typeof(Rectangle))
+                    {
+                        Rectangle temp = (Rectangle)activeComponent;
+                        if (temp.kind == Rectangle.Kind_Of.Assignment)
+                        {
+                            string str = temp.text_str;
+                            if (temp.text_str == "")
                             {
-                                activeComponent.running = false;
-                                if (temp.Successor != null)
+                                throw new Exception("Assignment not instantiated");
+                            }
+                            Lexer l = new Lexer(str);
+                            if (temp.parse_tree != null)
+                            {
+                                Expr_Assignment ea = (Expr_Assignment)temp.parse_tree;
+                                ea.Execute(l);
+                                if (decreaseScope != 0 && !varFound(l.Get_Text(0, str.IndexOf(":"))))
                                 {
-                                    activeComponent = temp.Successor;
-                                    activeComponent.running = true;
+                                    //decreaseScope--;
+                                    Variable tempVar = theVariables[theVariables.Count - 1];
+                                    theVariables.RemoveAt(theVariables.Count - 1);
+                                    theVariables.Insert(1, tempVar);
                                 }
-                                else
-                                {
-                                    activeComponent = temp.parent;
-                                    activeComponent.running = true;
-                                }
-
-                                parentCount.RemoveAt(parentCount.IndexOf(temp));
-                                inSelection--;
                             }
                         }
                         else
                         {
-                            if (temp.right_Child != null)
+                            string str = temp.text_str;
+                            if (temp.text_str == "")
                             {
-                                activeComponent.running = false;
-                                activeComponent = temp.right_Child;
-                                if (activeComponent.break_now())
-                                {
-                                    if (myTimer != null)
-                                    {
-                                        OnPauseCommand();
-                                    }
-                                }
-                                activeComponent.running = true;
+                                throw new Exception("Call not instantiated");
                             }
-                            else
+                            Lexer l = new Lexer(str);
+                            if (temp.parse_tree != null)
                             {
-                                activeComponent.running = false;
-                                if (temp.Successor != null)
-                                {
-                                    activeComponent = temp.Successor;
-                                    activeComponent.running = true;
-                                }
-                                else
-                                {
-                                    activeComponent = temp.parent;
-                                    activeComponent.running = true;
-                                }
-                                parentCount.RemoveAt(parentCount.IndexOf(temp));
-                                inSelection--;
+                                Procedure_Call ea = (Procedure_Call)temp.parse_tree;
+                                ea.Execute(l);
                             }
                         }
+                        goToNextComponent();
                     }
-                }
-                else if (activeComponent.GetType() == typeof(Loop))
-                {
-                    Loop temp = (Loop)activeComponent;
-                    string str = temp.text_str;
-                    if (temp.text_str == "")
+                    else if (activeComponent.GetType() == typeof(IF_Control))
                     {
-                        throw new Exception("Loop not instantiated");
-                    }
-                    Lexer l = new Lexer(str);
-                    if (temp.parse_tree != null)
-                    {
-                        Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
-                        bool rel = r.Execute(l);
-                        parentComponent = temp;
-                        if (!parentCount.Contains(parentComponent))
-                        {
-                            parentCount.Add(parentComponent);
-                            inLoop++;
-                        }
-
-                        if (rel)
-                        {
-                            if (inLoop > 1)
-                            {
-                                getParent = true;
-                            }
-                            inLoop--;
-                            goToNextComponent();
-                            parentCount.RemoveAt(parentCount.Count - 1);
-                        }
-                        else
-                        {
-                            if (temp.after_Child != null)
-                            {
-                                activeComponent.running = false;
-                                if (temp.after_Child.GetType() == typeof(Loop) && ((Loop)temp.after_Child).before_Child != null)
-                                {
-                                    activeComponent = ((Loop)temp.after_Child).before_Child;
-                                }
-                                else
-                                {
-                                    activeComponent = temp.after_Child;
-                                }
-                                if (activeComponent.break_now())
-                                {
-                                    if (myTimer != null)
-                                    {
-                                        OnPauseCommand();
-                                    }
-                                }
-                                activeComponent.running = true;
-
-                            }
-                            else if (temp.before_Child != null)
-                            {
-                                activeComponent.running = false;
-                                activeComponent = temp.before_Child;
-                                //inLoop--;
-                                if (activeComponent.break_now())
-                                {
-                                    if (myTimer != null)
-                                    {
-                                        OnPauseCommand();
-                                    }
-                                }
-                                activeComponent.running = true;
-                            }
-                        }
-                    }
-                }
-                else if (activeComponent.GetType() == typeof(Parallelogram))
-                {
-                    Parallelogram temp = (Parallelogram)activeComponent;
-                    if (temp.is_input)
-                    {
+                        IF_Control temp = (IF_Control)activeComponent;
                         string str = temp.text_str;
-                        if (str == "")
+                        if (temp.text_str == "")
                         {
-                            throw new Exception("Input not instantiated");
-                        }
-                        if (temp.parse_tree != null)
-                        {
-                            Input inp = (Input)temp.parse_tree;
-
-                            await Dispatcher.UIThread.InvokeAsync(async () => {
-                                if (myTimer != null)
-                                {
-                                    myTimer.Stop();
-                                }
-                                numbers.value v;
-                                if (temp.input_is_expression)
-                                {
-                                    Lexer l = new Lexer(temp.prompt);
-                                    temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
-                                    temp.prompt_tree = temp.prompt_result.tree;
-                                    Expr_Output ex = (Expr_Output)temp.prompt_tree;
-                                    v = ex.Execute(l);
-                                }
-                                else
-                                {
-                                    v = null; // this really shouldn't happen
-                                }
-                                //numbers.value answer = Runtime.getUserInput(v, temp);
-
-                                await Runtime.getUserInput(v, temp);
-                                numbers.value answer = temp.pans;
-                                Lexer l2 = new Lexer(temp.Text);
-                                ((Input)temp.parse_tree).Execute(l2, answer);
-
-                                if (myTimer != null)
-                                {
-                                    myTimer.Start();
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-                        string str = temp.text_str;
-                        if (str == "")
-                        {
-                            throw new Exception("Output not instantiated");
+                            throw new Exception("Selection not instantiated");
                         }
                         Lexer l = new Lexer(str);
                         if (temp.parse_tree != null)
                         {
-                            Output op = (Output)temp.parse_tree;
-                            numbers.value v = op.Execute(l);
-                            string outputAns = numbers.Numbers.msstring_view_image(v).Replace("\"", "");
-                            if (temp.new_line)
+                            Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
+                            bool rel = r.Execute(l); // evaluate the boolean expression
+                            parentComponent = temp;
+                            if (rel) // Go into the Yes branch as it evaluated to true
                             {
-                                outputAns += "\n";
+                                if (temp.left_Child != null) // we have a left child
+                                {
+                                    activeComponent.running = false;
+                                    activeComponent = temp.left_Child.First_Of();
+                                }
+                                else // we don't have a left child
+                                {
+                                    activeComponent.running = false;
+                                    activeComponent = Find_Successor(temp);
+                                }
+                                aboutToRunComponent(activeComponent);
                             }
-                            Runtime.consoleWrite(outputAns);
-                            
+                            else // Go into No branch as it evaluated to false
+                            {
+                                if (temp.right_Child != null) // we have a right child
+                                {
+                                    activeComponent.running = false;
+                                    activeComponent = temp.right_Child.First_Of();
+                                }
+                                else // we don't have a right child
+                                {
+                                    activeComponent.running = false;
+                                    activeComponent = Find_Successor(temp);
+                                }
+                                aboutToRunComponent(activeComponent);
+                            }
                         }
+                    }
+                    else if (activeComponent.GetType() == typeof(Loop))
+                    {
+                        Loop temp = (Loop)activeComponent;
+                        if (temp.light_head)
+                        {
+                            temp.light_head = false;
+                            if (temp.before_Child != null)
+                            {
+                                activeComponent = temp.before_Child.First_Of();
+                            }
+                            aboutToRunComponent(activeComponent);
+                        }
+                        else // we are running the diamond
+                        {
+                            string str = temp.text_str;
+                            if (temp.text_str == "")
+                            {
+                                throw new Exception("Loop not instantiated");
+                            }
+                            Lexer l = new Lexer(str);
+                            if (temp.parse_tree != null)
+                            {
+                                Boolean_Expression r = (Boolean_Expression)temp.parse_tree;
+                                bool rel = r.Execute(l);
+                                parentComponent = temp;
+
+                                if (rel) // evaluate the diamond
+                                {
+                                    goToNextComponent();
+                                }
+                                else
+                                {
+                                    if (temp.after_Child != null)
+                                    {
+                                        activeComponent.running = false;
+                                        activeComponent = temp.after_Child.First_Of();
+                                    }
+                                    else // stay here
+                                    {
+                                        temp.light_head = true;
+                                    }
+                                    aboutToRunComponent(activeComponent);
+                                }
+                            }
+                        }
+                    }
+                    else if (activeComponent.GetType() == typeof(Parallelogram))
+                    {
+                        Parallelogram temp = (Parallelogram)activeComponent;
+                        if (temp.is_input)
+                        {
+                            string str = temp.text_str;
+                            if (str == "")
+                            {
+                                throw new Exception("Input not instantiated");
+                            }
+                            if (temp.parse_tree != null)
+                            {
+                                Input inp = (Input)temp.parse_tree;
+
+                                await Dispatcher.UIThread.InvokeAsync(async () =>
+                                {
+                                    if (myTimer != null)
+                                    {
+                                        myTimer.Stop();
+                                    }
+                                    numbers.value v;
+                                    if (temp.input_is_expression)
+                                    {
+                                        Lexer l = new Lexer(temp.prompt);
+                                        temp.prompt_result = interpreter_pkg.output_syntax(temp.prompt, false);
+                                        temp.prompt_tree = temp.prompt_result.tree;
+                                        Expr_Output ex = (Expr_Output)temp.prompt_tree;
+                                        v = ex.Execute(l);
+                                    }
+                                    else
+                                    {
+                                        v = null; // this really shouldn't happen
+                                    }
+                                    //numbers.value answer = Runtime.getUserInput(v, temp);
+
+                                    await Runtime.getUserInput(v, temp);
+                                    numbers.value answer = temp.pans;
+                                    Lexer l2 = new Lexer(temp.Text);
+                                    ((Input)temp.parse_tree).Execute(l2, answer);
+
+                                    if (myTimer != null)
+                                    {
+                                        myTimer.Start();
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            string str = temp.text_str;
+                            if (str == "")
+                            {
+                                throw new Exception("Output not instantiated");
+                            }
+                            Lexer l = new Lexer(str);
+                            if (temp.parse_tree != null)
+                            {
+                                Output op = (Output)temp.parse_tree;
+                                numbers.value v = op.Execute(l);
+                                string outputAns = numbers.Numbers.msstring_view_image(v).Replace("\"", "");
+                                if (temp.new_line)
+                                {
+                                    outputAns += "\n";
+                                }
+                                Runtime.consoleWrite(outputAns);
+
+                            }
+
+                        }
+                        goToNextComponent();
 
                     }
-                    goToNextComponent();
-
-                }
             }
 
             }

@@ -1198,14 +1198,14 @@ namespace raptor
 		{
 			this.light_head = true;
 			return this;
-			//if (this.before_Child!=null) 
-			//{
-			//	return this.before_Child.First_Of();
-			//}
-			//else
-			//{
-			//	return this;
-			//}
+			/*if (this.before_Child!=null) 
+			{
+				return this.before_Child.First_Of();
+			}
+			else
+			{
+				return this;
+			}*/
 		}
 		public override void Emit_Code(Generate_Interface gen)
 		{	
