@@ -6,7 +6,7 @@ using System.IO;
 using RAPTOR_Avalonia_MVVM;
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using Avalonia.Threading;
-using MessageBox.Avalonia.Enums;
+using MsBox.Avalonia.Enums;
 
 namespace IT105Java
 {

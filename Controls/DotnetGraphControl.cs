@@ -1667,7 +1667,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                     dotnetgraph.Show();
                     graphWindowOpen = true;
                 
-                }).Wait(-1);
+                }).Wait();  // was -1
 
 
         }

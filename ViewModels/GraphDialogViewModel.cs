@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using MessageBox.Avalonia;
-using MessageBox.Avalonia.Enums;
-using MessageBox.Avalonia.DTO;
+
 using Avalonia.Controls;
 using System.Threading.Tasks;
 using Avalonia;
@@ -250,7 +248,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     h = DotnetGraph.dotnetgraph.Screens.Primary.Bounds.Size.Height;
                 }
 
-            }).Wait(-1);
+            }).Wait(); // deleted -1
             
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = h };
             
@@ -273,7 +271,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     w = DotnetGraph.dotnetgraph.Screens.Primary.Bounds.Size.Width;
                 }
 
-            }).Wait(-1);
+            }).Wait(); // deleted -1
             return new numbers.value() { Kind = numbers.Value_Kind.Number_Kind, V = w };
         }
 
@@ -406,7 +404,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 c = DotnetGraphControl.dngw.GetPixel(x, y);
 
-            }).Wait(-1);
+            }).Wait(); // deleted -1
 
             return new numbers.value() { Kind = numbers.Value_Kind.String_Kind, S = c + "" };
         }

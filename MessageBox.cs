@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
-using MessageBox.Avalonia.DTO;
-using MessageBox.Avalonia.Enums;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,9 @@ using System.Threading.Tasks;
 
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using raptor;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Dto;
+using MsBox.Avalonia.Enums;
 
 namespace RAPTOR_Avalonia_MVVM
 {
@@ -28,17 +30,17 @@ namespace RAPTOR_Avalonia_MVVM
             if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
 
-                    var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                        .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    var msBoxStandardWindow = MessageBoxManager
+                        .GetMessageBoxStandard(new MessageBoxStandardParams
                         {
                             ButtonDefinitions = ButtonEnum.Ok,
                             ContentTitle = "Title",
                             ContentMessage = text,
-                            Icon = Icon.Plus,
-                            Style = Style.Windows
+                            Icon = Icon.Plus//,
+                            //Style = Style.Windows
                         });
 
-                    msBoxStandardWindow.ShowDialog(desktop.MainWindow);
+                    msBoxStandardWindow.ShowWindowDialogAsync(desktop.MainWindow);
             }
         }
 
@@ -68,19 +70,19 @@ namespace RAPTOR_Avalonia_MVVM
                     b = ButtonEnum.YesNoCancel;
                 }
 
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                var msBoxStandardWindow = MessageBoxManager
+                    .GetMessageBoxStandard(new MessageBoxStandardParams
                     {
                         ButtonDefinitions = b,
                         ContentTitle = v2,
                         ContentMessage = v1,
-                        Icon = icon, 
-                        Style = Style.Windows
+                        Icon = icon//, 
+                        //Style = Style.Windows
                     });
 
              
 
-               MainWindowViewModel.GetMainWindowViewModel().buttonAnswer =  await msBoxStandardWindow.ShowDialog(desktop.MainWindow);
+               MainWindowViewModel.GetMainWindowViewModel().buttonAnswer =  await msBoxStandardWindow.ShowWindowDialogAsync(desktop.MainWindow);
                return;
             }
 

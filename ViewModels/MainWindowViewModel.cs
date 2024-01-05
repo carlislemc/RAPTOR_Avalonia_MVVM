@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using MessageBox.Avalonia;
-using MessageBox.Avalonia.Enums;
-using MessageBox.Avalonia.DTO;
+
 using Avalonia.Controls;
 using System.Threading.Tasks;
 using Avalonia;
@@ -147,12 +145,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 string msg = "Do you want to save your changes first?";
                 await MessageBoxClass.Show(msg, "Save First?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                if (buttonAnswer == ButtonResult.Yes)
+                if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.Yes)
                 {
                     shouldClose = false;
                     OnSaveCommand(true);
                 }
-                else if (buttonAnswer == ButtonResult.No)
+                else if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.No)
                 {
                     shouldClose = false;
                     MainWindow.topWindow.Close();
@@ -1458,12 +1456,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                     await MessageBoxClass.Show(msg, "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                    if (buttonAnswer == ButtonResult.Yes)
+                    if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.Yes)
                     {
                         await OnSaveCommand();
                         checkSave = false;
                     }
-                    else if (buttonAnswer == ButtonResult.No)
+                    else if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.No)
                     {
                         checkSave = false;
                     }
@@ -1480,7 +1478,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        public ButtonResult buttonAnswer = new ButtonResult();
+        public MsBox.Avalonia.Enums.ButtonResult buttonAnswer = new MsBox.Avalonia.Enums.ButtonResult();
         public bool checkSave = true;
 
         public async Task OnNewCommand()

@@ -94,10 +94,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
             topWindow.Title = s;
         }
 
-        private static OperatingSystemType GetOperatingSystemType()
-        {
-            return AvaloniaLocator.Current.GetService<IRuntimePlatform>().GetRuntimeInfo().OperatingSystem;
-        }
+
 
         private static KeyModifiers GetPlatformCommandKey()
         {
