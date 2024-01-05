@@ -66,10 +66,10 @@
             </TextBlock>
 
             <TextBlock HorizontalAlignment="Center" FontSize="12">
-              Version: 0.9.0009
+              Version: 0.9.0010
             </TextBlock>
             <TextBlock HorizontalAlignment="Center" FontSize="12" Height="40">
-              25 April 2023
+              9 June 2023
             </TextBlock>
 
             <TextBlock HorizontalAlignment="Center" FontSize="12">

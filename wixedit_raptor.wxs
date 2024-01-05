@@ -1,369 +1,369 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR_Avalonia" Language="1033" Version="0.9.0.9" Manufacturer="Martin Carlisle" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
+    <Product Id="62E8746B-9FBB-4E5A-AA2C-0A6B787C7338" Name="RAPTOR_Avalonia" Language="1033" Version="0.9.0.10" Manufacturer="Martin Carlisle" UpgradeCode="79685F8A-CD5E-4E04-9F96-BED89C9EF34A">
         <Package Description="RAPTOR Avalonia Edition" Comments="RAPTOR" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="INSTALLDIR" Name="RAPTOR_Avalonia">
-                    <Component Id="CODEGENERATORS.DLL" DiskId="1" Guid="5CD2AA0C-C961-4C54-8136-1C0A18EDC9BC">
-                        <File Id="CODEGENERATORS.DLL" Name="CodeGenerators.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\CodeGenerators.dll" />
+                    <Component Id="AVALONIA.ANIMATION.DLL" DiskId="1" Guid="40065AB8-285B-4DDB-A412-2DF667DF3E64">
+                        <File Id="AVALONIA.ANIMATION.DLL" Name="Avalonia.Animation.dll" Source="bin\Release\publish\Avalonia.Animation.dll" />
                     </Component>
-                    <Component Id="AVALONIA.ANIMATION.DLL" DiskId="1" Guid="1DC5AD5C-BC9B-464C-BD68-4B358C01F829">
-                        <File Id="AVALONIA.ANIMATION.DLL" Name="Avalonia.Animation.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Animation.dll" />
-                    </Component>                    
-                    <Component Id="AVALONIA.BASE.DLL" DiskId="1" Guid="10F923A7-A48D-4802-A345-83957D7A3212">
-                        <File Id="AVALONIA.BASE.DLL" Name="Avalonia.Base.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Base.dll" />
+                    <Component Id="AVALONIA.BASE.DLL" DiskId="1" Guid="8BB685BF-333B-4568-A8AC-E304DCA7C028">
+                        <File Id="AVALONIA.BASE.DLL" Name="Avalonia.Base.dll" Source="bin\Release\publish\Avalonia.Base.dll" />
                     </Component>
-                    <Component Id="AVALONIA.CONTROLS.DATAGRID.DLL" DiskId="1" Guid="94E7FFC7-2E3B-453C-BF9A-0134F4D704D5">
-                        <File Id="AVALONIA.CONTROLS.DATAGRID.DLL" Name="Avalonia.Controls.DataGrid.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Controls.DataGrid.dll" />
+                    <Component Id="AVALONIA.CONTROLS.DATAGRID.DLL" DiskId="1" Guid="4D93FF33-A71D-48A2-A308-7759E06BBA16">
+                        <File Id="AVALONIA.CONTROLS.DATAGRID.DLL" Name="Avalonia.Controls.DataGrid.dll" Source="bin\Release\publish\Avalonia.Controls.DataGrid.dll" />
                     </Component>
-                    <Component Id="AVALONIA.CONTROLS.DLL" DiskId="1" Guid="2D0FD99D-B89D-43CD-B0EC-98B71B7288FA">
-                        <File Id="AVALONIA.CONTROLS.DLL" Name="Avalonia.Controls.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Controls.dll" />
+                    <Component Id="AVALONIA.CONTROLS.DLL" DiskId="1" Guid="2735D609-4E6B-43DC-8230-EF273D7E240A">
+                        <File Id="AVALONIA.CONTROLS.DLL" Name="Avalonia.Controls.dll" Source="bin\Release\publish\Avalonia.Controls.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DESIGNERSUPPORT.DLL" DiskId="1" Guid="635FE763-E2A5-4FC5-BBA6-B2A201D0FFAE">
-                        <File Id="AVALONIA.DESIGNERSUPPORT.DLL" Name="Avalonia.DesignerSupport.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.DesignerSupport.dll" />
+                    <Component Id="AVALONIA.DESIGNERSUPPORT.DLL" DiskId="1" Guid="7ECCE585-E21C-469C-A65D-C785EA66C694">
+                        <File Id="AVALONIA.DESIGNERSUPPORT.DLL" Name="Avalonia.DesignerSupport.dll" Source="bin\Release\publish\Avalonia.DesignerSupport.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DESKTOP.DLL" DiskId="1" Guid="BA750B41-A709-4D3E-9968-A0BBDB94B78D">
-                        <File Id="AVALONIA.DESKTOP.DLL" Name="Avalonia.Desktop.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Desktop.dll" />
+                    <Component Id="AVALONIA.DESKTOP.DLL" DiskId="1" Guid="5790831D-6B93-4731-B5EC-6FB0653C60E2">
+                        <File Id="AVALONIA.DESKTOP.DLL" Name="Avalonia.Desktop.dll" Source="bin\Release\publish\Avalonia.Desktop.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DESKTOPRUNTIME.DLL" DiskId="1" Guid="EB707BED-4863-4651-A6D5-6FF1B6177AC4">
-                        <File Id="AVALONIA.DESKTOPRUNTIME.DLL" Name="Avalonia.DesktopRuntime.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.DesktopRuntime.dll" />
+                    <Component Id="AVALONIA.DESKTOPRUNTIME.DLL" DiskId="1" Guid="657F4F2A-A6F1-4BD7-B5C5-3FFC24CE1318">
+                        <File Id="AVALONIA.DESKTOPRUNTIME.DLL" Name="Avalonia.DesktopRuntime.dll" Source="bin\Release\publish\Avalonia.DesktopRuntime.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DIAGNOSTICS.DLL" DiskId="1" Guid="77911B1C-A484-486B-8551-E600A4F0010E">
-                        <File Id="AVALONIA.DIAGNOSTICS.DLL" Name="Avalonia.Diagnostics.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Diagnostics.dll" />
+                    <Component Id="AVALONIA.DIAGNOSTICS.DLL" DiskId="1" Guid="5320583C-8474-4A86-B6E4-B425BBF12F91">
+                        <File Id="AVALONIA.DIAGNOSTICS.DLL" Name="Avalonia.Diagnostics.dll" Source="bin\Release\publish\Avalonia.Diagnostics.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DIALOGS.DLL" DiskId="1" Guid="C0A4D204-E2BE-4EC9-80FA-BC1BFA3F6080">
-                        <File Id="AVALONIA.DIALOGS.DLL" Name="Avalonia.Dialogs.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Dialogs.dll" />
+                    <Component Id="AVALONIA.DIALOGS.DLL" DiskId="1" Guid="1A6A28A8-AD68-4359-A23D-55129B6B3DE6">
+                        <File Id="AVALONIA.DIALOGS.DLL" Name="Avalonia.Dialogs.dll" Source="bin\Release\publish\Avalonia.Dialogs.dll" />
                     </Component>
-                    <Component Id="AVALONIA.DLL" DiskId="1" Guid="E438815B-986D-4D56-8D78-61E9A4E74FAB">
-                        <File Id="AVALONIA.DLL" Name="Avalonia.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.dll" />
+                    <Component Id="AVALONIA.DLL" DiskId="1" Guid="F7458870-349D-473B-85F8-1BB62A931CA0">
+                        <File Id="AVALONIA.DLL" Name="Avalonia.dll" Source="bin\Release\publish\Avalonia.dll" />
                     </Component>
-                    <Component Id="AVALONIA.FREEDESKTOP.DLL" DiskId="1" Guid="50BC8E27-DD25-411C-8E86-E983849CF60E">
-                        <File Id="AVALONIA.FREEDESKTOP.DLL" Name="Avalonia.FreeDesktop.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.FreeDesktop.dll" />
+                    <Component Id="AVALONIA.FREEDESKTOP.DLL" DiskId="1" Guid="97F5E29E-13D4-4F3A-8F8C-1B28BAE556FA">
+                        <File Id="AVALONIA.FREEDESKTOP.DLL" Name="Avalonia.FreeDesktop.dll" Source="bin\Release\publish\Avalonia.FreeDesktop.dll" />
                     </Component>
-                    <Component Id="AVALONIA.INPUT.DLL" DiskId="1" Guid="52923CB6-FF6C-4AD8-A01F-DF947C734C30">
-                        <File Id="AVALONIA.INPUT.DLL" Name="Avalonia.Input.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Input.dll" />
+                    <Component Id="AVALONIA.INPUT.DLL" DiskId="1" Guid="D950E00A-05B5-462C-8CEA-D0491BBDB1C0">
+                        <File Id="AVALONIA.INPUT.DLL" Name="Avalonia.Input.dll" Source="bin\Release\publish\Avalonia.Input.dll" />
                     </Component>
-                    <Component Id="AVALONIA.INTERACTIVITY.DLL" DiskId="1" Guid="28D5DF9F-C17C-402A-99CE-E985F7970576">
-                        <File Id="AVALONIA.INTERACTIVITY.DLL" Name="Avalonia.Interactivity.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Interactivity.dll" />
+                    <Component Id="AVALONIA.INTERACTIVITY.DLL" DiskId="1" Guid="1A2D7C30-9913-4FAE-AC0F-91AF12C505AE">
+                        <File Id="AVALONIA.INTERACTIVITY.DLL" Name="Avalonia.Interactivity.dll" Source="bin\Release\publish\Avalonia.Interactivity.dll" />
                     </Component>
-                    <Component Id="AVALONIA.LAYOUT.DLL" DiskId="1" Guid="EEF137FB-ABAE-4315-8C41-BD8A83855717">
-                        <File Id="AVALONIA.LAYOUT.DLL" Name="Avalonia.Layout.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Layout.dll" />
+                    <Component Id="AVALONIA.LAYOUT.DLL" DiskId="1" Guid="86A93FE3-356B-4AE2-A666-E716B5F7FB49">
+                        <File Id="AVALONIA.LAYOUT.DLL" Name="Avalonia.Layout.dll" Source="bin\Release\publish\Avalonia.Layout.dll" />
                     </Component>
-                    <Component Id="AVALONIA.MARKUP.DLL" DiskId="1" Guid="CB5AB2A2-2DA4-4F21-BDEB-AEF1BA806643">
-                        <File Id="AVALONIA.MARKUP.DLL" Name="Avalonia.Markup.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Markup.dll" />
+                    <Component Id="AVALONIA.MARKUP.DLL" DiskId="1" Guid="3E2C7150-FE03-41C8-A0F4-0E19D04D78EA">
+                        <File Id="AVALONIA.MARKUP.DLL" Name="Avalonia.Markup.dll" Source="bin\Release\publish\Avalonia.Markup.dll" />
                     </Component>
-                    <Component Id="AVALONIA.MARKUP.XAML.DLL" DiskId="1" Guid="6066D19B-92EF-492F-8E85-C0853172A811">
-                        <File Id="AVALONIA.MARKUP.XAML.DLL" Name="Avalonia.Markup.Xaml.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Markup.Xaml.dll" />
+                    <Component Id="AVALONIA.MARKUP.XAML.DLL" DiskId="1" Guid="FC2513A9-DF23-4A22-819C-0B97C16FE9E3">
+                        <File Id="AVALONIA.MARKUP.XAML.DLL" Name="Avalonia.Markup.Xaml.dll" Source="bin\Release\publish\Avalonia.Markup.Xaml.dll" />
                     </Component>
-                    <Component Id="AVALONIA.MICROCOM.DLL" DiskId="1" Guid="52B9E32A-B44F-4405-A2E2-BC438C76AC8E">
-                        <File Id="AVALONIA.MICROCOM.DLL" Name="Avalonia.MicroCom.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.MicroCom.dll" />
+                    <Component Id="AVALONIA.MICROCOM.DLL" DiskId="1" Guid="9C3C65D3-A57E-435B-A8C2-614F5981B781">
+                        <File Id="AVALONIA.MICROCOM.DLL" Name="Avalonia.MicroCom.dll" Source="bin\Release\publish\Avalonia.MicroCom.dll" />
                     </Component>
-                    <Component Id="AVALONIA.NATIVE.DLL" DiskId="1" Guid="D7054143-4E74-4EE0-9B58-5FBB56F8B1B6">
-                        <File Id="AVALONIA.NATIVE.DLL" Name="Avalonia.Native.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Native.dll" />
+                    <Component Id="AVALONIA.NATIVE.DLL" DiskId="1" Guid="CC03A75D-6A82-456D-9C1A-7FF86A9368D7">
+                        <File Id="AVALONIA.NATIVE.DLL" Name="Avalonia.Native.dll" Source="bin\Release\publish\Avalonia.Native.dll" />
                     </Component>
-                    <Component Id="AVALONIA.OPENGL.DLL" DiskId="1" Guid="FBD86119-09A3-436D-A574-B774B615369E">
-                        <File Id="AVALONIA.OPENGL.DLL" Name="Avalonia.OpenGL.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.OpenGL.dll" />
+                    <Component Id="AVALONIA.OPENGL.DLL" DiskId="1" Guid="F379FCDD-7DCD-4B77-83AF-BA1AF22C34AD">
+                        <File Id="AVALONIA.OPENGL.DLL" Name="Avalonia.OpenGL.dll" Source="bin\Release\publish\Avalonia.OpenGL.dll" />
                     </Component>
-                    <Component Id="AVALONIA.REACTIVEUI.DLL" DiskId="1" Guid="0BA8551F-9A76-4E38-A810-1EB92F363836">
-                        <File Id="AVALONIA.REACTIVEUI.DLL" Name="Avalonia.ReactiveUI.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.ReactiveUI.dll" />
+                    <Component Id="AVALONIA.REACTIVEUI.DLL" DiskId="1" Guid="FE2238F2-811E-4748-BB93-E7A68C418BAA">
+                        <File Id="AVALONIA.REACTIVEUI.DLL" Name="Avalonia.ReactiveUI.dll" Source="bin\Release\publish\Avalonia.ReactiveUI.dll" />
                     </Component>
-                    <Component Id="AVALONIA.REMOTE.PROTOCOL.DLL" DiskId="1" Guid="97CA2A23-B358-49E1-B9EB-806BBA0E2645">
-                        <File Id="AVALONIA.REMOTE.PROTOCOL.DLL" Name="Avalonia.Remote.Protocol.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Remote.Protocol.dll" />
+                    <Component Id="AVALONIA.REMOTE.PROTOCOL.DLL" DiskId="1" Guid="E3F30A37-90ED-44F4-8AE1-C33595213376">
+                        <File Id="AVALONIA.REMOTE.PROTOCOL.DLL" Name="Avalonia.Remote.Protocol.dll" Source="bin\Release\publish\Avalonia.Remote.Protocol.dll" />
                     </Component>
-                    <Component Id="AVALONIA.SKIA.DLL" DiskId="1" Guid="2B7C2B17-D83E-4B9F-A227-2DA008F6D832">
-                        <File Id="AVALONIA.SKIA.DLL" Name="Avalonia.Skia.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Skia.dll" />
+                    <Component Id="AVALONIA.SKIA.DLL" DiskId="1" Guid="D67D9CC9-0D9A-4216-9E4D-BD58BD4D481C">
+                        <File Id="AVALONIA.SKIA.DLL" Name="Avalonia.Skia.dll" Source="bin\Release\publish\Avalonia.Skia.dll" />
                     </Component>
-                    <Component Id="AVALONIA.STYLING.DLL" DiskId="1" Guid="2231F5F0-3A44-4B2E-9737-B1B767B4C4E0">
-                        <File Id="AVALONIA.STYLING.DLL" Name="Avalonia.Styling.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Styling.dll" />
+                    <Component Id="AVALONIA.STYLING.DLL" DiskId="1" Guid="18EB981D-B04D-428F-96CA-E9D36E7759CB">
+                        <File Id="AVALONIA.STYLING.DLL" Name="Avalonia.Styling.dll" Source="bin\Release\publish\Avalonia.Styling.dll" />
                     </Component>
-                    <Component Id="AVALONIA.THEMES.DEFAULT.DLL" DiskId="1" Guid="63C0FF72-2F19-48BA-99DC-4D736DC8BE6D">
-                        <File Id="AVALONIA.THEMES.DEFAULT.DLL" Name="Avalonia.Themes.Default.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Themes.Default.dll" />
+                    <Component Id="AVALONIA.THEMES.DEFAULT.DLL" DiskId="1" Guid="4BEA5810-6E27-46D9-A536-0A486C37E0ED">
+                        <File Id="AVALONIA.THEMES.DEFAULT.DLL" Name="Avalonia.Themes.Default.dll" Source="bin\Release\publish\Avalonia.Themes.Default.dll" />
                     </Component>
-                    <Component Id="AVALONIA.THEMES.FLUENT.DLL" DiskId="1" Guid="A474B14F-AC9D-41E4-A1E2-E9F1C40352C5">
-                        <File Id="AVALONIA.THEMES.FLUENT.DLL" Name="Avalonia.Themes.Fluent.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Themes.Fluent.dll" />
+                    <Component Id="AVALONIA.THEMES.FLUENT.DLL" DiskId="1" Guid="0F493836-C69D-4B99-B208-5415C204B115">
+                        <File Id="AVALONIA.THEMES.FLUENT.DLL" Name="Avalonia.Themes.Fluent.dll" Source="bin\Release\publish\Avalonia.Themes.Fluent.dll" />
                     </Component>
-                    <Component Id="AVALONIA.VISUALS.DLL" DiskId="1" Guid="929EE422-8DAB-4C7F-A0FE-41CBD4C7073D">
-                        <File Id="AVALONIA.VISUALS.DLL" Name="Avalonia.Visuals.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Visuals.dll" />
+                    <Component Id="AVALONIA.VISUALS.DLL" DiskId="1" Guid="BF806309-1DD7-4180-BF5E-82BDD96D27E1">
+                        <File Id="AVALONIA.VISUALS.DLL" Name="Avalonia.Visuals.dll" Source="bin\Release\publish\Avalonia.Visuals.dll" />
                     </Component>
-                    <Component Id="AVALONIA.WIN32.DLL" DiskId="1" Guid="55830B96-0774-4905-83C6-C7A4A11B0048">
-                        <File Id="AVALONIA.WIN32.DLL" Name="Avalonia.Win32.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.Win32.dll" />
+                    <Component Id="AVALONIA.WIN32.DLL" DiskId="1" Guid="A4C99D7A-3798-4152-B6EB-CA488F627C64">
+                        <File Id="AVALONIA.WIN32.DLL" Name="Avalonia.Win32.dll" Source="bin\Release\publish\Avalonia.Win32.dll" />
                     </Component>
-                    <Component Id="AVALONIA.X11.DLL" DiskId="1" Guid="D0B1F131-C030-4F0D-A5E2-98AE34350DEA">
-                        <File Id="AVALONIA.X11.DLL" Name="Avalonia.X11.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Avalonia.X11.dll" />
+                    <Component Id="AVALONIA.X11.DLL" DiskId="1" Guid="EDA97382-9C9A-4B9E-B7EA-4082DC0E3FBF">
+                        <File Id="AVALONIA.X11.DLL" Name="Avalonia.X11.dll" Source="bin\Release\publish\Avalonia.X11.dll" />
                     </Component>
-                    <Component Id="DYNAMICDATA.DLL" DiskId="1" Guid="99FE9F87-9483-4294-8DA0-A0C8B1F608DC">
-                        <File Id="DYNAMICDATA.DLL" Name="DynamicData.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\DynamicData.dll" />
+                    <Component Id="CODEGENERATORS.DLL" DiskId="1" Guid="651A8810-92B5-484B-8136-224F3DCB29B5">
+                        <File Id="CODEGENERATORS.DLL" Name="CodeGenerators.dll" Source="bin\Release\publish\CodeGenerators.dll" />
                     </Component>
-                    <Component Id="HARFBUZZSHARP.DLL" DiskId="1" Guid="ACE3E919-1CCC-4545-8B56-7B6DF19593EA">
-                        <File Id="HARFBUZZSHARP.DLL" Name="HarfBuzzSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\HarfBuzzSharp.dll" />
+                    <Component Id="DYNAMICDATA.DLL" DiskId="1" Guid="73D1D0B1-3949-4483-B0AC-4707F0B1B104">
+                        <File Id="DYNAMICDATA.DLL" Name="DynamicData.dll" Source="bin\Release\publish\DynamicData.dll" />
                     </Component>
-                    <Component Id="JETBRAINS.ANNOTATIONS.DLL" DiskId="1" Guid="274DC422-7B2F-4C8B-BF86-4392CD40C299">
-                        <File Id="JETBRAINS.ANNOTATIONS.DLL" Name="JetBrains.Annotations.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\JetBrains.Annotations.dll" />
+                    <Component Id="HARFBUZZSHARP.DLL" DiskId="1" Guid="910C6470-9EDD-4530-91E7-1FE5CB5B0BBA">
+                        <File Id="HARFBUZZSHARP.DLL" Name="HarfBuzzSharp.dll" Source="bin\Release\publish\HarfBuzzSharp.dll" />
                     </Component>
-                    <Component Id="MESSAGEBOX.AVALONIA.DLL" DiskId="1" Guid="91D3D2FD-A480-40D2-8743-F98CF0FE637A">
-                        <File Id="MESSAGEBOX.AVALONIA.DLL" Name="MessageBox.Avalonia.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\MessageBox.Avalonia.dll" />
+                    <Component Id="JETBRAINS.ANNOTATIONS.DLL" DiskId="1" Guid="0D8940AB-8BE8-4A1E-AC6E-61DBF5F95006">
+                        <File Id="JETBRAINS.ANNOTATIONS.DLL" Name="JetBrains.Annotations.dll" Source="bin\Release\publish\JetBrains.Annotations.dll" />
                     </Component>
-                    <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.DLL" DiskId="1" Guid="0860D84C-8A31-4FEE-A3EC-9E2B13781F27">
-                        <File Id="MICROSOFT.CODEANALYSIS.CSHARP.DLL" Name="Microsoft.CodeAnalysis.CSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Microsoft.CodeAnalysis.CSharp.dll" />
+                    <Component Id="MESSAGEBOX.AVALONIA.DLL" DiskId="1" Guid="9D6D2F91-554F-4515-BE81-067C0D516C6A">
+                        <File Id="MESSAGEBOX.AVALONIA.DLL" Name="MessageBox.Avalonia.dll" Source="bin\Release\publish\MessageBox.Avalonia.dll" />
                     </Component>
-                    <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.DLL" DiskId="1" Guid="EFD716EC-9CBD-468F-B7CD-9FCBF22A82E7">
-                        <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.DLL" Name="Microsoft.CodeAnalysis.CSharp.Scripting.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
+                    <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.DLL" DiskId="1" Guid="967D3FE5-8D09-4C5E-8693-57CE772BB5AD">
+                        <File Id="MICROSOFT.CODEANALYSIS.CSHARP.DLL" Name="Microsoft.CodeAnalysis.CSharp.dll" Source="bin\Release\publish\Microsoft.CodeAnalysis.CSharp.dll" />
                     </Component>
-                    <Component Id="MICROSOFT.CODEANALYSIS.DLL" DiskId="1" Guid="93BDA6AD-CF02-481F-B985-CBC2BB4F1A48">
-                        <File Id="MICROSOFT.CODEANALYSIS.DLL" Name="Microsoft.CodeAnalysis.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Microsoft.CodeAnalysis.dll" />
+                    <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.DLL" DiskId="1" Guid="628EB455-0E9A-4CB5-AF94-61F3EAE199EC">
+                        <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.DLL" Name="Microsoft.CodeAnalysis.CSharp.Scripting.dll" Source="bin\Release\publish\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
                     </Component>
-                    <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.DLL" DiskId="1" Guid="7572D7BB-8138-4C2B-8721-18435E19003F">
-                        <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.DLL" Name="Microsoft.CodeAnalysis.Scripting.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Microsoft.CodeAnalysis.Scripting.dll" />
+                    <Component Id="MICROSOFT.CODEANALYSIS.DLL" DiskId="1" Guid="B1262198-3ACD-446E-B36A-8674141AC8F7">
+                        <File Id="MICROSOFT.CODEANALYSIS.DLL" Name="Microsoft.CodeAnalysis.dll" Source="bin\Release\publish\Microsoft.CodeAnalysis.dll" />
                     </Component>
-                    <Component Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL" DiskId="1" Guid="B2EB1342-9823-41DF-8447-C09D363803BC">
-                        <File Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL" Name="Microsoft.Win32.SystemEvents.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Microsoft.Win32.SystemEvents.dll" />
+                    <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.DLL" DiskId="1" Guid="C456487E-AFF5-4900-AE10-1A3296D638AF">
+                        <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.DLL" Name="Microsoft.CodeAnalysis.Scripting.dll" Source="bin\Release\publish\Microsoft.CodeAnalysis.Scripting.dll" />
                     </Component>
-                    <Component Id="NETCOREAUDIO.DLL" DiskId="1" Guid="4E459769-D24B-4C1A-A6D9-39FFC8FC2BD0">
-                        <File Id="NETCOREAUDIO.DLL" Name="NetCoreAudio.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\NetCoreAudio.dll" />
+                    <Component Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL" DiskId="1" Guid="88151EA2-55A9-4D16-B636-8D23BE01FEA7">
+                        <File Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL" Name="Microsoft.Win32.SystemEvents.dll" Source="bin\Release\publish\Microsoft.Win32.SystemEvents.dll" />
                     </Component>
-                    <Component Id="RAPTOR.DEPS.JSON" DiskId="1" Guid="06462679-AC31-4415-8D11-4EE7AAE8A1F4">
-                        <File Id="RAPTOR.DEPS.JSON" Name="raptor.deps.json" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.deps.json" />
+                    <Component Id="NETCOREAUDIO.DLL" DiskId="1" Guid="F191472B-311C-425C-B3B3-99456A3F2574">
+                        <File Id="NETCOREAUDIO.DLL" Name="NetCoreAudio.dll" Source="bin\Release\publish\NetCoreAudio.dll" />
                     </Component>
-                    <Component Id="RAPTOR.DLL" DiskId="1" Guid="02D85DF4-B7E5-49F5-9792-53A8FA9E9678">
-                        <File Id="RAPTOR.DLL" Name="raptor.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.dll" />
+                    <Component Id="PLUGINS_POWERMOD.DLL" DiskId="1" Guid="5F936824-B36D-49CA-8F2C-7A4E6D69F1E8">
+                        <File Id="PLUGINS_POWERMOD.DLL" Name="plugins_powermod.dll" Source="bin\Release\publish\plugins_powermod.dll" />
                     </Component>
-                    <Component Id="RAPTOR.EXE" DiskId="1" Guid="F7FA56BA-41E0-4A65-A363-14F9AE35CB88">
-                        <File Id="RAPTOR.EXE" Name="raptor.exe" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe">
-                         </File>
-                    <ProgId Id="RAPTOR.file" Description="RAPTOR Avalonia File" Icon="StartMenuIcon.exe" IconIndex="0" Advertise="yes">
-                      <Extension Id="rap">
-                      <Verb Id="open" Command="Open" Argument="&quot;%1&quot;"/>
-                        </Extension>
-                    </ProgId>
+                    <Component Id="PLUGINS_STRINGOPERATIONS.DLL" DiskId="1" Guid="8F59BE47-E69C-4FC7-B7E8-E6E4D656CE9D">
+                        <File Id="PLUGINS_STRINGOPERATIONS.DLL" Name="plugins_stringoperations.dll" Source="bin\Release\publish\plugins_stringoperations.dll" />
                     </Component>
-                    <Component Id="RAPTOR.PDB" DiskId="1" Guid="49A4887C-F78E-4C01-A6CB-931B6B618349">
-                        <File Id="RAPTOR.PDB" Name="raptor.pdb" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.pdb" />
+                    <Component Id="PLUGINS_TIME.DLL" DiskId="1" Guid="C9565861-A498-407F-BF12-D33343E5146F">
+                        <File Id="PLUGINS_TIME.DLL" Name="plugins_time.dll" Source="bin\Release\publish\plugins_time.dll" />
                     </Component>
-                    <Component Id="RAPTOR.RUNTIMECONFIG.JSON" DiskId="1" Guid="5CE1B456-8110-46E9-985C-6E3D43EE01C2">
-                        <File Id="RAPTOR.RUNTIMECONFIG.JSON" Name="raptor.runtimeconfig.json" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.runtimeconfig.json" />
+                    <Component Id="RAPTOR.DEPS.JSON" DiskId="1" Guid="3D78462A-69A7-4F06-82FA-B7C9734D02E5">
+                        <File Id="RAPTOR.DEPS.JSON" Name="raptor.deps.json" Source="bin\Release\publish\raptor.deps.json" />
                     </Component>
-                    <Component Id="REACTIVEUI.DLL" DiskId="1" Guid="DCC52D26-267B-4738-A504-9D0565D49F29">
-                        <File Id="REACTIVEUI.DLL" Name="ReactiveUI.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ReactiveUI.dll" />
+                    <Component Id="RAPTOR.DLL" DiskId="1" Guid="B2073952-A417-4C4F-81A0-66D0A65AE465">
+                        <File Id="RAPTOR.DLL" Name="raptor.dll" Source="bin\Release\publish\raptor.dll" />
                     </Component>
-                    <Component Id="SKIASHARP.DLL" DiskId="1" Guid="88A3CFEF-7542-42EE-9BB5-688A4C989085">
-                        <File Id="SKIASHARP.DLL" Name="SkiaSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\SkiaSharp.dll" />
+                    <Component Id="RAPTOR.EXE" DiskId="1" Guid="5321C2AE-02C1-4C99-B796-A708E6D127C2">
+                        <File Id="RAPTOR.EXE" Name="raptor.exe" Source="bin\Release\publish\raptor.exe" />
                     </Component>
-                    <Component Id="SPLAT.DLL" DiskId="1" Guid="94D96C8C-F28E-4F0E-BB0A-D77A69BED7D1">
-                        <File Id="SPLAT.DLL" Name="Splat.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Splat.dll" />
+                    <Component Id="RAPTOR.PDB" DiskId="1" Guid="341FFCAE-C002-4C4A-BEBD-BBFC9E1DEC06">
+                        <File Id="RAPTOR.PDB" Name="raptor.pdb" Source="bin\Release\publish\raptor.pdb" />
                     </Component>
-                    <Component Id="SYSTEM.DRAWING.COMMON.DLL" DiskId="1" Guid="1776EB4B-B564-429C-A4F5-8A94528DFB7C">
-                        <File Id="SYSTEM.DRAWING.COMMON.DLL" Name="System.Drawing.Common.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\System.Drawing.Common.dll" />
+                    <Component Id="RAPTOR.RUNTIMECONFIG.JSON" DiskId="1" Guid="E4D7C422-2E90-4DD9-B573-1E2FE1C15854">
+                        <File Id="RAPTOR.RUNTIMECONFIG.JSON" Name="raptor.runtimeconfig.json" Source="bin\Release\publish\raptor.runtimeconfig.json" />
                     </Component>
-                    <Component Id="SYSTEM.REACTIVE.DLL" DiskId="1" Guid="691D8222-E0F0-4074-ABD5-2096CBB0E8D8">
-                        <File Id="SYSTEM.REACTIVE.DLL" Name="System.Reactive.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\System.Reactive.dll" />
+                    <Component Id="REACTIVEUI.DLL" DiskId="1" Guid="C46D707B-C7C1-480C-B2E7-F0D0E317314D">
+                        <File Id="REACTIVEUI.DLL" Name="ReactiveUI.dll" Source="bin\Release\publish\ReactiveUI.dll" />
                     </Component>
-                    <Component Id="SYSTEM.REACTIVE.XML" DiskId="1" Guid="33E7AAAE-7370-4987-A093-16BF6406F7E9">
-                        <File Id="SYSTEM.REACTIVE.XML" Name="System.Reactive.xml" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\System.Reactive.xml" />
+                    <Component Id="SKIASHARP.DLL" DiskId="1" Guid="AD5B1AE5-ED7F-4B9E-9453-5DAF089DC332">
+                        <File Id="SKIASHARP.DLL" Name="SkiaSharp.dll" Source="bin\Release\publish\SkiaSharp.dll" />
                     </Component>
-                    <Component Id="TMDS.DBUS.DLL" DiskId="1" Guid="63ED61D4-0FB6-4702-A6FF-87CAAA2D435B">
-                        <File Id="TMDS.DBUS.DLL" Name="Tmds.DBus.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\Tmds.DBus.dll" />
+                    <Component Id="SPLAT.DLL" DiskId="1" Guid="14FF073F-2F6F-4B45-B582-0589A5F3B9E7">
+                        <File Id="SPLAT.DLL" Name="Splat.dll" Source="bin\Release\publish\Splat.dll" />
+                    </Component>
+                    <Component Id="SYSTEM.DRAWING.COMMON.DLL" DiskId="1" Guid="C25D4F47-8948-4180-8780-A37C3194B7E1">
+                        <File Id="SYSTEM.DRAWING.COMMON.DLL" Name="System.Drawing.Common.dll" Source="bin\Release\publish\System.Drawing.Common.dll" />
+                    </Component>
+                    <Component Id="SYSTEM.REACTIVE.DLL" DiskId="1" Guid="10FC2634-E6ED-47DD-8874-E3588AD46FB6">
+                        <File Id="SYSTEM.REACTIVE.DLL" Name="System.Reactive.dll" Source="bin\Release\publish\System.Reactive.dll" />
+                    </Component>
+                    <Component Id="TMDS.DBUS.DLL" DiskId="1" Guid="2FD38DAB-C8D1-4B5A-9836-C1E93DD5E436">
+                        <File Id="TMDS.DBUS.DLL" Name="Tmds.DBus.dll" Source="bin\Release\publish\Tmds.DBus.dll" />
                     </Component>
                     <Directory Id="CS" Name="cs">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL" DiskId="1" Guid="FFBDE579-1206-4FD4-A24C-7E1CC8D9F249">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL" DiskId="1" Guid="404A3022-CC71-4A46-B834-21A7C32E55F4">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL" DiskId="1" Guid="4CA50E23-57AB-4A6E-967D-D2BD5D25C720">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\cs\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL" DiskId="1" Guid="2184D9AD-6D8C-426B-9A67-EE9149ACA9FB">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\cs\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL" DiskId="1" Guid="A53417AF-1A59-41B8-8179-32520DC5C828">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\cs\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL" DiskId="1" Guid="CC9973DE-8989-460A-9198-46EEF3FDDC9C">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\cs\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL" DiskId="1" Guid="67690C64-79A6-4110-9D1A-1A811B017D77">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\cs\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL" DiskId="1" Guid="A322E22A-445A-4B8C-B0F4-78BA5EA6965C">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\cs\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="DE" Name="de">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_1" DiskId="1" Guid="4E8F03F3-5314-4830-A64C-9CD9A08E2372">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\de\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_1" DiskId="1" Guid="816877B5-0F17-43AE-8394-590BA8871B69">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\de\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_1" DiskId="1" Guid="A637AA0C-D0FC-4D25-8EEC-B573C5BA7E9D">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\de\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_1" DiskId="1" Guid="8113A9FE-067D-4688-BAD4-793E04527B1D">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\de\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_1" DiskId="1" Guid="B711C712-C44C-4713-8B4D-926244C89801">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\de\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_1" DiskId="1" Guid="83B5F3E2-5BEC-4AA8-9E7B-37FA14A03253">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\de\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_1" DiskId="1" Guid="AD286CBE-6339-4C89-BC91-AC6ACCD570A7">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\de\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_1" DiskId="1" Guid="F3482B5B-C516-4018-B1C3-0FF76DBFE56C">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_1" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\de\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="ES" Name="es">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_2" DiskId="1" Guid="7B49BC9E-87B3-4DE5-8E6B-78FA9C1F909A">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\es\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_2" DiskId="1" Guid="9D92AFD5-2F50-4A40-9CB1-69C60BC32890">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\es\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_2" DiskId="1" Guid="170899E2-C97D-4F85-8669-09B19842A05C">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\es\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_2" DiskId="1" Guid="54065CF6-A4C9-4B62-BC74-5E71E775195B">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\es\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_2" DiskId="1" Guid="A53011E5-B47A-4B8F-AC91-41422ECC496D">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\es\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_2" DiskId="1" Guid="EA998CF8-9AAE-4547-ADB6-3084C3B9648C">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\es\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_2" DiskId="1" Guid="63ECC448-F99A-406D-A43F-0136242DBEEC">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\es\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_2" DiskId="1" Guid="6C98CDC1-C746-4D54-971C-7ADB8DBD2469">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_2" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\es\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="FR" Name="fr">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_3" DiskId="1" Guid="088097CD-71C1-45E0-A42D-BA027B9B7B2B">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\fr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_3" DiskId="1" Guid="6208176E-1D00-49EA-AD85-B1F6C1E678CD">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\fr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_3" DiskId="1" Guid="733B19BF-40A9-4F65-A0B3-6DF998F2CA38">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\fr\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_3" DiskId="1" Guid="1F1F2370-7014-4D38-815C-49142C098D79">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\fr\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_3" DiskId="1" Guid="C02CDF64-D3A2-4D5E-9EC9-104C3B7ABF22">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\fr\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_3" DiskId="1" Guid="51C177E2-11A9-47D6-BEC2-15E47C28CB6F">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\fr\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_3" DiskId="1" Guid="24CB4E77-3580-4B79-9838-0B3E66F7D80E">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\fr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_3" DiskId="1" Guid="832473DF-C5E3-4671-AC6A-0B43485B58B5">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_3" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\fr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="IT" Name="it">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_4" DiskId="1" Guid="1CF3F7B6-9702-4A8C-AF25-82F24024D413">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\it\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_4" DiskId="1" Guid="E9886A84-5A23-4DFA-99BB-92EECFCEAF3F">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\it\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_4" DiskId="1" Guid="77156C7B-13A2-4095-9146-1F862C00C6B9">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\it\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_4" DiskId="1" Guid="6CE4BF99-C3CF-411E-B2B8-983B79482E7A">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\it\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_4" DiskId="1" Guid="D34D25A7-87A5-435B-8DDE-7C608922711A">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\it\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_4" DiskId="1" Guid="8C643714-A910-40A3-816D-2B0756F7C0FA">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\it\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_4" DiskId="1" Guid="45F8DA4E-FB30-461C-82DF-BD68402BF3D3">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\it\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_4" DiskId="1" Guid="11DF6189-5316-4088-B266-85595033F789">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_4" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\it\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="JA" Name="ja">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_5" DiskId="1" Guid="BF4699EC-EFBE-4F0F-904E-4E6EA406DF1A">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ja\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_5" DiskId="1" Guid="18344CEC-1EC4-440F-A20A-3B3B4A6B3DA2">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\ja\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_5" DiskId="1" Guid="E744E36D-A2CD-4319-BC6B-B8579B495ECF">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ja\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_5" DiskId="1" Guid="F0B73D9E-A70D-456B-B229-F2C8FDDE8901">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\ja\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_5" DiskId="1" Guid="A22A2BA9-6CAE-46CE-8AB8-7769447A6569">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ja\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_5" DiskId="1" Guid="6053705F-FCFB-4267-9873-7918FED74315">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\ja\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_5" DiskId="1" Guid="B6C72370-AFE5-41E5-9093-7F58F7D271FB">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ja\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_5" DiskId="1" Guid="0B466751-4D01-40E5-84CB-C4089F9F629F">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_5" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\ja\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="KO" Name="ko">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_6" DiskId="1" Guid="36763189-640B-4EED-9909-71C21311F3B2">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ko\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_6" DiskId="1" Guid="C195EADD-A1D1-4D7B-81A4-AD33ED394AE9">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\ko\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_6" DiskId="1" Guid="5C5B9EA0-B760-4115-B859-0BC1AB06EB3F">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ko\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_6" DiskId="1" Guid="ACCC4BC1-FE12-4AFA-8EBF-E0D54CBC6DA1">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\ko\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_6" DiskId="1" Guid="D5AEA6A4-F681-46B0-8C99-767AD7169A66">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ko\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_6" DiskId="1" Guid="576E76A3-203B-426A-A82F-6AA6FD19EFF8">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\ko\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_6" DiskId="1" Guid="45F11204-15BA-4C97-ADAF-2031D0F46FC8">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ko\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_6" DiskId="1" Guid="F322A640-A8C7-4EE9-9388-CCF38AF844D6">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_6" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\ko\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="PL" Name="pl">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_7" DiskId="1" Guid="89F1A29A-53B7-4AC8-9757-37B86EA9F54F">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pl\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_7" DiskId="1" Guid="8020E619-1E2C-4D4C-BC42-B0F59891BCE2">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\pl\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_7" DiskId="1" Guid="ABC4FBE1-2128-4C9D-B1C2-24D28862AC32">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pl\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_7" DiskId="1" Guid="B0352CB3-AA25-4554-AF58-1E8198F104A5">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\pl\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_7" DiskId="1" Guid="5EB9F0E0-97CF-4E02-8016-5F7079793AF0">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pl\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_7" DiskId="1" Guid="01F63275-5187-4FF0-895A-9966302484E8">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\pl\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_7" DiskId="1" Guid="A5DE2CCA-94E9-433F-93EF-D90D780415CF">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pl\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_7" DiskId="1" Guid="5D31FA27-7432-47F8-892C-4FAFF9A4B5F1">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_7" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\pl\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="PT_BR" Name="pt-BR">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_8" DiskId="1" Guid="A4ADCF72-B8AE-46AF-8B42-869894270934">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_8" DiskId="1" Guid="7D931DC8-1C8C-41C1-94A3-15BE020D2193">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_8" DiskId="1" Guid="44A23612-3CF0-4C81-89C9-3B091C0AA781">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_8" DiskId="1" Guid="E0BA9CEF-336E-453A-9B7D-A598C4923963">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_8" DiskId="1" Guid="038C2E22-1389-4F10-AF24-138BB0A7E7CD">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_8" DiskId="1" Guid="05196C0D-BE3A-40E8-9F2B-3B75AB5297C3">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_8" DiskId="1" Guid="D6168035-4993-4C70-B937-388D6B7404DB">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_8" DiskId="1" Guid="58E2A658-A436-4581-95B5-3630E99A8BA1">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_8" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="RU" Name="ru">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_9" DiskId="1" Guid="0EE24E58-062D-4409-896A-B1587D29BFA1">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ru\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_9" DiskId="1" Guid="AE349777-CE92-493A-8922-5CAE9010DEFE">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\ru\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_9" DiskId="1" Guid="88179431-6CFD-4D0D-8540-E6E225F7A8B7">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ru\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_9" DiskId="1" Guid="601DF3C4-0141-4251-9814-42102FB75220">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\ru\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_9" DiskId="1" Guid="EB28E08F-E81D-46B4-9353-A31FC8924CF7">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ru\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_9" DiskId="1" Guid="B50C9DAC-78E6-4C8A-89EB-6ECDF1C0EF51">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\ru\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_9" DiskId="1" Guid="CF972C95-6091-4E59-9C31-3684065F6058">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\ru\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_9" DiskId="1" Guid="3C24EC5F-882C-4F5C-B431-5742FBF9A470">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_9" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\ru\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="RUNTIMES" Name="runtimes">
                         <Directory Id="LINUX_ARM" Name="linux-arm">
                             <Directory Id="NATIVE" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.SO" DiskId="1" Guid="69FDA592-4E28-4393-A96C-71323EC4F319">
-                                    <File Id="LIBHARFBUZZSHARP.SO" Name="libHarfBuzzSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-arm\native\libHarfBuzzSharp.so" />
+                                <Component Id="LIBHARFBUZZSHARP.SO" DiskId="1" Guid="4D7E2C71-F31E-480C-8312-C46004C503B3">
+                                    <File Id="LIBHARFBUZZSHARP.SO" Name="libHarfBuzzSharp.so" Source="bin\Release\publish\runtimes\linux-arm\native\libHarfBuzzSharp.so" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.SO" DiskId="1" Guid="4ED54B82-56ED-4710-B6B2-39F4EB2416D1">
-                                    <File Id="LIBSKIASHARP.SO" Name="libSkiaSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-arm\native\libSkiaSharp.so" />
+                                <Component Id="LIBSKIASHARP.SO" DiskId="1" Guid="2B2A288E-2C3C-43F4-93AC-B856E670468C">
+                                    <File Id="LIBSKIASHARP.SO" Name="libSkiaSharp.so" Source="bin\Release\publish\runtimes\linux-arm\native\libSkiaSharp.so" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="LINUX_ARM64" Name="linux-arm64">
                             <Directory Id="NATIVE_1" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.SO_1" DiskId="1" Guid="FC872E91-DC20-4D69-B8D0-A76947CA595A">
-                                    <File Id="LIBHARFBUZZSHARP.SO_1" Name="libHarfBuzzSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-arm64\native\libHarfBuzzSharp.so" />
+                                <Component Id="LIBHARFBUZZSHARP.SO_1" DiskId="1" Guid="CF9D92F3-C583-4CBA-9BF0-29E8DA054F96">
+                                    <File Id="LIBHARFBUZZSHARP.SO_1" Name="libHarfBuzzSharp.so" Source="bin\Release\publish\runtimes\linux-arm64\native\libHarfBuzzSharp.so" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.SO_1" DiskId="1" Guid="FF8223EE-B63B-4414-B531-7F5DC5D28AB1">
-                                    <File Id="LIBSKIASHARP.SO_1" Name="libSkiaSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-arm64\native\libSkiaSharp.so" />
+                                <Component Id="LIBSKIASHARP.SO_1" DiskId="1" Guid="6DFFC663-CCF6-4E52-BD2B-77187890751F">
+                                    <File Id="LIBSKIASHARP.SO_1" Name="libSkiaSharp.so" Source="bin\Release\publish\runtimes\linux-arm64\native\libSkiaSharp.so" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="LINUX_MUSL_X64" Name="linux-musl-x64">
                             <Directory Id="NATIVE_2" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.SO_2" DiskId="1" Guid="8953F662-B1F4-43E9-8B0C-5FF457BDD5E5">
-                                    <File Id="LIBHARFBUZZSHARP.SO_2" Name="libHarfBuzzSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-musl-x64\native\libHarfBuzzSharp.so" />
+                                <Component Id="LIBHARFBUZZSHARP.SO_2" DiskId="1" Guid="E11ACDD6-DF2D-481C-B460-F28D5F47E03B">
+                                    <File Id="LIBHARFBUZZSHARP.SO_2" Name="libHarfBuzzSharp.so" Source="bin\Release\publish\runtimes\linux-musl-x64\native\libHarfBuzzSharp.so" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.SO_2" DiskId="1" Guid="7FC7B91E-C826-4E8C-BA05-95FCD8F4F14A">
-                                    <File Id="LIBSKIASHARP.SO_2" Name="libSkiaSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-musl-x64\native\libSkiaSharp.so" />
+                                <Component Id="LIBSKIASHARP.SO_2" DiskId="1" Guid="47F111C5-DAAC-43CA-A459-0B520077EBA5">
+                                    <File Id="LIBSKIASHARP.SO_2" Name="libSkiaSharp.so" Source="bin\Release\publish\runtimes\linux-musl-x64\native\libSkiaSharp.so" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="LINUX_X64" Name="linux-x64">
                             <Directory Id="NATIVE_3" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.SO_3" DiskId="1" Guid="F3052336-523B-4733-85F8-8561EF31E9BA">
-                                    <File Id="LIBHARFBUZZSHARP.SO_3" Name="libHarfBuzzSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-x64\native\libHarfBuzzSharp.so" />
+                                <Component Id="LIBHARFBUZZSHARP.SO_3" DiskId="1" Guid="5C891F8E-3811-4A1B-B7E2-03453A53C283">
+                                    <File Id="LIBHARFBUZZSHARP.SO_3" Name="libHarfBuzzSharp.so" Source="bin\Release\publish\runtimes\linux-x64\native\libHarfBuzzSharp.so" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.SO_3" DiskId="1" Guid="4F06AADC-7E06-410A-8C02-51EE52AAE0E1">
-                                    <File Id="LIBSKIASHARP.SO_3" Name="libSkiaSharp.so" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\linux-x64\native\libSkiaSharp.so" />
+                                <Component Id="LIBSKIASHARP.SO_3" DiskId="1" Guid="5763B8AE-5F2D-4595-805B-009768C57EAF">
+                                    <File Id="LIBSKIASHARP.SO_3" Name="libSkiaSharp.so" Source="bin\Release\publish\runtimes\linux-x64\native\libSkiaSharp.so" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="OSX" Name="osx">
                             <Directory Id="NATIVE_4" Name="native">
-                                <Component Id="LIBAVALONIANATIVE.DYLIB" DiskId="1" Guid="A86E10F8-AB4E-4CBE-9764-654F0509DD20">
-                                    <File Id="LIBAVALONIANATIVE.DYLIB" Name="libAvaloniaNative.dylib" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\osx\native\libAvaloniaNative.dylib" />
+                                <Component Id="LIBAVALONIANATIVE.DYLIB" DiskId="1" Guid="19006597-CF6B-45DD-9B20-0624CCFA3ACB">
+                                    <File Id="LIBAVALONIANATIVE.DYLIB" Name="libAvaloniaNative.dylib" Source="bin\Release\publish\runtimes\osx\native\libAvaloniaNative.dylib" />
                                 </Component>
-                                <Component Id="LIBHARFBUZZSHARP.DYLIB" DiskId="1" Guid="B355111C-C9E0-4150-B92C-60CF0AFBAB93">
-                                    <File Id="LIBHARFBUZZSHARP.DYLIB" Name="libHarfBuzzSharp.dylib" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\osx\native\libHarfBuzzSharp.dylib" />
+                                <Component Id="LIBHARFBUZZSHARP.DYLIB" DiskId="1" Guid="C129D52E-F65C-424D-937D-ADBEB8A7C78A">
+                                    <File Id="LIBHARFBUZZSHARP.DYLIB" Name="libHarfBuzzSharp.dylib" Source="bin\Release\publish\runtimes\osx\native\libHarfBuzzSharp.dylib" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.DYLIB" DiskId="1" Guid="0AC16542-498F-47F1-8E24-49FCFE0E948F">
-                                    <File Id="LIBSKIASHARP.DYLIB" Name="libSkiaSharp.dylib" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\osx\native\libSkiaSharp.dylib" />
+                                <Component Id="LIBSKIASHARP.DYLIB" DiskId="1" Guid="96C383B3-C0CA-4AFE-8D0F-C9084C3F979E">
+                                    <File Id="LIBSKIASHARP.DYLIB" Name="libSkiaSharp.dylib" Source="bin\Release\publish\runtimes\osx\native\libSkiaSharp.dylib" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="UNIX" Name="unix">
                             <Directory Id="LIB" Name="lib">
                                 <Directory Id="NETCOREAPP2.0" Name="netcoreapp2.0">
-                                    <Component Id="SYSTEM.DRAWING.COMMON.DLL_1" DiskId="1" Guid="33F58795-76FB-45A2-9209-28D274CDF663">
-                                        <File Id="SYSTEM.DRAWING.COMMON.DLL_1" Name="System.Drawing.Common.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\unix\lib\netcoreapp2.0\System.Drawing.Common.dll" />
+                                    <Component Id="SYSTEM.DRAWING.COMMON.DLL_1" DiskId="1" Guid="49B16CD2-8BA8-42E4-A0FF-9F2FC24F5C9D">
+                                        <File Id="SYSTEM.DRAWING.COMMON.DLL_1" Name="System.Drawing.Common.dll" Source="bin\Release\publish\runtimes\unix\lib\netcoreapp2.0\System.Drawing.Common.dll" />
                                     </Component>
                                 </Directory>
                             </Directory>
@@ -371,135 +371,120 @@
                         <Directory Id="WIN" Name="win">
                             <Directory Id="LIB_1" Name="lib">
                                 <Directory Id="NETCOREAPP2.0_1" Name="netcoreapp2.0">
-                                    <Component Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL_1" DiskId="1" Guid="2941F913-0A27-4CDA-9898-64C2FAB2BABB">
-                                        <File Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL_1" Name="Microsoft.Win32.SystemEvents.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win\lib\netcoreapp2.0\Microsoft.Win32.SystemEvents.dll" />
+                                    <Component Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL_1" DiskId="1" Guid="B24A9A64-58D4-4156-BB44-C02F800368D1">
+                                        <File Id="MICROSOFT.WIN32.SYSTEMEVENTS.DLL_1" Name="Microsoft.Win32.SystemEvents.dll" Source="bin\Release\publish\runtimes\win\lib\netcoreapp2.0\Microsoft.Win32.SystemEvents.dll" />
                                     </Component>
-                                    <Component Id="SYSTEM.DRAWING.COMMON.DLL_2" DiskId="1" Guid="5CD73497-6397-40F3-BAC1-02573E5FB853">
-                                        <File Id="SYSTEM.DRAWING.COMMON.DLL_2" Name="System.Drawing.Common.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win\lib\netcoreapp2.0\System.Drawing.Common.dll" />
+                                    <Component Id="SYSTEM.DRAWING.COMMON.DLL_2" DiskId="1" Guid="37D23F52-F2C9-41A6-AE13-EE8014FE7683">
+                                        <File Id="SYSTEM.DRAWING.COMMON.DLL_2" Name="System.Drawing.Common.dll" Source="bin\Release\publish\runtimes\win\lib\netcoreapp2.0\System.Drawing.Common.dll" />
                                     </Component>
                                 </Directory>
                             </Directory>
                         </Directory>
                         <Directory Id="WIN_ARM64" Name="win-arm64">
                             <Directory Id="NATIVE_5" Name="native">
-                                <Component Id="AV_LIBGLESV2.DLL" DiskId="1" Guid="81398A4E-92F5-492E-B335-8BF401B403BA">
-                                    <File Id="AV_LIBGLESV2.DLL" Name="av_libglesv2.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-arm64\native\av_libglesv2.dll" />
+                                <Component Id="AV_LIBGLESV2.DLL" DiskId="1" Guid="D9B5028F-3E56-41D2-BDCD-19704003C5C2">
+                                    <File Id="AV_LIBGLESV2.DLL" Name="av_libglesv2.dll" Source="bin\Release\publish\runtimes\win-arm64\native\av_libglesv2.dll" />
                                 </Component>
-                                <Component Id="LIBHARFBUZZSHARP.DLL" DiskId="1" Guid="B93B1277-573E-4744-ADC0-95AEEDE93082">
-                                    <File Id="LIBHARFBUZZSHARP.DLL" Name="libHarfBuzzSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-arm64\native\libHarfBuzzSharp.dll" />
+                                <Component Id="LIBHARFBUZZSHARP.DLL" DiskId="1" Guid="B745E7A4-7E0E-48C5-9069-B66FE595363E">
+                                    <File Id="LIBHARFBUZZSHARP.DLL" Name="libHarfBuzzSharp.dll" Source="bin\Release\publish\runtimes\win-arm64\native\libHarfBuzzSharp.dll" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.DLL" DiskId="1" Guid="42F30556-C056-4969-9E8F-3E3102F3A6C1">
-                                    <File Id="LIBSKIASHARP.DLL" Name="libSkiaSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-arm64\native\libSkiaSharp.dll" />
+                                <Component Id="LIBSKIASHARP.DLL" DiskId="1" Guid="95A87559-D313-406F-B8CE-78EC93570271">
+                                    <File Id="LIBSKIASHARP.DLL" Name="libSkiaSharp.dll" Source="bin\Release\publish\runtimes\win-arm64\native\libSkiaSharp.dll" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="WIN_X64" Name="win-x64">
                             <Directory Id="NATIVE_6" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.DLL_1" DiskId="1" Guid="62B6AEB6-55B8-4103-B09F-EB82512D3A7A">
-                                    <File Id="LIBHARFBUZZSHARP.DLL_1" Name="libHarfBuzzSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-x64\native\libHarfBuzzSharp.dll" />
+                                <Component Id="LIBHARFBUZZSHARP.DLL_1" DiskId="1" Guid="A95F051D-0290-451B-842E-6BDFF6DC6458">
+                                    <File Id="LIBHARFBUZZSHARP.DLL_1" Name="libHarfBuzzSharp.dll" Source="bin\Release\publish\runtimes\win-x64\native\libHarfBuzzSharp.dll" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.DLL_1" DiskId="1" Guid="946AABB2-1D41-4B2B-849B-D40B8ACF44DF">
-                                    <File Id="LIBSKIASHARP.DLL_1" Name="libSkiaSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-x64\native\libSkiaSharp.dll" />
+                                <Component Id="LIBSKIASHARP.DLL_1" DiskId="1" Guid="1A344AF3-2760-47BB-B8AF-DFB63117484D">
+                                    <File Id="LIBSKIASHARP.DLL_1" Name="libSkiaSharp.dll" Source="bin\Release\publish\runtimes\win-x64\native\libSkiaSharp.dll" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="WIN_X86" Name="win-x86">
                             <Directory Id="NATIVE_7" Name="native">
-                                <Component Id="LIBHARFBUZZSHARP.DLL_2" DiskId="1" Guid="93BC9E2F-0A6F-4911-9991-9534CAB7D929">
-                                    <File Id="LIBHARFBUZZSHARP.DLL_2" Name="libHarfBuzzSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-x86\native\libHarfBuzzSharp.dll" />
+                                <Component Id="LIBHARFBUZZSHARP.DLL_2" DiskId="1" Guid="6BC53731-3133-4BB5-B132-FB2C479EFEBD">
+                                    <File Id="LIBHARFBUZZSHARP.DLL_2" Name="libHarfBuzzSharp.dll" Source="bin\Release\publish\runtimes\win-x86\native\libHarfBuzzSharp.dll" />
                                 </Component>
-                                <Component Id="LIBSKIASHARP.DLL_2" DiskId="1" Guid="D814A749-16DC-4D53-8465-C4E7543E8BED">
-                                    <File Id="LIBSKIASHARP.DLL_2" Name="libSkiaSharp.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win-x86\native\libSkiaSharp.dll" />
+                                <Component Id="LIBSKIASHARP.DLL_2" DiskId="1" Guid="4BE7374A-3E4B-46BE-A02C-2C2EC4E46125">
+                                    <File Id="LIBSKIASHARP.DLL_2" Name="libSkiaSharp.dll" Source="bin\Release\publish\runtimes\win-x86\native\libSkiaSharp.dll" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="WIN7_X64" Name="win7-x64">
                             <Directory Id="NATIVE_8" Name="native">
-                                <Component Id="AV_LIBGLESV2.DLL_1" DiskId="1" Guid="AAE0A631-B756-48B6-B735-0DFFA6E1884C">
-                                    <File Id="AV_LIBGLESV2.DLL_1" Name="av_libglesv2.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win7-x64\native\av_libglesv2.dll" />
+                                <Component Id="AV_LIBGLESV2.DLL_1" DiskId="1" Guid="470B9274-2628-4D42-9E09-E1C8D1125F9D">
+                                    <File Id="AV_LIBGLESV2.DLL_1" Name="av_libglesv2.dll" Source="bin\Release\publish\runtimes\win7-x64\native\av_libglesv2.dll" />
                                 </Component>
                             </Directory>
                         </Directory>
                         <Directory Id="WIN7_X86" Name="win7-x86">
                             <Directory Id="NATIVE_9" Name="native">
-                                <Component Id="AV_LIBGLESV2.DLL_2" DiskId="1" Guid="CC9B1A6B-2AB9-4079-80A9-A17FD19E6777">
-                                    <File Id="AV_LIBGLESV2.DLL_2" Name="av_libglesv2.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\runtimes\win7-x86\native\av_libglesv2.dll" />
+                                <Component Id="AV_LIBGLESV2.DLL_2" DiskId="1" Guid="70948D72-3BC5-4BF3-B810-87A9FC83C177">
+                                    <File Id="AV_LIBGLESV2.DLL_2" Name="av_libglesv2.dll" Source="bin\Release\publish\runtimes\win7-x86\native\av_libglesv2.dll" />
                                 </Component>
                             </Directory>
                         </Directory>
                     </Directory>
                     <Directory Id="TR" Name="tr">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_10" DiskId="1" Guid="B6E75076-66B1-46B9-97C2-C94C1DF6211E">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\tr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_10" DiskId="1" Guid="81E5936C-640A-4043-912F-1BDC0873A72C">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\tr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_10" DiskId="1" Guid="F2495C40-750D-48D5-B46B-B273F482A24A">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\tr\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_10" DiskId="1" Guid="349632EE-D17C-4FBD-A55E-3D4A045BFBE2">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\tr\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_10" DiskId="1" Guid="0422528C-ED9A-40C6-B887-A447A908501F">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\tr\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_10" DiskId="1" Guid="D198B124-77E8-4F64-8BEA-E64A966BD274">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\tr\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_10" DiskId="1" Guid="4FC6F73E-602F-4318-A11E-FB6D43003EFD">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\tr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_10" DiskId="1" Guid="14AB0AD0-B896-4AD2-A4DE-C9F79E99C6B3">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_10" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\tr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="ZH_HANS" Name="zh-Hans">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_11" DiskId="1" Guid="2B8704D8-3F3E-417E-8096-5E081F5B6DD6">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_11" DiskId="1" Guid="3796FF23-95FC-4A83-8890-0CAEF59B1243">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_11" DiskId="1" Guid="1373F070-8F4D-4852-B34C-AB1B6CFEFA87">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_11" DiskId="1" Guid="F6151AF3-1E76-4B3E-A893-606C68321DC7">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_11" DiskId="1" Guid="C938AF2B-A049-46AE-B34E-1A58C69BA277">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_11" DiskId="1" Guid="8090C19C-7664-4F6C-9CBD-34FF1A03BE61">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_11" DiskId="1" Guid="582BC681-6C91-4DEE-9B1B-61D05D228CFB">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_11" DiskId="1" Guid="0E162F76-A30E-48AC-BBFC-C39F3D16360F">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_11" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
                     <Directory Id="ZH_HANT" Name="zh-Hant">
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_12" DiskId="1" Guid="705720F8-749B-4657-B3BD-C43B1DC2B85A">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_12" DiskId="1" Guid="B6C4A8B6-D6A4-4503-A1DB-90F9A60FBBDC">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.CSharp.resources.dll" Source="bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_12" DiskId="1" Guid="3554CA6D-AF88-4A6A-AD72-542B1735708A">
-                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_12" DiskId="1" Guid="84F23142-1969-4D6A-B2AF-A33B6342D37C">
+                            <File Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" Source="bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.CSharp.Scripting.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" DiskId="1" Guid="FEF7C229-47B6-489B-B58E-6CD67D046BF1">
-                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" DiskId="1" Guid="23B37669-4280-4E43-B339-7BD98D0C6783">
+                            <File Id="MICROSOFT.CODEANALYSIS.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.resources.dll" Source="bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.resources.dll" />
                         </Component>
-                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" DiskId="1" Guid="DCA8DC76-4FE4-40C7-AC58-A27D0ACC0959">
-                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll" />
+                        <Component Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" DiskId="1" Guid="9E1C01CC-8D88-4A3D-B301-28BB070F297F">
+                            <File Id="MICROSOFT.CODEANALYSIS.SCRIPTING.RESOURCES.DLL_12" Name="Microsoft.CodeAnalysis.Scripting.resources.dll" Source="bin\Release\publish\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll" />
                         </Component>
                     </Directory>
-                    <Component Id="PLUGINS_POWERMOD.DLL" DiskId="1" Guid="0CDAA62A-3FC1-48EA-8616-FF93EAAC2490">
-                        <File Id="PLUGINS_POWERMOD.DLL" Name="plugins_powermod.dll" Source="bin\Release\publish\plugins_powermod.dll" />
-                    </Component>
-                    <Component Id="PLUGINS_STRINGOPERATIONS.DLL" DiskId="1" Guid="ED2517D0-602C-4AD2-A5DB-0144825A763D">
-                        <File Id="PLUGINS_STRINGOPERATIONS.DLL" Name="plugins_stringoperations.dll" Source="bin\Release\publish\plugins_stringoperations.dll" />
-                    </Component>
-                    <Component Id="PLUGINS_TIME.DLL" DiskId="1" Guid="2ABD9692-8EA8-435A-8FA5-FEFB9B7DFA27">
-                        <File Id="PLUGINS_TIME.DLL" Name="plugins_time.dll" Source="bin\Release\publish\plugins_time.dll" />
-                    </Component>
                 </Directory>
             </Directory>
             <Directory Id="DesktopFolder">
-			     <Component Id="ApplicationShortcutDesktop" Guid="65441557-8d8d-4c2d-b796-411b9035737b">
-                  <Shortcut Id="desktopShortcut" Target="[INSTALLDIR]\RAPTOR.EXE" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR"  Icon="DesktopIcon.exe" IconIndex="0" />
-				   <RemoveFolder Id="DesktopFolder" On="uninstall"/>
-				   <RegistryValue
-                      Root="HKCU"
-                      Key="Software\Martin Carlisle\RAPTOR_Avalonia"
-                      Name="installed"
-                      Type="integer"
-                      Value="1"
-                      KeyPath="yes"/>
-				  </Component>
-			</Directory>
+                <Component Id="ApplicationShortcutDesktop" Guid="65441557-8d8d-4c2d-b796-411b9035737b">
+                    <Shortcut Id="desktopShortcut" Target="[INSTALLDIR]RAPTOR.EXE" Name="RAPTOR Avalonia" WorkingDirectory="INSTALLDIR" Icon="DesktopIcon.exe" IconIndex="0" />
+                    <RemoveFolder Id="DesktopFolder" On="uninstall" />
+                    <RegistryValue Root="HKCU" Key="Software\Martin Carlisle\RAPTOR_Avalonia" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                </Component>
+            </Directory>
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ProgramMenuDir" Name="RAPTOR Avalonia">
                     <Component Id="StartMenuShortcuts" Guid="C2DCD86B-8437-4F9F-B513-0645D1F19DB5">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
                         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
-                         <Shortcut Id="ExeShortcut" Target="[INSTALLDIR]RAPTOR.EXE" Name="RAPTOR"  Icon="StartMenuIcon.exe" IconIndex="0" />
+                        <Shortcut Id="ExeShortcut" Target="[INSTALLDIR]RAPTOR.EXE" Name="RAPTOR" Icon="StartMenuIcon.exe" IconIndex="0" />
                         <Shortcut Id="UninstallProduct" Name="Uninstall RAPTOR Avalonia" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                         <util:InternetShortcut Id="WebsiteShortcut" Name="RAPTOR website" Target="https://raptor.martincarlisle.com" />
                     </Component>
@@ -556,7 +541,6 @@
             <ComponentRef Id="SPLAT.DLL" />
             <ComponentRef Id="SYSTEM.DRAWING.COMMON.DLL" />
             <ComponentRef Id="SYSTEM.REACTIVE.DLL" />
-            <ComponentRef Id="SYSTEM.REACTIVE.XML" />
             <ComponentRef Id="TMDS.DBUS.DLL" />
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.CSHARP.RESOURCES.DLL" />
             <ComponentRef Id="MICROSOFT.CODEANALYSIS.CSHARP.SCRIPTING.RESOURCES.DLL" />

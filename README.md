@@ -3,7 +3,7 @@
 Build/Release
 Build/Publish netcoreapp3.1 portable to bin\Release\publish\
 Make a zip file of publish using Windows (publish.zip)
-Rename it to raptor_avalonia.zip and move to C:\Users\carlislem\Documents\mcc_html\raptor
+Rename it to raptor_avalonia.zip and copy to C:\Users\carlislem\Documents\mcc_html\raptor
 In a DOS prompt, run C:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\wix_compile_installer.bat
 del raptor_avalonia.msi
 rename wixedit_raptor.msi raptor_avalonia.msi
