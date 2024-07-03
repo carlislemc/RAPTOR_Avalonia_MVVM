@@ -17,17 +17,26 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
+	[DataContract]
 	public class Loop : BinaryComponent
 	{
+		[DataMember]
 		public int bottom, end_first_connector;
+		[DataMember]
 		public int diamond_top = 0, after_bottom = 0;
+		[DataMember]
 		public int x_left, y_left, x_right, y_right;
+		[DataMember]
 		public int left_connector_y;
+		[DataMember]
 		public int right_connector_y;
+		[DataMember]
 		public int line_height;
 		public bool light_head;
 		private bool has_diamond_breakpoint;
+		[DataMember]
 		private String LP;
+		[DataMember(IsRequired = false)]
 		public Component? before_Child
 		{
 			get 
@@ -40,7 +49,8 @@ namespace raptor
 			}
 		}
 
-		public Component? after_Child
+        [DataMember(IsRequired = false)]
+        public Component? after_Child
 		{
 			get 
 			{
@@ -87,7 +97,45 @@ namespace raptor
 			return false;
 		}
 
-		public Loop(SerializationInfo info, StreamingContext ctxt)
+        [OnDeserialized]
+		protected override void OnDeserialized(StreamingContext context)
+        {
+            base.OnDeserialized(context);
+            if (Component.negate_loops && this.Text != null && this.Text != "")
+            {
+                if (this.Text.Length < 6 ||
+                    this.Text.Substring(0, 5) != "not (" ||
+                    this.Text[this.Text.Length - 1] != ')' ||
+                    paren_more_right(this.Text.Substring(5, this.Text.Length - 6)))
+                {
+                    this.Text = "not (" + this.Text + ")";
+                }
+                else
+                {
+                    // remove the "not ("
+                    this.Text = this.Text.Substring(5, this.Text.Length - 6);
+                }
+            }
+            result = interpreter_pkg.conditional_syntax(this.Text);
+
+            if (result.valid)
+            {
+                this.parse_tree = result.tree;
+            }
+            else
+            {
+                if (!Component.warned_about_error && this.Text != "")
+                {
+                    MessageBoxClass.Show("Unknown error: \n" +
+                        this.Text + "\n" +
+                        "is not recognized.");
+                    Component.warned_about_error = true;
+                }
+                this.Text = "";
+            }
+
+        }
+        public Loop(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{
 			//Get the values from info and assign them to the appropriate properties

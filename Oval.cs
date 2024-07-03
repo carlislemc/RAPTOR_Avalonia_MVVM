@@ -11,6 +11,7 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
+	[DataContract]
 	public class Oval : Component
 	{
 		public Oval(int height, int width, String str_name)

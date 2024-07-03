@@ -237,6 +237,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 MessageBoxClass.Show("Unable to open file: " + dialog_fileName);
                 return;
             }
+
             BinaryFormatter bformatter = new BinaryFormatter();
             try
             {

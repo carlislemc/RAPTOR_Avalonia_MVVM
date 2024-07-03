@@ -6,6 +6,8 @@ using RAPTOR_Avalonia_MVVM;
 using Avalonia;
 using RAPTOR_Avalonia_MVVM.Views;
 using RAPTOR_Avalonia_MVVM.ViewModels;
+using static raptor.Clipboard_Data;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace raptor
 {
@@ -14,9 +16,11 @@ namespace raptor
 	/// </summary>
 	/// 
 	[Serializable]
+	[DataContract]
 	public class Rectangle : Component
 	{
 		public enum Kind_Of {Assignment, Call};
+		[DataMember]
 		public Kind_Of kind = Kind_Of.Assignment;
 
 
@@ -33,8 +37,49 @@ namespace raptor
 			this.init();
 			this.kind = the_kind;
 		}
-
-		public Rectangle(SerializationInfo info, StreamingContext ctxt)
+		[OnDeserialized]
+        protected override void OnDeserialized(StreamingContext context)
+        {
+            int index1, index2;
+            base.OnDeserialized(context);
+            index1 = this.Text.IndexOf("=");
+            if (index1 > 0)
+            {
+                this.kind = Kind_Of.Assignment;
+                index2 = this.Text.IndexOf(":=");
+                // if no :=, replace = with :=
+                if (index2 <= 0)
+                {
+                    this.Text = this.Text.Substring(0, index1) +
+                        ":=" + this.Text.Substring(index1 + 1,
+                        this.Text.Length - (index1 + 1));
+                }
+            }
+            else
+            {
+                this.kind = Kind_Of.Call;
+            }
+			result = interpreter_pkg.statement_syntax(this.Text,
+				(this.kind==Kind_Of.Call));
+			if (result.valid)
+			{
+				this.parse_tree = result.tree;
+			}
+			else
+			{
+				if (!Component.warned_about_error && this.Text != "")
+				{
+					MessageBoxClass.Show("Error: \n" +
+						this.Text + "\n" +
+						"is not recognized.  Perhaps a DLL is missing?\n" +
+						"Close RAPTOR, save the DLL and then reopen");
+					Component.warned_about_error = true;
+				}
+				this.Text = "";
+			}
+		}
+	
+        public Rectangle(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{
 			int index1,index2;

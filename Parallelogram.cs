@@ -12,11 +12,16 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
+	[DataContract]
 	public class Parallelogram : Component
 	{
+		[DataMember]
 		public string prompt = "";
+		[DataMember]
 		public bool is_input;
+		[DataMember]
 		public bool new_line=true;
+		[DataMember]
 		public bool input_is_expression=false;
 		public parse_tree.Parseable prompt_tree;
 		public interpreter.Syntax_Result prompt_result;
@@ -37,6 +42,50 @@ namespace raptor
 			this.init();
 		}
 
+		[OnDeserialized]
+		private void OnDeserialized(StreamingContext context)
+		{
+            if (is_input)
+            {
+                result = interpreter_pkg.input_syntax(this.Text);
+                if (this.input_is_expression)
+                {
+                    prompt_result = interpreter_pkg.output_syntax(this.prompt, false);
+                }
+            }
+            else
+            {
+                result = interpreter_pkg.output_syntax(this.Text, this.new_line);
+            }
+
+            if (this.input_is_expression)
+            {
+                if (prompt_result.valid)
+                {
+                    this.prompt_tree = prompt_result.tree;
+                }
+                else
+                {
+                    this.prompt = "";
+                }
+            }
+
+            if (result.valid)
+            {
+                this.parse_tree = result.tree;
+            }
+            else
+            {
+                if (!Component.warned_about_error && this.Text != "")
+                {
+                    MessageBoxClass.Show("Unknown error: \n" +
+                        this.Text + "\n" +
+                        "is not recognized.");
+                    Component.warned_about_error = true;
+                }
+                this.Text = "";
+            }
+        }
 		public Parallelogram(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{

@@ -8,6 +8,7 @@ using RAPTOR_Avalonia_MVVM;
 namespace raptor
 {
     [Serializable]
+    [DataContract]
     public class Oval_Return : Oval
     {
 
@@ -23,6 +24,27 @@ namespace raptor
             this.init();
         }
 
+        [OnDeserialized]
+        protected override void OnDeserialized(StreamingContext context)
+        {
+            base.OnDeserialized(context);
+            result = interpreter_pkg.output_syntax(this.Text, false);
+            if (result.valid)
+            {
+                this.parse_tree = result.tree;
+            }
+            else
+            {
+                if (!Component.warned_about_error && this.Text != "")
+                {
+                    MessageBoxClass.Show("Unknown error: \n" +
+                        this.Text + "\n" +
+                        "is not recognized.");
+                    Component.warned_about_error = true;
+                }
+                this.Text = "";
+            }
+        }
         public Oval_Return(SerializationInfo info, StreamingContext ctxt)
             : base(info, ctxt)
         {

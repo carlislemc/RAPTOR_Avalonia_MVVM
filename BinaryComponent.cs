@@ -8,9 +8,11 @@ namespace raptor
 	/// <summary>
 	/// Summary description for BinaryComponent.
 	/// </summary>
+	[DataContract]
 	public abstract class BinaryComponent : Component
 	{
 		protected Component? first_child, second_child;
+		[DataMember]
 		protected bool is_compressed = false;
 
 		public BinaryComponent(int h, int w, String str_name) : base(h,w,str_name)
