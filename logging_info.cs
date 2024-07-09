@@ -11,17 +11,23 @@ namespace raptor
 	/// This class keeps track of who edited the file and for how long.
 	/// </summary>
 	[Serializable()]
+//	[DataContract]
 	public class logging_info : ISerializable
 	{
 		public enum event_kind {Opened,Saved,Autosaved,
 			Pasted_From,Paste_Opened,Paste_Saved,Paste_Autosaved};
 		[Serializable()]
+//		[DataContract]
 		public class event_record
 		{
+//			[DataMember]
 			public string Username;
-			public string Machine_Name;
-			public event_kind Kind;
-			public System.DateTime Time;
+//            [DataMember]
+            public string Machine_Name;
+//            [DataMember]
+            public event_kind Kind;
+//            [DataMember]
+            public System.DateTime Time;
 			public event_record(string user, string machine, event_kind k, System.DateTime t)
 			{
 				this.Username = user;
@@ -31,7 +37,8 @@ namespace raptor
 			}
 		}
 
-		private ArrayList events = new ArrayList();
+        [DataMember]
+        private ArrayList events = new ArrayList();
 
 		public logging_info()
 		{

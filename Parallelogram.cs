@@ -12,16 +12,16 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
-	[DataContract]
+	//[DataContract]
 	public class Parallelogram : Component
 	{
-		[DataMember]
+		//[DataMember]
 		public string prompt = "";
-		[DataMember]
+		//[DataMember]
 		public bool is_input;
-		[DataMember]
+		//[DataMember]
 		public bool new_line=true;
-		[DataMember]
+		//[DataMember]
 		public bool input_is_expression=false;
 		public parse_tree.Parseable prompt_tree;
 		public interpreter.Syntax_Result prompt_result;
@@ -42,7 +42,7 @@ namespace raptor
 			this.init();
 		}
 
-		[OnDeserialized]
+		/*[OnDeserialized]
 		private void OnDeserialized(StreamingContext context)
 		{
             if (is_input)
@@ -85,7 +85,8 @@ namespace raptor
                 }
                 this.Text = "";
             }
-        }
+        }*/
+
 		public Parallelogram(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{

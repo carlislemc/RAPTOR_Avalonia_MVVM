@@ -7,16 +7,16 @@ using System.Runtime.Serialization;
 namespace raptor
 {
     [Serializable]
-    [DataContract]
+    //[DataContract]
     class Oval_Procedure : Oval
     {
-        [DataMember]
+        //[DataMember]
         protected int num_params;
-        [DataMember]
+        //[DataMember]
         public string[] param_names;
-        [DataMember]
+        //[DataMember]
         protected bool[] param_is_input;
-        [DataMember]
+        //[DataMember]
         public bool[] param_is_output;
         public void changeParameters(int num_params, string[] param_names, bool[] param_is_input, bool[] param_is_output)
         {

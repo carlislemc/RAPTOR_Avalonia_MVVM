@@ -8,7 +8,7 @@ using RAPTOR_Avalonia_MVVM;
 namespace raptor
 {
     [Serializable]
-    [DataContract]
+    //[DataContract]
     public class Oval_Return : Oval
     {
 
@@ -24,7 +24,7 @@ namespace raptor
             this.init();
         }
 
-        [OnDeserialized]
+        /*[OnDeserialized]
         protected override void OnDeserialized(StreamingContext context)
         {
             base.OnDeserialized(context);
@@ -44,7 +44,8 @@ namespace raptor
                 }
                 this.Text = "";
             }
-        }
+        }*/
+
         public Oval_Return(SerializationInfo info, StreamingContext ctxt)
             : base(info, ctxt)
         {

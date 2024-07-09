@@ -14,18 +14,18 @@ namespace raptor
 	/// </summary>
 	/// 
 	[Serializable]
-	[DataContract]
+	//[DataContract]
 	public class CommentBox : ISerializable //Set this attribute to all the classes that want to serialize
 	{
 		public static int current_serialization_version = 1;
-		[DataMember]
+		//[DataMember]
 		public int incoming_serialization_version;
-		[DataMember]
+		//[DataMember]
 		public string[] Text_Array;
-		[DataMember]
+		//[DataMember]
 		private int num_lines;
 		public Component parent;
-		[DataMember]
+		//[DataMember]
 		private int x_location, y_location;
 		private int draw_x, draw_y;
 		private int height_of_text;

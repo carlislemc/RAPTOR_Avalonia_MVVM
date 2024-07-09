@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using Avalonia.Media;
+using System.Security.Cryptography.X509Certificates;
 
 
 
@@ -201,7 +202,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             string[] args = App.getArgs();
             if (args != null && args.Length>=1 && args[0] != "")
             {
-                Load_File(args[0]);
+                Load_FileAsync(args[0]);
             }
 
 
@@ -220,7 +221,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             this.theTabs.Clear();
             this.theTabs.Add(new Subchart());
         }
-        public void Load_File(string dialog_fileName)
+        public async Task Load_FileAsync(string dialog_fileName)
         {
 
             Stream stream;
@@ -238,240 +239,328 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return;
             }
 
-            BinaryFormatter bformatter = new BinaryFormatter();
             try
             {
+                if (dialog_fileName.EndsWith(".oldrap"))
+                {
+                    await Load_Old_Raptor_File(dialog_fileName, stream);
+                }
+                else
+                {
+                    await Load_New_Raptor_File(dialog_fileName, stream);
+                }
+                Post_Load_Method(dialog_fileName, attr);
+            }
+            catch (System.Exception e)
+            {
+                MessageBoxClass.Show(e.Message + "\n" + e.StackTrace + "\n" + "Invalid Filename:" + dialog_fileName, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        [KnownType(typeof(logging_info.event_kind))]
+        [KnownType(typeof(Component.FootPrint))]
+        [KnownType(typeof(Oval))]
+        [KnownType(typeof(Oval_Procedure))]
+        [KnownType(typeof(Oval_Return))]
+        [KnownType(typeof(Parallelogram))]
+        [KnownType (typeof(IF_Control))]
+        [KnownType(typeof(Loop))]
+        [KnownType(typeof(Rectangle))]
+        [KnownType(typeof(Loop))]
+        [KnownType(typeof(Rectangle.Kind_Of))]
+        [KnownType(typeof(raptor.CommentBox))]
+        [DataContract]
+        private class Raptor_File
+        {
+            [DataMember]
+            public System.Guid FileGuid { get; set; }
+            [DataMember]
+            public logging_info? log;
+            [DataMember]
+            public Subchart[]? subcharts;
+            public Raptor_File()
+            {
+
+            }
+            public Raptor_File(Guid fileGuid, logging_info? log, int num_charts, ObservableCollection<Subchart> subcharts)
+            {
+                FileGuid = fileGuid;
+                this.log = log;
+                this.subcharts = new Subchart[num_charts];
+                for (int i = 0; i < num_charts; i++)
+                {
+                    this.subcharts[i] = subcharts[i];
+                }
+            }
+        }
+        private async Task Load_New_Raptor_File(string dialog_fileName, Stream stream)
+        {
+            try
+            {
+                Component.warned_about_newer_version = false;
+                Component.warned_about_error = false;
+                //this.Clear_Subcharts();
+                this.theTabs.Clear(); // get rid of all, including main
+                DataContractSerializer dcs = new DataContractSerializer(typeof(Raptor_File));
+                Raptor_File rf = (Raptor_File) dcs.ReadObject(stream);
+                foreach (Subchart sc in rf.subcharts) {
+                    this.theTabs.Add(sc);
+                }
+                this.log = rf.log;
+                this.file_guid = rf.FileGuid;
+                stream.Close();
+            }
+            catch (System.Exception e)
+            {
+                MessageBoxClass.Show("Invalid File-not a flowchart, aborting"+e.Message,
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OnNewCommand();
                 try
                 {
-                    Component.warned_about_newer_version = false;
-                    Component.warned_about_error = false;
-                    this.Clear_Subcharts();
-                    try
+                    stream.Close();
+                }
+                catch
+                {
+                }
+                return;
+            }
+        }
+
+        private async Task Load_Old_Raptor_File(string dialog_fileName, Stream stream)
+        {
+            try
+            {
+                BinaryFormatter bformatter = new BinaryFormatter();
+                Component.warned_about_newer_version = false;
+                Component.warned_about_error = false;
+                this.Clear_Subcharts();
+                try
+                {
+                    // starting with version 11, we put the version number first
+                    // WARNING!  If you change this, you'll have to change
+                    // this similar code in MasterConsole that does 
+                    // extract_times
+                    Component.last_incoming_serialization_version = (int)bformatter.Deserialize(stream);
+                    bool incoming_reverse_loop_logic;
+                    if (Component.last_incoming_serialization_version >= 13)
                     {
-                        // starting with version 11, we put the version number first
-                        // WARNING!  If you change this, you'll have to change
-                        // this similar code in MasterConsole that does 
-                        // extract_times
-                        Component.last_incoming_serialization_version = (int)bformatter.Deserialize(stream);
-                        bool incoming_reverse_loop_logic;
-                        if (Component.last_incoming_serialization_version >= 13)
+                        incoming_reverse_loop_logic = (bool)bformatter.Deserialize(stream);
+                    }
+                    else
+                    {
+                        incoming_reverse_loop_logic = false;
+                    }
+
+                    // read in number of pages
+                    int num_pages = (int)bformatter.Deserialize(stream);
+                    for (int i = 0; i < num_pages; i++)
+                    {
+                        Subchart_Kinds incoming_kind;
+                        string name = (string)bformatter.Deserialize(stream);
+                        if (Component.last_incoming_serialization_version >= 14)
                         {
-                            incoming_reverse_loop_logic = (bool)bformatter.Deserialize(stream);
+                            object o = bformatter.Deserialize(stream);
+                            incoming_kind = (Subchart_Kinds)o;
                         }
                         else
                         {
-                            incoming_reverse_loop_logic = false;
+                            incoming_kind = Subchart_Kinds.Subchart;
                         }
-
-                        // read in number of pages
-                        int num_pages = (int)bformatter.Deserialize(stream);
-                        for (int i = 0; i < num_pages; i++)
+                        if (i == 0 && incoming_kind != Subchart_Kinds.UML &&
+                            Component.Current_Mode == Mode.Expert)
                         {
-                            Subchart_Kinds incoming_kind;
-                            string name = (string)bformatter.Deserialize(stream);
-                            if (Component.last_incoming_serialization_version >= 14)
+                            MessageBoxClass.Show("Changing to Intermediate Mode");
+                            //this.menuIntermediate_Click(null, null);
+                        }
+                        if (incoming_kind != Subchart_Kinds.Subchart)
+                        {
+                            if (Component.Current_Mode != Mode.Expert &&
+                                incoming_kind == Subchart_Kinds.UML)
                             {
-                                object o = bformatter.Deserialize(stream);
-                                incoming_kind = (Subchart_Kinds)o;
+                                MessageBoxClass.Show("Can't open OO RAPTOR file");
+                                //MessageBox.Show("Changing to Object-Oriented Mode");
+                                //this.menuObjectiveMode_Click(null, null);
+                                throw new Exception("unimplemented");
                             }
-                            else
-                            {
-                                incoming_kind = Subchart_Kinds.Subchart;
-                            }
-                            if (i == 0 && incoming_kind != Subchart_Kinds.UML &&
-                                Component.Current_Mode == Mode.Expert)
+                            if (Component.Current_Mode == Mode.Novice)
                             {
                                 MessageBoxClass.Show("Changing to Intermediate Mode");
                                 //this.menuIntermediate_Click(null, null);
                             }
-                            if (incoming_kind != Subchart_Kinds.Subchart)
-                            {
-                                if (Component.Current_Mode != Mode.Expert &&
-                                    incoming_kind == Subchart_Kinds.UML)
-                                {
-                                    MessageBoxClass.Show("Can't open OO RAPTOR file");
-                                    //MessageBox.Show("Changing to Object-Oriented Mode");
-                                    //this.menuObjectiveMode_Click(null, null);
-                                    throw new Exception("unimplemented");
-                                }
-                                if (Component.Current_Mode == Mode.Novice)
-                                {
-                                    MessageBoxClass.Show("Changing to Intermediate Mode");
-                                    //this.menuIntermediate_Click(null, null);
-                                }
-                            }
-                            // I moved these down lower in case the mode was changed by
-                            // reading in this flowchart (which calls new and clears filename)
-                            this.fileName = dialog_fileName;
-                            Plugins.Load_Plugins(this.fileName);
-
-                            if (i > mainIndex)
-                            {
-                                int param_count = 0;
-                                switch (incoming_kind)
-                                {
-                                    case Subchart_Kinds.Function:
-                                        param_count = (int)bformatter.Deserialize(stream);
-                                        //this.theTabs.Add()
-                                        this.theTabs.Add(new Procedure_Chart(name,
-                                            param_count));
-                                        break;
-                                    case Subchart_Kinds.Procedure:
-                                        if (Component.last_incoming_serialization_version >= 15)
-                                        {
-                                            param_count = (int)bformatter.Deserialize(stream);
-                                        }
-                                        this.theTabs.Add(new Procedure_Chart(name,
-                                            param_count));
-                                        break;
-                                    case Subchart_Kinds.Subchart:
-                                        this.theTabs.Add(new Subchart(name));
-                                        break;
-                                }
-                            }
                         }
-
-                        Component.negate_loops = false;
-                        /*if (Component.Current_Mode == Mode.Expert)
-                        {
-                            NClass.Core.BinarySerializationHelper.diagram =
-                                (this.theTabs[0].Controls[0] as UMLDiagram).diagram;
-                            (this.theTabs[0].Controls[0] as UMLDiagram).project.LoadBinary(
-                                bformatter, stream);
-                        }
-                        else */
-                        if (incoming_reverse_loop_logic != Component.reverse_loop_logic)
-                        {
-                            Component.negate_loops = true;
-                        }
-                        for (int i = mainIndex; i < num_pages; i++)
-                        {
-                            object o = bformatter.Deserialize(stream);
-                            ((Subchart)this.theTabs[i]).Start = (Oval)o;
-                            ((Subchart)this.theTabs[i]).Start.scale = this.scale;
-                            ((Subchart)this.theTabs[i]).Start.Scale(this.scale);
-                            if (Component.last_incoming_serialization_version >= 17)
-                            {
-                                byte[] ink = (byte[])bformatter.Deserialize(stream);
-                                /*if (!Component.BARTPE && !Component.MONO && ink.Length > 1)
-                                {
-                                    bool was_enabled = ((Subchart)this.theTabs[i]).tab_overlay.Enabled;
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Enabled = false;
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Ink = new Microsoft.Ink.Ink();
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Ink.Load(ink);
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Enabled = was_enabled;
-                                    ((Subchart)this.theTabs[i]).scale_ink(this.scale);
-                                }
-                                else if (((Subchart)this.theTabs[i]).tab_overlay != null)
-                                {
-                                    bool was_enabled = ((Subchart)this.theTabs[i]).tab_overlay.Enabled;
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Enabled = false;
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Ink = new Microsoft.Ink.Ink();
-                                    ((Subchart)this.theTabs[i]).tab_overlay.Enabled = was_enabled;
-                                    ((Subchart)this.theTabs[i]).scale_ink(this.scale);
-                                }*/
-                            }
-                            this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000, FlowchartControl.ctrl);
-                        }
-                        //this.carlisle.SelectedTab = this.mainSubchart();
-                    }
-                    catch (System.Exception e) 
-                    {
-                        // previous to version 11, there is just one tab page
-                        // moved this way down here for very old files (previous to version 11)
+                        // I moved these down lower in case the mode was changed by
+                        // reading in this flowchart (which calls new and clears filename)
                         this.fileName = dialog_fileName;
                         Plugins.Load_Plugins(this.fileName);
-                        stream.Seek(0, SeekOrigin.Begin);
-                        Runtime.consoleWriteln(e.Message);
-                        this.mainSubchart().Start = (Oval)bformatter.Deserialize(stream);
-                        Component.last_incoming_serialization_version =
-                           this.mainSubchart().Start.incoming_serialization_version;
-                    }
 
-                    // load all of the subcharts based on what the UML Diagram created for tabs
-                    /*if (Component.Current_Mode == Mode.Expert)
-                    {
-                        for (int i = mainIndex + 1; i < this.theTabs.Count; i++)
+                        if (i > mainIndex)
                         {
-                            ClassTabPage ctp = this.theTabs[i] as ClassTabPage;
-                            for (int j = 0; j < ctp.tabControl1.TabPages.Count; j++)
+                            int param_count = 0;
+                            switch (incoming_kind)
                             {
-                                Subchart sc = ctp.tabControl1.TabPages[j] as Subchart;
-                                sc.Start = (Oval)bformatter.Deserialize(stream);
-                                sc.Start.scale = this.scale;
-                                sc.Start.Scale(this.scale);
-                                byte[] ink = (byte[])bformatter.Deserialize(stream);
-                                if (!Component.BARTPE && ink.Length > 1)
-                                {
-                                    bool was_enabled = sc.tab_overlay.Enabled;
-                                    sc.tab_overlay.Enabled = false;
-                                    sc.tab_overlay.Ink = new Microsoft.Ink.Ink();
-                                    sc.tab_overlay.Ink.Load(ink);
-                                    sc.tab_overlay.Enabled = was_enabled;
-                                    sc.scale_ink(this.scale);
-                                }
-                                else if (sc.tab_overlay != null)
-                                {
-                                    bool was_enabled = sc.tab_overlay.Enabled;
-                                    sc.tab_overlay.Enabled = false;
-                                    sc.tab_overlay.Ink = new Microsoft.Ink.Ink();
-                                    sc.tab_overlay.Enabled = was_enabled;
-                                    sc.scale_ink(this.scale);
-                                }
-                                this.Current_Selection = sc.Start.select(-1000, -1000);
+                                case Subchart_Kinds.Function:
+                                    param_count = (int)bformatter.Deserialize(stream);
+                                    //this.theTabs.Add()
+                                    this.theTabs.Add(new Procedure_Chart(name,
+                                        param_count));
+                                    break;
+                                case Subchart_Kinds.Procedure:
+                                    if (Component.last_incoming_serialization_version >= 15)
+                                    {
+                                        param_count = (int)bformatter.Deserialize(stream);
+                                    }
+                                    this.theTabs.Add(new Procedure_Chart(name,
+                                        param_count));
+                                    break;
+                                case Subchart_Kinds.Subchart:
+                                    this.theTabs.Add(new Subchart(name));
+                                    break;
                             }
                         }
-                    }*/
-                    if (Component.last_incoming_serialization_version >= 4)
-                    {
-                        this.log = (logging_info)bformatter.Deserialize(stream);
                     }
-                    else
-                    {
-                        this.log.Clear();
-                    }
-                    if (Component.last_incoming_serialization_version >= 6)
-                    {
-                        Component.compiled_flowchart = (bool)bformatter.Deserialize(stream);
-                    }
-                    else
-                    {
-                        Component.compiled_flowchart = false;
-                    }
-                    if (Component.last_incoming_serialization_version >= 8)
-                    {
-                        this.file_guid = (System.Guid)bformatter.Deserialize(stream);
-                    }
-                    else
-                    {
-                        this.file_guid = System.Guid.NewGuid();
-                    }
-                    if (Component.compiled_flowchart)
-                    {
-                        MessageBoxClass.Show("Compiled flowchart not supported");
-                        //MessageBox.Show("Changing to Object-Oriented Mode");
-                        //this.menuObjectiveMode_Click(null, null);
-                        throw new Exception("unimplemented");
-                        /*Registry_Settings.Ignore_Updates = true;
-                        this.trackBar1.Value = this.trackBar1.Maximum;
-                        this.trackBar1_Scroll(null, null);
-                        if (this.menuViewVariables.Checked)
-                        {
-                            this.menuViewVariables_Click(null, null);
-                        }
-                        Registry_Settings.Ignore_Updates = false;
 
-                        Compile_Helpers.Compile_Flowchart(this.theTabs);*/
-                    }
-                    if (Component.Current_Mode != Mode.Expert)
+                    Component.negate_loops = false;
+                    /*if (Component.Current_Mode == Mode.Expert)
                     {
-                        /*for (int i = mainIndex; i < this.carlisle.TabCount; i++)
-                        {
-                            ((Subchart)this.theTabs[i]).flow_panel.Invalidate();
-                        }*/
+                        NClass.Core.BinarySerializationHelper.diagram =
+                            (this.theTabs[0].Controls[0] as UMLDiagram).diagram;
+                        (this.theTabs[0].Controls[0] as UMLDiagram).project.LoadBinary(
+                            bformatter, stream);
                     }
-                    else
-                    {/*
+                    else */
+                    if (incoming_reverse_loop_logic != Component.reverse_loop_logic)
+                    {
+                        Component.negate_loops = true;
+                    }
+                    for (int i = mainIndex; i < num_pages; i++)
+                    {
+                        object o = bformatter.Deserialize(stream);
+                        ((Subchart)this.theTabs[i]).Start = (Oval)o;
+                        ((Subchart)this.theTabs[i]).Start.scale = this.scale;
+                        ((Subchart)this.theTabs[i]).Start.Scale(this.scale);
+                        if (Component.last_incoming_serialization_version >= 17)
+                        {
+                            byte[] ink = (byte[])bformatter.Deserialize(stream);
+                            /*if (!Component.BARTPE && !Component.MONO && ink.Length > 1)
+                            {
+                                bool was_enabled = ((Subchart)this.theTabs[i]).tab_overlay.Enabled;
+                                ((Subchart)this.theTabs[i]).tab_overlay.Enabled = false;
+                                ((Subchart)this.theTabs[i]).tab_overlay.Ink = new Microsoft.Ink.Ink();
+                                ((Subchart)this.theTabs[i]).tab_overlay.Ink.Load(ink);
+                                ((Subchart)this.theTabs[i]).tab_overlay.Enabled = was_enabled;
+                                ((Subchart)this.theTabs[i]).scale_ink(this.scale);
+                            }
+                            else if (((Subchart)this.theTabs[i]).tab_overlay != null)
+                            {
+                                bool was_enabled = ((Subchart)this.theTabs[i]).tab_overlay.Enabled;
+                                ((Subchart)this.theTabs[i]).tab_overlay.Enabled = false;
+                                ((Subchart)this.theTabs[i]).tab_overlay.Ink = new Microsoft.Ink.Ink();
+                                ((Subchart)this.theTabs[i]).tab_overlay.Enabled = was_enabled;
+                                ((Subchart)this.theTabs[i]).scale_ink(this.scale);
+                            }*/
+                        }
+                        this.Current_Selection = ((Subchart)this.theTabs[i]).Start.select(-1000, -1000, FlowchartControl.ctrl);
+                    }
+                    //this.carlisle.SelectedTab = this.mainSubchart();
+                }
+                catch (System.Exception e)
+                {
+                    // previous to version 11, there is just one tab page
+                    // moved this way down here for very old files (previous to version 11)
+                    this.fileName = dialog_fileName;
+                    Plugins.Load_Plugins(this.fileName);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    Runtime.consoleWriteln(e.Message);
+                    this.mainSubchart().Start = (Oval)bformatter.Deserialize(stream);
+                    Component.last_incoming_serialization_version =
+                       this.mainSubchart().Start.incoming_serialization_version;
+                }
+
+                // load all of the subcharts based on what the UML Diagram created for tabs
+                /*if (Component.Current_Mode == Mode.Expert)
+                {
+                    for (int i = mainIndex + 1; i < this.theTabs.Count; i++)
+                    {
+                        ClassTabPage ctp = this.theTabs[i] as ClassTabPage;
+                        for (int j = 0; j < ctp.tabControl1.TabPages.Count; j++)
+                        {
+                            Subchart sc = ctp.tabControl1.TabPages[j] as Subchart;
+                            sc.Start = (Oval)bformatter.Deserialize(stream);
+                            sc.Start.scale = this.scale;
+                            sc.Start.Scale(this.scale);
+                            byte[] ink = (byte[])bformatter.Deserialize(stream);
+                            if (!Component.BARTPE && ink.Length > 1)
+                            {
+                                bool was_enabled = sc.tab_overlay.Enabled;
+                                sc.tab_overlay.Enabled = false;
+                                sc.tab_overlay.Ink = new Microsoft.Ink.Ink();
+                                sc.tab_overlay.Ink.Load(ink);
+                                sc.tab_overlay.Enabled = was_enabled;
+                                sc.scale_ink(this.scale);
+                            }
+                            else if (sc.tab_overlay != null)
+                            {
+                                bool was_enabled = sc.tab_overlay.Enabled;
+                                sc.tab_overlay.Enabled = false;
+                                sc.tab_overlay.Ink = new Microsoft.Ink.Ink();
+                                sc.tab_overlay.Enabled = was_enabled;
+                                sc.scale_ink(this.scale);
+                            }
+                            this.Current_Selection = sc.Start.select(-1000, -1000);
+                        }
+                    }
+                }*/
+                if (Component.last_incoming_serialization_version >= 4)
+                {
+                    this.log = (logging_info)bformatter.Deserialize(stream);
+                }
+                else
+                {
+                    this.log.Clear();
+                }
+                if (Component.last_incoming_serialization_version >= 6)
+                {
+                    Component.compiled_flowchart = (bool)bformatter.Deserialize(stream);
+                }
+                else
+                {
+                    Component.compiled_flowchart = false;
+                }
+                if (Component.last_incoming_serialization_version >= 8)
+                {
+                    this.file_guid = (System.Guid)bformatter.Deserialize(stream);
+                }
+                else
+                {
+                    this.file_guid = System.Guid.NewGuid();
+                }
+                if (Component.compiled_flowchart)
+                {
+                    MessageBoxClass.Show("Compiled flowchart not supported");
+                    //MessageBox.Show("Changing to Object-Oriented Mode");
+                    //this.menuObjectiveMode_Click(null, null);
+                    throw new Exception("unimplemented");
+                    /*Registry_Settings.Ignore_Updates = true;
+                    this.trackBar1.Value = this.trackBar1.Maximum;
+                    this.trackBar1_Scroll(null, null);
+                    if (this.menuViewVariables.Checked)
+                    {
+                        this.menuViewVariables_Click(null, null);
+                    }
+                    Registry_Settings.Ignore_Updates = false;
+
+                    Compile_Helpers.Compile_Flowchart(this.theTabs);*/
+                }
+                if (Component.Current_Mode != Mode.Expert)
+                {
+                    /*for (int i = mainIndex; i < this.carlisle.TabCount; i++)
+                    {
+                        ((Subchart)this.theTabs[i]).flow_panel.Invalidate();
+                    }*/
+                }
+                else
+                {/*
                         ((Subchart)this.theTabs[mainIndex]).flow_panel.Invalidate();
                         for (int i = mainIndex + 1; i < this.carlisle.TabCount; i++)
                         {
@@ -481,77 +570,75 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                                 sc.flow_panel.Invalidate();
                             }
                         }*/
-                    }
-                    this.log.Record_Open();
+                }
+                this.log.Record_Open();
+                stream.Close();
+            }
+            catch
+            {
+                /*if (command_line_run)
+                {
+                    stream.Close();
+                    return;
+                }*/
+                MessageBoxClass.Show("Invalid File-not a flowchart, aborting",
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.OnNewCommand();
+                try
+                {
                     stream.Close();
                 }
                 catch
                 {
-                    /*if (command_line_run)
-                    {
-                        stream.Close();
-                        return;
-                    }*/
-                    MessageBoxClass.Show("Invalid File-not a flowchart, aborting",
-                        "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.OnNewCommand();
-                    try
-                    {
-                        stream.Close();
-                    }
-                    catch
-                    {
-                    }
-                    return;
                 }
-                this.Update_View_Variables();
-
-                Environment.CurrentDirectory = Path.GetDirectoryName(dialog_fileName);
-                Runtime.Clear_Variables();
-
-                this.runningState = false;
-                //MRU.Add_To_MRU_Registry(this.fileName);
-                this.Text = My_Title + " - " +
-                    Path.GetFileName(this.fileName);
-                if ((attr & FileAttributes.ReadOnly) > 0)
-                {
-                    this.Text = this.Text + " [Read-Only]";
-                }
-                this.modified = false;
-
-
-                this.mainSubchart().Start.scale = this.scale;
-                this.mainSubchart().Start.Scale(this.scale);
-                this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000, FlowchartControl.ctrl);
-                this.Clear_Undo();
-
-
-                /*if (this.menuAllText.Checked)
-                {
-                    this.menuAllText_Click(null, null);
-                }
-                else if (this.menuTruncated.Checked)
-                {
-                    this.menuTruncated_Click(null, null);
-                }
-                else
-                {
-                    this.menuNoText_Click(null, null);
-                }*/
-                //Component.view_comments = this.menuViewComments.Checked;
-                // can only Invalidate the flow_panel if it has had its handle created (i.e. not in /run mode)
-                /*if (flow_panel.IsHandleCreated)
-                {
-                    flow_panel.Invalidate();
-                }*/
-                RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel.MC.clear_txt();
+                return;
             }
-            catch (System.Exception e)
+        }
+
+        private void Post_Load_Method(string dialog_fileName, FileAttributes attr)
+        {
+            this.Update_View_Variables();
+
+            Environment.CurrentDirectory = Path.GetDirectoryName(dialog_fileName);
+            Runtime.Clear_Variables();
+
+            this.runningState = false;
+            //MRU.Add_To_MRU_Registry(this.fileName);
+            this.Text = My_Title + " - " +
+                Path.GetFileName(this.fileName);
+            if ((attr & FileAttributes.ReadOnly) > 0)
             {
-                MessageBoxClass.Show(e.Message + "\n" + e.StackTrace + "\n" + "Invalid Filename:" + dialog_fileName, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Text = this.Text + " [Read-Only]";
             }
+            this.modified = false;
+
+
+            this.mainSubchart().Start.scale = this.scale;
+            this.mainSubchart().Start.Scale(this.scale);
+            this.Current_Selection = this.mainSubchart().Start.select(-1000, -1000, FlowchartControl.ctrl);
+            this.Clear_Undo();
+
+
+            /*if (this.menuAllText.Checked)
+            {
+                this.menuAllText_Click(null, null);
+            }
+            else if (this.menuTruncated.Checked)
+            {
+                this.menuTruncated_Click(null, null);
+            }
+            else
+            {
+                this.menuNoText_Click(null, null);
+            }*/
+            //Component.view_comments = this.menuViewComments.Checked;
+            // can only Invalidate the flow_panel if it has had its handle created (i.e. not in /run mode)
+            /*if (flow_panel.IsHandleCreated)
+            {
+                flow_panel.Invalidate();
+            }*/
+            RAPTOR_Avalonia_MVVM.ViewModels.MasterConsoleViewModel.MC.clear_txt();
         }
 
         public async void OnOpenCommand()
@@ -562,6 +649,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             }
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filters.Add(new FileDialogFilter() { Name = "RAPTOR", Extensions = { "rap" } });
+            dialog.Filters.Add(new FileDialogFilter() { Name = "Old RAPTOR", Extensions = { "oldrap" } });
             dialog.Filters.Add(new FileDialogFilter() { Name = "All Files", Extensions = { "*" } });
             dialog.AllowMultiple = false;
             if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -572,7 +660,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                     if (result.Length > 0)
                     {
                         
-                        Load_File(result[0]);
+                        Load_FileAsync(result[0]);
                         this.OnResetCommand();
                     }
                     /*var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
@@ -757,78 +845,105 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 return;
             }
 
-            try
-            {
-
-                BinaryFormatter bformatter = new BinaryFormatter();
-                //bformatter.Serialize(stream, 
-                bformatter.Serialize(stream, Component.current_serialization_version);
-                // USMA_mode new in file version 13
-                bformatter.Serialize(stream, Component.reverse_loop_logic);
-
-                bformatter.Serialize(stream, theTabs.Count);
-
-                for (int i = mainIndex; i < theTabs.Count; i++)
+            if (name.EndsWith(".oldrap"))
+            { 
+                try
                 {
-                    bformatter.Serialize(stream, this.theTabs[i].Text);
-                    // subchart kind is new in file version 14
-                    bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Subchart_Kind);
-                    if (((Subchart)this.theTabs[i]) is Procedure_Chart)
+
+                    BinaryFormatter bformatter = new BinaryFormatter();
+                    //bformatter.Serialize(stream, 
+                    bformatter.Serialize(stream, Component.current_serialization_version);
+                    // USMA_mode new in file version 13
+                    bformatter.Serialize(stream, Component.reverse_loop_logic);
+
+                    bformatter.Serialize(stream, theTabs.Count);
+
+                    for (int i = mainIndex; i < theTabs.Count; i++)
                     {
-                        bformatter.Serialize(stream, ((Procedure_Chart)this.theTabs[i]).num_params);
+                        bformatter.Serialize(stream, this.theTabs[i].Text);
+                        // subchart kind is new in file version 14
+                        bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Subchart_Kind);
+                        if (((Subchart)this.theTabs[i]) is Procedure_Chart)
+                        {
+                            bformatter.Serialize(stream, ((Procedure_Chart)this.theTabs[i]).num_params);
+                        }
                     }
-                }
 
-                for (int i = mainIndex; i < this.theTabs.Count; i++)
-                {
-                    bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Start);
-                    // new in version 17
-                    byte[] output;
-                    if (!Component.BARTPE && !Component.VM && !Component.MONO)
+                    for (int i = mainIndex; i < this.theTabs.Count; i++)
                     {
-                        //output = ((Subchart)this.theTabs[i]).tab_overlay.Ink.Save();
-                        output = new byte[1];
+                        bformatter.Serialize(stream, ((Subchart)this.theTabs[i]).Start);
+                        // new in version 17
+                        byte[] output;
+                        if (!Component.BARTPE && !Component.VM && !Component.MONO)
+                        {
+                            //output = ((Subchart)this.theTabs[i]).tab_overlay.Ink.Save();
+                            output = new byte[1];
+                        }
+                        else
+                        {
+                            output = new byte[1];
+                        }
+                        bformatter.Serialize(stream, output);
+                    }
+
+                    if (!is_autosave)
+                    {
+                        this.log.Record_Save();
                     }
                     else
                     {
-                        output = new byte[1];
+                        this.log.Record_Autosave();
                     }
-                    bformatter.Serialize(stream, output);
-                }
 
-                if (!is_autosave)
+                    bformatter.Serialize(stream, this.log);
+                    bformatter.Serialize(stream, Component.compiled_flowchart);
+                    bformatter.Serialize(stream, this.file_guid);
+                    stream.Close();
+                    this.Save_Error = false;
+                    if (!is_autosave)
+                    {
+                        this.modified = false;
+                    }
+
+
+                }
+                catch (System.Exception exc)
                 {
-                    this.log.Record_Save();
+                    MessageBoxClass.Show(
+                        prefix + '\n' +
+                        "Please report to carlislem@tamu.edu" + '\n' +
+                        "Meantime, try undo then save (keep doing undo until success)" + '\n' +
+                        "Or open an autosave file: " + this.fileName + ".[0-9]" + '\n' +
+                        "Use Alt-PrtSc and paste into email" + '\n' +
+                        exc.Message + '\n' +
+                        exc.StackTrace, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Save_Error = true;
                 }
-                else
-                {
-                    this.log.Record_Autosave();
-                }
-
-                bformatter.Serialize(stream, this.log);
-                bformatter.Serialize(stream, Component.compiled_flowchart);
-                bformatter.Serialize(stream, this.file_guid);
-                stream.Close();
-                this.Save_Error = false;
-                if (!is_autosave)
-                {
-                    this.modified = false;
-                }
-
-
             }
-            catch (System.Exception exc)
+            else
             {
-                MessageBoxClass.Show(
-                    prefix + '\n' +
-                    "Please report to carlislem@tamu.edu" + '\n' +
-                    "Meantime, try undo then save (keep doing undo until success)" + '\n' +
-                    "Or open an autosave file: " + this.fileName + ".[0-9]" + '\n' +
-                    "Use Alt-PrtSc and paste into email" + '\n' +
-                    exc.Message + '\n' +
-                    exc.StackTrace, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Save_Error = true;
+                try
+                {
+                    Raptor_File rf = new Raptor_File(this.file_guid, this.log, this.theTabs.Count, this.theTabs);
+                    DataContractSerializer dcs= new DataContractSerializer(typeof(Raptor_File));
+                    dcs.WriteObject(stream, rf);
+                    stream.Close();
+
+                }
+                catch (System.Exception exc)
+                {
+                    MessageBoxClass.Show(
+                        prefix + '\n' +
+                        "Please report to carlislem@tamu.edu" + '\n' +
+                        "Meantime, try undo then save (keep doing undo until success)" + '\n' +
+                        "Or open an autosave file: " + this.fileName + ".[0-9]" + '\n' +
+                        "Use Alt-PrtSc and paste into email" + '\n' +
+                        exc.Message + '\n' +
+                        exc.StackTrace, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Save_Error = true;
+                }
             }
 
             if (closeAfter)
@@ -859,6 +974,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 filter.Extensions = extension;
                 filter.Name = "Raptor Files";
                 Filters.Add(filter);
+                FileDialogFilter filter2 = new FileDialogFilter();
+                List<string> extension2 = new List<string>();
+                extension2.Add("oldrap");
+                filter2.Extensions = extension2;
+                filter2.Name = "Old Raptor Files";
+                Filters.Add(filter2);
                 fileChooser.Filters = Filters;
 
                 fileChooser.DefaultExtension = "rap";

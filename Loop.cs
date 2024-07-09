@@ -17,26 +17,26 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
-	[DataContract]
+	//[DataContract(IsReference =true)]
 	public class Loop : BinaryComponent
 	{
-		[DataMember]
+		//[DataMember]
 		public int bottom, end_first_connector;
-		[DataMember]
+		//[DataMember]
 		public int diamond_top = 0, after_bottom = 0;
-		[DataMember]
+		//[DataMember]
 		public int x_left, y_left, x_right, y_right;
-		[DataMember]
+		//[DataMember]
 		public int left_connector_y;
-		[DataMember]
+		//[DataMember]
 		public int right_connector_y;
-		[DataMember]
+		//[DataMember]
 		public int line_height;
 		public bool light_head;
 		private bool has_diamond_breakpoint;
-		[DataMember]
+		//[DataMember]
 		private String LP;
-		[DataMember(IsRequired = false)]
+		//[DataMember(IsRequired = false)]
 		public Component? before_Child
 		{
 			get 
@@ -49,7 +49,7 @@ namespace raptor
 			}
 		}
 
-        [DataMember(IsRequired = false)]
+        //[DataMember(IsRequired = false)]
         public Component? after_Child
 		{
 			get 
@@ -97,7 +97,7 @@ namespace raptor
 			return false;
 		}
 
-        [OnDeserialized]
+        /*[OnDeserialized]
 		protected override void OnDeserialized(StreamingContext context)
         {
             base.OnDeserialized(context);
@@ -134,7 +134,8 @@ namespace raptor
                 this.Text = "";
             }
 
-        }
+        }*/
+
         public Loop(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{
@@ -184,6 +185,14 @@ namespace raptor
 					Component.warned_about_error = true;
 				}
 				this.Text = "";
+			}
+			if (this.before_Child != null)
+			{
+				this.before_Child.set_parent_info(true, true, false, this);
+			}
+			if (this.after_Child != null)
+			{
+				this.after_Child.set_parent_info(true, false, true, this);
 			}
 		}
 

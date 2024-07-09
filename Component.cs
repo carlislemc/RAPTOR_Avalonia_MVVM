@@ -17,7 +17,7 @@ namespace raptor
 
     [Serializable()]  //Set this attribute to all the classes that want to serialize
     public enum Mode { Novice, Intermediate, Expert }
-	[DataContract]
+	//[DataContract]
 	public abstract class Component : ISerializable //Set this attribute to all the classes that want to serialize
 
 	{
@@ -25,14 +25,14 @@ namespace raptor
 		public static Lexer the_lexer = null; // used in Emit_Code
 		public static Component currentTempComponent = null; // used in Emit_Code
 		[Serializable()]
-		[DataContract]
+		//[DataContract]
 		public class FootPrint
 		{
-			[DataMember]
+			//[DataMember]
 			public int left;
-			[DataMember]
+			//[DataMember]
 			public int right;
-			[DataMember]
+			//[DataMember]
 			public int height;
 			public FootPrint Clone() 
 			{
@@ -76,7 +76,7 @@ namespace raptor
                 }
             }
         }
-        [DataMember]
+        //[DataMember]
         internal CommentBox My_Comment;
         public static Mode Current_Mode = Mode.Intermediate;
 		public static bool USMA_mode = false;
@@ -100,7 +100,7 @@ namespace raptor
         public static string BARTPE_partition_path = "y:\\";
         public static bool VM = true;
 		public static bool negate_loops = false;
-        [DataMember]
+       // [DataMember]
         public static int current_serialization_version 
         {
             get {
@@ -118,17 +118,17 @@ namespace raptor
         public static bool run_compiled_flowchart = false;
 		public static bool warned_about_newer_version = false;
 		public static bool warned_about_error = false;
-        [DataMember]
+        //[DataMember]
         internal int incoming_serialization_version;
         internal static int last_incoming_serialization_version;
 		protected bool has_breakpoint = false;
-        [DataMember]
+        //[DataMember]
         public bool is_child = false;
-        [DataMember]
+        //[DataMember]
         public bool is_beforeChild = false;
-        [DataMember]
+        //[DataMember]
         public bool is_afterChild = false;
-        [DataMember]
+        //[DataMember]
         public bool my_selected = false;
 		public static bool text_visible = true;
 		public static bool full_text = true;
@@ -137,9 +137,9 @@ namespace raptor
 		public static bool Inside_Print = false;
 		public static bool Just_After_Print =false;
 
-        [DataMember]
+        //[DataMember]
         public int height_of_text, width_of_text;
-        [DataMember]
+        //[DataMember]
         public int char_length;
 		internal Avalonia.Rect rect;
         public System.Collections.ArrayList method_expressions = new System.Collections.ArrayList();
@@ -189,35 +189,35 @@ namespace raptor
 				my_selected = value;
 			}
 		}
-        [DataMember]
+        //[DataMember]
         public bool running = false;
 		public float scale = 1.0f;
-        [DataMember]
+        //[DataMember]
         public int head_height, head_width;
-        [DataMember]
+        //[DataMember]
         public int head_heightOrig, head_widthOrig;
-        [DataMember]
+        //[DataMember]
         public int connector_length;
-        [DataMember]
+        //[DataMember]
         public int x_location, y_location;
-        [DataMember]
+        //[DataMember]
         public Component? Successor;
-        [DataMember]
+        //[DataMember]
         public Component? parent;
-        [DataMember]
+        //[DataMember]
         public FootPrint FP;
-        [DataMember]
+        //[DataMember]
         public String text_str = "";
-        [DataMember]
+        //[DataMember]
         public String name = "";
-        [DataMember]
+        //[DataMember]
         public int proximity = 10;
 		public parse_tree.Parseable? parse_tree;
 		public interpreter.Syntax_Result? result;
 		protected int drawing_text_width;
-        [DataMember]
+        //[DataMember]
         public System.Guid? created_guid;
-		[DataMember]
+		//[DataMember]
 		public System.Guid? changed_guid;
 
 		// Empty Class constructor
@@ -246,10 +246,11 @@ namespace raptor
 			created_guid = System.Guid.NewGuid();
 			changed_guid = created_guid;
 		}
-		[OnDeserialized]
+		/*[OnDeserialized]
 		protected virtual void OnDeserialized(StreamingContext context)
 		{
-		}
+		}*/
+
         //Deserialization constructor.
         public Component(SerializationInfo info, StreamingContext ctxt)
 		{
@@ -272,7 +273,7 @@ namespace raptor
 			height_of_text = (int)info.GetValue("_height_of_text", typeof(int));
 			char_length = (int)info.GetValue("_char_length", typeof(int));
 			Successor = (Component)info.GetValue("_Successor", typeof(Component));
-			parent = (Component)info.GetValue("_parent", typeof(Component));
+			//parent = (Component)info.GetValue("_parent", typeof(Component));
 			is_child = (bool)info.GetValue("_is_child", typeof(bool));
 			is_beforeChild = (bool)info.GetValue("_is_beforeChild", typeof(bool));
 			is_afterChild = (bool)info.GetValue("_is_afterChild", typeof(bool));
@@ -389,7 +390,7 @@ namespace raptor
 			info.AddValue("_x_location", x_location);
 			info.AddValue("_y_location", y_location);
 			info.AddValue("_Successor", Successor);
-			info.AddValue("_parent", parent);
+			//info.AddValue("_parent", parent);
 			info.AddValue("_is_child", is_child);
 			info.AddValue("_is_beforeChild", is_beforeChild);
 			info.AddValue("_is_afterChild", is_afterChild);

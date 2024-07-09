@@ -36,7 +36,7 @@ namespace RAPTOR_Avalonia_MVVM
                         if (str.Contains("file://"))
                         {
                             str = str.Substring(str.IndexOf("file://")+7).Trim();
-                            mw.Load_File(str);
+                            mw.Load_FileAsync(str);
                         }
                         
                     }

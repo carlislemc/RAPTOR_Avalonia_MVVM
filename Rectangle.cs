@@ -16,11 +16,11 @@ namespace raptor
 	/// </summary>
 	/// 
 	[Serializable]
-	[DataContract]
+	//[DataContract]
 	public class Rectangle : Component
 	{
 		public enum Kind_Of {Assignment, Call};
-		[DataMember]
+		//[DataMember]
 		public Kind_Of kind = Kind_Of.Assignment;
 
 
@@ -37,7 +37,7 @@ namespace raptor
 			this.init();
 			this.kind = the_kind;
 		}
-		[OnDeserialized]
+		/*[OnDeserialized]
         protected override void OnDeserialized(StreamingContext context)
         {
             int index1, index2;
@@ -77,7 +77,7 @@ namespace raptor
 				}
 				this.Text = "";
 			}
-		}
+		}*/
 	
         public Rectangle(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)

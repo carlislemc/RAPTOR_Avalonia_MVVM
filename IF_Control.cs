@@ -13,20 +13,20 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
-	[DataContract]
+	//[DataContract]
 	public class IF_Control : BinaryComponent
 	{
-		[DataMember]
+		//[DataMember]
 		public int bottom, min_bottom;
-        [DataMember]
+        //[DataMember]
         public int x_left, y_left, x_right, y_right;
-        [DataMember]
+        //[DataMember]
         public int left_connector_y;
-        [DataMember]
+        //[DataMember]
         public int right_connector_y;
-        [DataMember]
+        //[DataMember]
         public int line_height;
-		[DataMember(IsRequired = false)]
+		//[DataMember(IsRequired = false)]
 		public Component? yes_child
 		{
 			get 
@@ -130,7 +130,7 @@ namespace raptor
 			this.init();
 		}
 
-        protected override void OnDeserialized(StreamingContext context)
+        /*protected override void OnDeserialized(StreamingContext context)
         {
             base.OnDeserialized(context);
             result = interpreter_pkg.conditional_syntax(this.Text);
@@ -149,7 +149,8 @@ namespace raptor
                 }
                 this.Text = "";
             }
-        }
+        }*/
+
         public IF_Control(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{
@@ -184,6 +185,14 @@ namespace raptor
 					Component.warned_about_error = true;
 				}
 				this.Text = "";
+			}
+			if (this.left_Child != null)
+			{
+				this.left_Child.set_parent_info(true, false, false, this);
+			}
+			if (this.right_Child != null)
+			{
+				this.right_Child.set_parent_info(true, false, false, this);
 			}
 		}
 
