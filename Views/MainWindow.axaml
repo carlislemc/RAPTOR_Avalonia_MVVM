@@ -443,7 +443,7 @@
       </Style>
 
       </StackPanel.Styles>
-      <Button Classes="NewButton" ToolTip.Tip="Copy" Command="{Binding OnCopyCommand}"></Button>
+      <Button Classes="NewButton" ToolTip.Tip="New" Command="{Binding OnNewCommand}"></Button>
       <Button Classes="OpenButton" ToolTip.Tip="Open" Command="{Binding OnOpenCommand}"></Button>
       <Button Classes="SaveButton" ToolTip.Tip="Save" Command="{Binding OnSaveCommand2}"></Button>
       <Button Classes="CutButton" ToolTip.Tip="Cut" Command="{Binding OnCutCommand}"></Button>

@@ -13,13 +13,20 @@ namespace raptor
 	/// </summary>
 	
 	[Serializable]
+	//[DataContract]
 	public class IF_Control : BinaryComponent
 	{
+		//[DataMember]
 		public int bottom, min_bottom;
-		public int x_left, y_left, x_right, y_right;
-		public int left_connector_y;
-		public int right_connector_y;
-		public int line_height;
+        //[DataMember]
+        public int x_left, y_left, x_right, y_right;
+        //[DataMember]
+        public int left_connector_y;
+        //[DataMember]
+        public int right_connector_y;
+        //[DataMember]
+        public int line_height;
+		//[DataMember(IsRequired = false)]
 		public Component? yes_child
 		{
 			get 
@@ -45,7 +52,8 @@ namespace raptor
                 }
             }
 		}
-		public Component? no_child
+		[DataMember(IsRequired = false)]
+        public Component? no_child
 		{
 			get 
 			{
@@ -122,7 +130,28 @@ namespace raptor
 			this.init();
 		}
 
-		public IF_Control(SerializationInfo info, StreamingContext ctxt)
+        /*protected override void OnDeserialized(StreamingContext context)
+        {
+            base.OnDeserialized(context);
+            result = interpreter_pkg.conditional_syntax(this.Text);
+            if (result.valid)
+            {
+                this.parse_tree = result.tree;
+            }
+            else
+            {
+                if (!Component.warned_about_error && this.Text != "")
+                {
+                    MessageBoxClass.Show("Unknown error: \n" +
+                        this.Text + "\n" +
+                        "is not recognized.");
+                    Component.warned_about_error = true;
+                }
+                this.Text = "";
+            }
+        }*/
+
+        public IF_Control(SerializationInfo info, StreamingContext ctxt)
 			: base(info,ctxt)
 		{
 			//Get the values from info and assign them to the appropriate properties
@@ -156,6 +185,14 @@ namespace raptor
 					Component.warned_about_error = true;
 				}
 				this.Text = "";
+			}
+			if (this.left_Child != null)
+			{
+				this.left_Child.set_parent_info(true, false, false, this);
+			}
+			if (this.right_Child != null)
+			{
+				this.right_Child.set_parent_info(true, false, false, this);
 			}
 		}
 

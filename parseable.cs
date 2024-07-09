@@ -351,8 +351,7 @@ namespace parse_tree
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "KeyDown");
                     break;
                 case "end_of_input":
-                    //NEED TO DO
-                    throw new NotImplementedException();
+                    gil.Emit_Method("RAPTOR_Avalonia_MVVM.raptor_files", "end_of_input");
                     break;
                 case "mouse_button_down":
                     gil.Emit_Method("RAPTOR_Avalonia_MVVM.ViewModels.GraphDialogViewModel", "MouseButtonDown");
@@ -3109,6 +3108,8 @@ namespace parse_tree
                     return GraphDialogViewModel.KeyHit();
                 case Token_Type.Is_Open :
                     return GraphDialogViewModel.IsOpen();
+                case Token_Type.End_Of_Input:
+                    return raptor_files.end_of_input();
             }
 
             return false;

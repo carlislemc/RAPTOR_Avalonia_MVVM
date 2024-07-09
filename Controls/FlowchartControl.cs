@@ -192,7 +192,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
                 }
 
                 //Debug.WriteLine(name);
-                MainWindowViewModel.GetMainWindowViewModel().Load_File(name);
+                MainWindowViewModel.GetMainWindowViewModel().Load_FileAsync(name);
 
                 e.Handled = true;
                 

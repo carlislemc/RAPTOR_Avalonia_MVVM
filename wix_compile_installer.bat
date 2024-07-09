@@ -5,4 +5,5 @@ cd bin\release
 del raptor_avalonia.zip
 zip raptor_avalonia.zip -r publish
 cd ..\..
+copy bin\release\raptor_avalonia.zip .
 echo "On Hulk, update the Payload folder in raptor and run updatepayload.sh"

@@ -38,10 +38,10 @@ namespace RAPTOR_Avalonia_MVVM
         }
 		public static void redirect_output(numbers.value filename)
         {
-			//if (Output_Is_Redirected)
-   //         {
-			//	Stop_Redirect_Output();
-   //         }
+			if (Output_Is_Redirected)
+            {
+				Stop_Redirect_Output();
+            }
 
 			if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
@@ -77,6 +77,7 @@ namespace RAPTOR_Avalonia_MVVM
 					}
 
 					output_stream = new StreamWriter(ans);
+					Output_Is_Redirected = true;
 				}
 				else
 				{
@@ -90,10 +91,10 @@ namespace RAPTOR_Avalonia_MVVM
 
 		public static void redirect_output_append(numbers.value filename)
 		{
-			//if (Output_Is_Redirected)
-			//{
-			//	Stop_Redirect_Output();
-			//}
+			if (Output_Is_Redirected)
+			{
+				Stop_Redirect_Output();
+			}
 
 			if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
@@ -119,12 +120,24 @@ namespace RAPTOR_Avalonia_MVVM
 
 		}
 
+		public static bool end_of_input()
+		{
+			if (!Input_Is_Redirected || input_stream==null)
+			{
+				return false; 
+			}
+			else
+			{
+				return input_stream.EndOfStream;
+			}
+		}
+
 		public static void redirect_input(numbers.value filename)
 		{
-            //if (Input_Is_Redirected)
-            //{
-            //    Stop_Redirect_Input();
-            //}
+            if (Input_Is_Redirected)
+            {
+                Stop_Redirect_Input();
+            }
 
             if (filename.Kind == numbers.Value_Kind.String_Kind)
 			{
@@ -191,6 +204,7 @@ namespace RAPTOR_Avalonia_MVVM
 				if (input_stream != null)
 				{
 					input_stream.Close();
+					input_stream = null;
 				}
 			}
 		}
@@ -203,6 +217,7 @@ namespace RAPTOR_Avalonia_MVVM
 				if (output_stream != null)
 				{
 					output_stream.Close();
+					output_stream = null;
 				}
 			}
 		}

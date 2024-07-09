@@ -8,16 +8,21 @@ using RAPTOR_Avalonia_MVVM.Views;
 using numbers;
 using Avalonia;
 using System.Windows.Input;
+using System.Runtime.Serialization;
 
 namespace raptor
 {
     public enum Subchart_Kinds { Subchart, Procedure, Function, UML };
-
+    [DataContract]
     public class Subchart
     {
-        public Oval Start, End;
+        [DataMember]
+        public Oval Start;
+        protected Oval End;
+        [DataMember]
         public string Text = "Main";
         public bool am_compiling = false;
+        [DataMember]
         public Subchart_Kinds kind = Subchart_Kinds.Subchart;
         public int positionX {
             get; set; 
@@ -193,6 +198,11 @@ namespace raptor
             End.Text = "end";
             Start = new Oval(End, Visual_Flow_Form.flow_height, Visual_Flow_Form.flow_width, "Oval");
             Start.Text = "start";
+        }
+        [OnDeserialized()]
+        private void OnDeserialized(StreamingContext sc)
+        {
+            this.initContextMenu();
         }
 
         public void OnPasteCommand() { 
@@ -553,7 +563,7 @@ namespace raptor
             }
         }
     }
-
+    [DataContract]
     public class Procedure_Chart : Subchart
     {
         public Procedure_Chart(string name, int parameter_count) 
@@ -575,12 +585,6 @@ namespace raptor
             this.kind = Subchart_Kinds.Procedure;
             //Start.Text = "start";
         }
-        public override int Num_Params
-        {
-            get
-            {
-                return ((Oval_Procedure)this.Start).Parameter_Count;
-            }
-        }
+
     }
 }

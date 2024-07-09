@@ -1694,6 +1694,7 @@ namespace RAPTOR_Avalonia_MVVM.Controls
         public void UnfreezeGraphWindow()
         {
             frozen = false;
+            InvalidateVisual();
         }
 
         public void UpdateGraphWindow()
