@@ -1,8 +1,9 @@
+using Avalonia;
+using RAPTOR_Avalonia_MVVM;
+using RAPTOR_Avalonia_MVVM.Controls;
 using System;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using Avalonia;
-using RAPTOR_Avalonia_MVVM.Controls;
 namespace raptor
 {
 	/// <summary>
@@ -14,8 +15,20 @@ namespace raptor
 		protected Component? first_child, second_child;
 		//[DataMember]
 		protected bool is_compressed = false;
-
-		public BinaryComponent(int h, int w, String str_name) : base(h,w,str_name)
+        // Helper to create FontFallbackText
+        private FontFallbackText GetFontFallbackText(double widthConstraint, double fontSize)
+        {
+            return new FontFallbackText(
+                RAPTOR_Avalonia_MVVM.FontConstants.UniversalFontFamily,
+                fontSize,
+                Avalonia.Media.FontStyle.Normal,
+                Avalonia.Media.FontWeight.Normal,
+                Avalonia.Media.TextAlignment.Center,
+                Avalonia.Media.TextWrapping.Wrap,
+                new Size(widthConstraint, double.PositiveInfinity)
+            );
+        }
+        public BinaryComponent(int h, int w, String str_name) : base(h,w,str_name)
 		{
 		}
 
@@ -381,223 +394,203 @@ namespace raptor
 			}
 		}
 
-		protected void Draw_Diamond_and_Text(Avalonia.Media.DrawingContext gr,
-			int x, int diamond_top, string text,
-			Avalonia.Media.Pen diamond_pen,
-			bool draw_text)
-		{
-			Avalonia.Media.Pen line_pen;
+        protected void Draw_Diamond_and_Text(Avalonia.Media.DrawingContext gr,
+            int x, int diamond_top, string text,
+            Avalonia.Media.Pen diamond_pen,
+            bool draw_text)
+        {
+            Avalonia.Media.Pen line_pen;
 
-			if (this.selected)
-			{
-				line_pen = PensBrushes.red_pen;
-			}
-			else
-			{
-				line_pen = PensBrushes.blue_pen;
-			}
+            if (this.selected)
+            {
+                line_pen = PensBrushes.red_pen;
+            }
+            else
+            {
+                line_pen = PensBrushes.blue_pen;
+            }
 
-			if (this.Is_Wide_Diamond() && draw_text)
-			{
-				// draw the + or - to expand
-				gr.DrawRectangle(line_pen,
-					new Avalonia.Rect(x-W/4-this.drawing_text_width/2,
-					diamond_top,H/4,H/4));
-				if (this.is_compressed)
-				{
-					gr.DrawLine(line_pen,
-						new Point(x-W/4-this.drawing_text_width/2+H/8,
-						diamond_top),
-						new Point(x-W/4-this.drawing_text_width/2+H/8,
-						diamond_top+H/4));
-				}
-				gr.DrawLine(line_pen,
-					new Point(x-W/4-this.drawing_text_width/2,
-					diamond_top+H/8),
-					new Point(x-W/4-this.drawing_text_width/2+H/4,
-					diamond_top+H/8));
+            if (this.Is_Wide_Diamond() && draw_text)
+            {
+                // draw the + or - to expand
+                gr.DrawRectangle(line_pen,
+                    new Avalonia.Rect(x - W / 4 - this.drawing_text_width / 2,
+                    diamond_top, H / 4, H / 4));
+                if (this.is_compressed)
+                {
+                    gr.DrawLine(line_pen,
+                        new Point(x - W / 4 - this.drawing_text_width / 2 + H / 8,
+                        diamond_top),
+                        new Point(x - W / 4 - this.drawing_text_width / 2 + H / 8,
+                        diamond_top + H / 4));
+                }
+                gr.DrawLine(line_pen,
+                    new Point(x - W / 4 - this.drawing_text_width / 2,
+                    diamond_top + H / 8),
+                    new Point(x - W / 4 - this.drawing_text_width / 2 + H / 4,
+                    diamond_top + H / 8));
 
-				// Draw the ^
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top),
-					new Point(x+W/8,diamond_top+H/8));
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top),
-					new Point(x-W/8,diamond_top+H/8));
-				// Draw the bottom ^
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top+H),
-					new Point(x+W/8,diamond_top+7*H/8));
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top+H),
-					new Point(x-W/8,diamond_top+7*H/8));
-				// draw horizontal lines on bottom
-				gr.DrawLine(PensBrushes.blue_dash_pen,
-					new Point(x-this.drawing_text_width/2,
-					diamond_top+7*H/8),
-					new Point(x-W/8,diamond_top+7*H/8));
-				gr.DrawLine(PensBrushes.blue_dash_pen,
-					new Point(x + this.drawing_text_width / 2,
-					diamond_top + 7 * H / 8),
-					new Point(x + W / 8, diamond_top + 7 * H / 8)); 
-				// draw horizontal lines on top
-				gr.DrawLine(PensBrushes.blue_dash_pen,
-					new Point(x-this.drawing_text_width/2,
-					diamond_top+H/8),
-					new Point(x-W/8,diamond_top+H/8)); 
-				gr.DrawLine(PensBrushes.blue_dash_pen,
-					new Point(x+this.drawing_text_width/2,
-					diamond_top+H/8),
-					new Point(x+W/8,diamond_top+H/8)); 
+                // Draw the ^ and other diamond lines (unchanged)
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top),
+                    new Point(x + W / 8, diamond_top + H / 8));
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top),
+                    new Point(x - W / 8, diamond_top + H / 8));
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top + H),
+                    new Point(x + W / 8, diamond_top + 7 * H / 8));
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top + H),
+                    new Point(x - W / 8, diamond_top + 7 * H / 8));
+                gr.DrawLine(PensBrushes.blue_dash_pen,
+                    new Point(x - this.drawing_text_width / 2,
+                    diamond_top + 7 * H / 8),
+                    new Point(x - W / 8, diamond_top + 7 * H / 8));
+                gr.DrawLine(PensBrushes.blue_dash_pen,
+                    new Point(x + this.drawing_text_width / 2,
+                    diamond_top + 7 * H / 8),
+                    new Point(x + W / 8, diamond_top + 7 * H / 8));
+                gr.DrawLine(PensBrushes.blue_dash_pen,
+                    new Point(x - this.drawing_text_width / 2,
+                    diamond_top + H / 8),
+                    new Point(x - W / 8, diamond_top + H / 8));
+                gr.DrawLine(PensBrushes.blue_dash_pen,
+                    new Point(x + this.drawing_text_width / 2,
+                    diamond_top + H / 8),
+                    new Point(x + W / 8, diamond_top + H / 8));
+                gr.DrawLine(diamond_pen,
+                    new Point(x - W / 4 - this.drawing_text_width / 2,
+                    diamond_top + H / 2),
+                    new Point(x - this.drawing_text_width / 2,
+                    diamond_top + H / 8));
+                gr.DrawLine(diamond_pen,
+                    new Point(x - W / 4 - this.drawing_text_width / 2,
+                    diamond_top + H / 2),
+                    new Point(x - this.drawing_text_width / 2,
+                    diamond_top + 7 * H / 8));
+                gr.DrawLine(diamond_pen,
+                    new Point(x + this.drawing_text_width / 2 + W / 4,
+                    diamond_top + H / 2),
+                    new Point(x + this.drawing_text_width / 2,
+                    diamond_top + H / 8));
+                gr.DrawLine(diamond_pen,
+                    new Point(x + this.drawing_text_width / 2 + W / 4,
+                    diamond_top + H / 2),
+                    new Point(x + this.drawing_text_width / 2,
+                    diamond_top + 7 * H / 8));
+            }
+            else
+            {
+                gr.DrawRectangle(line_pen,
+                    new Rect(x - W / 2, diamond_top, H / 4, H / 4));
+                if (this.is_compressed)
+                {
+                    gr.DrawLine(line_pen,
+                        new Point(x - W / 2 + H / 8, diamond_top), new Point(x - W / 2 + H / 8, diamond_top + H / 4));
+                }
+                gr.DrawLine(line_pen,
+                    new Point(x - W / 2, diamond_top + H / 8), new Point(x - W / 2 + H / 4, diamond_top + H / 8));
 
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top),
+                    new Point(x + W / 2, diamond_top + H / 2));
+                gr.DrawLine(diamond_pen, new Point(x + W / 2,
+                    diamond_top + H / 2), new Point(x, diamond_top + H));
+                gr.DrawLine(diamond_pen, new Point(x, diamond_top + H),
+                    new Point(x - W / 2, diamond_top + H / 2));
+                gr.DrawLine(diamond_pen, new Point(x - W / 2, diamond_top + H / 2),
+                    new Point(x, diamond_top));
+            }
 
-				// draw the <
+            if (draw_text)
+            {
+                if (this.Text.Length > 0)
+                {
+                    Avalonia.Rect rect;
+                    if (Component.full_text)
+                    {
+                        if (this.drawing_text_width > W)
+                        {
+                            rect = new Avalonia.Rect(
+                                x - this.drawing_text_width / 2,
+                                diamond_top + H / 2 - this.height_of_text,
+                                this.drawing_text_width,
+                                this.height_of_text * 2);
+                        }
+                        else
+                        {
+                            rect = new Avalonia.Rect(
+                                x - this.drawing_text_width / 2,
+                                diamond_top + H / 2 - this.height_of_text + Oval.textSize / 2,
+                                this.drawing_text_width,
+                                this.height_of_text * 2);
+                        }
+                    }
+                    else
+                    {
+                        rect = new Avalonia.Rect(x - W / 2, diamond_top + (H * 7) / 16, W - W / 8, this.height_of_text);
+                    }
 
-				gr.DrawLine(diamond_pen,
-					new Point(x-W/4-this.drawing_text_width/2,
-					diamond_top+H/2),
-					new Point(x-this.drawing_text_width/2,
-					diamond_top+H/8)); 
-				gr.DrawLine(diamond_pen,
-					new Point(x-W/4-this.drawing_text_width/2,
-					diamond_top+H/2),
-					new Point(x-this.drawing_text_width/2,
-					diamond_top+7*H/8));
-				// draw the >
-				gr.DrawLine(diamond_pen,
-					new Point(x+this.drawing_text_width/2+W/4,
-					diamond_top+H/2),
-					new Point(x+this.drawing_text_width/2,
-					diamond_top+H/8)); // draw right top line
-				gr.DrawLine(diamond_pen,
-					new Point(x+this.drawing_text_width/2+W/4,
-					diamond_top+H/2),
-					new Point(x+this.drawing_text_width/2,
-					diamond_top+7*H/8)); // draw right bottom line
-			}
-			else
-			{
-				// draw the + or - to expand
-				gr.DrawRectangle(line_pen,
-					new Rect(x-W/2,diamond_top,H/4,H/4));
-				if (this.is_compressed)
-				{
-					gr.DrawLine(line_pen,
-						new Point(x-W/2+H/8,diamond_top),new Point(x-W/2+H/8,diamond_top+H/4));
-				}
-				gr.DrawLine(line_pen,
-					new Point(x-W/2,diamond_top+H/8),new Point(x-W/2+H/4,diamond_top+H/8));
+                    if (this.Text == "Error")
+                    {
+                        var errorFallback = GetFontFallbackText(rect.Width, Oval.textSize);
+                        errorFallback.DrawText(gr, rect.TopLeft, "Error", PensBrushes.redbrush);
+                    }
+                    else
+                    {
+                        var textFallback = GetFontFallbackText(rect.Width, Oval.textSize);
+                        textFallback.DrawText(gr, rect.TopLeft, this.getDrawText(), PensBrushes.blackbrush);
+                    }
+                }
+            }
+        }
 
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top),
-					new Point(x+W/2,diamond_top+H/2)); // draw top right line
-				gr.DrawLine(diamond_pen,new Point(x+W/2,
-					diamond_top+H/2),new Point(x,diamond_top+H)); // draw bottom right line
-				gr.DrawLine(diamond_pen,new Point(x,diamond_top+H),
-					new Point(x-W/2,diamond_top+H/2)); // draw bottom left line
-				gr.DrawLine(diamond_pen,new Point(x-W/2,diamond_top+H/2),
-					new Point(x,diamond_top)); // draw top left line
-			}
-
-			if (draw_text) 
-			{
-
-				if (this.Text.Length > 0)
-				{
-					if (Component.full_text)
-					{
-						if (this.drawing_text_width>W)
-						{
-							rect = new Avalonia.Rect(
-								x-this.drawing_text_width/2,
-								diamond_top+H/2-this.height_of_text,
-								this.drawing_text_width,
-								this.height_of_text*2);
-						}
-						else
-						{
-							rect = new Avalonia.Rect(
-								x - this.drawing_text_width / 2,
-								diamond_top + H / 2 - this.height_of_text + Oval.textSize/2,
-								this.drawing_text_width,
-								this.height_of_text * 2);
-						}
-					}
-					else
-					{
-						rect = new Avalonia.Rect(x-W/2, diamond_top+(H*7)/16, W-W/8,this.height_of_text);
-					}
-
-					if (this.Text == "Error")
-					{
-						Avalonia.Media.FormattedText formattedtextError = new Avalonia.Media.FormattedText(
-							"Error", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-							Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-						gr.DrawText(PensBrushes.redbrush, rect.TopLeft, formattedtextError);
-					}
-					else
-					{
-						Avalonia.Media.FormattedText formattedtextText = new Avalonia.Media.FormattedText(
-							this.getDrawText(), new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-							Avalonia.Media.TextWrapping.Wrap, new Avalonia.Size(drawing_text_width, height_of_text));
-						gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtextText);
-					}
-				}
-			}
-		}
-
-		protected bool Is_Wide_Diamond()
+        protected bool Is_Wide_Diamond()
 		{
 			return (Component.full_text && this.drawing_text_width > 5*W/7);
 		}
 
-		protected void Diamond_Footprint(
-			Avalonia.Media.DrawingContext gr, 
-			bool draw_text,
-			int buffer)
-		{
-			if (Component.full_text && draw_text)
-			{
-				int height_of_text, width_of_text=5*W/7;
+        protected void Diamond_Footprint(
+            Avalonia.Media.DrawingContext gr,
+            bool draw_text,
+            int buffer)
+        {
+            if (Component.full_text && draw_text)
+            {
+                int height_of_text, width_of_text = 5 * W / 7;
+                int szHeight;
 
+                var fallbackTextYes = GetFontFallbackText(double.PositiveInfinity, 12);
+                var boundsYes = fallbackTextYes.MeasureText("Yes");
+                height_of_text = (int)Math.Ceiling(boundsYes.Height);
 
-				int szHeight;
+                // loop starting at 3*W until you get on 2 lines.
+                while (true)
+                {
+                    var fallbackText = GetFontFallbackText(width_of_text, 12);
+                    var bounds = fallbackText.MeasureText(this.Text + "XXXXX");
+                    szHeight = (int)Math.Ceiling(bounds.Height);
 
+                    if (szHeight < height_of_text * 5 / 2)
+                    {
+                        break;
+                    }
+                    width_of_text = width_of_text + W / 2;
+                }
 
-				Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-					"Yes", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-					Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-				height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
-
-				// loop starting at 3*W until you get on 2 lines.
-				while (true) 
-				{
-
-					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.Text + "XXXXX", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-						Avalonia.Media.TextWrapping.Wrap, Avalonia.Size.Infinity.WithWidth(width_of_text));
-					szHeight = (int)Math.Ceiling(formattedtext.Bounds.Height);
-
-					if (szHeight<height_of_text*5/2)
-					{
-						break;
-					}
-					width_of_text = width_of_text + W/2;
-				}
-
-				if (szHeight > height_of_text*3/2 || width_of_text > 5*W/7) 
-				{
-					FP.left = width_of_text/2+buffer;
-					FP.right = width_of_text/2+buffer;
-					drawing_text_width = width_of_text;
-				}
-				else
-				{
-					drawing_text_width = 5*W/7;
-				}
-			}
-			else
-			{
-				drawing_text_width = 0;
-			}
-		}
-
-		public override void change_compressed(bool compressed)
+                if (szHeight > height_of_text * 3 / 2 || width_of_text > 5 * W / 7)
+                {
+                    FP.left = width_of_text / 2 + buffer;
+                    FP.right = width_of_text / 2 + buffer;
+                    drawing_text_width = width_of_text;
+                }
+                else
+                {
+                    drawing_text_width = 5 * W / 7;
+                }
+            }
+            else
+            {
+                drawing_text_width = 0;
+            }
+        }
+        public override void change_compressed(bool compressed)
 		{
 			this.is_compressed=compressed;
 			if (this.first_child!=null)

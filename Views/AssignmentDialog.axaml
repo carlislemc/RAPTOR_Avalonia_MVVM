@@ -27,12 +27,14 @@
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBlock>Set</TextBlock>
-      <TextBox Name="typingName" Width="200" Watermark="variable" Text="{Binding setValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+               Name="typingName" Width="200" Watermark="variable" Text="{Binding setValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
       <TextBlock>to</TextBlock>
       <ScrollViewer>
-      <TextBox Name="typingVal" Width="200" Watermark="value" Text="{Binding toValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+               Name="typingVal" Width="200" Watermark="value" Text="{Binding toValue}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
       </ScrollViewer>
     </StackPanel>
     

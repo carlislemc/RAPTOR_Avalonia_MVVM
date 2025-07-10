@@ -62,6 +62,20 @@ namespace raptor
 			}
 		}
 
+		// Helper to create FontFallbackText
+		private FontFallbackText GetFontFallbackText(double widthConstraint, double fontSize)
+		{
+			return new FontFallbackText(
+				RAPTOR_Avalonia_MVVM.FontConstants.UniversalFontFamily,
+				fontSize,
+				Avalonia.Media.FontStyle.Normal,
+				Avalonia.Media.FontWeight.Normal,
+				Avalonia.Media.TextAlignment.Center,
+				Avalonia.Media.TextWrapping.Wrap,
+				new Size(widthConstraint, double.PositiveInfinity)
+			);
+		}
+
 		public Loop(int height, int width, String str_name)
 			: base(height, width, str_name)
 		{
@@ -298,26 +312,20 @@ namespace raptor
 
 			X = x;
 			Y = y;
-			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-				"Yes", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			Avalonia.Media.FormattedText formattedtextNo = new Avalonia.Media.FormattedText(
-				"No", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
 
-			Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-				this.Text + "XX", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			width_of_text = (int)Math.Ceiling(formattedtext.Bounds.Width);
+			// Use FontFallbackText for measurement
+			var fallbackTextYes = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+			var boundsYes = fallbackTextYes.MeasureText("Yes");
+			var fallbackTextNo = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+			var boundsNo = fallbackTextNo.MeasureText("No");
+			height_of_text = (int)Math.Ceiling(boundsYes.Height);
 
-			
+			var fallbackText = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+			var bounds = fallbackText.MeasureText(this.Text + "XX");
+			width_of_text = (int)Math.Ceiling(bounds.Width);
 
-
-			int length_of_yesStr = (int)Math.Ceiling(formattedtextYes.Bounds.Width);
-			int length_of_noStr = (int)Math.Ceiling(formattedtextNo.Bounds.Width);
-
-			//gr.SmoothingMode=System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			int length_of_yesStr = (int)Math.Ceiling(boundsYes.Width);
+			int length_of_noStr = (int)Math.Ceiling(boundsNo.Width);
 
 			if ((this.scale <= .4) || (this.head_heightOrig < 10))
 			{
@@ -576,43 +584,41 @@ namespace raptor
 				{
 					if (this.Is_Wide_Diamond())
 					{
-						gr.DrawText(PensBrushes.blackbrush, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_yesStr / 2,
-							diamond_top + H / 2 + 5), formattedtextYes);
+						fallbackTextYes.DrawText(gr, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_yesStr / 2,
+							diamond_top + H / 2 + 5), "Yes", PensBrushes.blackbrush);
 					}
 					else
 					{
-						gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 - length_of_yesStr,
-							diamond_top + H / 2 + 5), formattedtextYes);
+						fallbackTextYes.DrawText(gr, new Point(x - W / 2 - length_of_yesStr,
+							diamond_top + H / 2 + 5), "Yes", PensBrushes.blackbrush);
 
 					}
-					gr.DrawText(PensBrushes.blackbrush, new Point(x + length_of_noStr,
-						diamond_top + H + 5), formattedtextNo);
+					fallbackTextNo.DrawText(gr, new Point(x + length_of_noStr,
+						diamond_top + H + 5), "No", PensBrushes.blackbrush);
 
 				}
 				else
 				{
 					if (this.Is_Wide_Diamond())
 					{
-						gr.DrawText(PensBrushes.blackbrush, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_noStr / 2,
-							diamond_top + H / 2 + 5), formattedtextNo);
+						fallbackTextNo.DrawText(gr, new Point(x - this.drawing_text_width / 2 - W / 4 - length_of_noStr / 2,
+							diamond_top + H / 2 + 5), "No", PensBrushes.blackbrush);
 					}
 					else
 					{
-						gr.DrawText(PensBrushes.blackbrush, new Point(x - W / 2 - length_of_noStr,
-							diamond_top + H / 2 + 5), formattedtextNo);
+						fallbackTextNo.DrawText(gr, new Point(x - W / 2 - length_of_noStr,
+							diamond_top + H / 2 + 5), "No", PensBrushes.blackbrush);
 					}
-					gr.DrawText(PensBrushes.blackbrush, new Point(x + length_of_yesStr,
-						diamond_top + H + 5), formattedtextYes);
+					fallbackTextYes.DrawText(gr, new Point(x + length_of_yesStr,
+						diamond_top + H + 5), "Yes", PensBrushes.blackbrush);
 				}
 
 				// draw "Loop" inside oval if not USMA mode
 				if (!Component.USMA_mode)
 				{
-					Avalonia.Media.FormattedText formattedtextLP = new Avalonia.Media.FormattedText(
-						LP, new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-					
-					gr.DrawText(PensBrushes.blackbrush, new Point(x - formattedtextLP.Bounds.Width / 2, Y + (H * 6) / 16), formattedtextLP);
+					var fallbackTextLP = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+					var boundsLP = fallbackTextLP.MeasureText(LP);
+					fallbackTextLP.DrawText(gr, new Point(x - boundsLP.Width / 2, Y + (H * 6) / 16), LP, PensBrushes.blackbrush);
 				}
 			}
 			if (draw_text) 

@@ -41,11 +41,11 @@ namespace RAPTOR_Avalonia_MVVM
                         
                     }
                 };
-                
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+
+                 desktop.MainWindow = new MainWindow
+                 {
+                     DataContext = new MainWindowViewModel(),
+                 };
                 
 
             }

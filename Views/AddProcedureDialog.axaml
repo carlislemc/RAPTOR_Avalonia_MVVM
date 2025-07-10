@@ -29,7 +29,8 @@
         <TextBlock>Set Procedure Name</TextBlock>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Name" Text="{Binding setProcedureName}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Name" Text="{Binding setProcedureName}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
         <TextBlock>Parameter 1 (or blank)</TextBlock>
@@ -39,7 +40,8 @@
 
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 1" Text="{Binding setParam1}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 1" Text="{Binding setParam1}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
@@ -48,7 +50,8 @@
         <CheckBox IsChecked="{Binding setOut2}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 2" Text="{Binding setParam2}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 2" Text="{Binding setParam2}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
@@ -57,7 +60,8 @@
         <CheckBox IsChecked="{Binding setOut3}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 3" Text="{Binding setParam3}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 3" Text="{Binding setParam3}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
@@ -66,7 +70,8 @@
         <CheckBox IsChecked="{Binding setOut4}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 4" Text="{Binding setParam4}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 4" Text="{Binding setParam4}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
@@ -75,7 +80,8 @@
         <CheckBox IsChecked="{Binding setOut5}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 5" Text="{Binding setParam5}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 5" Text="{Binding setParam5}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="5">
@@ -84,7 +90,8 @@
         <CheckBox IsChecked="{Binding setOut6}">Output</CheckBox>
         </StackPanel>
         <StackPanel>
-        <TextBox Width="200" Watermark="Parameter 6" Text="{Binding setParam6}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+        <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+                 Width="200" Watermark="Parameter 6" Text="{Binding setParam6}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
         </StackPanel>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">

@@ -62,7 +62,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
             foreach(char c in setSubchartName)
             {
-                if (c < 65 || c > 122 || (c > 90 && c < 97 && c != 95))
+                if (!char.IsLetter(c) && c!='_')
                 {
                     Text = "Cannot name Subchart: " + setSubchartName;
                     return;

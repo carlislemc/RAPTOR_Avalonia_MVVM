@@ -25,7 +25,8 @@
          Open_Graph_Window(300,300)
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox TextWrapping="Wrap" Name="proc" Width="200" Height="150" Text="{Binding setProcedure}" Watermark="Procedure" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+               TextWrapping="Wrap" Name="proc" Width="200" Height="150" Text="{Binding setProcedure}" Watermark="Procedure" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
       <TextBlock IsTabStop="False" Foreground="Red" Text="{Binding Text}"/>

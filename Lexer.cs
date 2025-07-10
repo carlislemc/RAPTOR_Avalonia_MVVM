@@ -522,18 +522,17 @@ namespace RAPTOR_Avalonia_MVVM
                     {
                         return new Token(Token_Type.Equal, Current_Location - 1, Current_Location - 1);
                     }
-                case char i when i >= 'a' && i <= 'z':
-                case char j when j >= 'A' && j <= 'Z':
+                case char i when Char.IsLetter(i) || i == '_':
                     while (this.Current_Location < this.Current_String.Length)
                     {
                         Current_Char = this.Current_String[this.Current_Location];
-                        if (!Char.IsLetterOrDigit(Current_Char) && Current_Char!='_')
+                        if (!(Char.IsLetterOrDigit(Current_Char) || Current_Char == '_'))
                         {
                             break;
                         }
                         this.Current_Location++;
                     }
-                    return new Token(Id_Kind(this.Current_String.Substring(Start_Location,Current_Location-Start_Location)),
+                    return new Token(Id_Kind(this.Current_String.Substring(Start_Location, Current_Location - Start_Location)),
                         Start_Location, Current_Location - 1);
                 case '.':
                 case char k when k >= '0' && k <= '9':

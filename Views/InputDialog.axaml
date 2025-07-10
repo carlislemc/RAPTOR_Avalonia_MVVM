@@ -21,7 +21,8 @@
       Enter prompt here:
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox TextWrapping="Wrap" Name="prompt" Width="200" Height="120" Text="{Binding getPrompt}" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+               TextWrapping="Wrap" Name="prompt" Width="200" Height="120" Text="{Binding getPrompt}" Watermark="prompt" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <TextBlock HorizontalAlignment="Center">
       Enter variable here:
@@ -31,7 +32,8 @@
       Board[3,3]
     </TextBlock>
     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
-      <TextBox Name="variable" Width="200" Watermark="variable" Text="{Binding getVariable}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
+      <TextBox FontFamily="Noto Sans CJK JP, Arial, Segoe UI Historic, Segoe UI, Segoe UI Symbol, Arial Unicode MS, Noto Sans, Noto Sans CJK CN, Noto Sans CJK KR, sans-serif"
+               Name="variable" Width="200" Watermark="variable" Text="{Binding getVariable}" AcceptsReturn="False" IsReadOnly="False"></TextBox>
     </StackPanel>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="25" Width="200">
       <TextBlock IsTabStop="False" Foreground="Red" Text="{Binding Text}"/>

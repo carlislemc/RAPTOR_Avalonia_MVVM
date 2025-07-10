@@ -28,6 +28,20 @@ namespace raptor
 		public string assign = "";
 		public numbers.value pans = new numbers.value();
 
+		// Helper to create FontFallbackText
+		private FontFallbackText GetFontFallbackText(double widthConstraint, double fontSize)
+		{
+			return new FontFallbackText(
+				RAPTOR_Avalonia_MVVM.FontConstants.UniversalFontFamily,
+				fontSize,
+				Avalonia.Media.FontStyle.Normal,
+				Avalonia.Media.FontWeight.Normal,
+				Avalonia.Media.TextAlignment.Center,
+				Avalonia.Media.TextWrapping.Wrap,
+				new Size(widthConstraint, double.PositiveInfinity)
+			);
+		}
+
 		public Parallelogram(int height, int width, String str_name, bool input)
 			: base(height, width, str_name)
 		{
@@ -188,18 +202,14 @@ namespace raptor
 			X = x;
 			Y = y;
 
-			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-				"Yes", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
+			// Use FontFallbackText for measurement
+			var fallbackText = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+			var boundsYes = fallbackText.MeasureText("Yes");
+			height_of_text = (int)Math.Ceiling(boundsYes.Height);
 
-			Avalonia.Media.FormattedText formattedtextX = new Avalonia.Media.FormattedText(
-				this.getDrawText() + " X", new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			width_of_text = (int)Math.Ceiling(formattedtextX.Bounds.Width);
-
-
-			//gr.SmoothingMode=System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			var fallbackTextX = GetFontFallbackText(double.PositiveInfinity, Oval.textSize);
+			var boundsX = fallbackTextX.MeasureText(this.getDrawText() + " X");
+			width_of_text = (int)Math.Ceiling(boundsX.Width);
 
 			Avalonia.Media.Pen pen;
 			if (this.selected)
@@ -243,13 +253,6 @@ namespace raptor
 					new Avalonia.Point(x -box_width/2+3*W/32-W/8,y+H/4-H/8)); // up arrow
 				gr.DrawLine(pen, new Avalonia.Point(x -box_width/2+3*W/32,y+H/4),
 					new Avalonia.Point(x -box_width/2+3*W/32-W/8,y+H/4+H/8)); // down arrow
-/*				gr.DrawLine(pen,x-box_width/2-W/32,y+H/4,
-					x-box_width/2-W/32+W/3,y+H/4); // input line
-				gr.DrawLine(pen,x-box_width/2-W/32+W/3,y+H/4,
-					x-box_width/2-W/32+W/3-W/8,y+H/4-H/8); // up arrow
-				gr.DrawLine(pen,x-box_width/2-W/32+W/3,y+H/4,
-					x-box_width/2-W/32+W/3-W/8,y+H/4+H/8); // down arrow
-					*/
 			}
 			else
 			{
@@ -259,15 +262,7 @@ namespace raptor
 					new Avalonia.Point(x +box_width/2-3*W/32+W/4-W/8,y+H-H/4-H/8)); // up arrow
 				gr.DrawLine(pen, new Avalonia.Point(x +box_width/2-3*W/32+W/4,y+H-H/4),
 					new Avalonia.Point(x +box_width/2-3*W/32+W/4-W/8,y+H-H/4+H/8)); // down arrow
-/*				gr.DrawLine(pen,x+box_width/2-3*W/16,y+H-H/4,
-					x+box_width/2-3*W/16+W/3,y+H-H/4); // output line
-				gr.DrawLine(pen,x+box_width/2-3*W/16+W/3,y+H-H/4,
-					x+box_width/2-3*W/16+W/3-W/8,y+H-H/4-H/8); // up arrow
-				gr.DrawLine(pen,x+box_width/2-3*W/16+W/3,y+H-H/4,
-					x+box_width/2-3*W/16+W/3-W/8,y+H-H/4+H/8); // down arrow
-					*/
 			}
-
 
 			if(draw_text)
 			{
@@ -291,19 +286,21 @@ namespace raptor
 				}
 
 				if (this.Text == "Error")
-				{   Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.Text, new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center, 
-						Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-					gr.DrawText(PensBrushes.redbrush, rect.TopLeft, formattedtext);
+				{
+					var errorFallback = GetFontFallbackText(rect.Width, Oval.textSize);
+					errorFallback.DrawText(gr, rect.TopLeft, this.Text, PensBrushes.redbrush);
 				}
 				else
 				{
-					Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-						this.getDrawText(), new Avalonia.Media.Typeface("arial"), Oval.textSize, Avalonia.Media.TextAlignment.Center,
-						Avalonia.Media.TextWrapping.Wrap, new Avalonia.Size(drawing_text_width,height_of_text));
-					gr.DrawText(PensBrushes.blackbrush, rect.TopLeft, formattedtext);
-				}
-			}
+                    var textFallback = GetFontFallbackText(rect.Width, Oval.textSize);
+                    var textBounds = textFallback.MeasureText(this.getDrawText());
+                    var centeredOrigin = new Point(
+                        rect.Left + (rect.Width - textBounds.Width) / 2,
+                        rect.Top + (rect.Height - textBounds.Height) / 2
+                    );
+                    textFallback.DrawText(gr, centeredOrigin, this.getDrawText(), PensBrushes.blackbrush);
+                }
+            }
 
 			if (Successor != null)
 			{
@@ -329,20 +326,18 @@ namespace raptor
 			int height_of_text, width_of_text=2*W;
 			int szHeight, szWidth = 0;
 
-
-			Avalonia.Media.FormattedText formattedtextYes = new Avalonia.Media.FormattedText(
-				"Yes", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-				Avalonia.Media.TextWrapping.NoWrap, Avalonia.Size.Infinity);
-			height_of_text = (int)Math.Ceiling(formattedtextYes.Bounds.Height);
+			// Use FontFallbackText for measurement
+			var fallbackText = GetFontFallbackText(double.PositiveInfinity, 12);
+			var boundsYes = fallbackText.MeasureText("Yes");
+			height_of_text = (int)Math.Ceiling(boundsYes.Height);
 
 			// loop starting at 2*W until you get on 3 lines.
 			while (true) 
 			{
-				Avalonia.Media.FormattedText formattedtext = new Avalonia.Media.FormattedText(
-					this.getDrawText() + "XX", new Avalonia.Media.Typeface("arial"), 12, Avalonia.Media.TextAlignment.Center,
-					Avalonia.Media.TextWrapping.Wrap, Avalonia.Size.Infinity.WithWidth(width_of_text));
-				szHeight = (int)Math.Ceiling(formattedtext.Bounds.Height);
-				szWidth = (int)Math.Ceiling(formattedtext.Bounds.Width);
+				var fallbackTextLoop = GetFontFallbackText(width_of_text, 12);
+				var bounds = fallbackTextLoop.MeasureText(this.getDrawText() + "XX");
+				szHeight = (int)Math.Ceiling(bounds.Height);
+				szWidth = (int)Math.Ceiling(bounds.Width);
 				if (szHeight<height_of_text*7/2)
 				{
 					break;
@@ -516,19 +511,17 @@ namespace raptor
 			{
 				if (Component.full_text)
 				{
-					//result = this.prompt + '\n' +
-					//		get_string;
-                    if (!this.input_is_expression)
-                    {
-                        result = '"' + this.prompt + '"' + '\n' +
-                            get_string;
-                    }
-                    else
-                    {
-                        result = this.prompt + '\n' +
-                            get_string;
-                    }
-                }
+					if (!this.input_is_expression)
+					{
+						result = '"' + this.prompt + '"' + '\n' +
+							get_string;
+					}
+					else
+					{
+						result = this.prompt + '\n' +
+							get_string;
+					}
+				}
 				else
 				{
 					result = get_string;
@@ -579,15 +572,12 @@ namespace raptor
 				{
 					if (!this.input_is_expression)
 					{
-						//parse_tree.set_prompt(this.prompt);
 						gen.Variable_Assignment_Start("raptor_prompt_variable_zzyz");
 						gen.Emit_Load_String(this.prompt);
 						gen.Variable_Assignment_PastRHS();
 					}
 					else
 					{
-						//parse_tree.set_prompt(null);
-                        // maintain with parse_tree.adb
                         gen.Variable_Assignment_Start("raptor_prompt_variable_zzyz");
 						if (this.prompt_tree != null)
 						{
