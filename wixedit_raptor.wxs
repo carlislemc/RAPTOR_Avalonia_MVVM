@@ -625,7 +625,7 @@
         </Feature>
         <UI />
         <UIRef Id="WixUI_Minimal" />
-        <Icon Id="DesktopIcon.exe" SourceFile="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
-        <Icon Id="StartMenuIcon.exe" SourceFile="c:\Users\carlislem\source\repos\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
+        <Icon Id="DesktopIcon.exe" SourceFile="C:\Users\carlislem\Documents\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
+        <Icon Id="StartMenuIcon.exe" SourceFile="C:\Users\carlislem\Documents\RAPTOR_Avalonia_MVVM\bin\Release\publish\raptor.exe" />
     </Product>
 </Wix>

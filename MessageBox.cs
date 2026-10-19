@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using RAPTOR_Avalonia_MVVM.ViewModels;
 using raptor;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Dto;
-using MsBox.Avalonia.Enums;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 
 namespace RAPTOR_Avalonia_MVVM
 {
@@ -31,7 +31,7 @@ namespace RAPTOR_Avalonia_MVVM
             {
 
                     var msBoxStandardWindow = MessageBoxManager
-                        .GetMessageBoxStandard(new MessageBoxStandardParams
+                        .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                         {
                             ButtonDefinitions = ButtonEnum.Ok,
                             ContentTitle = "Title",
@@ -40,7 +40,7 @@ namespace RAPTOR_Avalonia_MVVM
                             //Style = Style.Windows
                         });
 
-                    msBoxStandardWindow.ShowWindowDialogAsync(desktop.MainWindow);
+                    msBoxStandardWindow.ShowDialog(desktop.MainWindow);
             }
         }
 
@@ -71,7 +71,7 @@ namespace RAPTOR_Avalonia_MVVM
                 }
 
                 var msBoxStandardWindow = MessageBoxManager
-                    .GetMessageBoxStandard(new MessageBoxStandardParams
+                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                     {
                         ButtonDefinitions = b,
                         ContentTitle = v2,
@@ -82,7 +82,7 @@ namespace RAPTOR_Avalonia_MVVM
 
              
 
-               MainWindowViewModel.GetMainWindowViewModel().buttonAnswer =  await msBoxStandardWindow.ShowWindowDialogAsync(desktop.MainWindow);
+               MainWindowViewModel.GetMainWindowViewModel().buttonAnswer =  await msBoxStandardWindow.ShowDialog(desktop.MainWindow);
                return;
             }
 

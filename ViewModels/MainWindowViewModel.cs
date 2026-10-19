@@ -146,12 +146,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
                 string msg = "Do you want to save your changes first?";
                 await MessageBoxClass.Show(msg, "Save First?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.Yes)
+                if (buttonAnswer == MessageBox.Avalonia.Enums.ButtonResult.Yes)
                 {
                     shouldClose = false;
                     OnSaveCommand(true);
                 }
-                else if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.No)
+                else if (buttonAnswer == MessageBox.Avalonia.Enums.ButtonResult.No)
                 {
                     shouldClose = false;
                     MainWindow.topWindow.Close();
@@ -297,10 +297,24 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
             {
                 Component.warned_about_newer_version = false;
                 Component.warned_about_error = false;
-                //this.Clear_Subcharts();
-                this.theTabs.Clear(); // get rid of all, including main
+                var chartNames = System.Xml.Linq.XDocument.Load(stream)
+                    .Descendants()
+                    .Where(element => element.Name.LocalName == "Subchart")
+                    .Select(element => element.Elements()
+                        .FirstOrDefault(child => child.Name.LocalName == "Text")?.Value)
+                    .Where(name => !string.IsNullOrWhiteSpace(name))
+                    .ToArray();
+                stream.Seek(0, SeekOrigin.Begin);
+
+                this.theTabs.Clear();
+                foreach (string chartName in chartNames)
+                {
+                    this.theTabs.Add(new Subchart(chartName));
+                }
+
                 DataContractSerializer dcs = new DataContractSerializer(typeof(Raptor_File));
                 Raptor_File rf = (Raptor_File) dcs.ReadObject(stream);
+                this.theTabs.Clear();
                 foreach (Subchart sc in rf.subcharts) {
                     this.theTabs.Add(sc);
                 }
@@ -1578,12 +1592,12 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
                     await MessageBoxClass.Show(msg, "Open New Chart", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                    if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.Yes)
+                    if (buttonAnswer == MessageBox.Avalonia.Enums.ButtonResult.Yes)
                     {
                         await OnSaveCommand();
                         checkSave = false;
                     }
-                    else if (buttonAnswer == MsBox.Avalonia.Enums.ButtonResult.No)
+                    else if (buttonAnswer == MessageBox.Avalonia.Enums.ButtonResult.No)
                     {
                         checkSave = false;
                     }
@@ -1600,7 +1614,7 @@ namespace RAPTOR_Avalonia_MVVM.ViewModels
 
         }
 
-        public MsBox.Avalonia.Enums.ButtonResult buttonAnswer = new MsBox.Avalonia.Enums.ButtonResult();
+        public MessageBox.Avalonia.Enums.ButtonResult buttonAnswer = new MessageBox.Avalonia.Enums.ButtonResult();
         public bool checkSave = true;
 
         public async Task OnNewCommand()

@@ -98,9 +98,7 @@ namespace RAPTOR_Avalonia_MVVM.Views
 
         private static KeyModifiers GetPlatformCommandKey()
         {
-            var os = GetOperatingSystemType();
-
-            if (os == OperatingSystemType.OSX)
+            if (System.OperatingSystem.IsMacOS())
             {
                 return KeyModifiers.Meta;
             }

@@ -496,19 +496,20 @@ namespace raptor
                 positionYTapped = positionY;
                 MainWindowViewModel mw = MainWindowViewModel.GetMainWindowViewModel();
 
-                
+                // Field initializers are skipped by DataContractSerializer.
+                PrivateTabContextMenuItems ??= new ObservableCollection<MenuItemViewModel>();
                 AddSub = ReactiveCommand.Create(onAddSubchartCommand);
                 AddProc = ReactiveCommand.Create(onAddProcedureCommand);
                 ModSub = ReactiveCommand.Create(onModSubchartCommand);
                 ModProc = ReactiveCommand.Create(onModProcedureCommand);
                 DelProc = ReactiveCommand.Create(onDelProcedureCommand);
 
-                if (mw.setViewTab != 0)
+                if (mw.theTabs.IndexOf(this) != 0)
                 {
                     PrivateTabContextMenuItems.Clear();
                     PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Subchart",  Command = AddSub });
                     PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Add Procedure", Command = AddProc});
-                    if (mw.theTabs[mw.setViewTab].Start.GetType() == typeof(Oval_Procedure))
+                    if (this.Start.GetType() == typeof(Oval_Procedure))
                     {
                         PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Modify Procedure", Command = ModProc});
                         PrivateTabContextMenuItems.Add(new MenuItemViewModel() { Header = "Delete Procedure", Command = DelProc});
